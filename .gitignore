@@ -1,0 +1,13 @@
+*.egg-info
+*.pyc
+.project
+.pydevproject
+.coverage
+.settings
+.tox
+.idea
+.vscode
+.cache
+.pytest_cache
+dist
+build

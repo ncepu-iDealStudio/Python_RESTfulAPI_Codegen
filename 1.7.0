@@ -1,0 +1,5 @@
+Collecting setuptools_scm
+  Using cached setuptools_scm-4.1.2-py2.py3-none-any.whl (27 kB)
+Requirement already satisfied: setuptools in f:\study\pythonstudy\venv\sqlacodegen-master\lib\site-packages (from setuptools_scm) (50.3.2)
+Installing collected packages: setuptools-scm
+Successfully installed setuptools-scm-4.1.2
