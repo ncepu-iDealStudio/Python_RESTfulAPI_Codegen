@@ -3,7 +3,8 @@
 ##### 项目名称: Python_Flask_Api_sqlalchemy_codegen；
 
 Python_Flask_Api_sqlalchemy_codegen是一个根据数据库表结构，自动生成Python语言的
-基于Flask框架+sqlalchemy框架的接口项目，所生成的接口符合restful风格规范；
+基于Flask框架+sqlalchemy框架的接口项目，所生成的接口符合restful风格规范；b
+本项目基于
 
 ##### 生成的目标接口项目特点：
 1. 项目架构满足分层设计规范，分为实体层，控制器层和资源层(接口层)，
