@@ -7,7 +7,10 @@
 """
     this is function description
 """
-from sqlacodegen import *
+from sqlacodegen.controllercodegen import controllerGenerate
+from sqlacodegen.modelcodegen import modelGenerate
+from sqlacodegen.resourcecodegen import resourceGenerate
+from sqlacodegen.staticcodegen import staticGenerate
 
 if __name__ == '__main__':
     """

@@ -8,4 +8,11 @@
 '''
     this is function  description 
 '''
-# import module your need
+
+
+def staticGenerate():
+    """
+    打包静态文件
+    :return: None
+    """
+    pass

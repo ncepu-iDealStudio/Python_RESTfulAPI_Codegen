@@ -5,7 +5,15 @@
 # author:jackiex
 # datetime:2021/8/21 13:29
 # software: PyCharm
+
 '''
     this is function  description 
 '''
-# import module your need
+
+
+def controllerGenerate():
+    """
+    生成Controller层代码
+    :return: None
+    """
+    pass
