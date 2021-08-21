@@ -36,10 +36,10 @@ try:
 except ImportError:
     pass
 
-from sqlacodegen.utils.patterns import _re_enum_item, _re_enum_check_constraint, \
+from utils.patterns import _re_enum_item, _re_enum_check_constraint, \
     _re_column_name, _re_boolean_check_constraint
 
-from sqlacodegen.utils.commans import _get_column_names, _get_constraint_sort_key
+from utils.commans import _get_column_names, _get_constraint_sort_key
 from sqlacodegen.modelcodegen.importCollector import ImportCollector
 from sqlacodegen.modelcodegen.modelTable import ModelTable
 from sqlacodegen.modelcodegen.dummyInflectEngine import _DummyInflectEngine
