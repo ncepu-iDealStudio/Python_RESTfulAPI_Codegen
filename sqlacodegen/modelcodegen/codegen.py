@@ -16,8 +16,8 @@ from sqlalchemy.types import Boolean, String
 from sqlalchemy.util import OrderedDict
 
 # The generic ARRAY type was introduced in SQLAlchemy 1.1
-from sqlacodegen.classes.modelClass import ModelClass
-from sqlacodegen.classes.relationship import Relationship
+from sqlacodegen.modelcodegen.modelClass import ModelClass
+from sqlacodegen.modelcodegen.relationship import Relationship
 
 try:
     from sqlalchemy import ARRAY
@@ -40,9 +40,9 @@ from sqlacodegen.utils.patterns import _re_enum_item, _re_enum_check_constraint,
     _re_column_name, _re_boolean_check_constraint
 
 from sqlacodegen.utils.commans import _get_column_names, _get_constraint_sort_key
-from sqlacodegen.classes.importCollector import ImportCollector
-from sqlacodegen.classes.modelTable import ModelTable
-from sqlacodegen.classes.dummyInflectEngine import _DummyInflectEngine
+from sqlacodegen.modelcodegen.importCollector import ImportCollector
+from sqlacodegen.modelcodegen.modelTable import ModelTable
+from sqlacodegen.modelcodegen.dummyInflectEngine import _DummyInflectEngine
 
 
 class CodeGenerator(object):
@@ -90,7 +90,7 @@ class CodeGenerator(object):
                     fk_constraints, key=_get_constraint_sort_key)[0].elements[0].column.table.name
                 links[tablename].append(table)
 
-        # Iterate through the tables and create model classes when possible
+        # Iterate through the tables and create model modelcodegen when possible
         self.models = []
         self.collector = ImportCollector()
         classes = {}
@@ -135,7 +135,7 @@ class CodeGenerator(object):
                                     table.c[colname].type = Enum(*options, native_enum=False)
                                 continue
 
-            # Only form model classes for tables that have a primary key and are not association
+            # Only form model modelcodegen for tables that have a primary key and are not association
             # tables
             if noclasses or not table.primary_key or table.name in association_tables:
                 model = self.table_model(table)
@@ -147,14 +147,14 @@ class CodeGenerator(object):
             self.models.append(model)
             model.add_imports(self.collector)
 
-        # Nest inherited classes in their superclasses to ensure proper ordering
+        # Nest inherited modelcodegen in their superclasses to ensure proper ordering
         for model in classes.values():
             if model.parent_name != 'Base':
                 classes[model.parent_name].children.append(model)
                 self.models.remove(model)
 
         # Add either the MetaData or declarative_base import depending on whether there are mapped
-        # classes or not
+        # modelcodegen or not
         if not any(isinstance(model, self.class_model) for model in self.models):
             self.collector.add_literal_import('sqlalchemy', 'MetaData')
         else:

@@ -8,7 +8,7 @@ import pkg_resources
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 
-from sqlacodegen.classes.codegen import CodeGenerator
+from sqlacodegen.modelcodegen.codegen import CodeGenerator
 
 
 def main():
@@ -26,7 +26,7 @@ def main():
     parser.add_argument('--noinflect', action='store_true',
                         help="don't try to convert tables names to singular form")
     parser.add_argument('--noclasses', action='store_true',
-                        help="don't generate classes, only tables")
+                        help="don't generate modelcodegen, only tables")
     parser.add_argument('--nocomments', action='store_true', help="don't render column comments")
     parser.add_argument('--outfile', help='file to write output to (default: stdout)')
     args = parser.parse_args()

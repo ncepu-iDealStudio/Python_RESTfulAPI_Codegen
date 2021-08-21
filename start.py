@@ -18,7 +18,7 @@ import pkg_resources
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 
-from sqlacodegen.classes.codegen import CodeGenerator
+from sqlacodegen.modelcodegen.codegen import CodeGenerator
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_DIR = os.path.join(BASE_DIR, 'config')

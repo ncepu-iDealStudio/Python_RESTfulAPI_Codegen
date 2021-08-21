@@ -4,9 +4,9 @@ werkzeug
 
 Werkzeug is the Swiss Army knife of Python web development.
 
-It provides useful classes and functions for any WSGI application to
+It provides useful modelcodegen and functions for any WSGI application to
 make the life of a Python web developer much easier. All of the provided
-classes are independent from each other so you can mix it with any other
+modelcodegen are independent from each other so you can mix it with any other
 library.
 
 :copyright: 2007 Pallets

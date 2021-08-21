@@ -5,10 +5,11 @@
 # author:PigKnight
 # datetime:2021/8/21 11:33
 # software: PyCharm
+
 """
 this is function description
 """
-# import module your need
+
 from keyword import iskeyword
 
 import sqlalchemy

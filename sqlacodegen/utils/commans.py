@@ -12,7 +12,7 @@ this is function description
 # In SQLAlchemy 0.x, constraint.columns is sometimes a list, on 1.x onwards, always a
 # ColumnCollection
 
-from sqlacodegen.classes.codegen import CheckConstraint
+from sqlacodegen.modelcodegen.codegen import CheckConstraint
 
 
 def _get_column_names(constraint):
