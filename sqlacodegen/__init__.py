@@ -1,20 +1,22 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+# file:__init__.py.py
+# author:Nathan
+# datetime:2021/8/20 15:59
+# software: PyCharm
+
 from __future__ import unicode_literals, division, print_function, absolute_import
 
 import io
-import os
 import sys
-from configparser import ConfigParser
 
 import pkg_resources
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 
+from config.setting import Settings
 from sqlacodegen.modelcodegen.codegen import CodeGenerator
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG_DIR = os.path.join(BASE_DIR, 'config')
-CONFIG = ConfigParser(allow_no_value=True)
-CONFIG.read(os.path.join(CONFIG_DIR, 'config.conf'), encoding='utf-8')
 
 
 def modelGenerate():
@@ -22,20 +24,20 @@ def modelGenerate():
     model层代码的生成
     :return: None
     """
-    url = CONFIG['PARAM']['URL'] if CONFIG['PARAM']['URL'] else None
-    # version = CONFIG['PARAM']['VERSION'] if CONFIG['PARAM']['VERSION'] else None
-    # schema = CONFIG['PARAM']['SCHEMA'] if CONFIG['PARAM']['SCHEMA'] else None
-    tables = CONFIG['PARAM']['TABLES'] if CONFIG['PARAM']['TABLES'] else None
-    # noviews = CONFIG['PARAM']['NOVIEWS'] if CONFIG['PARAM']['NOVIEWS'] else None
-    # noindexes = CONFIG['PARAM']['NOINDEXES'] if CONFIG['PARAM']['NOINDEXES'] else None
-    # noconstraints = CONFIG['PARAM']['NOCONSTRAINTS'] if CONFIG['PARAM']['NOCONSTRAINTS'] else None
-    # nojoined = CONFIG['PARAM']['NOJOINED'] if CONFIG['PARAM']['NOJOINED'] else None
-    # noinflect = CONFIG['PARAM']['NOINFLECT'] if CONFIG['PARAM']['NOINFLECT'] else None
-    # noclasses = CONFIG['PARAM']['NOCLASSES'] if CONFIG['PARAM']['NOCLASSES'] else None
-    # nocomments = CONFIG['PARAM']['NOCOMMENTS'] if CONFIG['PARAM']['NOCOMMENTS'] else None
-    outfile = CONFIG['PARAM']['OUTFILE'] if CONFIG['PARAM']['OUTFILE'] else None
+    url = Settings.MODEL_URL
+    version = Settings.MODEL_VERSION
+    schema = Settings.MODEL_SCHEMA
+    tables = Settings.MODEL_TABLES
+    noviews = Settings.MODEL_NOVIEWS
+    noindexes = Settings.MODEL_NOINDEXES
+    noconstraints = Settings.MODEL_NOCONSTRAINTS
+    nojoined = Settings.MODEL_NOJOINED
+    noinflect = Settings.MODEL_NOINFLECT
+    noclasses = Settings.MODEL_NOCLASSES
+    nocomments = Settings.MODEL_NOCOMMENTS
+    outfile = Settings.MODEL_OUTFILE
 
-    if None:
+    if version:
         version = pkg_resources.get_distribution('sqlacodegen').parsed_version
         print(version.public)
         return
@@ -49,15 +51,6 @@ def modelGenerate():
     metadata = MetaData(engine)
     tables = tables.split(',') if tables else None
 
-    # 临时创建的比变量：
-    schema = None
-    noviews = False
-    noindexes = False
-    noconstraints = False
-    nojoined = False
-    noinflect = False
-    noclasses = False
-    nocomments = False
     metadata.reflect(engine, schema, not noviews, tables)
 
     # Write the generated model code to the specified file or standard output
