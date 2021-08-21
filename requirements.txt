@@ -1,6 +1,5 @@
 certifi==2021.5.30
 inflect==5.3.0
 PyMySQL==1.0.2
-sqlacodegen==2.3.0
 SQLAlchemy==1.4.23
 wincertstore==0.2

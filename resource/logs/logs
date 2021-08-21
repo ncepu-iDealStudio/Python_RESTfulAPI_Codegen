@@ -1,0 +1,698 @@
+2021-04-12 13:06:00,134-INFO _internal.py:122  * Restarting with stat
+2021-04-12 13:06:02,714-WARNING _internal.py:122  * Debugger is active!
+2021-04-12 13:06:02,776-INFO _internal.py:122  * Debugger PIN: 566-627-997
+2021-04-12 13:06:02,803-INFO _internal.py:122  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-04-12 13:06:27,961-INFO _internal.py:122 127.0.0.1 - - [12/Apr/2021 13:06:27] "GET /api_1/admin/login HTTP/1.1" 405 -
+2021-04-12 13:07:01,129-ERROR platformUserService.py:85 No module named 'pymysql'
+2021-04-12 13:07:01,139-INFO _internal.py:122 127.0.0.1 - - [12/Apr/2021 13:07:01] "POST /api_1/admin/login HTTP/1.1" 200 -
+2021-04-12 13:07:17,250-ERROR platformUserService.py:85 No module named 'pymysql'
+2021-04-12 13:07:17,270-INFO _internal.py:122 127.0.0.1 - - [12/Apr/2021 13:07:17] "POST /api_1/admin/login HTTP/1.1" 200 -
+2021-04-12 13:08:58,329-INFO _internal.py:122 127.0.0.1 - - [12/Apr/2021 13:08:58] "POST /api_1/admin/login HTTP/1.1" 200 -
+2021-06-28 10:56:49,747-INFO _internal.py:113  * Restarting with stat
+2021-06-28 10:56:54,277-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 10:56:54,398-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 10:56:54,536-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 10:59:06,986-INFO _internal.py:113  * Restarting with stat
+2021-06-28 10:59:10,588-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 10:59:10,786-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 10:59:10,820-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 11:00:09,926-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:00:09] "[37mGET /api_1/experimentInfo/?CollegeID=3&ExperimentID=4 HTTP/1.1[0m" 200 -
+2021-06-28 11:01:29,035-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:01:29] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 11:02:52,535-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:02:52] "[37mGET /api_1/experimentInfo/?CollegeID=3&ExperimentID=3 HTTP/1.1[0m" 200 -
+2021-06-28 11:06:15,356-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\manage.py', reloading
+2021-06-28 11:06:15,852-INFO _internal.py:113  * Restarting with stat
+2021-06-28 11:06:19,873-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 11:06:19,954-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 11:06:19,976-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 11:08:48,992-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:08:48] "[35m[1mGET /api_1/experimentInfo/3 HTTP/1.1[0m" 500 -
+2021-06-28 11:08:58,107-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:08:58] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 11:09:00,297-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:09:00] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 11:10:10,414-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:10:10] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 11:11:37,668-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:11:37] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=4 HTTP/1.1[0m" 500 -
+2021-06-28 11:12:25,030-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:12:25] "[37mGET /api_1/experimentInfo?CollegeID=3&ExperimentID=4 HTTP/1.1[0m" 200 -
+2021-06-28 11:12:56,849-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:12:56] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3&ExperimentID=2 HTTP/1.1[0m" 500 -
+2021-06-28 11:13:08,337-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:13:08] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 11:15:35,433-INFO _internal.py:113  * Restarting with stat
+2021-06-28 11:15:39,139-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 11:15:39,223-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 11:15:39,244-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 11:15:44,470-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:15:44] "[37mGET /api_1/experimentInfo?CollegeID=3&ExperimentID=4 HTTP/1.1[0m" 200 -
+2021-06-28 11:16:28,368-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:16:28] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 11:17:15,617-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:17:15] "[37mGET /api_1/experimentInfo?CollegeID=3&ExperimentID=4 HTTP/1.1[0m" 200 -
+2021-06-28 11:24:31,811-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:24:31] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 11:25:40,324-INFO _internal.py:113  * Restarting with stat
+2021-06-28 11:25:46,843-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 11:25:46,942-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 11:25:47,002-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 11:25:51,134-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:25:51] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 11:29:42,759-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:29:42] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 11:42:26,187-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\experimentInfoOtherResource.py', reloading
+2021-06-28 11:42:26,643-INFO _internal.py:113  * Restarting with stat
+2021-06-28 11:42:34,701-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 11:42:34,837-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 11:42:34,923-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 11:44:57,148-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:44:57] "[37mGET //api_1/docs HTTP/1.1[0m" 200 -
+2021-06-28 11:44:57,655-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:44:57] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 11:45:02,389-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:45:02] "[37mGET /api_1/docs HTTP/1.1[0m" 200 -
+2021-06-28 11:45:02,545-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:45:02] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 11:46:23,029-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:46:23] "[37mGET /api_1/docs/studentInfoResource HTTP/1.1[0m" 200 -
+2021-06-28 11:46:23,273-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:46:23] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 11:46:27,418-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:46:27] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 11:46:27,535-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 11:46:27] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 11:52:37,938-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\experimentInfoOtherResource.py', reloading
+2021-06-28 11:52:38,277-INFO _internal.py:113  * Restarting with stat
+2021-06-28 11:52:45,716-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 11:52:45,829-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 11:52:45,895-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 12:28:36,819-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\manage.py', reloading
+2021-06-28 12:28:37,207-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:28:47,710-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:28:54,497-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 12:28:54,609-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 12:28:54,671-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 12:29:24,758-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:29:24] "[37mGET /api_1/experimentInfo/?CollegeID&ExperimentID HTTP/1.1[0m" 200 -
+2021-06-28 12:29:44,911-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:29:44] "[37mGET /api_1/experimentInfo/?CollegeID=3&ExperimentID=4 HTTP/1.1[0m" 200 -
+2021-06-28 12:29:57,805-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:29:57] "[37mGET /api_1/experimentInfo/?CollegeID=3&ExperimentID=4 HTTP/1.1[0m" 200 -
+2021-06-28 12:30:10,791-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:30:10] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 12:32:34,247-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\experimentInfoOtherResource.py', reloading
+2021-06-28 12:32:34,471-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:33:01,661-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:33:08,169-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 12:33:08,265-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 12:33:08,325-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 12:36:33,794-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\experimentInfoResource.py', reloading
+2021-06-28 12:36:34,001-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:36:40,258-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 12:36:40,350-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 12:36:40,408-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 12:38:06,651-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\experimentInfoOtherResource.py', reloading
+2021-06-28 12:38:06,849-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:38:13,390-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 12:38:13,497-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 12:38:13,559-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 12:38:14,300-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:38:14] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 12:40:23,470-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\experimentInfoOtherResource.py', reloading
+2021-06-28 12:40:23,712-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:41:20,292-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:41:26,759-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 12:41:26,856-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 12:41:26,914-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 12:41:52,438-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:41:52] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 12:43:04,068-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:43:04] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 12:43:52,977-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:43:59,714-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 12:43:59,818-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 12:43:59,882-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 12:45:15,534-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:45:15] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 12:47:39,305-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:47:45,537-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 12:47:45,648-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 12:47:45,709-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 12:47:51,044-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:47:51] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 12:48:57,460-INFO _internal.py:113  * Restarting with stat
+2021-06-28 12:49:03,750-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 12:49:03,851-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 12:49:03,909-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 12:49:07,827-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 12:49:07] "[35m[1mGET /api_1/experimentInfo/3?CollegeID=3 HTTP/1.1[0m" 500 -
+2021-06-28 16:30:56,955-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:31:00,847-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 16:31:00,932-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 16:31:00,952-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 16:31:30,369-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:31:30] "[37mGET /studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:31:30,936-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:31:30] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:31:51,889-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:31:51] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:31:52,020-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:31:52] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:32:04,958-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:04] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:32:05,163-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:05] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:32:45,399-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:45] "[37mGET /api_1/docs/ApiVersion HTTP/1.1[0m" 200 -
+2021-06-28 16:32:45,515-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:45] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:32:47,208-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:47] "[37mGET /api_1/docs/ApiVersion HTTP/1.1[0m" 200 -
+2021-06-28 16:32:47,742-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:47] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:32:47,893-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:47] "[37mGET /api_1/docs/ApiVersion HTTP/1.1[0m" 200 -
+2021-06-28 16:32:48,070-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:48] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:32:48,261-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:48] "[37mGET /api_1/docs/ApiVersion HTTP/1.1[0m" 200 -
+2021-06-28 16:32:48,460-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:48] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:32:48,484-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:48] "[37mGET /api_1/docs/ApiVersion HTTP/1.1[0m" 200 -
+2021-06-28 16:32:48,722-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:32:48] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:39:47,886-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\apiversionResource\\urls.py', reloading
+2021-06-28 16:39:48,143-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:43:10,578-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:43:14,701-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 16:43:14,782-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 16:43:14,807-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 16:43:33,999-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:43:33] "[37mGET /api_1/docs HTTP/1.1[0m" 200 -
+2021-06-28 16:43:34,123-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:43:34] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:43:45,423-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:43:45] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:43:45,550-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:43:45] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:43:49,975-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:43:49] "[37mGET /api_1/doc/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:43:50,101-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:43:50] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:43:59,856-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:43:59] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:43:59,983-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:43:59] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:44:02,006-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:44:02] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:44:02,355-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:44:02] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:44:41,378-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\manage.py', reloading
+2021-06-28 16:44:41,602-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:44:45,460-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 16:44:45,539-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 16:44:45,560-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 16:45:00,305-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:45:00] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:45:00,410-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:45:00] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:47:00,726-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\app\\__init__.py', reloading
+2021-06-28 16:47:00,929-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:47:04,782-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 16:47:04,862-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 16:47:04,883-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 16:50:17,021-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:50:17] "[37mGET /api_1/docs HTTP/1.1[0m" 200 -
+2021-06-28 16:50:17,216-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:50:17] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:50:30,611-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:50:30] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:50:30,726-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:50:30] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:50:33,769-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:50:33] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:50:34,110-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:50:34] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:51:51,965-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:51:51] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:51:52,139-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:51:52] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:53:33,848-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\manage.py', reloading
+2021-06-28 16:53:34,297-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:53:38,972-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 16:53:39,064-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 16:53:39,087-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 16:53:59,788-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:54:07,283-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 16:54:07,388-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 16:54:07,469-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 16:54:15,354-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:54:15] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 16:54:15,672-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:54:15] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:57:37,107-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\manage.py', reloading
+2021-06-28 16:57:37,450-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:57:46,108-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:57:52,973-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 16:57:53,078-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 16:57:53,140-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 16:58:28,653-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:58:28] "[31m[1mGET /api_1/docs/studentInfo HTTP/1.1[0m" 400 -
+2021-06-28 16:58:34,086-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:58:34] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 16:58:51,470-INFO _internal.py:113  * Restarting with stat
+2021-06-28 16:58:58,035-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 16:58:58,140-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 16:58:58,200-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 16:59:25,774-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 16:59:25] "[31m[1mGET /api_1/docs/studentInfo HTTP/1.1[0m" 400 -
+2021-06-28 17:00:40,095-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:00:40] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:00:51,780-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:00:51] "[37mGET /api_1/docs HTTP/1.1[0m" 200 -
+2021-06-28 17:00:53,381-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:00:53] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:01:34,335-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:01:34] "[37mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:01:34,559-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:01:34] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:02:05,633-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:02:05] "[37mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:02:05,865-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:02:05] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:02:45,502-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:02:45] "[31m[1mGET /api_1/docs/studentInfo HTTP/1.1[0m" 400 -
+2021-06-28 17:02:45,521-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:02:45] "[37mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:02:45,731-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:02:45] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:04:20,824-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:04:27,306-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:04:27,406-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:04:27,467-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:05:34,682-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:05:34] "[37mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:05:34,912-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:05:34] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:06:28,751-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:06:35,245-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:06:35,351-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:06:35,413-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:06:38,287-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:06:38] "[37mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:06:38,492-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:06:38] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:07:38,434-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:07:45,186-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:07:45,296-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:07:45,467-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:07:52,106-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:07:52] "[37mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:07:53,950-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:07:53] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:09:11,655-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:09:18,785-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:09:18,967-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:09:19,060-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:09:27,566-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:09:33,974-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:09:34,083-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:09:34,144-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:09:37,643-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:09:37] "[33mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 404 -
+2021-06-28 17:09:37,861-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:09:37] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2021-06-28 17:10:10,526-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:10:10] "[33mGET /api_1/docs/student/doc HTTP/1.1[0m" 404 -
+2021-06-28 17:10:44,205-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:10:44] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 17:10:46,102-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:10:46] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 17:10:46,559-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:10:46] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2021-06-28 17:10:59,250-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:10:59] "[33mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 404 -
+2021-06-28 17:11:00,615-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:11:00] "[33mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 404 -
+2021-06-28 17:11:00,895-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:11:00] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2021-06-28 17:11:01,783-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:11:01] "[33mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 404 -
+2021-06-28 17:11:02,056-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:11:02] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2021-06-28 17:11:06,772-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:11:06] "[33mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 404 -
+2021-06-28 17:11:07,065-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:11:07] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2021-06-28 17:11:51,637-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:11:51] "[33mGET /api_1/docs/studentInfo/ HTTP/1.1[0m" 404 -
+2021-06-28 17:12:18,816-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\manage.py', reloading
+2021-06-28 17:12:19,104-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:12:25,974-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:12:26,068-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:12:26,127-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:14:07,971-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\__init__.py', reloading
+2021-06-28 17:14:08,183-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:14:14,714-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:14:14,814-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:14:14,875-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:15:36,096-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:15:36] "[37mGET / HTTP/1.1[0m" 200 -
+2021-06-28 17:15:57,560-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:15:57] "[37mGET /api_1/docs HTTP/1.1[0m" 200 -
+2021-06-28 17:15:59,935-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:15:59] "[37mGET /api_1/docs HTTP/1.1[0m" 200 -
+2021-06-28 17:16:00,248-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:16:00] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:16:35,106-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:16:35] "[37mGET /api_1/docs/classInfo HTTP/1.1[0m" 200 -
+2021-06-28 17:16:35,248-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:16:35] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:16:46,271-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:16:46] "[37mGET /api_1/docs/classInfo HTTP/1.1[0m" 200 -
+2021-06-28 17:16:46,561-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:16:46] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:17:13,014-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:17:13] "[37mGET /api_1/collegeInfo HTTP/1.1[0m" 200 -
+2021-06-28 17:17:13,142-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:17:13] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:21:47,075-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:21:47] "[37mGET /api_1/apiversion HTTP/1.1[0m" 200 -
+2021-06-28 17:21:47,185-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:21:47] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:22:06,007-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:22:06] "[37mGET /api_1/apiversion HTTP/1.1[0m" 200 -
+2021-06-28 17:22:06,118-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:22:06] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:22:23,925-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\apiversionResource\\urls.py', reloading
+2021-06-28 17:22:24,150-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:22:34,825-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:22:41,703-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:22:45,786-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:22:45,958-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:22:45,981-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:22:51,542-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:22:51] "[37mGET /api_1/apiversion HTTP/1.1[0m" 200 -
+2021-06-28 17:22:51,659-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:22:51] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:24:30,721-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:24:30] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 17:24:30,891-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:24:30] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:25:10,784-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:25:10] "[37mGET /api_1/docs/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:25:10,906-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:25:10] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:25:18,427-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:25:18] "[37mGET /api_1/docs/studentInfo/ HTTP/1.1[0m" 200 -
+2021-06-28 17:25:18,543-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:25:18] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:25:24,064-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:25:24] "[37mGET /api_1/docs/studentInfo HTTP/1.1[0m" 200 -
+2021-06-28 17:25:24,181-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:25:24] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:28:43,548-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:28:43] "[37mGET /api_1/docs/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:28:43,684-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:28:43] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:31:21,309-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:31:21] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:31:21,432-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:31:21] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:31:50,922-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:31:55,199-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:31:55,272-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:31:55,293-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:31:55,822-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:31:55] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:31:55,876-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:31:55] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 17:31:55,919-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:31:55] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 17:31:55,937-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:31:55] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 17:31:55,960-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:31:55] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 17:31:56,043-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:31:56] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 17:31:56,064-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:31:56] "[37mGET /swaggerui/favicon-16x16.png HTTP/1.1[0m" 200 -
+2021-06-28 17:32:03,755-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:03] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:03,779-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:03] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:18,362-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:18] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:32:18,436-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:18] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:18,455-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:18] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:18,474-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:18] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 17:32:18,492-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:18] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 17:32:18,582-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:18] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 17:32:18,606-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:18] "[37mGET /swaggerui/favicon-16x16.png HTTP/1.1[0m" 200 -
+2021-06-28 17:32:21,345-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:21] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:21,364-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:21] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:22,555-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:22] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:32:22,627-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:22] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:22,648-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:22] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:22,668-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:22] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 17:32:22,686-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:22] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 17:32:22,856-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:22] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 17:32:22,884-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:22] "[37mGET /swaggerui/favicon-16x16.png HTTP/1.1[0m" 200 -
+2021-06-28 17:32:52,166-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:32:56,093-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:32:56,171-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:32:56,193-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:32:57,691-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:57] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 17:32:57,782-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:57] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:57,817-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:57] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 17:32:57,854-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:57] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 17:32:57,908-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:57] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 17:32:58,021-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:58] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 17:32:58,101-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:58] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:32:58,194-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:58] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:32:58,309-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:58] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 17:32:58,493-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:32:58] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 17:34:48,917-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:34:54,254-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:34:58,086-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:34:58,166-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:34:58,188-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:35:03,456-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:35:03] "[37mGET /api_1/docs/doc1111 HTTP/1.1[0m" 200 -
+2021-06-28 17:35:03,705-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:35:03] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:35:29,899-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:35:33,793-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:35:33,871-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:35:33,893-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:35:34,055-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:35:34] "[37mGET /api_1/docs/doc1111 HTTP/1.1[0m" 200 -
+2021-06-28 17:35:34,212-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:35:34] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 17:35:34,464-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:35:34] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:35:34,535-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:35:34] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:35:34,573-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:35:34] "[37mGET /api_1/docs/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 17:36:13,657-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\__init__.py', reloading
+2021-06-28 17:36:13,854-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:36:17,631-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:36:17,710-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:36:17,731-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:36:21,047-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:36:21] "[37mGET /api_1/docs/doc1111 HTTP/1.1[0m" 200 -
+2021-06-28 17:36:21,232-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:36:21] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:36:52,394-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\__init__.py', reloading
+2021-06-28 17:36:52,573-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:36:56,209-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:36:56,282-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:36:56,302-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:37:09,478-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:37:09] "[37mGET /api_1/docs/doc1111 HTTP/1.1[0m" 200 -
+2021-06-28 17:37:09,647-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:37:09] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 17:37:19,575-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:37:19] "[37mGET /api_1/docs/doclist HTTP/1.1[0m" 200 -
+2021-06-28 17:37:19,706-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:37:19] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 17:37:19,907-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:37:19] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:37:19,975-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:37:19] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:37:20,020-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:37:20] "[37mGET /api_1/docs/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 17:39:13,397-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:39:13] "[37mGET /api_1/docs/doclist HTTP/1.1[0m" 200 -
+2021-06-28 17:39:13,570-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:39:13] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:39:13,661-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:39:13] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:39:13,698-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:39:13] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 17:39:13,774-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:39:13] "[37mGET /api_1/docs/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 17:39:13,793-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:39:13] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 17:40:20,388-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\manage.py', reloading
+2021-06-28 17:40:20,589-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:40:24,474-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:40:24,550-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:40:24,572-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:40:28,934-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:40:32,819-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:40:32,893-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:40:32,913-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:40:42,699-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:42] "[37mGET /api_1/docs/doclist HTTP/1.1[0m" 200 -
+2021-06-28 17:40:42,767-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:42] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 17:40:42,791-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:42] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 17:40:42,816-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:42] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 17:40:42,848-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:42] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 17:40:42,875-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:42] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 17:40:43,022-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:43] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:40:43,094-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:43] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 17:40:43,488-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:43] "[37mGET /api_1/docs/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 17:40:43,510-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:40:43] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 17:51:01,933-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:51:06,308-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:51:06,387-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:51:06,412-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:54:34,721-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:54:34] "[37mGET /api_1/experimentInfo?UserID=1&UserType=3&CollegeID=3&ExperimentID=5 HTTP/1.1[0m" 200 -
+2021-06-28 17:55:16,928-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:55:16] "[37mGET /api_1/experimentInfo/experiment?UserID=1&UserType=3&CollegeID=3&ExperimentID=5 HTTP/1.1[0m" 200 -
+2021-06-28 17:55:49,362-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\manage.py', reloading
+2021-06-28 17:55:49,696-INFO _internal.py:113  * Restarting with stat
+2021-06-28 17:55:53,598-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 17:55:53,671-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 17:55:53,693-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 17:55:59,735-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:55:59] "[35m[1mGET /api_1/experimentInfo/experiment?UserID=1&UserType=3&CollegeID=3&ExperimentID=5 HTTP/1.1[0m" 500 -
+2021-06-28 17:57:06,948-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:06] "[35m[1mGET /api_1/experimentInfo/experiment?UserID=1&UserType=3&CollegeID=3&ExperimentID=5 HTTP/1.1[0m" 500 -
+2021-06-28 17:57:07,055-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:07] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 200 -
+2021-06-28 17:57:07,113-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:07] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1[0m" 200 -
+2021-06-28 17:57:07,118-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:07] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 200 -
+2021-06-28 17:57:07,623-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:07] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1[0m" 200 -
+2021-06-28 17:57:07,669-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:07] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+2021-06-28 17:57:07,775-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:07] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+2021-06-28 17:57:12,019-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:12] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 200 -
+2021-06-28 17:57:16,946-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:16] "[35m[1mGET /api_1/experimentInfo/experiment?UserID=1&UserType=3&CollegeID=3&ExperimentID=5 HTTP/1.1[0m" 500 -
+2021-06-28 17:57:16,981-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:16] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 200 -
+2021-06-28 17:57:16,984-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:16] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 200 -
+2021-06-28 17:57:16,986-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:16] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1[0m" 200 -
+2021-06-28 17:57:17,056-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:17] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1[0m" 200 -
+2021-06-28 17:57:17,159-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:17] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+2021-06-28 17:57:17,321-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 17:57:17] "[37mGET /api_1/experimentInfo/experiment?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+2021-06-28 18:00:41,737-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\__init__.py', reloading
+2021-06-28 18:00:42,037-INFO _internal.py:113  * Restarting with stat
+2021-06-28 18:02:49,433-INFO _internal.py:113  * Restarting with stat
+2021-06-28 18:02:53,427-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 18:02:53,505-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 18:02:53,527-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 18:02:58,294-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:02:58] "[35m[1mGET /api_1/experimentInfo/experiment?UserID=1&UserType=3&CollegeID=3&ExperimentID=5 HTTP/1.1[0m" 500 -
+2021-06-28 18:03:21,225-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\experimentInfoResource.py', reloading
+2021-06-28 18:03:21,485-INFO _internal.py:113  * Restarting with stat
+2021-06-28 18:03:25,892-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 18:03:25,970-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 18:03:25,997-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 18:03:42,200-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\experimentInfoResource.py', reloading
+2021-06-28 18:03:42,670-INFO _internal.py:113  * Restarting with stat
+2021-06-28 18:03:47,105-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 18:03:47,183-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 18:03:47,205-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 18:03:49,937-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:03:49] "[37mGET /api_1/experimentInfo/experiment?UserID=1&UserType=3&CollegeID=3&ExperimentID=5 HTTP/1.1[0m" 200 -
+2021-06-28 18:04:30,722-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:30] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:04:30,817-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:30] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:04:30,841-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:30] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:04:30,866-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:30] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:04:30,900-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:30] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:04:31,490-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:31] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:04:31,541-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:31] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:04:37,196-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:37] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:04:37,244-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:37] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:04:37,273-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:37] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:04:37,296-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:37] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:04:37,326-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:37] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:04:37,544-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:37] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:04:37,565-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:37] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:04:44,782-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:44] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:04:44,866-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:44] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:04:44,891-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:44] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:04:44,918-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:44] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:04:44,957-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:44] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:04:45,242-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:45] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:04:45,266-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:45] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:04:50,640-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:50] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:04:50,712-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:50] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:04:50,748-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:50] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:04:52,763-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:52] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:04:53,171-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:53] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:04:53,258-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:53] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:04:53,301-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:53] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:04:53,389-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:53] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:04:53,412-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:04:53] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:06:59,133-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:06:59] "[37mGET /api_1/doclist/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:06:59,459-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:06:59] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:07:22,294-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:22] "[37mGET /api_1/doclist/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:07:22,512-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:22] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:07:30,819-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:30] "[37mGET /api_1/doclist/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:07:31,291-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:31] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:07:51,015-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:51] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:07:51,659-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:51] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:07:51,729-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:51] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:07:51,770-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:51] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:07:56,293-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:56] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:07:56,394-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:56] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:07:56,461-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:56] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,164-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,251-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,272-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,298-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,328-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,358-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,613-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,685-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,752-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:07:59,774-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:07:59] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:08:03,053-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:03] "[37mGET /api_1/studentInfo/doclist HTTP/1.1[0m" 200 -
+2021-06-28 18:08:03,304-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:03] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:08:06,348-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:06] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:08:06,539-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:06] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:08:06,781-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:06] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:08:06,851-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:06] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:08:06,891-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:06] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,252-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,340-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,361-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,393-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,419-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,499-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,576-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,663-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,831-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:08:08,854-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:08] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:08:43,521-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:43] "[37mGET /api_1/studentInfo/doc/doclist HTTP/1.1[0m" 200 -
+2021-06-28 18:08:43,704-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:08:43] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:09:10,902-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:10] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:09:11,057-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:11] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:09:11,128-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:11] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:09:12,697-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:12] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:09:12,775-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:12] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:09:12,798-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:12] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:09:12,819-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:12] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:09:12,855-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:12] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:09:12,881-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:12] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:09:12,967-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:12] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:09:13,041-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:13] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:09:13,389-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:13] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:09:13,410-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:13] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,114-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,184-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,216-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,240-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,281-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,308-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,411-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,494-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,621-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:09:27,645-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:09:27] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:10:56,408-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:10:56] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:10:56,537-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:10:56] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:10:56,698-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:10:56] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:10:56,772-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:10:56] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:10:56,824-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:10:56] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:10:56,852-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:10:56] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,029-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,141-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,162-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,189-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,226-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,256-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,393-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,461-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,795-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:11:34,815-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:34] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:11:59,709-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:11:59] "[37mGET /api_1/studentInfo/doclist HTTP/1.1[0m" 200 -
+2021-06-28 18:12:00,001-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:12:00] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:12:02,087-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:12:02] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:12:02,270-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:12:02] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:12:02,342-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:12:02] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:12:16,842-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:12:16] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:12:17,630-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:12:17] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:12:17,682-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:12:17] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:12:17,768-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:12:17] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:15:27,013-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:15:27] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:15:27,146-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:15:27] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:15:27,312-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:15:27] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:15:27,392-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:15:27] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:15:27,453-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:15:27] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:15:27,477-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:15:27] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:16:05,045-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:05] "[37mGET /api_1/doclist/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:16:05,258-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:05] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:16:11,253-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:11] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:11,503-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:11] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:11,581-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:11] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:26,931-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:26] "[37mGET /api_1//doclist/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:16:27,168-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:27] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:16:31,233-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:31] "[37mGET /api_1/doclist/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:16:31,417-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:31] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:16:35,270-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:35] "[37mGET /api_1//studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:16:35,474-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:35] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:16:39,451-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:39] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:16:39,566-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:39] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:39,644-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:39] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:39,727-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:39] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:39,807-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:39] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:16:43,300-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:43] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:16:43,367-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:43] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:16:43,390-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:43] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:16:43,421-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:43] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:16:43,454-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:43] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:16:43,480-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:43] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:43,588-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:43] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:43,665-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:43] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:43,996-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:43] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:16:44,016-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:44] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,017-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,092-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,114-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,142-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,174-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,200-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,299-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,381-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,540-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:16:45,565-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:16:45] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:17:48,199-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\manage.py', reloading
+2021-06-28 18:17:48,504-INFO _internal.py:113  * Restarting with stat
+2021-06-28 18:17:52,319-WARNING _internal.py:113  * Debugger is active!
+2021-06-28 18:17:52,396-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-06-28 18:17:52,416-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-06-28 18:18:20,277-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:20] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:18:20,401-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:20] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:18:20,560-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:20] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:18:20,605-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:20] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:18:20,706-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:20] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:18:20,731-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:20] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:18:28,836-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:28] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:18:28,905-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:28] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:18:28,927-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:28] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:18:28,958-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:28] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:18:28,994-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:28] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:18:29,034-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:29] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:18:29,131-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:29] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:18:29,221-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:29] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:18:29,506-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:29] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:18:29,527-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:18:29] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-06-28 18:33:09,520-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:09] "[37mGET /favicon.ico HTTP/1.1[0m" 200 -
+2021-06-28 18:33:11,319-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:11] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:33:11,438-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:11] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:33:11,514-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:11] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:33:16,888-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:16] "[37mGET /api_1/studentInfo/doc HTTP/1.1[0m" 200 -
+2021-06-28 18:33:16,970-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:16] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2021-06-28 18:33:16,990-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:16] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2021-06-28 18:33:17,014-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:17] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2021-06-28 18:33:17,048-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:17] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2021-06-28 18:33:17,072-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:17] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2021-06-28 18:33:17,191-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:17] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:33:17,272-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:17] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2021-06-28 18:33:17,597-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:17] "[37mGET /api_1/studentInfo/swagger.json HTTP/1.1[0m" 200 -
+2021-06-28 18:33:17,619-INFO _internal.py:113 127.0.0.1 - - [28/Jun/2021 18:33:17] "[37mGET /swaggerui/favicon-32x32.png HTTP/1.1[0m" 200 -
+2021-07-02 16:20:17,310-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:04:09,110-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:04:13,898-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:04:14,011-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:04:14,059-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:09:04,290-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\urls.py', reloading
+2021-07-09 09:09:04,630-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:10:51,415-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:10:55,587-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:10:55,661-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:10:55,684-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:11:14,732-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\urls.py', reloading
+2021-07-09 09:11:14,894-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:11:19,167-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:11:19,243-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:11:19,266-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:11:23,647-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:11:27,669-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:11:27,747-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:11:27,770-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:15:53,093-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\app\\__init__.py', reloading
+2021-07-09 09:15:53,272-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:15:57,247-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:15:57,322-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:15:57,344-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:18:06,784-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\urls.py', reloading
+2021-07-09 09:18:07,023-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:18:10,987-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:18:11,059-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:18:11,081-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:25:49,732-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\teacherInfoResource\\urls.py', reloading
+2021-07-09 09:25:49,925-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:25:54,016-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:25:54,088-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:25:54,111-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:27:02,494-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\app\\__init__.py', reloading
+2021-07-09 09:27:02,768-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:27:06,961-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:27:07,038-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:27:07,062-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:27:17,052-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:27:20,986-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:27:21,060-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:27:21,083-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:34:00,999-INFO _internal.py:113  * Detected change in 'F:\\project\\api.experiment.ncepu.edu.cn\\api_1\\experimentInfoResource\\urls.py', reloading
+2021-07-09 09:34:01,188-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:34:05,190-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:34:05,266-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:34:05,289-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-09 09:39:42,199-INFO _internal.py:113  * Restarting with stat
+2021-07-09 09:39:46,238-WARNING _internal.py:113  * Debugger is active!
+2021-07-09 09:39:46,316-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-09 09:39:46,338-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-12 10:06:53,482-INFO _internal.py:113  * Restarting with stat
+2021-07-13 13:38:14,829-INFO _internal.py:113  * Restarting with stat
+2021-07-13 13:38:32,271-WARNING _internal.py:113  * Debugger is active!
+2021-07-13 13:38:32,970-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-13 13:38:33,037-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-07-13 14:17:05,667-INFO _internal.py:113  * Restarting with stat
+2021-07-13 14:17:10,926-WARNING _internal.py:113  * Debugger is active!
+2021-07-13 14:17:11,017-INFO _internal.py:113  * Debugger PIN: 208-342-615
+2021-07-13 14:17:11,044-INFO _internal.py:113  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)

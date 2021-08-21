@@ -1,0 +1,29 @@
+# Please configure "insecure-registries" in daemon.json: ["http://harbor.quwancode.com"]
+FROM centos7-python3.8:v1
+LABEL author="zr"
+LABEL purpose = 'deploy api.experiment.ncepu.edu.cn'
+ENV PYTHONIOENCODING=utf-8
+
+# Build folder
+RUN mkdir -p /deploy/app
+WORKDIR /deploy/app
+
+# copy requirements.txt.   othors will be mounted by -v
+COPY ./requirements.txt /deploy/app/requirements.txt
+
+# Create a virtual environment
+RUN python3 -m venv venv \
+&& source ./venv/bin/activate \
+&& pip3 install -r /deploy/app/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
+&& pip3 install gunicorn==20.1.0 -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
+&& pip3 install gevent==21.8.0 -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+# system bugfix
+COPY ./deploy/werkzeug.py  /deploy/app/venv/lib/python3.8/site-packages/werkzeug/__init__.py
+COPY ./deploy/flask_uploads.py /deploy/app/venv/lib/python3.8/site-packages/flask_uploads.py
+
+RUN source ./venv/bin/activate \
+&& pip3 uninstall -y opencv-python \
+&& pip3 install opencv-python-headless -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+CMD ["/bin/bash"]

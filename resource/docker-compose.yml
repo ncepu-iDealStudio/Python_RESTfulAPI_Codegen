@@ -1,0 +1,22 @@
+version: "3"
+services:
+   api.experiment.ncepu.edu.cn:
+     stdin_open: true
+     tty: true
+     build: .
+     image: api.experiment.ncepu.edu.cn
+     container_name: api.experiment.ncepu.edu.cn
+     restart: always
+     volumes:
+       - /docker/deploy/api.experiment.ncepu.edu.cn:/deploy/app/api.experiment.ncepu.edu.cn
+       - /docker/deploy/api.experiment.ncepu.edu.cn/logs:/deploy/app/api.experiment.ncepu.edu.cn/logs/
+       - /docker/deploy/api.experiment.ncepu.edu.cn/gunicorn_log:/deploy/app/api.experiment.ncepu.edu.cn/gunicorn_log
+     ports:
+       - "8004:8003"
+     command:
+       - /bin/bash
+       - -c
+       - |
+          cd api.experiment.ncepu.edu.cn
+          python3 gunicorn.py start
+          /bin/bash
