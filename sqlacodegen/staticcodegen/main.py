@@ -9,3 +9,35 @@
     this is function  description 
 '''
 # import module your need
+from configparser import ConfigParser
+
+import os
+import shutil
+
+
+# 拷贝
+from utils.response_code import RET
+
+
+def copy_static(target_dir, source_dir):
+    try:
+        # 判断目标路径状态
+        if not os.path.exists(target_dir):
+            os.makedirs(target_dir)
+
+        # 拷贝
+        if os.path.exists(source_dir):
+            for root, dirs, files in os.walk(source_dir):
+                for file in files:
+                    # 源文件路径
+                    src_file = os.path.join(root, file)
+                    # 目标文件路径
+                    target_file = target_dir + root.replace(source_dir, '')
+                    if not os.path.exists(target_file):
+                        os.makedirs(target_file)
+                    # 拷贝
+                    shutil.copy(src_file, target_file)
+        return {'code': RET.OK, 'message': '拷贝成功'}
+    except Exception as e:
+        return {'code': RET.IOERR, 'message': '静态资源拷贝过程出现错误', 'error': str(e)}
+

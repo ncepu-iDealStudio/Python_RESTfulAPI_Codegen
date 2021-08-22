@@ -9,7 +9,7 @@
 """
   应用的配置加载项
 """
-
+import os
 from configparser import ConfigParser
 
 # 配置文件目录
@@ -20,7 +20,8 @@ CONFIG.read(CONFIG_DIR, encoding='utf-8')
 
 class Settings(object):
     # 项目生成的目标路径
-    SOURCE_DIR = CONFIG['PARAMETER']['SOURCE_DIR']
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    SOURCE_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['SOURCE_DIR'])
     # 生成项目的名称
     PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
     # 代码生成模式-database|table-整库模式|多表模式
@@ -38,7 +39,7 @@ class Settings(object):
     HOST = CONFIG['DATABASE']['HOST']
     PORT = CONFIG['DATABASE']['PORT']
     DATABASE = CONFIG['DATABASE']['DATABASE']
-    SQLALCHEMY_TRACK_MODIFICATIONS = CONFIG['DATABASE']['SQLALCHEMY_TRACK_MODIFICATION']
+    SQLALCHEMY_TRACK_MODIFICATIONS = CONFIG['DATABASE']['SQLALCHEMY_TRACK_MODIFICATIONS']
     SQLALCHEMY_POOL_SIZE = CONFIG['DATABASE']['SQLALCHEMY_POOL_SIZE']
     SQLALCHEMY_MAX_OVERFLOW = CONFIG['DATABASE']['SQLALCHEMY_MAX_OVERFLOW']
 
