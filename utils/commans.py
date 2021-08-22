@@ -19,7 +19,13 @@ from config.setting import Settings
 def check_config():
     """
     读取并检验参数
-    :return: {'code': 参数检验成功为True,失败为False, 'message': 提示信息, 'error': 失败报错，如缺失、错误的参数等, 'data': 获取的参数}
+    :return:
+    {
+        'code': 参数检验成功为True,失败为False,
+        'message': 提示信息,
+        'error': 失败报错，如缺失、错误的参数等,
+        'data': 获取的参数
+    }
     """
     results = {}
 
@@ -44,7 +50,10 @@ def check_config():
         'password': Settings.PASSWORD,
         'host': Settings.HOST,
         'port': Settings.PORT,
-        'database': Settings.DATABASE
+        'database': Settings.DATABASE,
+        'sqlalchemy_track_modifications': Settings.SQLALCHEMY_TRACK_MODIFICATIONS,
+        'sqlalchemy_pool_size': Settings.SQLALCHEMY_POOL_SIZE,
+        'sqlalchemy_max_overflow': Settings.SQLALCHEMY_MAX_OVERFLOW
     }
     for k, v in database.items():
         if k == 'password':
