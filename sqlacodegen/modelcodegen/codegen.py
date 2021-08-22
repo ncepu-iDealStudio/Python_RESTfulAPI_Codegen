@@ -39,7 +39,7 @@ except ImportError:
 from utils.patterns import _re_enum_item, _re_enum_check_constraint, \
     _re_column_name, _re_boolean_check_constraint
 
-from utils.commans import _get_column_names, _get_constraint_sort_key
+from utils.commans import get_column_names, get_constraint_sort_key
 from sqlacodegen.modelcodegen.importCollector import ImportCollector
 from sqlacodegen.modelcodegen.modelTable import ModelTable
 from sqlacodegen.modelcodegen.dummyInflectEngine import _DummyInflectEngine
@@ -87,7 +87,7 @@ class CodeGenerator(object):
             if len(fk_constraints) == 2 and all(col.foreign_keys for col in table.columns):
                 association_tables.add(table.name)
                 tablename = sorted(
-                    fk_constraints, key=_get_constraint_sort_key)[0].elements[0].column.table.name
+                    fk_constraints, key=get_constraint_sort_key)[0].elements[0].column.table.name
                 links[tablename].append(table)
 
         # Iterate through the tables and create model modelcodegen when possible
@@ -248,7 +248,7 @@ class CodeGenerator(object):
                                              constraint.column.name)
             return 'ForeignKey({0})'.format(render_fk_options(remote_column))
         elif isinstance(constraint, ForeignKeyConstraint):
-            local_columns = _get_column_names(constraint)
+            local_columns = get_column_names(constraint)
             remote_columns = ['{0}.{1}'.format(fk.column.table.fullname, fk.column.name)
                               for fk in constraint.elements]
             return 'ForeignKeyConstraint({0})'.format(
@@ -344,7 +344,7 @@ class CodeGenerator(object):
         for column in model.table.columns:
             rendered += '{0}{1},\n'.format(self.indentation, self.render_column(column, True))
 
-        for constraint in sorted(model.table.constraints, key=_get_constraint_sort_key):
+        for constraint in sorted(model.table.constraints, key=get_constraint_sort_key):
             if isinstance(constraint, PrimaryKeyConstraint):
                 continue
             if (isinstance(constraint, (ForeignKeyConstraint, UniqueConstraint)) and
@@ -372,7 +372,7 @@ class CodeGenerator(object):
 
         # Render constraints and indexes as __table_args__
         table_args = []
-        for constraint in sorted(model.table.constraints, key=_get_constraint_sort_key):
+        for constraint in sorted(model.table.constraints, key=get_constraint_sort_key):
             if isinstance(constraint, PrimaryKeyConstraint):
                 continue
             if (isinstance(constraint, (ForeignKeyConstraint, UniqueConstraint)) and

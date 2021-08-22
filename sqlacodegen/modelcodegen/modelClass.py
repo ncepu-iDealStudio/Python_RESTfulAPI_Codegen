@@ -18,7 +18,7 @@ from sqlacodegen.modelcodegen.manyToManyRelationship import ManyToManyRelationsh
 from sqlacodegen.modelcodegen.manyToOneRelationship import ManyToOneRelationship
 from sqlacodegen.modelcodegen.model import Model
 from sqlacodegen.modelcodegen.relationship import Relationship
-from utils.commans import _get_constraint_sort_key, _get_column_names
+from utils.commans import get_constraint_sort_key, get_column_names
 
 
 class ModelClass(Model):
@@ -36,12 +36,12 @@ class ModelClass(Model):
 
         # Add many-to-one relationships
         pk_column_names = set(col.name for col in table.primary_key.columns)
-        for constraint in sorted(table.constraints, key=_get_constraint_sort_key):
+        for constraint in sorted(table.constraints, key=get_constraint_sort_key):
             if isinstance(constraint, ForeignKeyConstraint):
                 target_cls = self._tablename_to_classname(constraint.elements[0].column.table.name,
                                                           inflect_engine)
                 if (detect_joined and self.parent_name == 'Base' and
-                        set(_get_column_names(constraint)) == pk_column_names):
+                        set(get_column_names(constraint)) == pk_column_names):
                     self.parent_name = target_cls
                 else:
                     relationship_ = ManyToOneRelationship(self.name, target_cls, constraint,
@@ -52,7 +52,7 @@ class ModelClass(Model):
         for association_table in association_tables:
             fk_constraints = [c for c in association_table.constraints
                               if isinstance(c, ForeignKeyConstraint)]
-            fk_constraints.sort(key=_get_constraint_sort_key)
+            fk_constraints.sort(key=get_constraint_sort_key)
             target_cls = self._tablename_to_classname(
                 fk_constraints[1].elements[0].column.table.name, inflect_engine)
             relationship_ = ManyToManyRelationship(self.name, target_cls, association_table)

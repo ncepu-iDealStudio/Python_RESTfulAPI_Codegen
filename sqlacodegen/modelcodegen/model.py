@@ -16,7 +16,7 @@ import sqlalchemy
 from sqlalchemy import Column, Computed, ForeignKeyConstraint, UniqueConstraint, PrimaryKeyConstraint
 from sqlalchemy.sql.sqltypes import NullType, Enum, ARRAY, Float
 
-from utils.commans import _get_constraint_sort_key
+from utils.commans import get_constraint_sort_key
 from utils.patterns import _re_invalid_identifier
 
 
@@ -89,7 +89,7 @@ class Model(object):
             if isinstance(column.type, ARRAY):
                 collector.add_import(column.type.item_type.__class__)
 
-        for constraint in sorted(self.table.constraints, key=_get_constraint_sort_key):
+        for constraint in sorted(self.table.constraints, key=get_constraint_sort_key):
             if isinstance(constraint, ForeignKeyConstraint):
                 if len(constraint.columns) > 1:
                     collector.add_literal_import('sqlalchemy', 'ForeignKeyConstraint')

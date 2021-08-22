@@ -12,14 +12,14 @@ this is function description
 from sqlalchemy import PrimaryKeyConstraint, UniqueConstraint, ForeignKeyConstraint
 
 from sqlacodegen.modelcodegen.relationship import Relationship
-from utils.commans import _get_column_names
+from utils.commans import get_column_names
 
 
 class ManyToOneRelationship(Relationship):
     def __init__(self, source_cls, target_cls, constraint, inflect_engine):
         super(ManyToOneRelationship, self).__init__(source_cls, target_cls)
 
-        column_names = _get_column_names(constraint)
+        column_names = get_column_names(constraint)
         colname = column_names[0]
         tablename = constraint.elements[0].column.table.name
         if not colname.endswith('_id'):

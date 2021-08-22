@@ -12,7 +12,7 @@ this is function description
 from sqlalchemy import ForeignKeyConstraint
 
 from sqlacodegen.modelcodegen.relationship import Relationship
-from utils.commans import _get_constraint_sort_key, _get_column_names
+from utils.commans import get_constraint_sort_key, get_column_names
 
 
 class ManyToManyRelationship(Relationship):
@@ -23,16 +23,16 @@ class ManyToManyRelationship(Relationship):
         self.kwargs['secondary'] = repr(prefix + assocation_table.name)
         constraints = [c for c in assocation_table.constraints
                        if isinstance(c, ForeignKeyConstraint)]
-        constraints.sort(key=_get_constraint_sort_key)
-        colname = _get_column_names(constraints[1])[0]
+        constraints.sort(key=get_constraint_sort_key)
+        colname = get_column_names(constraints[1])[0]
         tablename = constraints[1].elements[0].column.table.name
         self.preferred_name = tablename if not colname.endswith('_id') else colname[:-3] + 's'
 
         # Handle self referential relationships
         if source_cls == target_cls:
             self.preferred_name = 'parents' if not colname.endswith('_id') else colname[:-3] + 's'
-            pri_pairs = zip(_get_column_names(constraints[0]), constraints[0].elements)
-            sec_pairs = zip(_get_column_names(constraints[1]), constraints[1].elements)
+            pri_pairs = zip(get_column_names(constraints[0]), constraints[0].elements)
+            sec_pairs = zip(get_column_names(constraints[1]), constraints[1].elements)
             pri_joins = ['{0}.{1} == {2}.c.{3}'.format(source_cls, elem.column.name,
                                                        assocation_table.name, col)
                          for col, elem in pri_pairs]
