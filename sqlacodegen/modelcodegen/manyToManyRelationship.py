@@ -12,7 +12,7 @@ this is function description
 from sqlalchemy import ForeignKeyConstraint
 
 from sqlacodegen.modelcodegen.relationship import Relationship
-from sqlacodegen.utils.commans import _get_constraint_sort_key, _get_column_names
+from utils.commans import _get_constraint_sort_key, _get_column_names
 
 
 class ManyToManyRelationship(Relationship):

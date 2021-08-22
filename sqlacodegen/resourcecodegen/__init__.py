@@ -8,4 +8,11 @@
 '''
     this is function  description 
 '''
-# import module your need
+
+
+def resourceGenerate():
+    """
+    生成Resource层代码层代码
+    :return: None
+    """
+    pass
