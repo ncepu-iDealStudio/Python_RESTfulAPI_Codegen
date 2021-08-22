@@ -27,6 +27,7 @@ CONFIG.read(os.path.join(CONFIG_DIR, 'config.ini'), encoding='utf-8')
 
 
 def main():
+    # 接收参数
     url = CONFIG['PARAM']['URL'] if CONFIG['PARAM']['URL'] else None
     # version = CONFIG['PARAM']['VERSION'] if CONFIG['PARAM']['VERSION'] else None
     # schema = CONFIG['PARAM']['SCHEMA'] if CONFIG['PARAM']['SCHEMA'] else None
@@ -50,8 +51,11 @@ def main():
         return
 
         # Use reflection to fill in the metadata
+    # 返回Engine实例，直到触发数据库事件时才真正去连接数据库
     engine = create_engine(url)
+    # 获得所有Table对象的集合
     metadata = MetaData(engine)
+    # 获得需要生成model的表名列表
     tables = tables.split(',') if tables else None
 
     # 临时创建的比变量：
@@ -67,6 +71,8 @@ def main():
 
     # Write the generated model code to the specified file or standard output
     outfile = io.open(outfile, 'w', encoding='utf-8') if outfile else sys.stdout
+
+    # model代码生成
     generator = CodeGenerator(metadata, noindexes, noconstraints, nojoined,
                               noinflect, noclasses, nocomments=nocomments)
 
