@@ -5,10 +5,15 @@
 # author:jackiex
 # datetime:2021/8/21 16:38
 # software: PyCharm
+
 '''
-    this is function  description 
+    1 copy the static resource to target project directory;
+    2 you can put these static resource  into "static" directory,such as "dockerfile" and some common tools that you will use
+    in your target project;
+    3 some resource we need has already puteed into default static directory;
+
 '''
-# import module your need
+
 from configparser import ConfigParser
 
 import os
