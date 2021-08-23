@@ -20,9 +20,10 @@ def check_config():
     读取并检验参数
     :return: 成功时返回True，失败时返回False
     """
-    flag = True
+
+    # 检验必要参数
     try:
-        loggings.info(1, "开始检验PARAMETER参数")
+        loggings.info(1, "开始检验必要参数，请稍等...")
         # 读取PARAMETER参数
         parameter = {
             'target_dir': Settings.TARGET_DIR,
@@ -33,16 +34,8 @@ def check_config():
         }
         for k, v in parameter.items():
             if not v:
-                flag = False
-                loggings.error(1, '{}参数为空'.format(k))
-    except Exception as e:
-        flag = False
-        loggings.error(1, str(e))
-    finally:
-        loggings.info(1, 'PARAMETER参数检验完成')
+                raise Exception('{}参数为空'.format(k))
 
-    try:
-        loggings.info(1, '开始读取DATABASE参数')
         # 读取DATABASE参数
         database = {
             'dialect': Settings.DIALECT,
@@ -51,7 +44,7 @@ def check_config():
             'password': Settings.PASSWORD,
             'host': Settings.HOST,
             'port': Settings.PORT,
-            'database': Settings.DATABASE,
+            'database': Settings.DATABASE_TYPE,
             'sqlalchemy_track_modifications': Settings.SQLALCHEMY_TRACK_MODIFICATIONS,
             'sqlalchemy_pool_size': Settings.SQLALCHEMY_POOL_SIZE,
             'sqlalchemy_max_overflow': Settings.SQLALCHEMY_MAX_OVERFLOW
@@ -60,80 +53,68 @@ def check_config():
             if k == 'password':
                 continue
             if not v:
-                loggings.error(1, '{}参数为空'.format(k))
-                flag = False
-    except Exception as e:
-        flag = False
-        loggings.error(1, str(e))
-    finally:
-        loggings.info(1, 'DATABASE参数检验完成')
+                raise Exception('{}参数为空'.format(k))
 
-    try:
+        # 读取MODEL参数
         if Settings.CODEGEN_LAYER in ['default', 'model']:
-            loggings.info(1, '开始检验MODEL参数')
             # 代码生成层级为默认或模型层，读取MODEL参数
             model = {
                 'url': Settings.MODEL_URL,
-                'version': Settings.MODEL_VERSION,
-                'schema': Settings.MODEL_SCHEMA,
-                'noviews': Settings.MODEL_NOVIEWS,
-                'noindexes': Settings.MODEL_NOINDEXES,
-                'noconstraints': Settings.MODEL_NOCONSTRAINTS,
-                'nojoied': Settings.MODEL_NOJOINED,
-                'noinflect': Settings.MODEL_NOINFLECT,
-                'noclasses': Settings.MODEL_NOCLASSES,
-                'nocomments': Settings.MODEL_NOCOMMENTS,
                 'outfile': Settings.MODEL_OUTFILE
             }
-            engine = create_engine(model['url'])
-            if Settings.CODEGEN_MODE == 'table':
-                model['tables'] = Settings.MODEL_TABLES
-                if not model['tables']:
-                    flag = False
-                    loggings.error(1, '{}参数缺失'.format('tables'))
-                else:
-                    metadata = MetaData(engine)
-                    for i in model['tables'].split(','):
-                        if i not in metadata.tables.keys():
-                            flag = False
-                            loggings.error(1, '{}表不存在'.format(i))
-    except Exception as e:
-        flag = False
-        loggings.error(1, str(e))
-    finally:
-        loggings.info(1, 'MODEL参数检验完成')
-    try:
-        loggings.info(1, '开始检验CONTROLLER参数')
-        if Settings.CODEGEN_LAYER in ['default', 'controller']:
-            # 代码生成层级为默认或控制器层，读取CONTROLLER参数
+            for i in ['url', 'outfile']:
+                if not model[i]:
+                    raise Exception('{}参数缺失'.format(i))
+            if Settings.CODEGEN_MODE == 'table' and not Settings.MODEL_TABLES:
+                raise Exception('{}参数缺失'.format('tables'))
+
+        # 读取CONTROLLER参数
+        if Settings.CODEGEN_LAYER in ['default', 'model']:
+            # 代码生成层级为默认或控制器层
             controller = {
 
             }
-    except Exception as e:
-        flag = False
-        loggings.error(1, str(e))
-    finally:
-        loggings.info(1, 'CONTROLLER参数检验完成')
-    try:
-        loggings.info(1, '开始检验RESOURCE参数')
+
+        # 读取RESOURCE参数
         if Settings.CODEGEN_LAYER in ['default', 'resource']:
             # 代码生成层级为默认或接口层，读取RESOURCE参数
             resource = {
 
             }
-    except Exception as e:
-        flag = False
-        loggings.error(1, str(e))
-    finally:
-        loggings.info(1, 'RESOURCE参数检验完成')
-    try:
-        loggings.error(1, '开始检验STATIC参数')
+
+        # 读取STATIC参数
         if Settings.CODEGEN_LAYER in ['default', 'static']:
             # 代码生成层级为默认或静态文件层，读取STATIC参数
             static = {
 
             }
+        loggings.info(1, '必要参数检验完成')
     except Exception as e:
-        flag = False
         loggings.error(1, str(e))
-    return flag
+        return False
+
+    # 检验参数逻辑
+    try:
+        loggings.info(1, '开始检验参数逻辑，请稍等...')
+
+        # 检验参数值合法与否
+        if Settings.CODEGEN_MODE not in ['database', 'table']:
+            raise Exception('CODEGEN_MODE参数值不合法')
+        if Settings.CODEGEN_LAYER not in ['default', 'model', 'controller', 'resource', 'static']:
+            raise Exception('CODEGEN_LAYER参数值不合法')
+
+        # 检验数据库中是否存在参数中的表名
+        if Settings.CODEGEN_MODE == 'table':
+            engine = create_engine(Settings.MODEL_URL)
+            metadata = MetaData(engine)
+            metadata.reflect(engine)
+            for i in Settings.MODEL_TABLES.split(','):
+                if i not in metadata.tables.keys():
+                    raise Exception('{}表不存在'.format(i))
+
+        loggings.info(1, '参数值逻辑检验完成')
+    except Exception as e:
+        loggings.error(1, str(e))
+        return False
+
+    return True
