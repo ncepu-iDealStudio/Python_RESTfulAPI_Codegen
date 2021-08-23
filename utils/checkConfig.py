@@ -1,4 +1,14 @@
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
+# file:checkConfig.py
+# author:Itsuka
+# datetime:2021/8/23 15:12
+# software: Pycharm
+
+"""
+    this is function description
+"""
 from sqlalchemy import create_engine, MetaData
 
 from config.setting import Settings

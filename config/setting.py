@@ -31,7 +31,7 @@ class Settings(object):
     # 定义静态资源文件路径
     STATIC_RESOURCE_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['STATIC_RESOURCE_DIR'])
 
-    # 数据库配置
+    # 读取用户使用
     DIALECT = CONFIG['DATABASE']['DIALECT']
     DRIVER = CONFIG['DATABASE']['DRIVER']
     USERNAME = CONFIG['DATABASE']['USERNAME']
