@@ -11,7 +11,7 @@ this is function description
 # import module your need
 from sqlalchemy import ForeignKeyConstraint
 
-from sqlacodegen.modelcodegen.relationship import Relationship
+from codegen.modelcodegen.relationship import Relationship
 from utils.common import get_constraint_sort_key, get_column_names
 
 

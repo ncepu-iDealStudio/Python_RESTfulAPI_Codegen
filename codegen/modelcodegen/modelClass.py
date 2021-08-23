@@ -14,10 +14,10 @@ from collections import OrderedDict
 
 from sqlalchemy import ForeignKeyConstraint
 
-from sqlacodegen.modelcodegen.manyToManyRelationship import ManyToManyRelationship
-from sqlacodegen.modelcodegen.manyToOneRelationship import ManyToOneRelationship
-from sqlacodegen.modelcodegen.model import Model
-from sqlacodegen.modelcodegen.relationship import Relationship
+from codegen.modelcodegen.manyToManyRelationship import ManyToManyRelationship
+from codegen.modelcodegen.manyToOneRelationship import ManyToOneRelationship
+from codegen.modelcodegen.model import Model
+from codegen.modelcodegen.relationship import Relationship
 from utils.common import get_constraint_sort_key, get_column_names
 
 

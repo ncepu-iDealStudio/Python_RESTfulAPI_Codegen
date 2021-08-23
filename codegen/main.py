@@ -8,7 +8,7 @@ import pkg_resources
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 
-from sqlacodegen.modelcodegen.codegen import CodeGenerator
+from codegen.modelcodegen.codegen import CodeGenerator
 
 
 def main():
@@ -32,7 +32,7 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        version = pkg_resources.get_distribution('sqlacodegen').parsed_version
+        version = pkg_resources.get_distribution('codegen').parsed_version
         print(version.public)
         return
     if not args.url:

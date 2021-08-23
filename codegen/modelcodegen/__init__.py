@@ -19,7 +19,7 @@ from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 
 from config.setting import Settings
-from sqlacodegen.modelcodegen.codegen import CodeGenerator
+from codegen.modelcodegen.codegen import CodeGenerator
 
 
 def modelGenerate():
@@ -41,7 +41,7 @@ def modelGenerate():
     outfile = Settings.MODEL_OUTFILE
 
     if version:
-        version = pkg_resources.get_distribution('sqlacodegen').parsed_version
+        version = pkg_resources.get_distribution('codegen').parsed_version
         print(version.public)
         return
 

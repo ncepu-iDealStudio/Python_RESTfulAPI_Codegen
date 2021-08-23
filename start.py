@@ -8,10 +8,10 @@
     this is function description
 """
 
-from sqlacodegen.controllercodegen import controllerGenerate
-from sqlacodegen.modelcodegen import modelGenerate
-from sqlacodegen.resourcecodegen import resourceGenerate
-from sqlacodegen.staticcodegen import staticGenerate
+from codegen.controllercodegen import controllerGenerate
+from codegen.modelcodegen import modelGenerate
+from codegen.resourcecodegen import resourceGenerate
+from codegen.staticcodegen import staticGenerate
 from utils.loggings import loggings
 
 if __name__ == '__main__':

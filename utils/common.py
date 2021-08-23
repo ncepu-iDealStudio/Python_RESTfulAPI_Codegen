@@ -13,7 +13,7 @@ this is function description
 # ColumnCollection
 
 
-from sqlacodegen.modelcodegen.codegen import CheckConstraint
+from codegen.modelcodegen.codegen import CheckConstraint
 
 
 def get_column_names(constraint):
