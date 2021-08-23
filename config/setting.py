@@ -29,7 +29,7 @@ class Settings(object):
     # 代码生成层级- default|model|controller|resource|static - 全部|模型层|控制器层|接口层|静态资源层
     CODEGEN_LAYER = CONFIG['PARAMETER']['CODEGEN_LAYER']
     # 定义静态资源文件路径
-    STATIC_RESOURCE_DIR = CONFIG['PARAMETER']['STATIC_RESOURCE_DIR']
+    STATIC_RESOURCE_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['STATIC_RESOURCE_DIR'])
 
     # 数据库配置
     DIALECT = CONFIG['DATABASE']['DIALECT']
