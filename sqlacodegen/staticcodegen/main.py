@@ -8,20 +8,18 @@
 
 '''
     1 copy the static resource to target project directory;
-    2 you can put these static resource  into "static" directory,such as "dockerfile" and some common tools that you will use
-    in your target project;
-    3 some resource we need has already puteed into default static directory;
+    2 you can put these static resource  into "static" directory,such as "dockerfile" and some
+     common tools(or function) that you will use in your target project;
+    3 some resource we need has already copied into default static directory;
 
 '''
 
 import os
 import shutil
 from utils.loggings import loggings
-
-# 拷贝
 from utils.response_code import RET
 
-
+# 拷贝
 def copy_static(target_dir, source_dir):
     try:
         # 判断目标路径状态
