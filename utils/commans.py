@@ -12,12 +12,11 @@ this is function description
 # In SQLAlchemy 0.x, constraint.columns is sometimes a list, on 1.x onwards, always a
 # ColumnCollection
 
-import os
-from loguru import logger
 from sqlalchemy import create_engine, MetaData
 
 from config.setting import Settings
 from sqlacodegen.modelcodegen.codegen import CheckConstraint
+from utils.loggings import loggings
 
 
 def check_config():
@@ -27,7 +26,7 @@ def check_config():
     """
     flag = True
     try:
-        logger.info("开始检验PARAMETER参数")
+        loggings.info(1, "开始检验PARAMETER参数")
         # 读取PARAMETER参数
         parameter = {
             'target_dir': Settings.TARGET_DIR,
@@ -39,17 +38,15 @@ def check_config():
         for k, v in parameter.items():
             if not v:
                 flag = False
-                logger.warning('{}参数为空'.format(k))
-        Settings.TARGET_DIR = os.path.join(os.path.join(os.path.dirname(os.path.dirname(__file__)), parameter['source_dir']), Settings.PROJECT_NAME)
-        Settings.STATIC_RESOURCE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), parameter['static_resource_dir'])
+                loggings.error(1, '{}参数为空'.format(k))
     except Exception as e:
         flag = False
-        logger.warning(str(e))
+        loggings.error(1, str(e))
     finally:
-        logger.info('PARAMETER参数检验完成')
+        loggings.info(1, 'PARAMETER参数检验完成')
 
     try:
-        logger.info('开始读取DATABASE参数')
+        loggings.info(1, '开始读取DATABASE参数')
         # 读取DATABASE参数
         database = {
             'dialect': Settings.DIALECT,
@@ -67,17 +64,17 @@ def check_config():
             if k == 'password':
                 continue
             if not v:
-                logger.warning('{}参数为空'.format(k))
+                loggings.error(1, '{}参数为空'.format(k))
                 flag = False
     except Exception as e:
         flag = False
-        logger.warning(str(e))
+        loggings.error(1, str(e))
     finally:
-        logger.info('DATABASE参数检验完成')
+        loggings.info(1, 'DATABASE参数检验完成')
 
     try:
         if Settings.CODEGEN_LAYER in ['default', 'model']:
-            logger.info('开始检验MODEL参数')
+            loggings.info(1, '开始检验MODEL参数')
             # 代码生成层级为默认或模型层，读取MODEL参数
             model = {
                 'url': Settings.MODEL_URL,
@@ -97,24 +94,52 @@ def check_config():
                 model['tables'] = Settings.MODEL_TABLES
                 if not model['tables']:
                     flag = False
-                    logger.warning('{}参数缺失'.format('tables'))
+                    loggings.error(1, '{}参数缺失'.format('tables'))
                 else:
                     metadata = MetaData(engine)
+                    for i in model['tables'].split(','):
+                        if i not in metadata.tables.keys():
+                            flag = False
+                            loggings.error(1, '{}表不存在'.format(i))
     except Exception as e:
         flag = False
-        logger.warning(str(e))
+        loggings.error(1, str(e))
     finally:
-        logger.info('MODEL参数检验完成')
-    if parameter['codegen_layer'] in ['default', 'controller']:
-        # 代码生成层级为默认或控制器层，读取CONTROLLER参数
-        controller = {
+        loggings.info(1, 'MODEL参数检验完成')
+    try:
+        loggings.info(1, '开始检验CONTROLLER参数')
+        if Settings.CODEGEN_LAYER in ['default', 'controller']:
+            # 代码生成层级为默认或控制器层，读取CONTROLLER参数
+            controller = {
 
-        }
-    if parameter['codegen_layer'] in ['default', 'resource']:
-        # 代码生成层级为默认或接口层，读取RESOURCE参数
-        resource = {
+            }
+    except Exception as e:
+        flag = False
+        loggings.error(1, str(e))
+    finally:
+        loggings.info(1, 'CONTROLLER参数检验完成')
+    try:
+        loggings.info(1, '开始检验RESOURCE参数')
+        if Settings.CODEGEN_LAYER in ['default', 'resource']:
+            # 代码生成层级为默认或接口层，读取RESOURCE参数
+            resource = {
 
-        }
+            }
+    except Exception as e:
+        flag = False
+        loggings.error(1, str(e))
+    finally:
+        loggings.info(1, 'RESOURCE参数检验完成')
+    try:
+        loggings.error(1, '开始检验STATIC参数')
+        if Settings.CODEGEN_LAYER in ['default', 'static']:
+            # 代码生成层级为默认或静态文件层，读取STATIC参数
+            static = {
+
+            }
+    except Exception as e:
+        flag = False
+        loggings.error(1, str(e))
     return flag
 
 
