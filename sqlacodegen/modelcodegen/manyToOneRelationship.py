@@ -12,7 +12,7 @@ this is function description
 from sqlalchemy import PrimaryKeyConstraint, UniqueConstraint, ForeignKeyConstraint
 
 from sqlacodegen.modelcodegen.relationship import Relationship
-from utils.commans import get_column_names
+from utils.common import get_column_names
 
 
 class ManyToOneRelationship(Relationship):

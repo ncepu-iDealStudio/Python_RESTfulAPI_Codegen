@@ -16,7 +16,7 @@ import sqlalchemy
 from sqlalchemy import Column, Computed, ForeignKeyConstraint, UniqueConstraint, PrimaryKeyConstraint
 from sqlalchemy.sql.sqltypes import NullType, Enum, ARRAY, Float
 
-from utils.commans import get_constraint_sort_key
+from utils.common import get_constraint_sort_key
 from utils.patterns import _re_invalid_identifier
 
 

@@ -18,7 +18,7 @@ from sqlacodegen.modelcodegen.manyToManyRelationship import ManyToManyRelationsh
 from sqlacodegen.modelcodegen.manyToOneRelationship import ManyToOneRelationship
 from sqlacodegen.modelcodegen.model import Model
 from sqlacodegen.modelcodegen.relationship import Relationship
-from utils.commans import get_constraint_sort_key, get_column_names
+from utils.common import get_constraint_sort_key, get_column_names
 
 
 class ModelClass(Model):
