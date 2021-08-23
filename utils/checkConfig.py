@@ -108,7 +108,7 @@ def check_config():
             engine = create_engine(Settings.MODEL_URL)
             metadata = MetaData(engine)
             metadata.reflect(engine)
-            for i in Settings.MODEL_TABLES.split(','):
+            for i in Settings.MODEL_TABLES.replace(' ', '').split(','):
                 if i not in metadata.tables.keys():
                     raise Exception('{}表不存在'.format(i))
 
