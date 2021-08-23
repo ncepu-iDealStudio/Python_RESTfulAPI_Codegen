@@ -20,7 +20,7 @@ def staticGenerate():
     :return: 静态资源拷贝完成状态
     """
     # 获取目标目录
-    target_dir = Settings.SOURCE_DIR
+    target_dir = Settings.TARGET_DIR
     # 获取静态资源目录
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     source_dir = os.path.join(BASE_DIR, 'static')
