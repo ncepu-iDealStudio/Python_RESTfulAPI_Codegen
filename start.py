@@ -12,7 +12,7 @@ from sqlacodegen.controllercodegen import controllerGenerate
 from sqlacodegen.modelcodegen import modelGenerate
 from sqlacodegen.resourcecodegen import resourceGenerate
 from sqlacodegen.staticcodegen import staticGenerate
-
+from utils.loggings import loggings
 
 if __name__ == '__main__':
     """
@@ -26,23 +26,23 @@ if __name__ == '__main__':
     """
 
     # 第一步
-    print("开始构建Model层代码, 请稍等...")
+    loggings.info(1, "开始构建Model层代码, 请稍等...")
     modelGenerate()
-    print("构建Model层代码完成")
+    loggings.info(1, "构建Model层代码完成")
 
     # 第二步
-    print("开始构建Controller层代码, 请稍等...")
+    loggings.info(1, "开始构建Controller层代码, 请稍等...")
     controllerGenerate()
-    print("构建Controller层代码完成")
+    loggings.info(1, "构建Controller层代码完成")
 
     # 第三步
-    print("开始构建Resource层代码, 请稍等...")
+    loggings.info(1, "开始构建Resource层代码, 请稍等...")
     resourceGenerate()
-    print("构建Resource层代码完成")
+    loggings.info(1, "构建Resource层代码完成")
 
     # 第四步
-    print("开始打包静态文件, 请稍等...")
+    loggings.info(1, "开始打包静态文件, 请稍等...")
     staticGenerate()
-    print("打包静态文件完成")
+    loggings.info(1, "打包静态文件完成")
 
-    print("生成完成")
+    loggings.info(1, "生成完成")

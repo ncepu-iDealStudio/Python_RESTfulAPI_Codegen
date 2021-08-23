@@ -12,6 +12,7 @@ this is function description
 # In SQLAlchemy 0.x, constraint.columns is sometimes a list, on 1.x onwards, always a
 # ColumnCollection
 
+import os
 from sqlacodegen.modelcodegen.codegen import CheckConstraint
 from config.setting import Settings
 
@@ -40,6 +41,8 @@ def check_config():
     for k, v in parameter.items():
         if not v:
             return {'code': False, 'message': '缺少参数{}'.format(k), 'error': '缺少参数{}'.format(k)}
+    parameter['source_dir'] = os.path.join(os.path.dirname(os.path.dirname(__file__)), parameter['source_dir'])
+    parameter['static_resource_dir'] = os.path.join(os.path.dirname(os.path.dirname(__file__)), parameter['static_resource_dir'])
     results['parameter'] = parameter
 
     # 读取DATABASE参数
