@@ -19,7 +19,7 @@ import shutil
 from utils.loggings import loggings
 from utils.response_code import RET
 
-# 拷贝
+# 生成或拷贝目标项目所需要的静态配置等文件
 def copy_static(target_dir, source_dir):
     try:
         # 判断目标路径状态
