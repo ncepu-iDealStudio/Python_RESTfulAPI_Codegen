@@ -27,5 +27,3 @@ def staticGenerate():
 
     return copy_static(target_dir, source_dir)
 
-
-staticGenerate()
