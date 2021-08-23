@@ -21,7 +21,7 @@ CONFIG.read(CONFIG_DIR, encoding='utf-8')
 class Settings(object):
     # 项目生成的目标路径
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    SOURCE_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['SOURCE_DIR'])
+    TARGET_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR'])
     # 生成项目的名称
     PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
     # 代码生成模式-database|table-整库模式|多表模式
