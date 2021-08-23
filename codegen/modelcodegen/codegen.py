@@ -1,4 +1,15 @@
-"""Contains the code generation logic and helper functions."""
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+# file:codegen.py
+# author: https://github.com/agronholm/sqlacodegen
+# datetime:2021/8/21 11:45
+# software: PyCharm
+
+"""
+    Contains the code generation logic and helper functions.
+"""
+
 from __future__ import unicode_literals, division, print_function, absolute_import
 
 import inspect
@@ -80,8 +91,7 @@ class CodeGenerator(object):
         links = defaultdict(lambda: [])
         association_tables = set()
         for table in metadata.tables.values():
-            # Link tables have exactly two foreign key constraints and all columns are involved in
-            # them
+            # Link tables have exactly two foreign key constraints and all columns are involved in them
             fk_constraints = [constr for constr in table.constraints
                               if isinstance(constr, ForeignKeyConstraint)]
             if len(fk_constraints) == 2 and all(col.foreign_keys for col in table.columns):

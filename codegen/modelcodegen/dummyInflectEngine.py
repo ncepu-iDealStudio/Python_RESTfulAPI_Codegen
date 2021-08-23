@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# file:python_sqla_codegen
-# author:PigKnight
+# file:python_sqla_codegen.py
+# author: https://github.com/agronholm/sqlacodegen
 # datetime:2021/8/21 11:45
 # software: PyCharm
 """
