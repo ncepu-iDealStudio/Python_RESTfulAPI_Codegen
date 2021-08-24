@@ -13,7 +13,7 @@ this is function description
 # ColumnCollection
 
 
-from codegen.modelcodegen_bak.codegen import CheckConstraint
+from sqlalchemy import CheckConstraint
 
 
 def get_column_names(constraint):
