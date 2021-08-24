@@ -72,9 +72,11 @@ def check_config():
         if Settings.CODEGEN_LAYER in ['default', 'model']:
             # 代码生成层级为默认或控制器层
             controller = {
-
+                'record_delete_way': Settings.CONTROLLER_RECORD_DELETE_WAY
             }
-
+            for k, v in controller.items():
+                if not v:
+                    raise Exception('{}参数缺失'.format(k))
         # 读取RESOURCE参数
         if Settings.CODEGEN_LAYER in ['default', 'resource']:
             # 代码生成层级为默认或接口层，读取RESOURCE参数
@@ -102,6 +104,9 @@ def check_config():
             raise Exception('CODEGEN_MODE参数值不合法')
         if Settings.CODEGEN_LAYER not in ['default', 'model', 'controller', 'resource', 'static']:
             raise Exception('CODEGEN_LAYER参数值不合法')
+        if Settings.CODEGEN_LAYER in ['default', 'controller']:
+            if Settings.CONTROLLER_RECORD_DELETE_WAY not in ['logic', 'physical']:
+                raise Exception('RECORD_DELETE_WAY参数值不合法')
 
         # 检验数据库中是否存在参数中的表名
         if Settings.CODEGEN_MODE == 'table':
