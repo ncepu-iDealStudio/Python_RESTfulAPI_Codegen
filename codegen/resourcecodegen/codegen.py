@@ -9,23 +9,15 @@
 """
 this is function description
 """
-from sqlalchemy.types import INTEGER, SMALLINT, VARCHAR, NUMERIC
+from utils.common import str_format_convert
+from decimal import Decimal
 import sys
 
-mysql_map = {INTEGER: type(int), SMALLINT: type(int), VARCHAR: type(str), NUMERIC: type(float)}
-
-# 连字符转驼峰
-def str_format_convert(s):
-    ss = ''
-    for i in s.split('_'):
-        if ss:
-            ss += i.lower().capitalize()
-        else:
-            ss = i
-    return ss
-
-
-# 数据库字段类型对应python数据类型
+tyep_map = {
+    int: 'int',
+    float: 'float',
+    Decimal: 'float'
+}
 
 
 class CodeGenerator(object):
@@ -157,8 +149,12 @@ class {className}Resource(Resource):
                 # table_dict[str(i)].append((j.key, j.type, j.primary_key))
                 table_dict[str(i)]['columns'][str(j.name)] = {}
                 table_dict[str(i)]['columns'][str(j.name)]['name'] = j.name
-                table_dict[str(i)]['columns'][str(j.name)]['type'] = j.type
                 table_dict[str(i)]['columns'][str(j.name)]['primary_key'] = j.primary_key
+                if j.type.python_type in tyep_map.keys():
+                    table_dict[str(i)]['columns'][str(j.name)]['type'] = tyep_map[j.type.python_type]
+                else:
+                    table_dict[str(i)]['columns'][str(j.name)]['type'] = 'str'
+
         # 生成init
         init_list = self.init_codegen(table_dict)
         # 生成urls
@@ -255,10 +251,10 @@ from utils.response_code import RET
             # 获取字段列表
             fields = []
             argument_str = ''
-            for j in tables[i].get('columns').values():
-                argument_str += 'parser.add_argument("{0}", type="{1}", location="form", required=False, help="{0}参数类型不正确或缺失")'.format(
-                    j.name, mysql_map[j['type']]
-                )
+            # for j in tables[i].get('columns').values():
+            #     argument_str += 'parser.add_argument("{0}", type="{1}", location="form", required=False, help="{0}参数类型不正确或缺失")'.format(
+            #         j.name, mysql_map[j['type']]
+            #     )
         return files
 
     # 生成otherResource

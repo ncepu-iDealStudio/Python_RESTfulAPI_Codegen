@@ -52,6 +52,7 @@ def resourceGenerate():
     tables = tables.split(',') if tables else None
 
     # tables = None
+    tables = ['order']
     if tables:
         metadata.reflect(engine, schema, not noviews, tables)
     else:

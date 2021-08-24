@@ -26,3 +26,14 @@ def get_constraint_sort_key(constraint):
     if isinstance(constraint, CheckConstraint):
         return 'C{0}'.format(constraint.sqltext)
     return constraint.__class__.__name__[0] + repr(get_column_names(constraint))
+
+
+# 连字符转驼峰
+def str_format_convert(s):
+    ss = ''
+    for i in s.split('_'):
+        if ss:
+            ss += i.lower().capitalize()
+        else:
+            ss = i
+    return ss
