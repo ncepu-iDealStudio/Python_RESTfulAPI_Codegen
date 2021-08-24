@@ -1,81 +1,70 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-# file:__init__.py
-# author:Nathan
-# datetime:2021/8/21 11:47
-# software: PyCharm
-
-"""
-    this is function description
-"""
-
-import io
-import os
+import argparse
 import sys
+from contextlib import ExitStack
 
-import pkg_resources
-from loguru import logger
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 
-from codegen.modelcodegen.codegen import CodeGenerator
 from config.setting import Settings
-from utils.loggings import loggings
+
+if sys.version_info < (3, 8):
+    from importlib_metadata import entry_points, version
+else:
+    from importlib.metadata import entry_points, version
 
 
-@logger.catch
-def modelGenerate():
-    """
-    model层代码的生成
-    :return: None
-    """
+def modelGenerate() -> None:
+    generators = {ep.name: ep for ep in entry_points()['sqlacodegen.generators']}
+    parser = argparse.ArgumentParser(
+        description='Generates SQLAlchemy model code from an existing database.')
+    parser.add_argument('url', nargs='?', help='SQLAlchemy url to the database')
+    parser.add_argument('--option', nargs='*', help="options passed to the generator class")
+    parser.add_argument('--version', action='store_true', help="print the version number and exit")
+    parser.add_argument('--schemas', help='load tables from the given schemas (comma separated)')
+    parser.add_argument('--generator', choices=generators, default='declarative',
+                        help="generator class to use")
+    parser.add_argument('--tables', help='tables to process (comma-separated, default: all)')
+    parser.add_argument('--noviews', action='store_true', help="ignore views")
+    parser.add_argument('--outfile', help='file to write output to (default: stdout)')
+    args = parser.parse_args()
+
     url = Settings.MODEL_URL
-    version = Settings.MODEL_VERSION
-    schema = Settings.MODEL_SCHEMA
+    sqlacodegen_version = Settings.MODEL_VERSION
+    schemas = Settings.MODEL_SCHEMA
     tables = Settings.MODEL_TABLES
     noviews = Settings.MODEL_NOVIEWS
-    noindexes = Settings.MODEL_NOINDEXES
-    noconstraints = Settings.MODEL_NOCONSTRAINTS
-    nojoined = Settings.MODEL_NOJOINED
-    noinflect = Settings.MODEL_NOINFLECT
-    noclasses = Settings.MODEL_NOCLASSES
-    nocomments = Settings.MODEL_NOCOMMENTS
+    generator = Settings.MODEL_NOJOINED  # ！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+    option = Settings.MODEL_NOJOINED  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     outfile = Settings.MODEL_OUTFILE
     codegen_mode = Settings.CODEGEN_MODE
 
-    engine = create_engine(url)
-    metadata = MetaData(engine)
-    # metadata.reflect(engine)
-
-    if version:
-        version = pkg_resources.get_distribution('codegen').parsed_version
-        print(version.public)
+    if sqlacodegen_version:
+        print(version('sqlacodegen'))
         return
-
     if not url:
-        loggings.error(1, 'You must supply a url!')
+        print('You must supply a url\n', file=sys.stderr)
+        parser.print_help()
         return
 
-    # Judge the generated code mode -- database or table
-    if codegen_mode == 'database1':
-        pass
-    elif codegen_mode == 'database':
-        tables = tables.split(',') if tables else None
+    # Use reflection to fill in the metadata
+    engine = create_engine(url)
+    metadata = MetaData()
+    tables = tables.split(',') if tables else None
+    schemas = args.schemas.split(',') if args.schemas else [None]
+    for schema in schemas:
+        metadata.reflect(engine, schema, not args.noviews, tables)
 
-        # Preprocessing -- remove the spaces on both sides of the table name
-        for index in range(len(tables)):
-            tables[index] = tables[index].strip()
+    # Instantiate the generator
+    generator_class = generators[args.generator].load()
+    generator = generator_class(metadata, engine, set(args.option or ()))
 
-        # Use reflection to fill in the metadata
-        metadata.reflect(engine, schema, not noviews, tables)
+    # Open the target file (if given)
+    with ExitStack() as stack:
+        if args.outfile:
+            outfile = open(args.outfile, 'w', encoding='utf-8')
+            stack.enter_context(outfile)
+        else:
+            outfile = sys.stdout
 
         # Write the generated model code to the specified file or standard output
-        os.makedirs(base_path := os.path.join(Settings.TARGET_DIR, Settings.PROJECT_NAME, 'models'), exist_ok=True)
-        file_path = os.path.join(base_path, outfile)
-
-        outfile = io.open(file_path, 'w', encoding='utf-8') if outfile else sys.stdout
-        generator = CodeGenerator(metadata, noindexes, noconstraints, nojoined,
-                                  noinflect, noclasses, nocomments=nocomments)
-        generator.render(outfile)
-    return
+        outfile.write(generator.generate())

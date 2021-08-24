@@ -27,8 +27,8 @@ from sqlalchemy.types import Boolean, String
 from sqlalchemy.util import OrderedDict
 
 # The generic ARRAY type was introduced in SQLAlchemy 1.1
-from codegen.modelcodegen.modelClass import ModelClass
-from codegen.modelcodegen.relationship import Relationship
+from codegen.modelcodegen_bak.modelClass import ModelClass
+from codegen.modelcodegen_bak.relationship import Relationship
 
 try:
     from sqlalchemy import ARRAY
@@ -51,9 +51,9 @@ from utils.patterns import _re_enum_item, _re_enum_check_constraint, \
     _re_column_name, _re_boolean_check_constraint
 
 from utils.common import get_column_names, get_constraint_sort_key
-from codegen.modelcodegen.importCollector import ImportCollector
-from codegen.modelcodegen.modelTable import ModelTable
-from codegen.modelcodegen.dummyInflectEngine import _DummyInflectEngine
+from codegen.modelcodegen_bak.importCollector import ImportCollector
+from codegen.modelcodegen_bak.modelTable import ModelTable
+from codegen.modelcodegen_bak.dummyInflectEngine import _DummyInflectEngine
 
 
 class CodeGenerator(object):

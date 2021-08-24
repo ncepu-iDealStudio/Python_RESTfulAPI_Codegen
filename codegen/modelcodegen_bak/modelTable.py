@@ -11,7 +11,7 @@ this is function description
 # import module your need
 from sqlalchemy import Table
 
-from codegen.modelcodegen.model import Model
+from codegen.modelcodegen_bak.model import Model
 
 
 class ModelTable(Model):

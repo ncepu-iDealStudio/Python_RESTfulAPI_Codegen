@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     # 第一步
     loggings.info(1, "开始构建Model层代码, 请稍等...")
-    modelGenerate()
+    # modelGenerate()
     loggings.info(1, "构建Model层代码完成")
 
     # 第二步

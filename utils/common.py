@@ -13,7 +13,7 @@ this is function description
 # ColumnCollection
 
 
-from codegen.modelcodegen.codegen import CheckConstraint
+from codegen.modelcodegen_bak.codegen import CheckConstraint
 
 
 def get_column_names(constraint):
