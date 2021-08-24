@@ -1,2 +1,34 @@
 [build-system]
-requires = ["setuptools >= 36.2.7", "wheel", "setuptools_scm >= 1.7.0"]
+requires = [
+    "setuptools >= 42",
+    "wheel >= 0.29.0",
+    "setuptools_scm[toml] >= 3.4"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "dirty-tag"
+
+[tool.isort]
+src_paths = ["src"]
+skip_gitignore = true
+line_length = 99
+multi_line_output = 4
+
+[tool.flake8]
+max-line-length = 99
+
+[tool.autopep8]
+max_line_length = 99
+
+[tool.pytest.ini_options]
+addopts = "-rsx --tb=short"
+testpaths = ["tests"]
+
+[coverage.run]
+source = ["sqlacodegen"]
+relative_files = true
+
+[coverage.report]
+show_missing = true

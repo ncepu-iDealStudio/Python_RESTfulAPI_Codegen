@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# file:main.py
+# file:createTableForTest.py
 # author:jackiex
 # datetime:2021/8/21 16:38
 # software: PyCharm

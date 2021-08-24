@@ -12,5 +12,3 @@
 dist
 build
 logs/codegen_log.log
-UserInfoModel.py
-
