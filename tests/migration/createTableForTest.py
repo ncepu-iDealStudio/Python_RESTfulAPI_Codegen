@@ -9,9 +9,9 @@
 '''
     创建默认的数据库和表，用于测试
 '''
-from sqlalchemy.engine import create_engine
 from sqlalchemy import Column
-from sqlalchemy.types import Integer,String,Date,DateTime,Float,Text
+from sqlalchemy.engine import create_engine
+from sqlalchemy.types import Integer, String, Date, Float
 
 conn_url = 'mysql://root:123456@127.0.0.1:3306/testlogin?charset=utf8'
 engine = create_engine(conn_url,encoding='utf-8',echo=True)
