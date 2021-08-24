@@ -69,3 +69,6 @@ class Settings(object):
     except Exception as e:
         raise Exception('{}参数不是一个合法的布尔型'.format(i))
     MODEL_OUTFILE = CONFIG['MODEL']['OUTFILE']
+
+    # controller层配置
+    CONTROLLER_RECORD_DELETE_WAY = CONFIG['CONTROLLER']['RECORD_DELETE_WAY']
