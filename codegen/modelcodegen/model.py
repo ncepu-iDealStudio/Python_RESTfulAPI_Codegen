@@ -60,8 +60,8 @@ class Model(object):
                         # least on PostgreSQL, Float can accurately represent both REAL and
                         # DOUBLE_PRECISION
                         if not isinstance(new_coltype, Float) and \
-                           not (isinstance(new_coltype, ARRAY) and
-                                isinstance(new_coltype.item_type, Float)):
+                                not (isinstance(new_coltype, ARRAY) and
+                                     isinstance(new_coltype.item_type, Float)):
                             break
                 except sqlalchemy.exc.CompileError:
                     # If the adapted column type can't be compiled, don't substitute it
@@ -78,6 +78,9 @@ class Model(object):
         if self.table.columns:
             collector.add_import(Column)
 
+        """
+            为每一个列检查需要导入什么包，并记录到collector中
+        """
         for column in self.table.columns:
             collector.add_import(column.type)
             if column.server_default:
@@ -112,5 +115,4 @@ class Model(object):
             name = '_' + name
         elif name == 'metadata':
             name = 'metadata_'
-
         return _re_invalid_identifier.sub('_', name)

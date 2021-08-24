@@ -17,7 +17,18 @@ import sqlalchemy
 
 class ImportCollector(OrderedDict):
     def add_import(self, obj):
+        """
+            第一步： 判断传入对象的类型， 获取对象所在的模块
+            第二步： 判断该模块是否是以 'sqlalchemy.dialects.' 开头的。
+                    如果是则获取是一下是哪个数据库的。则记录一下是哪个'sqlalchemy.dialects.数据库'模块
+                    如果不是，再看是这个模块是不是sqlalchemy当中的类型，来确定是否记录从salalchemy模块
+                    否则 记录从对象所在模块
+            第三步： 记录用键值对的方式记录从哪个没款导入哪个包
+
+        """
+        # 先看看obj这个对象的类型是否是 type（或者其子类） ，不是就设置为type（obj），是就设置为设置为obj
         type_ = type(obj) if not isinstance(obj, type) else obj
+        # 获得当前操作对象在哪个模块
         pkgname = type_.__module__
 
         # The column types have already been adapted towards generic types if possible, so if this
