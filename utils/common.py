@@ -11,7 +11,8 @@ this is function description
 # import module your need
 # In SQLAlchemy 0.x, constraint.columns is sometimes a list, on 1.x onwards, always a
 # ColumnCollection
-
+import os
+from utils.loggings import loggings
 
 from sqlalchemy import CheckConstraint
 
@@ -37,3 +38,18 @@ def str_format_convert(s):
         else:
             ss = i
     return ss
+
+
+# 创建文件或文件夹
+def new_file_or_dir(mode, url):
+    try:
+        if not os.path.exists(url):
+            # new file
+            if mode == 1:
+                file = open(url, 'w')
+                file.close()
+            # new dir
+            elif mode == 2:
+                os.mkdir(url)
+    except Exception as e:
+        loggings.error(1, str(e))

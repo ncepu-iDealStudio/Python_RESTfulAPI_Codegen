@@ -22,11 +22,12 @@ DATABASE_CONFIG.read(DATABASE_CONFIG_DIR, encoding='utf-8')
 
 
 class Settings(object):
+    # 生成项目的名称
+    PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
     # 项目生成的目标路径
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     TARGET_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR'])
-    # 生成项目的名称
-    PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
+    PROJECT_DIR = os.path.join(TARGET_DIR, PROJECT_NAME)
     # 代码生成模式-database|table-整库模式|多表模式
     CODEGEN_MODE = CONFIG['PARAMETER']['CODEGEN_MODE']
     # 代码生成层级- default|model|controller|resource|static - 全部|模型层|控制器层|接口层|静态资源层

@@ -10,6 +10,7 @@
 '''
 import os
 
+from utils.common import new_file_or_dir
 from .main import copy_static
 from config.setting import Settings
 
@@ -20,10 +21,11 @@ def staticGenerate():
     :return: 静态资源拷贝完成状态
     """
     # 获取目标目录
-    target_dir = Settings.TARGET_DIR
+    new_file_or_dir(2, Settings.TARGET_DIR)
+    new_file_or_dir(2, Settings.PROJECT_DIR)
+
     # 获取静态资源目录
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    source_dir = os.path.join(BASE_DIR, 'static')
-
-    return copy_static(target_dir, source_dir)
+    source_dir = os.path.join(BASE_DIR,  'static')
+    return copy_static(Settings.PROJECT_DIR, source_dir)
 

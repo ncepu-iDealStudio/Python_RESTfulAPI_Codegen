@@ -9,9 +9,12 @@
 """
 this is function description
 """
-from utils.common import str_format_convert
+import os
 from decimal import Decimal
-import sys
+
+from utils.response_code import RET
+from utils.common import str_format_convert, new_file_or_dir
+from .template import fileFormat, strFormat
 
 tyep_map = {
     int: 'int',
@@ -21,243 +24,163 @@ tyep_map = {
 
 
 class CodeGenerator(object):
-    template_init = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
 
-from flask import Blueprint
-
-from . import urls
-
-{api}
-    """
-
-    template_urls = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-from flask_restplus import Api
-{importStr}
-
-{api}
-
-{resource}
-
-{otherResource}
-"""
-
-    template_resource = """#!/usr/bin/env python
-# -*- coding:utf-8 -*- 
-
-from flask_restplus import Resource, reqparse
-from flask import g, jsonify
-
-{importStr}
-
-class {className}Resource(Resource):
-
-    # 根据业务主键查询
-    @classmethod
-    def get(cls{id}):
-        parser = reqparse.RequestParser()
-        {argument}
-        kwargs = parser.parse_args()
-        kwargs = commans.put_remove_none(*kwargs)
-        
-        {idCheck}
-        
-        {controllerInvoke}
-    
-    # 修改
-    @classmethod
-    def put(cls{id}):
-        parser = reqparse.RequestParser()
-        {argument}
-        kwargs = parser.parse_args()
-        kwargs = commans.put_remove_none(*kwargs)
-        
-        {idCheck}
-        
-        {controllerInvoke}
-    
-    # 删除
-    @classmethod
-    def delete(cls{id}):
-        parser = reqparse.RequestParser()
-        {argument}
-        kwargs = parser.parse_args()
-        kwargs = commans.put_remove_none(*kwargs)
-        
-        {idCheck}
-        
-        {controllerInvoke}
-"""
-
-    template_other_resource = """
-    #!/usr/bin/env python
-    # -*- coding:utf-8 -*-
-    
-    {import}
-    
-    {classOther}
-    
-    # 添加
-    @classmethod
-    def add():
-        parser = reqparse.RequestParser()
-        {argument}
-        kwargs = parser.parse_args()
-        kwargs = commans.put_remove_none(*kwargs)
-        
-        {controllerInvoke}
-    
-    # 列表查询
-    @classmethod
-    def get():
-        parser = reqparse.RequestParser()
-        {argument}
-        kwargs = parser.parse_args()
-        kwargs = commans.put_remove_none(*kwargs)
-        
-        {idCheck}
-        
-        {controllerInvoke}
-    """
-
-    def __init__(self, metadata, template_init=None, template_urls=None, template_resource=None,
-                 template_other_resource=None):
+    def __init__(self, metadata):
         super(CodeGenerator, self).__init__()
         self.metadata = metadata
-        if template_init:
-            self.template = template_init
-        if template_urls:
-            self.template_urls = template_urls
-        if template_resource:
-            self.template_resource = template_resource
-        if template_other_resource:
-            self.template_other_resource = template_other_resource
 
-    # 生成resource层
-    def resource_generator(self, outfile=sys.stdout):
-        # 获取表列表
+    # Resource layer generation
+    def resource_generator(self, target_dir):
+        # Get the table list
         table_names = self.metadata.tables.values()
         table_dict = {}
+        # Get the field list, primary key and table name of each table
         for i in table_names:
-            # 获得表
+            # Get the table
             table_dict[str(i)] = {}
             table_dict[str(i)]['columns'] = {}
+            table_dict[str(i)]['tableName'] = str(i)
             for j in i.c.values():
-                # 获得字段属性
-                # table_dict[str(i)].append((j.key, j.type, j.primary_key))
                 table_dict[str(i)]['columns'][str(j.name)] = {}
-                table_dict[str(i)]['columns'][str(j.name)]['name'] = j.name
-                table_dict[str(i)]['columns'][str(j.name)]['primary_key'] = j.primary_key
+                table_dict[str(i)]['columns'][str(j.name)]['name'] = str(j.name)
+                if j.primary_key:
+                    if not table_dict[str(i)].get('primaryKey'):
+                        table_dict[str(i)]['primaryKey'] = str(j.name)
+                    else:
+                        return {'code': RET.DBERR, 'message': '{0}表内存在多个主键'.format(str(i)),
+                                'error': '{0}表内存在多个主键'.format(str(i))}
                 if j.type.python_type in tyep_map.keys():
                     table_dict[str(i)]['columns'][str(j.name)]['type'] = tyep_map[j.type.python_type]
                 else:
                     table_dict[str(i)]['columns'][str(j.name)]['type'] = 'str'
+        # Init generation
+        for table in table_dict.keys():
+            # Init generation
+            init_list = self.init_codegen(table_dict[table]).replace('\"', '\'')
+            # print(init_list)
+            # Urls generation
+            urls_list = self.urls_codegen(table_dict[table]).replace('\"', '\'')
+            # print(urls_list)
+            # Resource generation
+            resource_list = self.resource_codegen(table_dict[table]).replace('\"', '\'')
+            # print(resource_list)
+            # OtherResource generation
+            otherResource_list = self.other_resource_codegen(table_dict[table]).replace('\"', '\'')
+            # print(otherResource_list)
 
-        # 生成init
-        init_list = self.init_codegen(table_dict)
-        # 生成urls
-        urls_list = self.urls_codegen(table_dict)
-        # 生成resource
-        resource_list = self.resource_codegen(table_dict)
-        # 生成otherResource
-        otherResource_list = self.other_resource_codegen(table_dict)
+            resource_dir = os.path.join(target_dir, '{0}Resource'.format(str_format_convert(
+                table_dict[table].get('tableName')
+            )))
+            new_file_or_dir(2, resource_dir)
 
-    # 生成init
-    def init_codegen(self, tables):
-        files = []
-        for i in tables:
-            # 获得表名
-            table_name = str(i)
-            # 去除下划线
-            api_name = str_format_convert(table_name)
+            init_file = os.path.join(resource_dir, '__init__.py')
+            new_file_or_dir(1, init_file)
 
-            # 模版生成
-            api_str = '{0}_api = Blueprint("{1}", __name__)'.format(api_name.lower(), api_name)
-            files.append(self.template_init.format(
-                api=api_str))
+            urls_file = os.path.join(resource_dir, 'urls.py')
+            new_file_or_dir(1, urls_file)
 
-        # print(files[0])
-        return files
+            resource_file = os.path.join(resource_dir, '{0}Resource.py'.format(str_format_convert(
+                table_dict[table].get('tableName')
+            )))
+            new_file_or_dir(1, resource_file)
 
-    # 生成urls
-    def urls_codegen(self, tables):
-        files = []
-        for i in tables:
-            # 获得表名
-            table_name = str(i)
-            # 去除下划线
-            api_name = str_format_convert(table_name)
+            other_resource_file = os.path.join(resource_dir, '{0}OtherResource.py'.format(str_format_convert(
+                table_dict[table].get('tableName')
+            )))
+            new_file_or_dir(1, other_resource_file)
 
-            # 模版生成
-            import_str = """from . import {0}_api
-form api_1.{1}Resource.{1}Resource import {2}Resource
-from api_1.{1}Resource.{1}OtherResource import {2}OtherResource""".format(
-                api_name.lower(), api_name, api_name.capitalize())
+            # File write
+            with open(init_file, 'w', encoding='utf8') as f:
+                f.write(init_list)
+            with open(urls_file, 'w', encoding='utf8') as f:
+                f.write(urls_list)
+            with open(resource_file, 'w', encoding='utf8') as f:
+                f.write(resource_list)
+            with open(other_resource_file, 'w', encoding='utf8') as f:
+                f.write(otherResource_list)
 
-            api_str = 'APi({0}_api)'.format(api_name)
+    # init generation
+    def init_codegen(self, table):
+        # Remove underline
+        blueprint_name = str_format_convert(table.get('tableName'))
+        # Template generation
+        blueprint_str = strFormat.blueprint_format.format(blueprint_name.lower(), blueprint_name)
+        return fileFormat.template_init.format(blueprint=blueprint_str)
 
-            # 获取主键列表
-            primary_keys = []
-            for j in tables[i].get('columns').values():
-                if j.get('primary_key'):
-                    primary_keys.append(j.get('name'))
+    #  urls generation
+    def urls_codegen(self, table):
+        # Remove underline
+        api_name = str_format_convert(table.get('tableName'))
+        # Template  generation
+        import_str = strFormat.urls_imports_format.format(api_name.lower(), api_name, api_name.capitalize())
 
-            primary_keys_str = ''
-            for i in range(len(primary_keys)):
-                primary_keys_str += '/<int:' + str_format_convert(primary_keys[i]) + '>'
-            resource_str = 'api.add_resource({0}, {1}, endpoint={2})'.format(
-                api_name.capitalize(), primary_keys_str, api_name)
+        api_str = strFormat.api_format.format(api_name)
 
-            other_resource_str = 'api.add_resource({0}, '', endpoint={1}_list)'.format(
-                api_name.capitalize(), api_name)
+        primary_key_str = strFormat.primary_key_format.format(str_format_convert(table.get('primaryKey')))
+        resource_str = strFormat.resource_format.format(api_name.capitalize(), primary_key_str, api_name)
 
-            files.append(self.template_urls.format(
-                importStr=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str))
-            print(files[0])
-        return files
+        other_resource_str = strFormat.other_resource_format.format(api_name.capitalize(), api_name)
 
-    # 生成resource
-    def resource_codegen(self, tables):
-        files = []
-        for i in tables:
-            # 获得表名
-            table_name = str(i)
-            # 去除下划线
-            api_name = str_format_convert(table_name)
+        return fileFormat.template_urls.format(
+            imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str)
 
-            # 模版生成
-            import_str = """
-from controller.{0}Controller import {0}Controller
-from service.{0}Service import {0}Service
-from utils import commons
-from utils.response_code import RET
-""".format(api_name)
+    # resource generation 
+    def resource_codegen(self, table):
+        # Remove underline
+        api_name = str_format_convert(table.get('tableName'))
 
-            className_str = api_name.capitalize()
+        # Template  generation
+        imports_str = strFormat.resource_imports_format.format(api_name)
 
-            # 获取主键列表
-            primary_keys = []
-            for j in tables[i].get('columns').values():
-                if j.get('primary_key'):
-                    primary_keys.append(j.get('name'))
+        className_str = api_name.capitalize()
 
-            primary_keys_str = ''
-            for i in range(len(primary_keys)):
-                primary_keys_str += ', ' + primary_keys[i]
-            id_str = primary_keys_str
+        id_str = table.get('primaryKey')
 
-            # 获取字段列表
-            fields = []
-            argument_str = ''
-            # for j in tables[i].get('columns').values():
-            #     argument_str += 'parser.add_argument("{0}", type="{1}", location="form", required=False, help="{0}参数类型不正确或缺失")'.format(
-            #         j.name, mysql_map[j['type']]
-            #     )
-        return files
+        # Get field list (except primary key)
+        argument_str = ''
+        for j in table.get('columns').values():
+            if j.get('name') != table.get('primaryKey'):
+                argument_str += strFormat.arguement_format.format(j.get('name'), j.get('type'))
 
-    # 生成otherResource
-    def other_resource_codegen(self, tables):
-        files = []
-        return files
+        idCheck_str = strFormat.id_check_format.format(id_str)
+
+        getControllerInvoke_str = strFormat.get_controller_invoke_format.format(className_str)
+
+        deleteControllerInvoke_str = strFormat.delete_controller_invoke_format.format(className_str)
+
+        putControllerInvoke_str = strFormat.put_controller_invoke_format.format(className_str)
+
+        return fileFormat.template_resource.format('{}', imports=imports_str, className=className_str, id=id_str,
+                                                   idCheck=idCheck_str, argument=argument_str,
+                                                   getControllerInvoke=getControllerInvoke_str,
+                                                   deleteControllerInvoke=deleteControllerInvoke_str,
+                                                   putControllerInvoke=putControllerInvoke_str
+                                                   )
+
+    # otherResource generation 
+    def other_resource_codegen(self, table):
+        # Remove underline
+        api_name = str_format_convert(table.get('tableName'))
+
+        # Template generation
+        imports_str = strFormat.resource_imports_format.format(api_name)
+
+        className_str = api_name.capitalize()
+
+        id_str = table.get('primaryKey')
+
+        # Get field list (except primary key)
+        argument_str = ''
+        for j in table.get('columns').values():
+            if j.get('name') != table.get('primaryKey'):
+                argument_str += strFormat.arguement_format.format(j.get('name'), j.get('type'))
+
+        getControllerInvoke_str = strFormat.get_controller_invoke_format.format(table.get('tableName'))
+
+        postControllerInvoke_str = strFormat.post_controller_invoke_format.format(table.get('tableName'))
+
+        return fileFormat.template_other_resource.format(imports=imports_str, className=className_str, id=id_str,
+                                                         argument=argument_str,
+                                                         getControllerInvoke=getControllerInvoke_str,
+                                                         postControllerInvoke=postControllerInvoke_str
+                                                         )
