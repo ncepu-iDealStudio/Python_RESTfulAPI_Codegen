@@ -1,8 +1,8 @@
-#set basic mirror: Centos7
+# set basic mirror: Centos7
 FROM centos:7
 LABEL title="centos7_Python3.8.11"
 
-#set local yum resource
+# set local yum resource
 RUN yum -y install wget
 
 RUN cd /etc/yum.repos.d/ \
@@ -11,7 +11,7 @@ RUN cd /etc/yum.repos.d/ \
 && yum clean all \
 && yum makecache
 
-#install Development Tools requiments
+# install Development Tools requiments
 RUN yum -y groupinstall "Development Tools" \
 &&  yum -y install openssl-devel bzip2-devel libffi-devel \
 &&  rm -rf /var/cache/yum/* \
@@ -36,10 +36,7 @@ RUN yum -y groupremove "Development Tools"
 
 #python3 [command]
 
-
-FROM centos7-python3.8:v1
-LABEL author="zr"
-LABEL purpose = 'deploy api.experiment.ncepu.edu.cn'
+# Setup the environment
 ENV PYTHONIOENCODING=utf-8
 
 # Build folder
