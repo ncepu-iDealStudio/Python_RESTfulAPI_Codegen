@@ -13,6 +13,7 @@ import os.path
 import sys
 from decimal import Decimal
 from utils.common import str_format_convert
+from utils.loggings import loggings
 
 
 type_map = {
@@ -24,7 +25,8 @@ type_map = {
 
 class CodeGenerator(object):
     basic_template = """\
-# coding: utf-8
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
 {imports}
 
 
@@ -33,14 +35,14 @@ class {class_name}({parent_model}):
     add_template = """
     # 添加
     @classmethod
-    def add(cls, **kwargs)
+    def add(cls, **kwargs):
         try:
             model = {parent_model}(
                 {column_init}
             )
             db.session.add(model)
             db.session.commit()
-            results = commons.query_to_dict(other)
+            results = commons.query_to_dict(model)
             return {{'code': RET.OK, 'message': '添加成功', 'data': results}}
         except Exception as e:
             db.session.rollback()
@@ -48,16 +50,15 @@ class {class_name}({parent_model}):
             return {{'code': RET.DBERR, 'message': '数据库异常，添加失败', 'error': str(e)}}
         finally:
             db.session.close()
-            
 """
     get_template = """
     # 查询
     @classmethod
-    def get(cls, **kwargs)
+    def get(cls, **kwargs):
         try:
             filter_list = []
-            if kwargs.get({primary_key}):
-                filter_list.append(cls.{primary_key} == kwargs.get({primary_key}))
+            if kwargs.get('{primary_key}'):
+                filter_list.append(cls.{primary_key} == kwargs.get('{primary_key}'))
             else:
                 {get_filter_list}
             info = db.session.query(cls).filter(*filter_list).all()
@@ -68,11 +69,10 @@ class {class_name}({parent_model}):
             results = commons.query_to_dict(info)
             return {{'code': RET.OK, 'message': '查询成功', 'data': results}}
         except Exception as e:
-        loggings.error(str(e))
+            loggings.error(str(e))
             return {{'code': RET.DBERR, 'message': '数据库异常，查询失败', 'error': str(e)}}
         finally:
             db.session.close()
-
 """
     delete_template_logic = """    
     # 删除
@@ -90,7 +90,6 @@ class {class_name}({parent_model}):
             return {{'code': RET.DBERR, 'message': '数据库异常，删除失败', 'error': str(e)}}
         finally:
             db.session.close()
-    
 """
     delete_template_physical = """
     # 删除
@@ -101,7 +100,7 @@ class {class_name}({parent_model}):
                 cls.{primary_key} == kwargs.get('primary_key')
             ).with_for_update().update({{'IsDelete': 1}})
             if res < 1:
-                return {{'code': RET.NODATA， 'message': '无可删除结果', 'error': '无可删除结果'}}
+                return {{'code': RET.NODATA, 'message': '无可删除结果', 'error': '无可删除结果'}}
             db.session.commit()
             return {{'code': RET.OK, 'message': '删除成功'}}
         except Exception as e:
@@ -129,7 +128,6 @@ class {class_name}({parent_model}):
             return {{'code': RET.DBERR, 'message': '数据库异常，修改失败', 'error': str(e)}}
         finally:
             db.session.close()
-
 """
 
     def __init__(self, metadata):
@@ -168,8 +166,7 @@ from app import db
 from models.{model_name} import {parent_model}
 from utils import commons
 from utils.response_code import RET
-from utils.loggings import loggings
-'''.format(model_name=model_name, parent_model=parent_model)
+from utils.loggings import loggings'''.format(model_name=model_name, parent_model=parent_model)
             basic = self.basic_template.format(imports=imports, class_name=class_name, parent_model=parent_model)
 
             # 组合column_init
@@ -178,7 +175,7 @@ from utils.loggings import loggings
                 if column_v['autoincrement'] is True:
                     continue
                 else:
-                    text = '''{column}=kwargs.get('{column}')
+                    text = '''{column}=kwargs.get('{column}'),
                 '''.format(column=column_k)
                     column_init += text
             add = self.add_template.format(parent_model=parent_model, column_init=column_init)
@@ -191,11 +188,11 @@ from utils.loggings import loggings
                 else:
                     if column_v['type'] in ['int', 'float']:
                         text = '''if kwargs.get('{column}') is not None:
-                    filter_list.append(cls.{column} == kwargs.get('{column}')
+                    filter_list.append(cls.{column} == kwargs.get('{column}'))
                 '''.format(column=column_k)
                     else:
                         text = '''if kwargs.get('{column}'):
-                    filter_list.append(cls.{column} == kwargs.get('{column}')
+                    filter_list.append(cls.{column} == kwargs.get('{column}'))
                 '''.format(column=column_k)
                     get_filter_list += text
             get = self.get_template.format(primary_key=primary_key, get_filter_list=get_filter_list)
@@ -209,10 +206,12 @@ from utils.loggings import loggings
             # 组合update
             update = self.update_template.format(primary_key=primary_key)
 
-            file_name = hump_str + 'Controller.py'
+            file_name = hump_str + 'Controller'
             codes[file_name] = basic + add + get + delete + update
 
         for k, v in codes.items():
-            m_file = os.path.join(controller_dir, k)
-            with open(m_file, 'w') as fw:
+            loggings.info(1, '正在生成{}...'.format(k))
+            m_file = os.path.join(controller_dir, k + '.py')
+            with open(m_file, 'w', encoding='utf8') as fw:
                 fw.write(v)
+            loggings.info(1, '{}生成完毕'.format(k))
