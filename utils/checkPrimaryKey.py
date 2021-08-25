@@ -17,7 +17,7 @@ from config.setting import Settings
 def check_primary_key():
     """
     根据代码生成模式，自动读取所有表或所需表，检验主键后返回合规的表列表
-    :return: 符合规范的表列表，即有且仅有一个自增主键，没有符合规范的情况下返回None
+    :return: 符合规范的表名列表，即有且仅有一个自增主键，没有符合规范的情况下返回None
     """
     url = Settings.MODEL_URL
     engine = create_engine(url)
@@ -45,5 +45,5 @@ def check_primary_key():
             if j.primary_key is True and j.autoincrement is True:
                 autoincrement_flag = True
         if primary_flag and autoincrement_flag and not repeat_flag:
-            results.append(i)
+            results.append(i.key)
     return results if results else None
