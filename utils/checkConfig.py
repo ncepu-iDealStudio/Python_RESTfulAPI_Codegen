@@ -59,12 +59,12 @@ def check_config():
         if Settings.CODEGEN_LAYER in ['default', 'model']:
             # 代码生成层级为默认或模型层，读取MODEL参数
             model = {
-                'url': Settings.MODEL_URL,
-                'outfile': Settings.MODEL_OUTFILE
+                'url': Settings.MODEL_URL
             }
-            for i in ['url', 'outfile']:
-                if not model[i]:
-                    raise Exception('{}参数缺失'.format(i))
+
+            if not model['url']:
+                raise Exception('{}参数缺失'.format('url'))
+
             if Settings.CODEGEN_MODE == 'table' and not Settings.MODEL_TABLES:
                 raise Exception('{}参数缺失'.format('tables'))
 

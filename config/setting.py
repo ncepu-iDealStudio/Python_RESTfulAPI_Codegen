@@ -26,8 +26,12 @@ class Settings(object):
     PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
     # 项目生成的目标路径
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # 目标目录
     TARGET_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR'])
+    # 项目目录
     PROJECT_DIR = os.path.join(TARGET_DIR, PROJECT_NAME)
+    # 生成项目API的版本
+    API_VERSION = CONFIG['PARAMETER']['API_VERSION'].replace('.', '_')
     # 代码生成模式-database|table-整库模式|多表模式
     CODEGEN_MODE = CONFIG['PARAMETER']['CODEGEN_MODE']
     # 代码生成层级- default|model|controller|resource|static - 全部|模型层|控制器层|接口层|静态资源层
@@ -69,7 +73,6 @@ class Settings(object):
             MODEL_NOCOMMENTS = CONFIG.getboolean('MODEL', i)
     except Exception as e:
         raise Exception('{}参数不是一个合法的布尔型'.format(i))
-    MODEL_OUTFILE = CONFIG['MODEL']['OUTFILE']
 
     # controller层配置
     CONTROLLER_RECORD_DELETE_WAY = CONFIG['CONTROLLER']['RECORD_DELETE_WAY']

@@ -9,8 +9,10 @@
 """
     this is function description
 """
+
 from sqlalchemy import create_engine, MetaData
 from config.setting import Settings
+from utils.loggings import loggings
 
 
 class CheckTable(object):
@@ -31,22 +33,33 @@ class CheckTable(object):
         if Settings.CODEGEN_MODE == 'table':
             for i in Settings.MODEL_TABLES.replace(' ', '').split(','):
                 tables.append(metadata.tables[i])
-        else:
+        elif Settings.CODEGEN_MODE == 'database':
             tables = metadata.tables.values()
-        results = []
-        for i in tables:
+
+        available_tables = []
+        invalid_tables = []
+
+        for table in tables:
             primary_flag = False  # 有无主键
             autoincrement_flag = False  # 是否自增
             repeat_flag = False  # 主键是否重复
-            for j in i.c.values():  # j为字段(Column)
-                if j.primary_key is True:
+            for column in table.c.values():
+                if column.primary_key:
                     if not primary_flag:
                         primary_flag = True
                     else:
                         repeat_flag = True
                         break
-                if j.primary_key is True and j.autoincrement is True:
+                if column.primary_key and column.autoincrement:
                     autoincrement_flag = True
             if primary_flag and autoincrement_flag and not repeat_flag:
-                results.append(i.key)
-        return results if results else None
+                available_tables.append(table.key)
+            else:
+                invalid_tables.append(table.key)
+
+        if len(invalid_tables) > 0:
+            loggings.warning(1, "以下{0}张表不符合规范，无法生成：{1}".format(len(invalid_tables), ",".join(invalid_tables)))
+            return available_tables if available_tables else None
+
+        loggings.info(1, "表检查全部通过， 共计{0}张表".format(len(tables)))
+        return available_tables if available_tables else None
