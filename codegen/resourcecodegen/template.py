@@ -15,7 +15,7 @@ class FileTemplate():
     """
 
     """
-    template_init = """#!/usr/bin/env python
+    init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 from flask import Blueprint
@@ -25,7 +25,7 @@ from . import urls
 {blueprint}
 """
 
-    template_urls = """#!/usr/bin/env python
+    urls = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 from flask_restful import Api
@@ -39,7 +39,7 @@ from flask_restful import Api
 {otherResource}
 """
 
-    template_resource = """#!/usr/bin/env python
+    resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
 
 from flask_restplus import Resource, reqparse
@@ -50,22 +50,19 @@ from flask import g, jsonify
 class {className}Resource(Resource):
 
     # query with primary_key
-    @classmethod
-    def get(cls, {id}):
+    def get(self, {id}):
         kwargs = {0}
 {idCheck}
 {getControllerInvoke}
 
     # delete
-    @classmethod
-    def delete(cls, {id}):
+    def delete(self, {id}):
         kwargs = {0}
 {idCheck}
 {deleteControllerInvoke}
 
     # put
-    @classmethod
-    def put(cls, {id}):
+    def put(self, {id}):
         parser = reqparse.RequestParser()
 {argument}
         kwargs = parser.parse_args()
@@ -74,7 +71,7 @@ class {className}Resource(Resource):
 {putControllerInvoke}
 """
 
-    template_other_resource = """#!/usr/bin/env python
+    other_resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 from flask_restplus import Resource, reqparse
@@ -85,8 +82,7 @@ from flask import g, jsonify
 class {className}OtherResource(Resource):
 
     # add
-    @classmethod
-    def post(cls):
+    def post(self):
         parser = reqparse.RequestParser()
 {argument}
         kwargs = parser.parse_args()
@@ -95,7 +91,7 @@ class {className}OtherResource(Resource):
 
     # list query
     @classmethod
-    def get(cls):
+    def get(self):
         parser = reqparse.RequestParser()
 {argument}
         kwargs = parser.parse_args()
@@ -104,61 +100,62 @@ class {className}OtherResource(Resource):
 """
 
 
-
 class CodeBlockTemplate():
     """
     代码块（行）模板
-    url_:为生成url.py文件定义的模板；
-
+    init_: template for __init__.py
+    url_: template for urls.py
+    resource_: template for resource.py
+    other_resource_: template for otherResource.py
     """
-    blueprint_format = '{0}_blueprint = Blueprint("{1}", __name__)'
+    primary_key = '{0}/<int:{1}>'
 
-    urls_imports_format = """from . import {0}_blueprint
-from api_1.{1}Resource.{1}Resource import {2}Resource
-from api_1.{1}Resource.{1}OtherResource import {2}OtherResource"""
+    parameter = '        parser.add_argument("{0}", type={1}, location="form", required=False, help="{0}参数类型不正确或缺失")\n'
 
-    api_format = 'api = APi({0}_blueprint)'
+    init_blueprint = '{0}_blueprint = Blueprint("{1}", __name__)'
 
-    primary_key_format = '/<int:{0}>'
+    urls_imports = """from . import {0}_blueprint
+from api_{1}.{2}Resource.{2}Resource import {3}Resource
+from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
-    resource_format = 'api.add_resource({0}Resource, "{1}", endpoint="{2}")'
+    urls_api = 'api = APi({0}_blueprint)'
 
-    other_resource_format = 'api.add_resource({0}OtherResource, "", endpoint="{1}_list")'
+    urls_resource = 'api.add_resource({0}Resource, "/{1}", endpoint="{2}")'
 
-    resource_imports_format = """
+    urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{2}_list")'
+
+    resource_imports = """
 from controller.{0}Controller import {0}Controller
 from utils import commons
 from utils.response_code import RET"""
 
-    id_check_format = """
+    resource_id_check = """
         if not {0}:
             return jsonify(code=RET.NODATA, message='primary_key missed', error='primary_key missed')
         kwargs["{0}"] = {0}"""
 
-    arguement_format = '        parser.add_argument("{0}", type={1}, location="form", required=False, help="{0}参数类型不正确或缺失")\n'
-
-    get_controller_invoke_format = """
+    get_controller_invoke = """
         res = {0}Controller.get(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'])
         else:
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
-    delete_controller_invoke_format = """
+    resource_delete_controller_invoke = """
         res = {0}Controller.delete(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'])
         else:
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
-    put_controller_invoke_format = """
-        res = {0}Controller.put(**kwargs)
+    resource_put_controller_invoke = """
+        res = {0}Controller.update(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'])
         else:
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
-    post_controller_invoke_format = """
+    other_resource_post_controller_invoke = """
         res = {0}Controller.add(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'])

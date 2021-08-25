@@ -15,7 +15,9 @@
 import os
 from decimal import Decimal
 
+from utils.loggings import loggings
 from utils.response_code import RET
+from config.setting import Settings
 from utils.common import str_format_convert, new_file_or_dir
 from .template import FileTemplate, CodeBlockTemplate
 
@@ -49,51 +51,44 @@ class CodeGenerator(object):
                 if j.primary_key:
                     if not table_dict[str(i)].get('primaryKey'):
                         table_dict[str(i)]['primaryKey'] = str(j.name)
-                    else:
-                        return {'code': RET.DBERR, 'message': '{0}表内存在多个主键'.format(str(i)),
-                                'error': '{0}表内存在多个主键'.format(str(i))}
-                if j.type.python_type in type_map.keys():
-                    table_dict[str(i)]['columns'][str(j.name)]['type'] = type_map[j.type.python_type]
-                else:
-                    table_dict[str(i)]['columns'][str(j.name)]['type'] = 'str'
-
-        # Init generation
+                table_dict[str(i)]['columns'][str(j.name)]['type'] = type_map[j.type.python_type] if type_map.get(j.type.python_type) else 'str'
+        # File generation
         for table in table_dict.keys():
-            # Init generation
-            init_list = self.init_codegen(table_dict[table]).replace('\"', '\'')
-            # print(init_list)
-            # Urls generation
-            urls_list = self.urls_codegen(table_dict[table]).replace('\"', '\'')
-            # print(urls_list)
-            # Resource generation
-            resource_list = self.resource_codegen(table_dict[table]).replace('\"', '\'')
-            # print(resource_list)
-            # OtherResource generation
-            otherResource_list = self.other_resource_codegen(table_dict[table]).replace('\"', '\'')
-            # print(otherResource_list)
-
             resource_dir = os.path.join(target_dir, '{0}Resource'.format(str_format_convert(
                 table_dict[table].get('tableName')
             )))
             new_file_or_dir(2, resource_dir)
 
+            # Init generation
             init_file = os.path.join(resource_dir, '__init__.py')
             new_file_or_dir(1, init_file)
+            init_list = self.init_codegen(table_dict[table]).replace('\"', '\'')
+            # print(init_list)
 
+            # Urls generation
             urls_file = os.path.join(resource_dir, 'urls.py')
             new_file_or_dir(1, urls_file)
+            urls_list = self.urls_codegen(table_dict[table]).replace('\"', '\'')
+            # print(urls_list)
 
+            # Resource generation
             resource_file = os.path.join(resource_dir, '{0}Resource.py'.format(str_format_convert(
                 table_dict[table].get('tableName')
             )))
             new_file_or_dir(1, resource_file)
+            resource_list = self.resource_codegen(table_dict[table]).replace('\"', '\'')
+            # print(resource_list)
 
+            # OtherResource generation
             other_resource_file = os.path.join(resource_dir, '{0}OtherResource.py'.format(str_format_convert(
                 table_dict[table].get('tableName')
             )))
             new_file_or_dir(1, other_resource_file)
+            otherResource_list = self.other_resource_codegen(table_dict[table]).replace('\"', '\'')
+            # print(otherResource_list)
 
             # File write
+            loggings.info(1, 'Generating {0}Resource'.format(table_dict[table].get('tableName')))
             with open(init_file, 'w', encoding='utf8') as f:
                 f.write(init_list)
             with open(urls_file, 'w', encoding='utf8') as f:
@@ -108,24 +103,25 @@ class CodeGenerator(object):
         # Remove underline
         blueprint_name = str_format_convert(table.get('tableName'))
         # Template generation
-        blueprint_str = CodeBlockTemplate.blueprint_format.format(blueprint_name.lower(), blueprint_name)
-        return FileTemplate.template_init.format(blueprint=blueprint_str)
+        blueprint_str = CodeBlockTemplate.init_blueprint.format(blueprint_name.lower(), blueprint_name)
+        return FileTemplate.init.format(blueprint=blueprint_str)
 
     #  urls generation
     def urls_codegen(self, table):
         # Remove underline
         api_name = str_format_convert(table.get('tableName'))
         # Template  generation
-        import_str = CodeBlockTemplate.urls_imports_format.format(api_name.lower(), api_name, api_name.capitalize())
+        import_str = CodeBlockTemplate.urls_imports.format(api_name.lower(), Settings.API_VERSION, api_name, api_name.capitalize())
 
-        api_str = CodeBlockTemplate.api_format.format(api_name)
+        api_str = CodeBlockTemplate.urls_api.format(api_name)
 
-        primary_key_str = CodeBlockTemplate.primary_key_format.format(str_format_convert(table.get('primaryKey')))
-        resource_str = CodeBlockTemplate.resource_format.format(api_name.capitalize(), primary_key_str, api_name)
+        primary_key_str = CodeBlockTemplate.primary_key.format(
+            api_name, str_format_convert(table.get('primaryKey')))
+        resource_str = CodeBlockTemplate.urls_resource.format(api_name.capitalize(), primary_key_str, api_name)
 
-        other_resource_str = CodeBlockTemplate.other_resource_format.format(api_name.capitalize(), api_name)
+        other_resource_str = CodeBlockTemplate.urls_other_resource.format(api_name.capitalize(), api_name, api_name)
 
-        return FileTemplate.template_urls.format(
+        return FileTemplate.urls.format(
             imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str)
 
     # resource generation 
@@ -134,7 +130,7 @@ class CodeGenerator(object):
         api_name = str_format_convert(table.get('tableName'))
 
         # Template  generation
-        imports_str = CodeBlockTemplate.resource_imports_format.format(api_name)
+        imports_str = CodeBlockTemplate.resource_imports.format(api_name)
 
         className_str = api_name.capitalize()
 
@@ -144,22 +140,22 @@ class CodeGenerator(object):
         argument_str = ''
         for j in table.get('columns').values():
             if j.get('name') != table.get('primaryKey'):
-                argument_str += CodeBlockTemplate.arguement_format.format(j.get('name'), j.get('type'))
+                argument_str += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
 
-        idCheck_str = CodeBlockTemplate.id_check_format.format(id_str)
+        idCheck_str = CodeBlockTemplate.resource_id_check.format(id_str)
 
-        getControllerInvoke_str = CodeBlockTemplate.get_controller_invoke_format.format(className_str)
+        getControllerInvoke_str = CodeBlockTemplate.get_controller_invoke.format(className_str)
 
-        deleteControllerInvoke_str = CodeBlockTemplate.delete_controller_invoke_format.format(className_str)
+        deleteControllerInvoke_str = CodeBlockTemplate.resource_delete_controller_invoke.format(className_str)
 
-        putControllerInvoke_str = CodeBlockTemplate.put_controller_invoke_format.format(className_str)
+        putControllerInvoke_str = CodeBlockTemplate.resource_put_controller_invoke.format(className_str)
 
-        return FileTemplate.template_resource.format('{}', imports=imports_str, className=className_str, id=id_str,
-                                                   idCheck=idCheck_str, argument=argument_str,
-                                                   getControllerInvoke=getControllerInvoke_str,
-                                                   deleteControllerInvoke=deleteControllerInvoke_str,
-                                                   putControllerInvoke=putControllerInvoke_str
-                                                   )
+        return FileTemplate.resource.format('{}', imports=imports_str, className=className_str, id=id_str,
+                                            idCheck=idCheck_str, argument=argument_str,
+                                            getControllerInvoke=getControllerInvoke_str,
+                                            deleteControllerInvoke=deleteControllerInvoke_str,
+                                            putControllerInvoke=putControllerInvoke_str
+                                            )
 
     # otherResource generation 
     def other_resource_codegen(self, table):
@@ -167,7 +163,7 @@ class CodeGenerator(object):
         api_name = str_format_convert(table.get('tableName'))
 
         # Template generation
-        imports_str = CodeBlockTemplate.resource_imports_format.format(api_name)
+        imports_str = CodeBlockTemplate.resource_imports.format(api_name)
 
         className_str = api_name.capitalize()
 
@@ -177,14 +173,14 @@ class CodeGenerator(object):
         argument_str = ''
         for j in table.get('columns').values():
             if j.get('name') != table.get('primaryKey'):
-                argument_str += CodeBlockTemplate.arguement_format.format(j.get('name'), j.get('type'))
+                argument_str += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
 
-        getControllerInvoke_str = CodeBlockTemplate.get_controller_invoke_format.format(table.get('tableName'))
+        getControllerInvoke_str = CodeBlockTemplate.get_controller_invoke.format(table.get('tableName'))
 
-        postControllerInvoke_str = CodeBlockTemplate.post_controller_invoke_format.format(table.get('tableName'))
+        postControllerInvoke_str = CodeBlockTemplate.other_resource_post_controller_invoke.format(table.get('tableName'))
 
-        return FileTemplate.template_other_resource.format(imports=imports_str, className=className_str, id=id_str,
-                                                         argument=argument_str,
-                                                         getControllerInvoke=getControllerInvoke_str,
-                                                         postControllerInvoke=postControllerInvoke_str
-                                                         )
+        return FileTemplate.other_resource.format(imports=imports_str, className=className_str, id=id_str,
+                                                  argument=argument_str,
+                                                  getControllerInvoke=getControllerInvoke_str,
+                                                  postControllerInvoke=postControllerInvoke_str
+                                                  )
