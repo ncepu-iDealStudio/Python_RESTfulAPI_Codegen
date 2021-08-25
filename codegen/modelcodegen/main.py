@@ -11,18 +11,12 @@
 """
 
 import os
-import sys
 
-from codegen.modelcodegen_new import cmd, models_path
+from codegen.modelcodegen import cmd, models_path
 from config.setting import Settings
 from utils.checkTable import CheckTable
 from utils.loggings import loggings
 from utils.common import str_format_convert
-
-if sys.version_info < (3, 8):
-    from importlib_metadata import version
-else:
-    from importlib.metadata import version
 
 
 def modelGenerate():
@@ -30,24 +24,14 @@ def modelGenerate():
     model层代码的生成
     :return: None
     """
-    url = Settings.MODEL_URL
-    sqlacodegen_version = Settings.MODEL_VERSION
-
-    if sqlacodegen_version:
-        print(version('sqlacodegen'))
-        return
-    if not url:
-        loggings.error(1, 'You must supply a url!')
-        return
 
     tables = CheckTable.check_primary_key()
 
     try:
-
         for table in tables:
             loggings.info(1, "正在生成{0}表的model代码".format(table))
             command = cmd.format(
-                url=url,
+                url=Settings.MODEL_URL,
                 schema="",
                 tables=" --tables {0}".format(table),
                 noviews="",

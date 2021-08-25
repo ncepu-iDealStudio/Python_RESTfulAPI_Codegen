@@ -11,7 +11,7 @@
 """
 
 from codegen.controllercodegen import controllerGenerate
-from codegen.modelcodegen_new.main import modelGenerate
+from codegen.modelcodegen.main import modelGenerate
 from codegen.resourcecodegen import resourceGenerate
 from codegen.staticcodegen import staticGenerate
 from utils.checkConfig import check_config
