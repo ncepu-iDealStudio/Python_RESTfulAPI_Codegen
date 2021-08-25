@@ -7,8 +7,11 @@
 # software: PyCharm
 
 """
-this is function description
+  generate resource lay code.
+  This generator is a very simple boilerplate for generate a REST api using Flask, flask-restful,  marshmallow, SQLAlchemy and jwt.
+  It comes with basic project structure and configuration, including blueprints, application factory and basics unit tests.
 """
+
 import os
 from decimal import Decimal
 
@@ -16,7 +19,7 @@ from utils.response_code import RET
 from utils.common import str_format_convert, new_file_or_dir
 from .template import fileFormat, strFormat
 
-tyep_map = {
+type_map = {
     int: 'int',
     float: 'float',
     Decimal: 'float'
@@ -49,10 +52,11 @@ class CodeGenerator(object):
                     else:
                         return {'code': RET.DBERR, 'message': '{0}表内存在多个主键'.format(str(i)),
                                 'error': '{0}表内存在多个主键'.format(str(i))}
-                if j.type.python_type in tyep_map.keys():
-                    table_dict[str(i)]['columns'][str(j.name)]['type'] = tyep_map[j.type.python_type]
+                if j.type.python_type in type_map.keys():
+                    table_dict[str(i)]['columns'][str(j.name)]['type'] = type_map[j.type.python_type]
                 else:
                     table_dict[str(i)]['columns'][str(j.name)]['type'] = 'str'
+
         # Init generation
         for table in table_dict.keys():
             # Init generation

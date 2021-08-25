@@ -8,17 +8,16 @@
 '''
     this is function  description 
 '''
-import io
 import os
 import sys
 
 import pkg_resources
 from sqlalchemy import create_engine, MetaData
 
-from config.setting import Settings
-from utils.common import new_file_or_dir
-from utils.checkTable import CheckTable
 from codegen.resourcecodegen.codegen import CodeGenerator
+from config.setting import Settings
+from utils.checkTable import CheckTable
+from utils.common import new_file_or_dir
 
 
 def resourceGenerate():

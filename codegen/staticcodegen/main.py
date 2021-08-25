@@ -39,7 +39,7 @@ def copy_static(target_dir, source_dir):
                         os.makedirs(target_file)
                     # 拷贝
                     shutil.copy(src_file, target_file)
-                    loggings.info(2, "文件{}已生成拷贝到{}中".format(src_file, target_file))
+                    loggings.info(1, "文件{}已生成拷贝到{}中".format(src_file, target_file))
         return {'code': RET.OK, 'message': '拷贝成功'}
     except Exception as e:
         return {'code': RET.IOERR, 'message': '静态资源拷贝过程出现错误', 'error': str(e)}
