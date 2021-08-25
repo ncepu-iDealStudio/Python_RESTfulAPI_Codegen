@@ -17,6 +17,7 @@ from sqlalchemy import create_engine, MetaData
 
 from config.setting import Settings
 from utils.common import new_file_or_dir
+from utils.checkTable import CheckTable
 from codegen.resourcecodegen.codegen import CodeGenerator
 
 
@@ -29,7 +30,7 @@ def resourceGenerate():
     url = Settings.MODEL_URL
     version = Settings.MODEL_VERSION
     schema = Settings.MODEL_SCHEMA
-    tables = Settings.MODEL_TABLES
+    tables = CheckTable.check_primary_key()
     noviews = Settings.MODEL_NOVIEWS
 
     if version:
@@ -50,8 +51,6 @@ def resourceGenerate():
     # Use reflection to fill in the metadata
     engine = create_engine(url)
     metadata = MetaData(engine)
-    tables = tables.split(',') if tables else None
-    tables = ['user', 'teacher']
 
     metadata.reflect(engine, schema, not noviews, tables)
     generator = CodeGenerator(metadata)
