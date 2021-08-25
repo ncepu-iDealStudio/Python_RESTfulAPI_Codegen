@@ -11,7 +11,10 @@
 """
 
 
-class fileFormat():
+class FileTemplate():
+    """
+
+    """
     template_init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
@@ -101,7 +104,13 @@ class {className}OtherResource(Resource):
 """
 
 
-class strFormat():
+
+class CodeBlockTemplate():
+    """
+    代码块（行）模板
+    url_:为生成url.py文件定义的模板；
+
+    """
     blueprint_format = '{0}_blueprint = Blueprint("{1}", __name__)'
 
     urls_imports_format = """from . import {0}_blueprint

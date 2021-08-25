@@ -14,7 +14,7 @@ import sys
 import pkg_resources
 from sqlalchemy import create_engine, MetaData
 
-from codegen.resourcecodegen.codegen import CodeGenerator
+from codegen.resourcecodegen.codegenrator import CodeGenerator
 from config.setting import Settings
 from utils.checkTable import CheckTable
 from utils.common import new_file_or_dir
