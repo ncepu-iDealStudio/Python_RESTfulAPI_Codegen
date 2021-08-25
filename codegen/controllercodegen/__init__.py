@@ -15,6 +15,7 @@ import sys
 from sqlalchemy import create_engine, MetaData
 from config.setting import Settings
 from codegen.controllercodegen.codegen import CodeGenerator
+from utils.checkTable import CheckTable
 
 
 def controllerGenerate():
@@ -23,11 +24,9 @@ def controllerGenerate():
     :return: None
     """
     url = Settings.MODEL_URL
-    codegen_mode = Settings.CODEGEN_MODE
     codegen_layer = Settings.CODEGEN_LAYER
     schema = Settings.MODEL_SCHEMA
     version = Settings.MODEL_VERSION
-    tables = Settings.MODEL_TABLES
     noviews = Settings.MODEL_NOVIEWS
     noindexes = Settings.MODEL_NOINDEXES
     noconstraints = Settings.MODEL_NOCONSTRAINTS
@@ -42,14 +41,12 @@ def controllerGenerate():
     if codegen_layer not in ['default', 'controller']:
         return
 
+    tables = CheckTable.check_primary_key()
+
     # 连接数据库用反射获取元数据
     engine = create_engine(url)
     metadata = MetaData(engine)
-    if codegen_mode == 'database':
-        metadata.reflect(engine, schema, not noviews)
-    else:
-        tables = tables.split(',')
-        metadata.reflect(engine, schema, not noviews, tables)
+    metadata.reflect(engine, schema, not noviews, tables)
 
     outfile = io.open(outfile, 'w', encoding='utf-8') if outfile else sys.stdout
     generator = CodeGenerator(metadata)
