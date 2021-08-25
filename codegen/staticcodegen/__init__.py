@@ -5,9 +5,11 @@
 # author:jackiex
 # datetime:2021/8/21 13:32
 # software: PyCharm
+
 '''
-    静态资源拷贝至项目下
+    功能说明：将目标项目所需要的静态配置资源同步至项目下
 '''
+
 import os
 
 from utils.common import new_file_or_dir
@@ -17,7 +19,7 @@ from config.setting import Settings
 
 def staticGenerate():
     """
-    打包静态文件
+     同步静态文件
     :return: 静态资源拷贝完成状态
     """
     # 获取目标目录

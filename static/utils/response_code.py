@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+'''
+ User defined Error code.
+'''
+
 class RET:
     OK = "2000"
 
@@ -24,8 +28,6 @@ class RET:
 
 error_map = {
     RET.OK: u"成功",
-
-
     RET.NODATA: u"无数据",
     RET.DATAEXIST: u"数据已存在",
     RET.DATAERR: u"数据错误",

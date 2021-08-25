@@ -2,12 +2,11 @@
 # -*- coding:utf-8 -*-
 
 """
-    操作日志记录
+    操作日志记录类定义
 """
+
 import sys
-
 from loguru import logger
-
 
 class Loggings(object):
     __instance = None

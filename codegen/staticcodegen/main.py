@@ -11,14 +11,12 @@
     2 you can put these static resource  into "static" directory,such as "dockerfile" and some
      common tools(or function) that you will use in your target project;
     3 some resource we need has already copied into default static directory;
-
 '''
 
 import os
 import shutil
 from utils.loggings import loggings
 from utils.response_code import RET
-
 
 # 生成或拷贝目标项目所需要的静态配置等文件
 def copy_static(target_dir, source_dir):

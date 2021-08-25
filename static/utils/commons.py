@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 '''
- this is function  description
+ some common tools or fuctions your api project maybe need!
 '''
 
 from werkzeug.routing import BaseConverter

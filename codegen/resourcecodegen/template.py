@@ -10,7 +10,6 @@
     the template file define.
 """
 
-
 class FileTemplate():
     """
 
