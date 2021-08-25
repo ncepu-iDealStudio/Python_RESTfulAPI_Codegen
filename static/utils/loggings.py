@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# file:loggings.py.py
-# author:Nathan
-# datetime:2021/8/22 16:28
-# software: PyCharm
-
 """
     操作日志记录
 """

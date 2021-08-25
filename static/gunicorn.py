@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-# file:gunicorn.conf
-# author:张仁
-# datetime:2021/8/19 14:56
-# software: PyCharm
+
 """
     gunicorn启动文件
 """
@@ -13,7 +10,7 @@ import sys
 
 def start():
     cmd = 'source /deploy/app/venv/bin/activate;' \
-          'cd /deploy/app/api.experiment.ncepu.edu.cn;' \
+          'cd /deploy/your project;' \
           'gunicorn -c deploy/gunicorn.conf manage:app -D'
     os.system(cmd)
 

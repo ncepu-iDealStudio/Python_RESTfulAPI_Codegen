@@ -1,4 +1,42 @@
-# Please configure "insecure-registries" in daemon.json: ["http://harbor.quwancode.com"]
+#set basic mirror: Centos7
+FROM centos:7
+LABEL title="centos7_Python3.8.11"
+
+#set local yum resource
+RUN yum -y install wget
+
+RUN cd /etc/yum.repos.d/ \
+ && rm -rf /etc/yum.repos.d/*.repo \
+&& wget  http://mirrors.aliyun.com/repo/Centos-7.repo \
+&& yum clean all \
+&& yum makecache
+
+#install Development Tools requiments
+RUN yum -y groupinstall "Development Tools" \
+&&  yum -y install openssl-devel bzip2-devel libffi-devel \
+&&  rm -rf /var/cache/yum/* \
+&&  yum clean all
+
+#install Python
+WORKDIR /usr/local
+RUN mkdir python3
+RUN wget https://www.python.org/ftp/python/3.8.11/Python-3.8.11.tgz
+RUN tar xvf Python-3.8.11.tgz
+WORKDIR /usr/local/Python-3.8.11
+RUN ./configure --prefix=/usr/local/python3 && make && make install
+RUN ln -s /usr/local/python3/bin/python3 /usr/bin/python3 && ln -s /usr/local/python3/bin/pip3 /usr/bin/pip3 && pip3 install --upgrade pip
+RUN python3 --version
+
+#Centos bugfix for python--根据操作系统的情况增加安装或者卸载软件包
+
+#clean up
+WORKDIR /usr/local
+RUN rm -f Python-3.8.11.tgz && rm -rf /usr/local/Python-3.8.11
+RUN yum -y groupremove "Development Tools"
+
+#python3 [command]
+
+
 FROM centos7-python3.8:v1
 LABEL author="zr"
 LABEL purpose = 'deploy api.experiment.ncepu.edu.cn'

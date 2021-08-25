@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# file: urls
-# author: Jackiex
-# datetime: 2020/4/22 16:39
-# software: PyCharm
-
 '''
  this is function  description
 '''
