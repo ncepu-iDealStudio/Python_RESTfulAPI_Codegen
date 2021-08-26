@@ -10,11 +10,10 @@
     this is function description
 """
 import os.path
-import sys
 from decimal import Decimal
+
 from utils.common import str_format_convert
 from utils.loggings import loggings
-
 
 type_map = {
     int: 'int',
@@ -33,7 +32,7 @@ class CodeGenerator(object):
 class {class_name}({parent_model}):
 """
     add_template = """
-    # 添加
+    # add
     @classmethod
     def add(cls, **kwargs):
         try:
@@ -43,16 +42,16 @@ class {class_name}({parent_model}):
             db.session.add(model)
             db.session.commit()
             results = commons.query_to_dict(model)
-            return {{'code': RET.OK, 'message': '添加成功', 'data': results}}
+            return {{'code': RET.OK, 'message': 'Added successfully', 'data': results}}
         except Exception as e:
             db.session.rollback()
             loggings.error(str(e))
-            return {{'code': RET.DBERR, 'message': '数据库异常，添加失败', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': 'Database exception, failed to add', 'error': str(e)}}
         finally:
             db.session.close()
 """
     get_template = """
-    # 查询
+    # get
     @classmethod
     def get(cls, **kwargs):
         try:
@@ -63,19 +62,19 @@ class {class_name}({parent_model}):
                 {get_filter_list}
             info = db.session.query(cls).filter(*filter_list).all()
             
-            # 判断返回的数据是否为空
+            # judge whether the data is None
             if not info:
-                return {{'code': RET.NODATA, 'message': '无查询结果', 'error': '无查询结果'}}
+                return {{'code': RET.NODATA, 'message': 'No query results', 'error': 'No query results'}}
             results = commons.query_to_dict(info)
-            return {{'code': RET.OK, 'message': '查询成功', 'data': results}}
+            return {{'code': RET.OK, 'message': 'Queried successfully', 'data': results}}
         except Exception as e:
             loggings.error(str(e))
-            return {{'code': RET.DBERR, 'message': '数据库异常，查询失败', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': 'Database exception, failed to query', 'error': str(e)}}
         finally:
             db.session.close()
 """
-    delete_template_logic = """    
-    # 删除
+    delete_template_physical = """    
+    # delete
     @classmethod
     def delete(cls, **kwargs):
         try:
@@ -83,16 +82,16 @@ class {class_name}({parent_model}):
                 cls.{primary_key} == kwargs.get('primary_key')
             ).with_for_update().delete()
             db.session.commit()
-            return {{'code': RET.OK, 'message': '删除成功'}}
+            return {{'code': RET.OK, 'message': 'Deleted successfully'}}
         except Exception as e:
             db.session.rollback()
             logggings.error(str(e))
-            return {{'code': RET.DBERR, 'message': '数据库异常，删除失败', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
         finally:
             db.session.close()
 """
-    delete_template_physical = """
-    # 删除
+    delete_template_logic = """
+    # delete
     @classmethod
     def delete(cls, **kwargs):
         try:
@@ -100,18 +99,18 @@ class {class_name}({parent_model}):
                 cls.{primary_key} == kwargs.get('primary_key')
             ).with_for_update().update({{'IsDelete': 1}})
             if res < 1:
-                return {{'code': RET.NODATA, 'message': '无可删除结果', 'error': '无可删除结果'}}
+                return {{'code': RET.NODATA, 'message': 'No data to delete', 'error': 'No data to delete'}}
             db.session.commit()
-            return {{'code': RET.OK, 'message': '删除成功'}}
+            return {{'code': RET.OK, 'message': 'Deleted successfully'}}
         except Exception as e:
             db.session.rollback()
             logggings.error(str(e))
-            return {{'code': RET.DBERR, 'message': '数据库异常，删除失败', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
         finally:
             db.session.close()
 """
     update_template = """
-    # 修改
+    # update
     @classmethod
     def update(cls, **kwargs):
         try:
@@ -119,13 +118,13 @@ class {class_name}({parent_model}):
                 cls.{primary_key} == kwargs.get('{primary_key}')
             ).with_for_update().update(kwargs)
             if res < 1:
-                return {{'code': RET.NODATA, 'message': '无可修改结果', 'error': '无可修改结果'}}
+                return {{'code': RET.NODATA, 'message': 'No data to update', 'error': 'No data to update'}}
             db.session.commit()
-            return {{'code': RET.OK, 'message': '修改成功'}}
+            return {{'code': RET.OK, 'message': 'Updated successfully'}}
         except Exception as e:
             db.session.rollback()
             logggings.error(str(e))
-            return {{'code': RET.DBERR, 'message': '数据库异常，修改失败', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': 'Database exception, failed to update', 'error': str(e)}}
         finally:
             db.session.close()
 """
@@ -136,15 +135,15 @@ class {class_name}({parent_model}):
 
     def controller_codegen(self, controller_dir, delete_way='logic'):
         codes = {}
-        # 获取表列表
+        # get table list
         table_name = self.metadata.tables.values()
         table_dict = {}
         for i in table_name:
-            # 获取表
+            # get table
             table_dict[str(i)] = {}
             table_dict[str(i)]['columns'] = {}
             for j in i.c.values():
-                # 获得字段属性
+                # get column attributes
                 table_dict[str(i)]['columns'][str(j.name)] = {}
                 table_dict[str(i)]['columns'][str(j.name)]['name'] = j.name
                 table_dict[str(i)]['columns'][str(j.name)]['primary_key'] = j.primary_key
@@ -160,7 +159,7 @@ class {class_name}({parent_model}):
             class_name = hump_str[0].upper() + hump_str[1:] + 'Controller'
             parent_model = hump_str[0].upper() + hump_str[1:] + 'Model'
 
-            # 组合imports
+            # combine imports
             imports = '''
 from app import db
 from models.{model_name} import {parent_model}
@@ -169,7 +168,7 @@ from utils.response_code import RET
 from utils.loggings import loggings'''.format(model_name=model_name, parent_model=parent_model)
             basic = self.basic_template.format(imports=imports, class_name=class_name, parent_model=parent_model)
 
-            # 组合column_init
+            # combine column_init
             column_init = ''
             for column_k, column_v in v['columns'].items():
                 if column_v['autoincrement'] is True:
@@ -180,7 +179,7 @@ from utils.loggings import loggings'''.format(model_name=model_name, parent_mode
                     column_init += text
             add = self.add_template.format(parent_model=parent_model, column_init=column_init)
 
-            # 组合get_filter_list
+            # combine get_filter_list
             get_filter_list = ''
             for column_k, column_v in v['columns'].items():
                 if column_v['autoincrement'] is True:
@@ -197,21 +196,21 @@ from utils.loggings import loggings'''.format(model_name=model_name, parent_mode
                     get_filter_list += text
             get = self.get_template.format(primary_key=primary_key, get_filter_list=get_filter_list)
 
-            # 组合delete
+            # combine delete
             if delete_way == 'logic':
                 delete = self.delete_template_logic.format(primary_key=primary_key)
             else:
                 delete = self.delete_template_physical.format(primary_key=primary_key)
 
-            # 组合update
+            # combine update
             update = self.update_template.format(primary_key=primary_key)
 
             file_name = hump_str + 'Controller'
             codes[file_name] = basic + add + get + delete + update
 
         for k, v in codes.items():
-            loggings.info(1, '正在生成{}...'.format(k))
+            loggings.info(1, 'Generating {}Controller...'.format(k))
             m_file = os.path.join(controller_dir, k + '.py')
             with open(m_file, 'w', encoding='utf8') as fw:
                 fw.write(v)
-            loggings.info(1, '{}生成完毕'.format(k))
+            loggings.info(1, '{}Controller generated successfully'.format(k))
