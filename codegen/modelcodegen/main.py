@@ -12,11 +12,10 @@
 
 import os
 
-from codegen.modelcodegen import cmd, models_path
 from config.setting import Settings
-from utils.checkTable import CheckTable
-from utils.loggings import loggings
 from utils.common import str_format_convert
+from utils.loggings import loggings
+from . import cmd, models_path, tables
 
 
 def modelGenerate():
@@ -25,11 +24,9 @@ def modelGenerate():
     :return: None
     """
 
-    tables = CheckTable.check_primary_key()
-
     try:
         for table in tables:
-            loggings.info(1, "正在生成{0}表的model代码".format(table))
+            loggings.info(1, "Model code for {0} table is being generated".format(table))
             command = cmd.format(
                 url=Settings.MODEL_URL,
                 schema="",
