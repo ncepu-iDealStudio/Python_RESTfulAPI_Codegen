@@ -10,7 +10,7 @@
     this is function description
 """
 
-from codegen.controllercodegen import controllerGenerate
+from codegen.controllercodegen.main import controllerGenerate
 from codegen.modelcodegen.main import modelGenerate
 from codegen.resourcecodegen import resourceGenerate
 from codegen.staticcodegen import staticGenerate
