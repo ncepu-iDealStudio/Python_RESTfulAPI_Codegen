@@ -40,6 +40,3 @@ def controllerGenerate():
     generator.controller_codegen(delete_way=record_delete_way, controller_dir=controller_dir)
     return
 
-
-if __name__ == '__main__':
-    controllerGenerate()
