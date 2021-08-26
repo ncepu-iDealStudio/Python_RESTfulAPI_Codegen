@@ -12,7 +12,7 @@
 
 from codegen.controllercodegen.main import controllerGenerate
 from codegen.modelcodegen.main import modelGenerate
-from codegen.resourcecodegen import resourceGenerate
+from codegen.resourcecodegen.main import resourceGenerate
 from codegen.servicecodegen.main import serviceGenerate
 from codegen.staticcodegen import staticGenerate
 from utils.checkConfig import check_config

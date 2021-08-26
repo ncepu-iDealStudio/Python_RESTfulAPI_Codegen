@@ -52,3 +52,10 @@ def new_file_or_dir(mode, url):
                 os.mkdir(url)
     except Exception as e:
         loggings.error(1, str(e))
+
+
+# 文件写入
+def file_write(path, content):
+    new_file_or_dir(1, path)
+    with open(path, 'w', encoding='utf8') as f:
+        f.write(content)
