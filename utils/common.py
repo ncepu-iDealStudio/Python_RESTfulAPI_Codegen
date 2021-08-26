@@ -5,12 +5,11 @@
 # author:PigKnight
 # datetime:2021/8/21 11:28
 # software: PyCharm
+
 """
-this is function description
+    General method
 """
-# import module your need
-# In SQLAlchemy 0.x, constraint.columns is sometimes a list, on 1.x onwards, always a
-# ColumnCollection
+
 import os
 from utils.loggings import loggings
 

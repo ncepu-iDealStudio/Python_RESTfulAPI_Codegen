@@ -7,7 +7,7 @@
 # software: PyCharm
 
 """
-    操作日志记录
+    Operation log record
 """
 import sys
 
