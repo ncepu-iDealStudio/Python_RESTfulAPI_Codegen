@@ -14,7 +14,7 @@ import os
 import pkg_resources
 from sqlalchemy import create_engine, MetaData
 
-from codegen.controllercodegen.codegen import CodeGenerator
+from codegen.controllercodegen.codegenerator import CodeGenerator
 from config.setting import Settings
 from utils.checkTable import CheckTable
 from utils.common import new_file_or_dir
@@ -59,4 +59,3 @@ def controllerGenerate():
     generator = CodeGenerator(metadata)
     generator.controller_codegen(delete_way=record_delete_way, controller_dir=controller_dir)
     return
-
