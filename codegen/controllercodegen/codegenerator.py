@@ -60,7 +60,7 @@ class CodeGenerator(object):
         # generate code and save in 'codes'
         for k, v in table_dict.items():
             hump_str = str_format_convert(k)
-            model_name = hump_str
+            model_name = hump_str + 'Model'
             class_name = hump_str[0].upper() + hump_str[1:] + 'Controller'
             parent_model = hump_str[0].upper() + hump_str[1:]
 
