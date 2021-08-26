@@ -11,11 +11,10 @@
 """
 import os
 
-from config.setting import Settings
-from utils.checkTable import CheckTable
+from codegen import codegen_layer, metadata, tables, project_dir, target_dir
 from utils.common import new_file_or_dir
+from . import record_delete_way
 from .codegenerator import CodeGenerator
-from . import codegen_layer, metadata, record_delete_way
 
 
 def controllerGenerate():
@@ -28,14 +27,13 @@ def controllerGenerate():
     if codegen_layer not in ['default', 'controller']:
         return
 
-    tables = CheckTable.check_primary_key()
     if not tables:
         return
 
     # create the target dir
-    new_file_or_dir(2, Settings.TARGET_DIR)
-    new_file_or_dir(2, Settings.PROJECT_DIR)
-    controller_dir = os.path.join(Settings.PROJECT_DIR, 'controller')
+    new_file_or_dir(2, target_dir)
+    new_file_or_dir(2, project_dir)
+    controller_dir = os.path.join(project_dir, 'controller')
     new_file_or_dir(2, controller_dir)
 
     generator = CodeGenerator(metadata)
