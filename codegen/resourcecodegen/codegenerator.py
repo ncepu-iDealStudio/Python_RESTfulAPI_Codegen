@@ -18,7 +18,6 @@ from decimal import Decimal
 from utils.loggings import loggings
 from config.setting import Settings
 from utils.common import str_format_convert, new_file_or_dir, file_write
-from . import codegenLayer, tables, metadata
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
 
@@ -41,6 +40,7 @@ class CodeGenerator(object):
             # get the table list
             table_names = self.metadata.tables.values()
             table_dict = {}
+
             # get the field list, primary key and table name of each table
             for i in table_names:
                 # get the table
@@ -55,10 +55,23 @@ class CodeGenerator(object):
                             table_dict[str(i)]['primaryKey'] = str(j.name)
                     table_dict[str(i)]['columns'][str(j.name)]['type'] = type_map[j.type.python_type] if type_map.get(
                         j.type.python_type) else 'str'
+
             # app generation
             loggings.info(1, 'Start generating API layer, please wait...')
             self.app_codegen(app_dir, table_dict)
             loggings.info(1, 'Generating API layer complete')
+
+            # apiVersion file generation
+            apiVersion_dir = os.path.join(api_dir, 'apiVersionResource')
+            new_file_or_dir(2, apiVersion_dir)
+            apiVersion_init_file = os.path.join(apiVersion_dir, '__init__.py')
+            file_write(apiVersion_init_file, FileTemplate.api_version_init)
+            apiVersion_urls_file = os.path.join(apiVersion_dir, 'urls.py')
+            file_write(apiVersion_urls_file, FileTemplate.api_version_urls.format(apiversion=Settings.API_VERSION))
+            apiVersion_resource_file = os.path.join(apiVersion_dir, 'apiVersionResource')
+            file_write(apiVersion_resource_file, FileTemplate.api_version_resource.format(
+                apiversion=Settings.API_VERSION.replace('_', '.')))
+
             # file generation
             for table in table_dict.keys():
                 resource_dir = os.path.join(api_dir, '{0}Resource'.format(str_format_convert(
@@ -102,6 +115,7 @@ class CodeGenerator(object):
         try:
             # remove underline
             blueprint_name = str_format_convert(table.get('tableName'))
+
             # template generation
             blueprint_str = CodeBlockTemplate.init_blueprint.format(blueprint_name.lower(), blueprint_name)
             return FileTemplate.init.format(blueprint=blueprint_str)
@@ -114,6 +128,7 @@ class CodeGenerator(object):
         try:
             # remove underline
             api_name = str_format_convert(table.get('tableName'))
+
             # template  generation
             import_str = CodeBlockTemplate.urls_imports.format(api_name.lower(), Settings.API_VERSION, api_name,
                                                                api_name.capitalize())
@@ -158,7 +173,7 @@ class CodeGenerator(object):
 
             putControllerInvoke_str = CodeBlockTemplate.resource_put_controller_invoke.format(className_str)
 
-            return FileTemplate.resource.format('{}', imports=imports_str, className=className_str, id=id_str,
+            return FileTemplate.resource.format(imports=imports_str, className=className_str, id=id_str,
                                                 idCheck=idCheck_str, argument=argument_str,
                                                 getControllerInvoke=getControllerInvoke_str,
                                                 deleteControllerInvoke=deleteControllerInvoke_str,
