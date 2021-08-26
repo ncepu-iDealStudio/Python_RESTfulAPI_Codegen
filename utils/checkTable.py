@@ -58,8 +58,10 @@ class CheckTable(object):
                 invalid_tables.append(table.key)
 
         if len(invalid_tables) > 0:
-            loggings.warning(1, "以下{0}张表不符合规范，无法生成：{1}".format(len(invalid_tables), ",".join(invalid_tables)))
+            loggings.warning(1,
+                             "The following {0} tables do not meet the specifications and cannot be generated: {1}".format(
+                                 len(invalid_tables), ",".join(invalid_tables)))
             return available_tables if available_tables else None
 
-        loggings.info(1, "表检查全部通过， 共计{0}张表".format(len(tables)))
+        loggings.info(1, "All table checks passed, a total of {0} tables ".format(len(tables)))
         return available_tables if available_tables else None

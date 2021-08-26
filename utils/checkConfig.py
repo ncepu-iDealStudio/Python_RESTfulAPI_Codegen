@@ -23,7 +23,7 @@ def check_config():
 
     # 检验必要参数
     try:
-        loggings.info(1, "开始检验必要参数，请稍等...")
+        loggings.info(1, "Start checking the necessary parameters, please wait ...")
         # 读取PARAMETER参数
         parameter = {
             'target_dir': Settings.TARGET_DIR,
@@ -90,14 +90,13 @@ def check_config():
             static = {
 
             }
-        loggings.info(1, '必要参数检验完成')
     except Exception as e:
         loggings.error(1, str(e))
         return False
 
     # 检验参数逻辑
     try:
-        loggings.info(1, '开始检验参数逻辑，请稍等...')
+        loggings.info(1, 'Please wait a moment to verify the parameter logic ...')
 
         # 检验参数值合法与否
         if Settings.CODEGEN_MODE not in ['database', 'table']:
@@ -117,7 +116,6 @@ def check_config():
                 if i not in metadata.tables.keys():
                     raise Exception('{}表不存在'.format(i))
 
-        loggings.info(1, '参数值逻辑检验完成')
     except Exception as e:
         loggings.error(1, str(e))
         return False

@@ -21,16 +21,16 @@ class FileTemplate(object):
 
 {imports}
 
-class {class_name}({super_class_name}):
+class {table_name_initials_upper}Service({table_name_initials_upper}Controller):
     @classmethod
-    def {function_name}(cls, **kwargs):
+    def query_{table_name}(cls, **kwargs):
         try:
             filter_list = [cls.IsDelete == 0]
 {filter_conditions}          
             page = int(kwargs.get('Page'), 1)
             size = int(kwargs.get('Size'), 10)
             
-            {result_name} = db.session.query({Fields}).filter(*filter_list)
+            {result_name} = db.session.query({table_model}).filter(*filter_list){join_table_statement}
             
             count = {result_name}.count()
             pages = math.ceil(count / size)

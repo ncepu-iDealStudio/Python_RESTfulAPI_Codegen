@@ -80,7 +80,7 @@ class {className}Resource(Resource):
 # -*- coding:utf-8 -*-
 
 from flask_restful import Resource, reqparse
-from flask import g, jsonify
+from flask import jsonify
 {imports}
 
 
@@ -95,7 +95,6 @@ class {className}OtherResource(Resource):
 {postControllerInvoke}
 
     # list query
-    @classmethod
     def get(self):
         parser = reqparse.RequestParser()
 {argument}
