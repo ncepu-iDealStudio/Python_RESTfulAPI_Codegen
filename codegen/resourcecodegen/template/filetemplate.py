@@ -71,7 +71,7 @@ class {className}Resource(Resource):
         parser = reqparse.RequestParser()
 {argument}
         kwargs = parser.parse_args()
-        kwargs = commons.put_remove_none(*kwargs)
+        kwargs = commons.put_remove_none(**kwargs)
 {idCheck}
 {putControllerInvoke}
 """
@@ -91,7 +91,7 @@ class {className}OtherResource(Resource):
         parser = reqparse.RequestParser()
 {argument}
         kwargs = parser.parse_args()
-        kwargs = commons.put_remove_none(*kwargs)
+        kwargs = commons.put_remove_none(**kwargs)
 {postControllerInvoke}
 
     # list query
@@ -100,7 +100,7 @@ class {className}OtherResource(Resource):
         parser = reqparse.RequestParser()
 {argument}
         kwargs = parser.parse_args()
-        kwargs = commons.put_remove_none(*kwargs)
+        kwargs = commons.put_remove_none(**kwargs)
 {getControllerInvoke}
 """
 
