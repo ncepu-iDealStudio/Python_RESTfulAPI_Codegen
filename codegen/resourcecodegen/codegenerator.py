@@ -17,9 +17,10 @@ from decimal import Decimal
 
 from utils.loggings import loggings
 from config.setting import Settings
-from utils.common import str_format_convert, new_file_or_dir
-from .codeblocktemplate import CodeBlockTemplate
-from .filetemplate import FileTemplate
+from utils.common import str_format_convert, new_file_or_dir, file_write
+from . import codegenLayer, tables, metadata
+from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
+from codegen.resourcecodegen.template.filetemplate import FileTemplate
 
 type_map = {
     int: 'int',
@@ -87,10 +88,10 @@ class CodeGenerator(object):
 
                 # file write
                 loggings.info(1, 'Generating {0}Resource'.format(table_dict[table].get('tableName')))
-                self.file_write(init_file, init_list)
-                self.file_write(urls_file, urls_list)
-                self.file_write(resource_file, resource_list)
-                self.file_write(other_resource_file, otherResource_list)
+                file_write(init_file, init_list)
+                file_write(urls_file, urls_list)
+                file_write(resource_file, resource_list)
+                file_write(other_resource_file, otherResource_list)
 
         except Exception as e:
             loggings.error(1, str(e))
@@ -108,8 +109,7 @@ class CodeGenerator(object):
             loggings.error(1, str(e))
             return
 
-            #  urls generation
-
+    #  urls generation
     def urls_codegen(self, table):
         try:
             # remove underline
@@ -132,8 +132,7 @@ class CodeGenerator(object):
             loggings.error(1, str(e))
             return
 
-            # resource generation
-
+    # resource generation
     def resource_codegen(self, table):
         try:
             # remove underline
@@ -169,8 +168,7 @@ class CodeGenerator(object):
             loggings.error(1, str(e))
             return
 
-            # otherResource generation
-
+    # otherResource generation
     def other_resource_codegen(self, table):
         try:
             # remove underline
@@ -201,8 +199,7 @@ class CodeGenerator(object):
             loggings.error(1, str(e))
             return
 
-            # app_init generation
-
+    # app_init generation
     def app_codegen(self, app_dir, tables):
         try:
             # app_init
@@ -227,8 +224,5 @@ class CodeGenerator(object):
         except Exception as e:
             loggings.error(1, str(e))
 
-    # file write
-    def file_write(self, path, content):
-        new_file_or_dir(1, path)
-        with open(path, 'w', encoding='utf8') as f:
-            f.write(content)
+
+
