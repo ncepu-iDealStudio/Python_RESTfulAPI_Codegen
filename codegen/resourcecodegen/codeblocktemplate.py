@@ -1,111 +1,23 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# file:template.py
+# file:codeblocktemplate.py
 # author:PigKinght
 # datetime:2021/8/24 21:55
 # software: PyCharm
 
 """
-    the template file define.
-"""
-
-class FileTemplate():
-    """
-
-    """
-    init = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-from flask import Blueprint
-
-from . import urls
-
-{blueprint}
-"""
-
-    urls = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-from flask_restful import Api
-
-{imports}
-
-{api}
-
-{resource}
-
-{otherResource}
-"""
-
-    resource = """#!/usr/bin/env python
-# -*- coding:utf-8 -*- 
-
-from flask_restplus import Resource, reqparse
-from flask import g, jsonify
-{imports}
-
-
-class {className}Resource(Resource):
-
-    # query with primary_key
-    def get(self, {id}):
-        kwargs = {0}
-{idCheck}
-{getControllerInvoke}
-
-    # delete
-    def delete(self, {id}):
-        kwargs = {0}
-{idCheck}
-{deleteControllerInvoke}
-
-    # put
-    def put(self, {id}):
-        parser = reqparse.RequestParser()
-{argument}
-        kwargs = parser.parse_args()
-        kwargs = commons.put_remove_none(*kwargs)
-{idCheck}
-{putControllerInvoke}
-"""
-
-    other_resource = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-from flask_restplus import Resource, reqparse
-from flask import g, jsonify
-{imports}
-
-
-class {className}OtherResource(Resource):
-
-    # add
-    def post(self):
-        parser = reqparse.RequestParser()
-{argument}
-        kwargs = parser.parse_args()
-        kwargs = commons.put_remove_none(*kwargs)
-{postControllerInvoke}
-
-    # list query
-    @classmethod
-    def get(self):
-        parser = reqparse.RequestParser()
-{argument}
-        kwargs = parser.parse_args()
-        kwargs = commons.put_remove_none(*kwargs)
-{getControllerInvoke}
+    the template code block define.
 """
 
 
 class CodeBlockTemplate():
     """
-    代码块（行）模板
-    init_: template for __init__.py
-    url_: template for urls.py
-    resource_: template for resource.py
-    other_resource_: template for otherResource.py
+    init_: template for api_x/__init__.py
+    url_: template for api_x/urls.py
+    resource_: template api_x/for resource.py
+    other_resource_: template for api_x/otherResource.py
+    app_init_: template for api_x/app.__init__.py
     """
     primary_key = '{0}/<int:{1}>'
 
@@ -117,14 +29,14 @@ class CodeBlockTemplate():
 from api_{1}.{2}Resource.{2}Resource import {3}Resource
 from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
-    urls_api = 'api = APi({0}_blueprint)'
+    urls_api = 'api = Api({0}_blueprint)'
 
     urls_resource = 'api.add_resource({0}Resource, "/{1}", endpoint="{2}")'
 
     urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{2}_list")'
 
     resource_imports = """
-from controller.{0}Controller import {0}Controller
+from controller.{0}Controller import {1}Controller
 from utils import commons
 from utils.response_code import RET"""
 
@@ -160,3 +72,9 @@ from utils.response_code import RET"""
             return jsonify(code=res['code'], message=res['message'], data=res['data'])
         else:
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
+
+    app_init_blueprint = """
+    # {0} blueprint register
+    from api_{1}.{0}Resource import {2}_blueprint
+    app.register_blueprint({2}_blueprint, url_prefix="/api_{1}")
+    """
