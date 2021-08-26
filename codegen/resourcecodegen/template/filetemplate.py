@@ -56,13 +56,13 @@ class {className}Resource(Resource):
 
     # query with primary_key
     def get(self, {id}):
-        kwargs = {0}
+        kwargs = {{}}
 {idCheck}
 {getControllerInvoke}
 
     # delete
     def delete(self, {id}):
-        kwargs = {0}
+        kwargs = {{}}
 {idCheck}
 {deleteControllerInvoke}
 
@@ -201,3 +201,43 @@ class Settings(object):
     TOKEN_EXPIRES = int(CONFIG['STATIC_CONFIG']['TOKEN_EXPIRES'])
 """
 
+    api_version_init = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+from flask import Blueprint
+
+from . import urls
+
+apiversion_blueprint = Blueprint("apiversion", __name__)
+"""
+
+    api_version_urls = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+from flask_restful import Api
+from . import apiversion_blueprint
+from api_{apiversion}.apiVersionResource import ApiVersionResource
+
+api = Api(apiversion_blueprint)
+
+api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiversion')  # 测试接口，获取当前接口的版本
+"""
+
+    api_version_resource = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+from flask_restplus import Resource
+from flask import jsonify
+from utils.response_code import RET
+
+
+class ApiVersionResource(Resource):
+
+    # get the interface of apiVersion -- test
+    @classmethod
+    def get(self):
+        back_data = {{
+            'version': '{apiversion}'
+        }}
+        return jsonify(code=RET.OK, message='OK', data=back_data)    
+"""

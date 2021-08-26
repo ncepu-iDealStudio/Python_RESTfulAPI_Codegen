@@ -8,7 +8,7 @@
 
 """
     generate controller layer code
-    This generator is a very simple boilerplate for generate a REST api using Flask, flask-restful,
+    This generator is a very simple boilerplate for generate controller code with Flask, flask-restful,
     marshmallow, SQLAlchemy and jwt.
     It comes with basic project structure and configuration, including blueprints, application factory
     and basics unit tests.
@@ -19,8 +19,8 @@ from decimal import Decimal
 
 from utils.common import str_format_convert
 from utils.loggings import loggings
-from .filetemplate import FileTemplate
-from .codeblocktemplate import CodeBlockTemplate
+from codegen.controllercodegen.template.filetemplate import FileTemplate
+from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
 
 type_map = {
     int: 'int',
@@ -40,6 +40,8 @@ class CodeGenerator(object):
         # get table list
         table_name = self.metadata.tables.values()
         table_dict = {}
+
+        # get columns attributes from each table
         for i in table_name:
             # get table
             table_dict[str(i)] = {}
@@ -55,11 +57,12 @@ class CodeGenerator(object):
                 else:
                     table_dict[str(i)]['columns'][str(j.name)]['type'] = 'str'
 
+        # generate code and save in 'codes'
         for k, v in table_dict.items():
             hump_str = str_format_convert(k)
-            model_name = hump_str + 'Model'
+            model_name = hump_str
             class_name = hump_str[0].upper() + hump_str[1:] + 'Controller'
-            parent_model = hump_str[0].upper() + hump_str[1:] + 'Model'
+            parent_model = hump_str[0].upper() + hump_str[1:]
 
             # combine imports
             imports = CodeBlockTemplate.imports.format(model_name=model_name, parent_model=parent_model)
@@ -87,7 +90,7 @@ class CodeGenerator(object):
                     else:
                         text = CodeBlockTemplate.get_filter_str.format(column=column_k)
                     get_filter_list += text
-            get = FileTemplate.get_template.format(primary_key=primary_key, get_filter_list=get_filter_list)
+            get = FileTemplate.get_template.format(primary_key=primary_key, get_filter_list=get_filter_list, model_lower=k)
 
             # combine delete
             if delete_way == 'logic':
@@ -98,12 +101,19 @@ class CodeGenerator(object):
             # combine update
             update = FileTemplate.update_template.format(primary_key=primary_key)
 
+            # save into 'codes'
             file_name = hump_str + 'Controller'
             codes[file_name] = basic + add + get + delete + update
 
+        # generate files
+        loggings.info(1, 'Generating __init__...')
+        inti_file = os.path.join(controller_dir, '__init__.py')
+        with open(inti_file, 'w', encoding='utf-8') as fw:
+            fw.write(FileTemplate.init_template)
+        loggings.info(1, '__init__ generated successfully')
         for k, v in codes.items():
-            loggings.info(1, 'Generating {}Controller...'.format(k))
+            loggings.info(1, 'Generating {}...'.format(k))
             m_file = os.path.join(controller_dir, k + '.py')
-            with open(m_file, 'w', encoding='utf8') as fw:
+            with open(m_file, 'w', encoding='utf-8') as fw:
                 fw.write(v)
-            loggings.info(1, '{}Controller generated successfully'.format(k))
+            loggings.info(1, '{} generated successfully'.format(k))

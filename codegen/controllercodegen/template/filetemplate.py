@@ -13,6 +13,11 @@
 
 class FileTemplate(object):
 
+    init_template = """\
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+"""
+
     basic_template = """\
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -50,12 +55,12 @@ class {class_name}({parent_model}):
                 filter_list.append(cls.{primary_key} == kwargs.get('{primary_key}'))
             else:
                 {get_filter_list}
-            info = db.session.query(cls).filter(*filter_list).all()
+            {model_lower}_info = db.session.query(cls).filter(*filter_list).all()
 
             # judge whether the data is None
-            if not info:
+            if not {model_lower}_info:
                 return {{'code': RET.NODATA, 'message': 'No query results', 'error': 'No query results'}}
-            results = commons.query_to_dict(info)
+            results = commons.query_to_dict({model_lower}_info)
             return {{'code': RET.OK, 'message': 'Queried successfully', 'data': results}}
         except Exception as e:
             loggings.error(str(e))
