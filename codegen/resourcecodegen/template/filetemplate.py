@@ -33,7 +33,7 @@ from . import urls
     urls = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from flask_restplus import Api
+from flask_restful import Api
 
 {imports}
 
@@ -47,7 +47,7 @@ from flask_restplus import Api
     resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
 
-from flask_restplus import Resource, reqparse
+from flask_restful import Resource, reqparse
 from flask import g, jsonify
 {imports}
 
@@ -79,7 +79,7 @@ class {className}Resource(Resource):
     other_resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from flask_restplus import Resource, reqparse
+from flask_restful import Resource, reqparse
 from flask import g, jsonify
 {imports}
 
@@ -211,7 +211,7 @@ from . import urls
     api_version_urls = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from flask_restplus import Api
+from flask_restful import Api
 from . import apiversion_blueprint
 from api_{apiversion}.apiVersionResource.apiVersionResource import ApiVersionResource
 
@@ -223,7 +223,7 @@ api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiversion')  # æµ
     api_version_resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from flask_restplus import Resource
+from flask_restful import Resource
 from flask import jsonify
 from utils.response_code import RET
 
