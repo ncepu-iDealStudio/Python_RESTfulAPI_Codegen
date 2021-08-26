@@ -8,7 +8,7 @@
 
 """
     generate controller layer code
-    This generator is a very simple boilerplate for generate a REST api using Flask, flask-restful,
+    This generator is a very simple boilerplate for generate controller code with Flask, flask-restful,
     marshmallow, SQLAlchemy and jwt.
     It comes with basic project structure and configuration, including blueprints, application factory
     and basics unit tests.
