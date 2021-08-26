@@ -80,7 +80,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Deleted successfully'}}
         except Exception as e:
             db.session.rollback()
-            logggings.error(str(e))
+            loggings.error(str(e))
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
         finally:
             db.session.close()
@@ -99,7 +99,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Deleted successfully'}}
         except Exception as e:
             db.session.rollback()
-            logggings.error(str(e))
+            loggings.error(str(e))
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
         finally:
             db.session.close()
@@ -118,7 +118,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Updated successfully'}}
         except Exception as e:
             db.session.rollback()
-            logggings.error(str(e))
+            loggings.error(str(e))
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to update', 'error': str(e)}}
         finally:
             db.session.close()

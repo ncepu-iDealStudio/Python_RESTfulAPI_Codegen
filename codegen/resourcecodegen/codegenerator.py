@@ -68,7 +68,7 @@ class CodeGenerator(object):
             file_write(apiVersion_init_file, FileTemplate.api_version_init)
             apiVersion_urls_file = os.path.join(apiVersion_dir, 'urls.py')
             file_write(apiVersion_urls_file, FileTemplate.api_version_urls.format(apiversion=Settings.API_VERSION))
-            apiVersion_resource_file = os.path.join(apiVersion_dir, 'apiVersionResource')
+            apiVersion_resource_file = os.path.join(apiVersion_dir, 'apiVersionResource.py')
             file_write(apiVersion_resource_file, FileTemplate.api_version_resource.format(
                 apiversion=Settings.API_VERSION.replace('_', '.')))
 
@@ -128,18 +128,19 @@ class CodeGenerator(object):
         try:
             # remove underline
             api_name = str_format_convert(table.get('tableName'))
+            className_str = api_name[0].upper() + api_name[1:]
 
             # template  generation
             import_str = CodeBlockTemplate.urls_imports.format(api_name.lower(), Settings.API_VERSION, api_name,
-                                                               api_name.capitalize())
+                                                               className_str)
 
             api_str = CodeBlockTemplate.urls_api.format(api_name.lower())
 
             primary_key_str = CodeBlockTemplate.primary_key.format(
                 api_name, str_format_convert(table.get('primaryKey')))
-            resource_str = CodeBlockTemplate.urls_resource.format(api_name.capitalize(), primary_key_str, api_name)
+            resource_str = CodeBlockTemplate.urls_resource.format(className_str, primary_key_str, api_name)
 
-            other_resource_str = CodeBlockTemplate.urls_other_resource.format(api_name.capitalize(), api_name, api_name)
+            other_resource_str = CodeBlockTemplate.urls_other_resource.format(className_str, api_name, api_name)
 
             return FileTemplate.urls.format(
                 imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str)
@@ -218,7 +219,8 @@ class CodeGenerator(object):
     def app_codegen(self, app_dir, tables):
         try:
             # app_init
-            blueprint_register_str = ''
+            blueprint_register_str = '''from api_{0}.apiVersionResource import apiversion_blueprint
+    app.register_blueprint(apiversion_blueprint, url_prefix="/api_{0}")\n'''.format(Settings.API_VERSION)
             for table in tables:
                 table_name = str_format_convert(tables[str(table)].get('tableName'))
                 blueprint_name = table_name.lower()

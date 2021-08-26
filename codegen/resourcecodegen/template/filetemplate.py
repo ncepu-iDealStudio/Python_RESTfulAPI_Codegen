@@ -25,15 +25,15 @@ class FileTemplate():
 
 from flask import Blueprint
 
-from . import urls
-
 {blueprint}
+
+from . import urls
 """
 
     urls = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from flask_restful import Api
+from flask_restplus import Api
 
 {imports}
 
@@ -111,7 +111,6 @@ class {className}OtherResource(Resource):
    定义应用初始化过程
 '''
 
-from utils.common import ReConverter
 from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
@@ -138,12 +137,10 @@ def create_app(config_name):
     # 利用Flask_session将数据保存的session中
     Session(app)
 
-    # 为flask添加自定义得转换器(放在注册蓝图之前)
-    app.url_map.converters["re"] = ReConverter
-
     '''
       整个应用的蓝图加载和注册
     '''
+    # classInfo blueprint register
     {blueprint_register}
     return app
 """
@@ -206,17 +203,17 @@ class Settings(object):
 
 from flask import Blueprint
 
-from . import urls
-
 apiversion_blueprint = Blueprint("apiversion", __name__)
+
+from . import urls
 """
 
     api_version_urls = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from flask_restful import Api
+from flask_restplus import Api
 from . import apiversion_blueprint
-from api_{apiversion}.apiVersionResource import ApiVersionResource
+from api_{apiversion}.apiVersionResource.apiVersionResource import ApiVersionResource
 
 api = Api(apiversion_blueprint)
 
