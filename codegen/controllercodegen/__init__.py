@@ -7,13 +7,15 @@
 # software: PyCharm
 
 """
-    load settings and init
+    load settings and Initialize the parameters
 """
-from sqlalchemy import create_engine, MetaData
 
+from sqlalchemy import create_engine, MetaData
 from config.setting import Settings
 from utils.checkTable import CheckTable
 
+# Initialize the parameters for this code generator.
+# 为代码生成器初始化参数
 url = Settings.MODEL_URL
 codegen_layer = Settings.CODEGEN_LAYER
 schema = Settings.MODEL_SCHEMA
