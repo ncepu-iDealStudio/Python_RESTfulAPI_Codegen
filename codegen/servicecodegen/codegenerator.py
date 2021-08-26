@@ -11,18 +11,12 @@
 """
 
 import os
-from decimal import Decimal
 
 from utils.common import str_format_convert
 from utils.loggings import loggings
-from .codeblocktemplate import CodeBlockTemplate
-from .fileTemplate import FileTemplate
-
-type_map = {
-    int: 'int',
-    float: 'float',
-    Decimal: 'float'
-}
+from codegen.servicecodegen.template.codeblocktemplate import CodeBlockTemplate
+from codegen.servicecodegen.template.fileTemplate import FileTemplate
+from utils.tablesMetadata import TableMetadata
 
 
 class CodeGenerator(object):
@@ -34,30 +28,14 @@ class CodeGenerator(object):
     # resource layer generation
     def service_generator(self, service_path):
         try:
-            # get the table list
-            table_names = self.metadata.tables.values()
 
-            table_dict = {}
-            # get the field list, primary key and table name of each table
-            for i in table_names:
-                # get the table
-                table_dict[str(i)] = {}
-                table_dict[str(i)]['columns'] = {}
-                table_dict[str(i)]['tableName'] = str(i)
-                for j in i.c.values():
-                    table_dict[str(i)]['columns'][str(j.name)] = {}
-                    table_dict[str(i)]['columns'][str(j.name)]['name'] = str(j.name)
-                    if j.primary_key:
-                        if not table_dict[str(i)].get('primaryKey'):
-                            table_dict[str(i)]['primaryKey'] = str(j.name)
-                    table_dict[str(i)]['columns'][str(j.name)]['type'] = type_map[j.type.python_type] if type_map.get(
-                        j.type.python_type) else 'str'
+            table_dict = TableMetadata.get_tables_metadata(self.metadata)
 
             # Traverse each table to generate the corresponding service layer code
             for table in table_dict.keys():
                 loggings.info(1, 'Generating service layer code for "{table_name}" table'.format(
-                    table_name=table_dict[table]['tableName']))
-                table_name = str_format_convert(table_dict[table]['tableName'])
+                    table_name=table_dict[table]['table_name']))
+                table_name = str_format_convert(table_dict[table]['table_name'])
                 class_name = table_name[0].upper() + table_name[1:] + "Service"
                 super_class_name = table_name[0].upper() + table_name[1:] + "Controller"
                 function_name = "query_" + table_name
