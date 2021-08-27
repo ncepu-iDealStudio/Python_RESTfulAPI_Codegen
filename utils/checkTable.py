@@ -68,7 +68,8 @@ class CheckTable(object):
         loggings.info(1, "All table checks passed, a total of {0} tables ".format(len(tables)))
         return available_tables if available_tables else None
 
-    # check keywords of python
+    # check keywords of python in tables
+    # 检查表名和字段名，是否和Python的关键字冲突
     @classmethod
     def check_keyword(cls, table_dict):
         """
@@ -83,6 +84,7 @@ class CheckTable(object):
         return flag
 
     # check the foreign key
+    # 检查表的外键约束
     @classmethod
     def check_foreign_key(cls, table_dict):
         """
