@@ -121,9 +121,9 @@ class CodeGenerator(object):
                 api_name, str_format_convert(table.get('primaryKey')))
             resource_str = CodeBlockTemplate.urls_resource.format(className_str, primary_key_str, api_name)
 
-            other_resource_str = CodeBlockTemplate.urls_other_resource.format(className_str, api_name, api_name)
+            other_resource_str = CodeBlockTemplate.urls_other_resource.format(className_str, api_name)
 
-            service_resource_str = CodeBlockTemplate.urls_service_resource.format(api_name.lower(), className_str)
+            service_resource_str = CodeBlockTemplate.urls_service_resource.format(api_name.lower(), api_name, className_str)
             return FileTemplate.urls.format(
                 imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str, serviceResource=service_resource_str)
         except Exception as e:

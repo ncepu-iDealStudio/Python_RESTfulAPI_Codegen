@@ -33,13 +33,13 @@ from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
     urls_resource = 'api.add_resource({0}Resource, "/{1}", endpoint="{2}")'
 
-    urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{2}_list")'
+    urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{1}_list")'
 
     urls_service_resource = """
 # joint query
 @{0}_blueprint.route('/query', methods=['GET'], endpoint='{1}_query')
-def {1}_query():
-    return {1}OtherResource.joint_query()
+def {2}_query():
+    return {2}OtherResource.joint_query()
 """
 
     resource_imports = """
