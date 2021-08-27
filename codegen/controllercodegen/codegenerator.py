@@ -19,6 +19,7 @@ from decimal import Decimal
 
 from utils.common import str_format_convert
 from utils.loggings import loggings
+from utils.tablesMetadata import TableMetadata
 from codegen.controllercodegen.template.filetemplate import FileTemplate
 from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
 
@@ -37,32 +38,16 @@ class CodeGenerator(object):
 
     def controller_codegen(self, controller_dir, delete_way='logic'):
         codes = {}
-        # get table list
-        table_name = self.metadata.tables.values()
-        table_dict = {}
-
-        # get columns attributes from each table
-        for i in table_name:
-            # get table
-            table_dict[str(i)] = {}
-            table_dict[str(i)]['columns'] = {}
-            for j in i.c.values():
-                # get column attributes
-                table_dict[str(i)]['columns'][str(j.name)] = {}
-                table_dict[str(i)]['columns'][str(j.name)]['name'] = j.name
-                table_dict[str(i)]['columns'][str(j.name)]['primary_key'] = j.primary_key
-                table_dict[str(i)]['columns'][str(j.name)]['autoincrement'] = j.autoincrement
-                if j.type.python_type in type_map.keys():
-                    table_dict[str(i)]['columns'][str(j.name)]['type'] = type_map[j.type.python_type]
-                else:
-                    table_dict[str(i)]['columns'][str(j.name)]['type'] = 'str'
+        # get table metadata
+        table_dict = TableMetadata.get_tables_metadata(self.metadata)
 
         # generate code and save in 'codes'
-        for k, v in table_dict.items():
-            hump_str = str_format_convert(k)
+        for table in table_dict.values():
+            hump_str = str_format_convert(table['table_name'])
             model_name = hump_str + 'Model'
             class_name = hump_str[0].upper() + hump_str[1:] + 'Controller'
             parent_model = hump_str[0].upper() + hump_str[1:]
+            primary_key = table['primaryKey']
 
             # combine imports
             imports = CodeBlockTemplate.imports.format(model_name=model_name, parent_model=parent_model)
@@ -71,26 +56,27 @@ class CodeGenerator(object):
 
             # combine column_init
             column_init = ''
-            for column_k, column_v in v['columns'].items():
-                if column_v['autoincrement'] is True:
+            for column in table['columns'].values():
+                if column['name'] == primary_key:
                     continue
                 else:
-                    text = CodeBlockTemplate.add_column_init.format(column=column_k)
+                    text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                     column_init += text
             add = FileTemplate.add_template.format(parent_model=parent_model, column_init=column_init)
 
             # combine get_filter_list
             get_filter_list = ''
-            for column_k, column_v in v['columns'].items():
-                if column_v['autoincrement'] is True:
-                    primary_key = column_k
+            for column in table['columns'].values():
+                if column['name'] == primary_key:
+                    continue
                 else:
-                    if column_v['type'] in ['int', 'float']:
-                        text = CodeBlockTemplate.get_filter_num.format(column=column_k)
+                    if column['type'] in ['int', 'float']:
+                        text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
                     else:
-                        text = CodeBlockTemplate.get_filter_str.format(column=column_k)
+                        text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
                     get_filter_list += text
-            get = FileTemplate.get_template.format(primary_key=primary_key, get_filter_list=get_filter_list, model_lower=k)
+            get = FileTemplate.get_template.format(primary_key=primary_key, get_filter_list=get_filter_list,
+                                                   model_lower=table['table_name'])
 
             # combine delete
             if delete_way == 'logic':
@@ -111,9 +97,9 @@ class CodeGenerator(object):
         with open(inti_file, 'w', encoding='utf-8') as fw:
             fw.write(FileTemplate.init_template)
         loggings.info(1, '__init__ generated successfully')
-        for k, v in codes.items():
-            loggings.info(1, 'Generating {}...'.format(k))
-            m_file = os.path.join(controller_dir, k + '.py')
+        for file_name, code in codes.items():
+            loggings.info(1, 'Generating {}...'.format(file_name))
+            m_file = os.path.join(controller_dir, file_name + '.py')
             with open(m_file, 'w', encoding='utf-8') as fw:
-                fw.write(v)
-            loggings.info(1, '{} generated successfully'.format(k))
+                fw.write(code)
+            loggings.info(1, '{} generated successfully'.format(file_name))
