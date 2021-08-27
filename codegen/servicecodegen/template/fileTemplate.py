@@ -30,7 +30,7 @@ class {table_name_initials_upper}Service({table_name_initials_upper}Controller):
             page = int(kwargs.get('Page', 1))
             size = int(kwargs.get('Size', 10))
             
-            {result_name} = db.session.query({table_model}).filter(*filter_list){join_table_statement}
+            {result_name} = db.session.query({Fields}){join_table_statement}.filter(*filter_list)
             
             count = {result_name}.count()
             pages = math.ceil(count / size)

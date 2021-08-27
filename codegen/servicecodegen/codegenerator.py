@@ -38,13 +38,15 @@ class CodeGenerator(object):
                 # The name of the table whose code needs to be generated
                 table_name = str_format_convert(table_dict[table]['table_name'])
                 table_name_initials_upper = table_name[0].upper() + table_name[1:]
-
+                Fields_list = []
                 # Database query conditions
                 filter_conditions = ""
                 # Traverse each column to generate the filter conditions
                 for columns in table_dict[table]['columns']:
                     columns_name = table_dict[table]['columns'][columns]['name']
                     filter_conditions += CodeBlockTemplate.single_filter_condition.format(colums_name=columns_name)
+                    Fields_list.append("{table_model}.{columns_name}".format(table_model=table_name_initials_upper,
+                                                                             columns_name=columns_name))
 
                 # If there is a foreign key in the table, supplement the related template of the associated table
                 # The following is an explanation of the variables required to generate the template file：
@@ -60,14 +62,28 @@ class CodeGenerator(object):
                     foreign_import = '\nfrom models.{0}Model import {1}'.format(target_table_name,
                                                                                 target_table_name_initials_upper)
                     table_model = '{0}, {1}'.format(table_name_initials_upper, target_table_name_initials_upper)
-                    join_table_statement = '.join("{0}")'.format(foreign_key['target_key'])
+                    join_table_statement = CodeBlockTemplate.join_statement.format(
+                        target_table=target_table_name_initials_upper,
+                        table_name_initials_upper=table_name_initials_upper,
+                        table_key=foreign_key['key'],
+                        target_key=foreign_key['target_key'])
                     result_name = table_name + "_" + target_table_name + "_info"
+                    # Fields to be queried
+                    for columns in table_dict[foreign_key['target_table']]['columns']:
+                        columns_name = table_dict[foreign_key['target_table']]['columns'][columns]['name']
+                        Fields_list.append(
+                            "{table_model}.{columns_name}.label('{table_model}.{columns_name}')".format(
+                                table_model=target_table_name_initials_upper,
+                                columns_name=columns_name))
 
                 else:
                     foreign_import = ""
                     table_model = table_name_initials_upper
                     join_table_statement = ""
                     result_name = table_name + "_info"
+
+                # Fields required for splicing
+                Fields = ', '.join(Fields_list)
 
                 # Format the code block template
                 imports = CodeBlockTemplate.service_import.format(table_name=table_name,
@@ -81,6 +97,7 @@ class CodeGenerator(object):
                                                         filter_conditions=filter_conditions,
                                                         table_model=table_model,
                                                         result_name=result_name,
+                                                        Fields=Fields,
                                                         join_table_statement=join_table_statement,
                                                         exception_return=CodeBlockTemplate.exception_return,
                                                         notdata_return=CodeBlockTemplate.notdata_return,

@@ -30,6 +30,7 @@ from utils.loggings import loggings
                 filter_list.append(cls.{colums_name} == kwargs.get('{colums_name}'))
 """
 
+    join_statement = '.join({target_table}, {table_name_initials_upper}.{table_key} == {target_table}.{target_key})'
     exception_return = "{'code': RET.DBERR, 'message': '数据库异常，获取信息失败', 'error': str(e)}"
     notdata_return = "{'code': RET.NODATA, 'message': '查无信息', 'error': '查无信息'}"
     success_return = "{'code': RET.OK, 'message': '查询成功', 'count': count, 'pages': pages, 'data': results}"
