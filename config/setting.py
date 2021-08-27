@@ -19,6 +19,9 @@ CONFIG.read(CONFIG_DIR, encoding='utf-8')
 DATABASE_CONFIG_DIR = "config/database.conf"
 DATABASE_CONFIG = ConfigParser()
 DATABASE_CONFIG.read(DATABASE_CONFIG_DIR, encoding='utf-8')
+SECURITY_CONFIG_DIR = "config/security.conf"
+SECURITY_CONFIG = ConfigParser()
+SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
 
 
 class Settings(object):
@@ -76,3 +79,12 @@ class Settings(object):
 
     # controller层配置
     CONTROLLER_RECORD_DELETE_WAY = CONFIG['CONTROLLER']['RECORD_DELETE_WAY']
+
+    RSA_TABLE_COLUMN = {}
+    # security层配置
+    if SECURITY_CONFIG['RSA_TABLE_COLUMN']:
+        try:
+            for table, columns in SECURITY_CONFIG['RSA_TABLE_COLUMN'].items():
+                RSA_TABLE_COLUMN[table] = columns.split(',')
+        except Exception as e:
+            raise Exception('RSA_TABLE_COLUMN参数读取失败')

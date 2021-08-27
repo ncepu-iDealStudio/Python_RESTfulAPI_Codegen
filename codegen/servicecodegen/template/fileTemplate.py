@@ -27,8 +27,8 @@ class {table_name_initials_upper}Service({table_name_initials_upper}Controller):
         try:
             filter_list = []
 {filter_conditions}          
-            page = int(kwargs.get('Page'), 1)
-            size = int(kwargs.get('Size'), 10)
+            page = int(kwargs.get('Page', 1))
+            size = int(kwargs.get('Size', 10))
             
             {result_name} = db.session.query({table_model}).filter(*filter_list){join_table_statement}
             

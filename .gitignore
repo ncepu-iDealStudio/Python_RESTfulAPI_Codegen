@@ -11,4 +11,4 @@
 .pytest_cache
 dist
 build
-logs/codegen_log.log
+logs
