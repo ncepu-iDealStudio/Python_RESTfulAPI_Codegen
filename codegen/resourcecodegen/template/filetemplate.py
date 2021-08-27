@@ -149,7 +149,7 @@ def create_app(config_name):
     '''
       整个应用的蓝图加载和注册
     '''
-    # classInfo blueprint register
+    # apiversion blueprint register
     {blueprint_register}
     return app
 """
