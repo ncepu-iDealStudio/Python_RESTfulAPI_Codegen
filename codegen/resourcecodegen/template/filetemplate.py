@@ -100,14 +100,19 @@ class {className}OtherResource(Resource):
     def get(self):
         parser = reqparse.RequestParser()
 {parameter1}
+        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+        parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {getControllerInvoke}
 
     # join table query
-    def joint_query(self):
+    @classmethod
+    def joint_query(cls):
         parser = reqparse.RequestParser()
 {parameter2}
+        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+        parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {getServiceInvoke}
