@@ -35,6 +35,13 @@ from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
     urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{2}_list")'
 
+    urls_service_resource = """
+# join table query
+@{0}_blueprint.route('/query', methods=['GET'], endpoint='{0}_query')
+def {0}_query():
+    return {1}OtherResource.join_table_query()
+"""
+
     resource_imports = """
 from controller.{0}Controller import {1}Controller
 from utils import commons
@@ -66,8 +73,21 @@ from utils.response_code import RET"""
         else:
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
+    other_resource_imports = """
+from controller.{0}Controller import {1}Controller
+from service.{0}Service import {1}Service
+from utils import commons
+from utils.response_code import RET"""
+
     other_resource_post_controller_invoke = """
         res = {0}Controller.add(**kwargs)
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'], data=res['data'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
+
+    other_resource_get_service_invoke = """
+        res = {0}Service.query_{1}(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'])
         else:

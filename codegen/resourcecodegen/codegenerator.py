@@ -43,7 +43,6 @@ class CodeGenerator(object):
 
             # app generation
             loggings.info(1, 'Start generating API layer, please wait...')
-            a = 1 + '1'
             self.app_codegen(app_dir, table_dict)
             loggings.info(1, 'Generating API layer complete')
 
@@ -93,7 +92,7 @@ class CodeGenerator(object):
                 file_write(other_resource_file, otherResource_list)
 
         except Exception as e:
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return
 
     # init generation
@@ -106,7 +105,7 @@ class CodeGenerator(object):
             blueprint_str = CodeBlockTemplate.init_blueprint.format(blueprint_name.lower(), blueprint_name)
             return FileTemplate.init.format(blueprint=blueprint_str)
         except Exception as e:
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return
 
     #  urls generation
@@ -128,10 +127,11 @@ class CodeGenerator(object):
 
             other_resource_str = CodeBlockTemplate.urls_other_resource.format(className_str, api_name, api_name)
 
+            service_resource_str = CodeBlockTemplate.urls_service_resource.format(api_name.lower(), className_str)
             return FileTemplate.urls.format(
-                imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str)
+                imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str, serviceResource=service_resource_str)
         except Exception as e:
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return
 
     # resource generation
@@ -147,10 +147,10 @@ class CodeGenerator(object):
             id_str = table.get('primaryKey')
 
             # get field list (except primary key)
-            argument_str = ''
+            parameter_str = ''
             for j in table.get('columns').values():
                 if j.get('name') != table.get('primaryKey'):
-                    argument_str += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
+                    parameter_str += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
 
             idCheck_str = CodeBlockTemplate.resource_id_check.format(id_str)
 
@@ -160,14 +160,17 @@ class CodeGenerator(object):
 
             putControllerInvoke_str = CodeBlockTemplate.resource_put_controller_invoke.format(className_str)
 
-            return FileTemplate.resource.format(imports=imports_str, className=className_str, id=id_str,
-                                                idCheck=idCheck_str, argument=argument_str,
+            return FileTemplate.resource.format(imports=imports_str,
+                                                className=className_str,
+                                                id=id_str,
+                                                idCheck=idCheck_str,
+                                                parameter=parameter_str,
                                                 getControllerInvoke=getControllerInvoke_str,
                                                 deleteControllerInvoke=deleteControllerInvoke_str,
                                                 putControllerInvoke=putControllerInvoke_str
                                                 )
         except Exception as e:
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return
 
     # otherResource generation
@@ -178,27 +181,35 @@ class CodeGenerator(object):
             className_str = api_name[0].upper() + api_name[1:]
 
             # template generation
-            imports_str = CodeBlockTemplate.resource_imports.format(api_name, className_str)
+            imports_str = CodeBlockTemplate.other_resource_imports.format(api_name, className_str)
 
             id_str = table.get('primaryKey')
 
             # get field list (except primary key)
-            argument_str = ''
+            parameter_str1 = ''
+            parameter_str2 = ''
             for j in table.get('columns').values():
+                parameter_str2 += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
                 if j.get('name') != table.get('primaryKey'):
-                    argument_str += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
+                    parameter_str1 += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
 
             getControllerInvoke_str = CodeBlockTemplate.get_controller_invoke.format(className_str)
 
             postControllerInvoke_str = CodeBlockTemplate.other_resource_post_controller_invoke.format(className_str)
 
-            return FileTemplate.other_resource.format(imports=imports_str, className=className_str, id=id_str,
-                                                      argument=argument_str,
+            getServiceInvoke_str = CodeBlockTemplate.other_resource_get_service_invoke.format(className_str, api_name)
+
+            return FileTemplate.other_resource.format(imports=imports_str,
+                                                      className=className_str,
+                                                      id=id_str,
+                                                      parameter1=parameter_str1,
+                                                      parameter2=parameter_str2,
                                                       getControllerInvoke=getControllerInvoke_str,
-                                                      postControllerInvoke=postControllerInvoke_str
+                                                      postControllerInvoke=postControllerInvoke_str,
+                                                      getServiceInvoke=getServiceInvoke_str
                                                       )
         except Exception as e:
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return
 
     # app_init generation
@@ -225,7 +236,7 @@ class CodeGenerator(object):
             with open(app_setting_file, 'w', encoding='utf8') as f:
                 f.write(FileTemplate.app_setting)
         except Exception as e:
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
 
 
 
