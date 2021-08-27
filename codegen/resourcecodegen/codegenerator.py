@@ -20,6 +20,7 @@ from config.setting import Settings
 from utils.common import str_format_convert, new_file_or_dir, file_write
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
+from utils.tablesMetadata import TableMetadata
 
 type_map = {
     int: 'int',
@@ -38,26 +39,11 @@ class CodeGenerator(object):
     def resource_generator(self, api_dir, app_dir):
         try:
             # get the table list
-            table_names = self.metadata.tables.values()
-            table_dict = {}
-
-            # get the field list, primary key and table name of each table
-            for i in table_names:
-                # get the table
-                table_dict[str(i)] = {}
-                table_dict[str(i)]['columns'] = {}
-                table_dict[str(i)]['tableName'] = str(i)
-                for j in i.c.values():
-                    table_dict[str(i)]['columns'][str(j.name)] = {}
-                    table_dict[str(i)]['columns'][str(j.name)]['name'] = str(j.name)
-                    if j.primary_key:
-                        if not table_dict[str(i)].get('primaryKey'):
-                            table_dict[str(i)]['primaryKey'] = str(j.name)
-                    table_dict[str(i)]['columns'][str(j.name)]['type'] = type_map[j.type.python_type] if type_map.get(
-                        j.type.python_type) else 'str'
+            table_dict = TableMetadata.get_tables_metadata(self.metadata)
 
             # app generation
             loggings.info(1, 'Start generating API layer, please wait...')
+            a = 1 + '1'
             self.app_codegen(app_dir, table_dict)
             loggings.info(1, 'Generating API layer complete')
 
@@ -75,7 +61,7 @@ class CodeGenerator(object):
             # file generation
             for table in table_dict.keys():
                 resource_dir = os.path.join(api_dir, '{0}Resource'.format(str_format_convert(
-                    table_dict[table].get('tableName')
+                    table_dict[table].get('table_name')
                 )))
                 new_file_or_dir(2, resource_dir)
 
@@ -89,18 +75,18 @@ class CodeGenerator(object):
 
                 # resource generation
                 resource_file = os.path.join(resource_dir, '{0}Resource.py'.format(str_format_convert(
-                    table_dict[table].get('tableName')
+                    table_dict[table].get('table_name')
                 )))
                 resource_list = self.resource_codegen(table_dict[table]).replace('\"', '\'')
 
                 # otherResource generation
                 other_resource_file = os.path.join(resource_dir, '{0}OtherResource.py'.format(str_format_convert(
-                    table_dict[table].get('tableName')
+                    table_dict[table].get('table_name')
                 )))
                 otherResource_list = self.other_resource_codegen(table_dict[table]).replace('\"', '\'')
 
                 # file write
-                loggings.info(1, 'Generating {0}Resource'.format(table_dict[table].get('tableName')))
+                loggings.info(1, 'Generating {0}Resource'.format(table_dict[table].get('table_name')))
                 file_write(init_file, init_list)
                 file_write(urls_file, urls_list)
                 file_write(resource_file, resource_list)
@@ -114,7 +100,7 @@ class CodeGenerator(object):
     def init_codegen(self, table):
         try:
             # remove underline
-            blueprint_name = str_format_convert(table.get('tableName'))
+            blueprint_name = str_format_convert(table.get('table_name'))
 
             # template generation
             blueprint_str = CodeBlockTemplate.init_blueprint.format(blueprint_name.lower(), blueprint_name)
@@ -127,7 +113,7 @@ class CodeGenerator(object):
     def urls_codegen(self, table):
         try:
             # remove underline
-            api_name = str_format_convert(table.get('tableName'))
+            api_name = str_format_convert(table.get('table_name'))
             className_str = api_name[0].upper() + api_name[1:]
 
             # template  generation
@@ -152,7 +138,7 @@ class CodeGenerator(object):
     def resource_codegen(self, table):
         try:
             # remove underline
-            api_name = str_format_convert(table.get('tableName'))
+            api_name = str_format_convert(table.get('table_name'))
             className_str = api_name[0].upper() + api_name[1:]
 
             # template  generation
@@ -188,7 +174,7 @@ class CodeGenerator(object):
     def other_resource_codegen(self, table):
         try:
             # remove underline
-            api_name = str_format_convert(table.get('tableName'))
+            api_name = str_format_convert(table.get('table_name'))
             className_str = api_name[0].upper() + api_name[1:]
 
             # template generation
@@ -222,7 +208,7 @@ class CodeGenerator(object):
             blueprint_register_str = '''from api_{0}.apiVersionResource import apiversion_blueprint
     app.register_blueprint(apiversion_blueprint, url_prefix="/api_{0}")\n'''.format(Settings.API_VERSION)
             for table in tables:
-                table_name = str_format_convert(tables[str(table)].get('tableName'))
+                table_name = str_format_convert(tables[str(table)].get('table_name'))
                 blueprint_name = table_name.lower()
                 blueprint_register_str += CodeBlockTemplate.app_init_blueprint.format(
                     table_name, Settings.API_VERSION, blueprint_name,
