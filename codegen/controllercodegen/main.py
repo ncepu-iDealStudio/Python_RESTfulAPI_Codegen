@@ -13,7 +13,7 @@ import os
 
 from codegen import codegen_layer, metadata, tables, project_dir, target_dir
 from utils.common import new_file_or_dir
-from . import record_delete_way
+from . import record_delete_way, rsa_table_column
 from .codegenerator import CodeGenerator
 
 
@@ -37,6 +37,10 @@ def controllerGenerate():
     new_file_or_dir(2, controller_dir)
 
     generator = CodeGenerator(metadata)
-    generator.controller_codegen(delete_way=record_delete_way, controller_dir=controller_dir)
+    generator.controller_codegen(
+        delete_way=record_delete_way,
+        controller_dir=controller_dir,
+        rsa_table_column=rsa_table_column
+    )
     return
 

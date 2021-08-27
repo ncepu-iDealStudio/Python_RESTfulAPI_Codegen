@@ -13,3 +13,4 @@
 from config.setting import Settings
 
 record_delete_way = Settings.CONTROLLER_RECORD_DELETE_WAY
+rsa_table_column = Settings.RSA_TABLE_COLUMN

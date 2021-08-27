@@ -109,6 +109,7 @@ class {class_name}({parent_model}):
     @classmethod
     def update(cls, **kwargs):
         try:
+            {rsa_update}
             res = db.session.query(cls).filter(
                 cls.{primary_key} == kwargs.get('{primary_key}')
             ).with_for_update().update(kwargs)
