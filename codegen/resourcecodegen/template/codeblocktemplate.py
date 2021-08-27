@@ -52,7 +52,7 @@ from utils.response_code import RET"""
             return jsonify(code=RET.NODATA, message='primary_key missed', error='primary_key missed')
         kwargs["{0}"] = {0}"""
 
-    get_controller_invoke = """
+    resource_get_controller_invoke = """
         res = {0}Controller.get(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'])
@@ -73,6 +73,13 @@ from utils.response_code import RET"""
         else:
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
+    other_resource_get_controller_invoke = """
+        res = {0}Controller.get(**kwargs)
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'], data=res['data'], count=res['count'], pages=res['pages'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
+
     other_resource_imports = """
 from controller.{0}Controller import {1}Controller
 from service.{0}Service import {1}Service
@@ -87,7 +94,7 @@ from utils.response_code import RET"""
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
     other_resource_get_service_invoke = """
-        res = {0}Service.query_{1}(**kwargs)
+        res = {0}Service.joint_query(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'], count=res['count'], pages=res['pages'])
         else:

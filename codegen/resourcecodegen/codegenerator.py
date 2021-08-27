@@ -150,7 +150,7 @@ class CodeGenerator(object):
 
             idCheck_str = CodeBlockTemplate.resource_id_check.format(id_str)
 
-            getControllerInvoke_str = CodeBlockTemplate.get_controller_invoke.format(className_str)
+            getControllerInvoke_str = CodeBlockTemplate.resource_get_controller_invoke.format(className_str)
 
             deleteControllerInvoke_str = CodeBlockTemplate.resource_delete_controller_invoke.format(className_str)
 
@@ -189,11 +189,11 @@ class CodeGenerator(object):
                 if j.get('name') != table.get('primaryKey'):
                     parameter_str1 += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
 
-            getControllerInvoke_str = CodeBlockTemplate.get_controller_invoke.format(className_str)
+            getControllerInvoke_str = CodeBlockTemplate.other_resource_get_controller_invoke.format(className_str)
 
             postControllerInvoke_str = CodeBlockTemplate.other_resource_post_controller_invoke.format(className_str)
 
-            getServiceInvoke_str = CodeBlockTemplate.other_resource_get_service_invoke.format(className_str, api_name)
+            getServiceInvoke_str = CodeBlockTemplate.other_resource_get_service_invoke.format(className_str)
 
             return FileTemplate.other_resource.format(imports=imports_str,
                                                       className=className_str,
