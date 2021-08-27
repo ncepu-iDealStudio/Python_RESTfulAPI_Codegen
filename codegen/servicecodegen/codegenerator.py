@@ -94,4 +94,4 @@ class CodeGenerator(object):
                     f.write(template)
 
         except Exception as e:
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
