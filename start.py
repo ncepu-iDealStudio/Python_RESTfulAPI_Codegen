@@ -32,7 +32,7 @@ if __name__ == '__main__':
     """
     # 第零步
     if check_config():
-        第一步
+        # 第一步
         loggings.info(1, "Start to build the Model layer code, please wait...")
         modelGenerate()
         loggings.info(1, "Model layer code build completed")
