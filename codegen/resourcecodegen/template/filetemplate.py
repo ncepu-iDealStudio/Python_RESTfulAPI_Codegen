@@ -42,6 +42,8 @@ from flask_restful import Api
 {resource}
 
 {otherResource}
+
+{serviceResource}
 """
 
     resource = """#!/usr/bin/env python
@@ -69,7 +71,7 @@ class {className}Resource(Resource):
     # put
     def put(self, {id}):
         parser = reqparse.RequestParser()
-{argument}
+{parameter}
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {idCheck}
@@ -89,7 +91,7 @@ class {className}OtherResource(Resource):
     # add
     def post(self):
         parser = reqparse.RequestParser()
-{argument}
+{parameter1}
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {postControllerInvoke}
@@ -97,10 +99,18 @@ class {className}OtherResource(Resource):
     # list query
     def get(self):
         parser = reqparse.RequestParser()
-{argument}
+{parameter1}
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {getControllerInvoke}
+
+    # join table query
+    def join_table_query(self):
+        parser = reqparse.RequestParser()
+{parameter2}
+        kwargs = parser.parse_args()
+        kwargs = commons.put_remove_none(**kwargs)
+{getServiceInvoke}
 """
 
     app_init = """#!/usr/bin/env python

@@ -31,4 +31,4 @@ def serviceGenerate():
         generator = CodeGenerator(metadata)
         generator.service_generator(service_path)
     except Exception as e:
-        loggings.error(1, str(e))
+        loggings.exception(1, e)

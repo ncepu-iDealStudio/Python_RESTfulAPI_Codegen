@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
         # 第二步
         loggings.info(1, "Start to build the Controller layer code, please wait...")
-        controllerGenerate()
+        # controllerGenerate()
         loggings.info(1, "Controller layer code build completed")
 
         # 第三步
