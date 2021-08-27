@@ -10,11 +10,12 @@
     this is function description
 """
 
+import codegen.servicecodegen.main
+import codegen.staticcodegen.main
+
 from codegen.controllercodegen.main import controllerGenerate
 from codegen.modelcodegen.main import modelGenerate
 from codegen.resourcecodegen.main import resourceGenerate
-from codegen.servicecodegen.main import serviceGenerate
-from codegen.staticcodegen.main import staticGenerate
 from utils.checkConfig import check_config
 from utils.loggings import loggings
 
@@ -44,7 +45,7 @@ if __name__ == '__main__':
 
         # 第三步
         loggings.info(1, "Start to build the Service layer code, please wait...")
-        serviceGenerate()
+        codegen.servicecodegen.main.main()
         loggings.info(1, "Service layer code build completed")
 
         # 第四步
@@ -54,7 +55,7 @@ if __name__ == '__main__':
 
         # 第五步
         loggings.info(1, "Start packing static files, please wait...")
-        staticGenerate()
+        codegen.staticcodegen.main.main()
         loggings.info(1, "Static resource packaging is complete")
 
         loggings.info(1, "Api project code generation completed")

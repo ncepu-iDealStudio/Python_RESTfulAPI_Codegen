@@ -13,12 +13,11 @@ import os
 
 from codegen import project_dir
 from codegen.staticcodegen.codegenerator import CodeGenerator
-from codegen.staticcodegen.copyfile import copy_static
 from codegen.staticcodegen.template.filetemplate import FileTemplate
 from utils.loggings import loggings
 
 
-def staticGenerate():
+def main():
     """
         一、 按照当前项目的config/security.conf 文件 生成 static/config/security.conf
         二、 生成static/app  和static/manage.py
@@ -42,8 +41,8 @@ def staticGenerate():
         source_dir = os.path.join(BASE_DIR, 'static')
         # 创建目标路径
         os.makedirs(project_dir, exist_ok=True)
-        # 调用拷贝函数
-        copy_static(project_dir, source_dir)
+        # 调用静态资源生成函数
+        CodeGenerator.static_generate(project_dir, source_dir)
 
     except Exception as e:
         loggings.exception(1, e)

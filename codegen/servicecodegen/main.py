@@ -11,12 +11,12 @@
 """
 import os
 
+from codegen import project_dir, metadata
 from codegen.servicecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
-from . import metadata, project_dir
 
 
-def serviceGenerate():
+def main():
     """
     Generate service layer code
     :return: None
