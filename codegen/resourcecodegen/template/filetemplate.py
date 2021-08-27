@@ -105,7 +105,7 @@ class {className}OtherResource(Resource):
 {getControllerInvoke}
 
     # join table query
-    def join_table_query(self):
+    def joint_query(self):
         parser = reqparse.RequestParser()
 {parameter2}
         kwargs = parser.parse_args()

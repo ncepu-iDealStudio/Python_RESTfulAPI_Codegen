@@ -36,10 +36,10 @@ from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
     urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{2}_list")'
 
     urls_service_resource = """
-# join table query
+# joint query
 @{0}_blueprint.route('/query', methods=['GET'], endpoint='{0}_query')
 def {0}_query():
-    return {1}OtherResource.join_table_query()
+    return {1}OtherResource.joint_query()
 """
 
     resource_imports = """
@@ -89,7 +89,7 @@ from utils.response_code import RET"""
     other_resource_get_service_invoke = """
         res = {0}Service.query_{1}(**kwargs)
         if res['code'] == RET.OK:
-            return jsonify(code=res['code'], message=res['message'], data=res['data'])
+            return jsonify(code=res['code'], message=res['message'], data=res['data'], count=res['count'], pages=res['pages'])
         else:
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
