@@ -19,6 +19,7 @@ from utils.loggings import loggings
 
 class CheckTable(object):
 
+    # check the Primary key
     # 检查table主键
     @classmethod
     def check_primary_key(cls):
@@ -68,21 +69,6 @@ class CheckTable(object):
         loggings.info(1, "All table checks passed, a total of {0} tables ".format(len(tables)))
         return available_tables if available_tables else None
 
-    # check keywords of python in tables
-    # 检查表名和字段名，是否和Python的关键字冲突
-    @classmethod
-    def check_keyword(cls, table_dict):
-        """
-        check the table name whether it is a keyword of python
-        :return: True while no table name is a keyword, else return False
-        """
-        flag = True
-        for table in table_dict.values():
-            if keyword.iskeyword(table['table_name']):
-                loggings.error(1, 'table "{}" is a keyword of python')
-                flag = False
-        return flag
-
     # check the foreign key
     # 检查表的外键约束
     @classmethod
@@ -106,3 +92,20 @@ class CheckTable(object):
                                                           source_key=table['foreign_keys']['key']))
                 flag = False
         return flag
+
+    # check python keywords conflict in tables
+    # 检查表名和字段名，是否和Python的关键字冲突
+    @classmethod
+    def check_keyword_conflict(cls, table_dict):
+        """
+        check the table name whether it is a keyword of python
+        :return: True while no table name is a keyword, else return False
+        """
+        flag = True
+        for table in table_dict.values():
+            if keyword.iskeyword(table['table_name']):
+                loggings.error(1, 'table "{}" is a keyword of python')
+                flag = False
+        return flag
+
+
