@@ -159,7 +159,7 @@ def create_app(config_name):
 
 from flask import Blueprint
 
-apiversion_blueprint = Blueprint("apiversion", __name__)
+apiversion_blueprint = Blueprint("apiVersion", __name__)
 
 from . import urls
 """
