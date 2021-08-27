@@ -13,6 +13,7 @@ import os
 import shutil
 from configparser import ConfigParser
 
+from config.setting import Settings
 from utils.loggings import loggings
 
 
@@ -29,6 +30,20 @@ class CodeGenerator(object):
         """
         try:
             target_config = ConfigParser()
+
+            # write configueration about databse
+            target_config.add_section("DATABASE")
+            target_config.set("DATABASE", "DIALECT", Settings.DIALECT)
+            target_config.set("DATABASE", "DRIVER", Settings.DRIVER)
+            target_config.set("DATABASE", "USERNAME", Settings.USERNAME)
+            target_config.set("DATABASE", "PASSWORD", Settings.PASSWORD)
+            target_config.set("DATABASE", "HOST", Settings.HOST)
+            target_config.set("DATABASE", "PORT", Settings.PORT)
+            target_config.set("DATABASE", "DATABASE", Settings.DATABASE)
+            target_config.set("DATABASE", "SQLALCHEMY_TRACK_MODIFICATIONS", Settings.SQLALCHEMY_TRACK_MODIFICATIONS)
+            target_config.set("DATABASE", "SQLALCHEMY_POOL_SIZE", Settings.SQLALCHEMY_POOL_SIZE)
+            target_config.set("DATABASE", "SQLALCHEMY_MAX_OVERFLOW", Settings.SQLALCHEMY_MAX_OVERFLOW)
+
             for section in cls.SECURITY_CONFIG.sections():
                 # 'RSA_TABLE_COLUMN' section is not required
                 if section == 'RSA_TABLE_COLUMN':

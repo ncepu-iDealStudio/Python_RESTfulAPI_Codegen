@@ -26,7 +26,8 @@ def main():
     """
     try:
         # 第一步
-        CodeGenerator.generate_configuration_file("static/config/security.conf")
+        os.makedirs(os.path.join(project_dir, "config"), exist_ok=True)
+        CodeGenerator.generate_configuration_file(os.path.join(project_dir, "config", "config.conf"))
 
         # 第二步
         # app_setting
