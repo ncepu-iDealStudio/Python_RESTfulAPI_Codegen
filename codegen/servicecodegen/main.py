@@ -9,10 +9,11 @@
 """
     this is function description
 """
+import os
 
 from codegen.servicecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
-from . import metadata, service_path
+from . import metadata, project_dir
 
 
 def serviceGenerate():
@@ -21,6 +22,12 @@ def serviceGenerate():
     :return: None
     """
     try:
+
+        # Create folder named "service" in project directory
+        os.makedirs(service_path := os.path.join(project_dir, 'service'), exist_ok=True)
+        with open(os.path.join(service_path, '__init__.py'), 'w', encoding='utf-8') as f:
+            f.write("#!/usr/bin/env python\n# -*- coding:utf-8 -*-\n")
+
         generator = CodeGenerator(metadata)
         generator.service_generator(service_path)
     except Exception as e:

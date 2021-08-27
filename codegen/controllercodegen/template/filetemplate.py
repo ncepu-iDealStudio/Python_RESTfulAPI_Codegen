@@ -40,7 +40,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Added successfully', 'data': results}}
         except Exception as e:
             db.session.rollback()
-            loggings.error(str(e))
+            loggings.error(1, str(e))
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to add', 'error': str(e)}}
         finally:
             db.session.close()
@@ -63,7 +63,7 @@ class {class_name}({parent_model}):
             results = commons.query_to_dict({model_lower}_info)
             return {{'code': RET.OK, 'message': 'Queried successfully', 'data': results}}
         except Exception as e:
-            loggings.error(str(e))
+            loggings.error(1, str(e))
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to query', 'error': str(e)}}
         finally:
             db.session.close()
@@ -74,13 +74,13 @@ class {class_name}({parent_model}):
     def delete(cls, **kwargs):
         try:
             db.session.query(cls).filter(
-                cls.{primary_key} == kwargs.get('primary_key')
-            ).with_for_update().delete()
+                cls.{primary_key} == kwargs.get('{primary_key}')
+            ).delete()
             db.session.commit()
             return {{'code': RET.OK, 'message': 'Deleted successfully'}}
         except Exception as e:
             db.session.rollback()
-            loggings.error(str(e))
+            loggings.error(1, str(e))
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
         finally:
             db.session.close()
@@ -91,7 +91,7 @@ class {class_name}({parent_model}):
     def delete(cls, **kwargs):
         try:
             res = db.session.query(cls).filter(
-                cls.{primary_key} == kwargs.get('primary_key')
+                cls.{primary_key} == kwargs.get('{primary_key}')
             ).with_for_update().update({{'IsDelete': 1}})
             if res < 1:
                 return {{'code': RET.NODATA, 'message': 'No data to delete', 'error': 'No data to delete'}}
@@ -99,7 +99,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Deleted successfully'}}
         except Exception as e:
             db.session.rollback()
-            loggings.error(str(e))
+            loggings.error(1, str(e))
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
         finally:
             db.session.close()
@@ -118,7 +118,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Updated successfully'}}
         except Exception as e:
             db.session.rollback()
-            loggings.error(str(e))
+            loggings.error(1, str(e))
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to update', 'error': str(e)}}
         finally:
             db.session.close()

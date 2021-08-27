@@ -21,7 +21,8 @@ class CodeBlockTemplate(object):
 from flask import current_app
 
 from app import db
-from controller.{table_name}Controller import {table_name_upper}
+from controller.{table_name}Controller import {table_name_initials_upper}Controller
+from models.{table_name}Model import {table_name_initials_upper}{foreign_import}
 from utils import commons
 from utils.response_code import RET
 from utils.loggings import loggings

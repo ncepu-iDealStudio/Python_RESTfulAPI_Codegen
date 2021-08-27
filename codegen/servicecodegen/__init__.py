@@ -10,8 +10,6 @@
     this is function description
 """
 
-import os
-
 from sqlalchemy import create_engine, MetaData
 
 from config.setting import Settings
@@ -29,7 +27,3 @@ metadata = MetaData(engine)
 
 metadata.reflect(engine, schema, not noviews, tables)
 
-# Create folder named "service" in project directory
-os.makedirs(service_path := os.path.join(project_dir, 'service'), exist_ok=True)
-with open(os.path.join(service_path, '__init__.py'), 'w', encoding='utf-8') as f:
-    f.write("#!/usr/bin/env python\n# -*- coding:utf-8 -*-\n")
