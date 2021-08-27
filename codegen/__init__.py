@@ -21,7 +21,7 @@ url = Settings.MODEL_URL
 codegen_layer = Settings.CODEGEN_LAYER
 schema = Settings.MODEL_SCHEMA
 noviews = Settings.MODEL_NOVIEWS
-tables = CheckTable.check_primary_key()
+tables = CheckTable.main()
 project_dir = Settings.PROJECT_DIR
 target_dir = Settings.TARGET_DIR
 

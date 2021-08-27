@@ -61,35 +61,12 @@ class CheckTable(object):
             else:
                 invalid_tables.append(table.key)
 
-        # check the foreign key
-        metadata.reflect(engine, only=available_tables)
-        table_dict = TableMetadata.get_tables_metadata(metadata)
-        available_table, invalid_table = cls.check_foreign_key(table_dict)
-        available_tables = available_table
-        invalid_tables += invalid_table
+        return available_tables, invalid_tables
 
-        # check the keyword
-        metadata.reflect(engine, only=available_tables)
-        table_dict = TableMetadata.get_tables_metadata(metadata)
-        available_table, invalid_table = cls.check_keyword(table_dict)
-        available_tables = available_table
-        invalid_tables += invalid_table
-
-        if len(invalid_tables) > 0:
-            loggings.warning(1,
-                             "The following {0} tables do not meet the specifications and cannot be generated: {1}".format(
-                                 len(invalid_tables), ",".join(invalid_tables)))
-            return available_tables if available_tables else None
-
-        loggings.info(1, "All table checks passed, a total of {0} tables ".format(len(tables)))
-        return available_tables if available_tables else None
-
-<<<<<<< HEAD
-=======
     # check keywords of python in tables
     # 检查表名和字段名，是否和Python的关键字冲突
     @classmethod
-    def check_keyword(cls, table_dict):
+    def check_keyword_conflict(cls, table_dict):
         """
         check whether the table name or column name is a keyword of python
         :return: True while no table name is a keyword, else return False
@@ -111,7 +88,6 @@ class CheckTable(object):
                 invalid_table.append(table['table_name'])
         return available_table, invalid_table
 
->>>>>>> b60b8abef5ed8356d736cbd60e0f153fed98b5fd
     # check the foreign key
     # 检查表的外键约束
     @classmethod
@@ -136,29 +112,42 @@ class CheckTable(object):
                                                           source_table=table['table_name'],
                                                           source_key=table['foreign_keys']['key']))
                 flag = False
-<<<<<<< HEAD
-        return flag
-
-    # check python keywords conflict in tables
-    # 检查表名和字段名，是否和Python的关键字冲突
-    @classmethod
-    def check_keyword_conflict(cls, table_dict):
-        """
-        check the table name whether it is a keyword of python
-        :return: True while no table name is a keyword, else return False
-        """
-        flag = True
-        for table in table_dict.values():
-            if keyword.iskeyword(table['table_name']):
-                loggings.error(1, 'table "{}" is a keyword of python')
-                flag = False
-        return flag
-
-
-=======
             if flag:
                 available_table.append(table['table_name'])
             else:
                 invalid_table.append(table['table_name'])
         return available_table, invalid_table
->>>>>>> b60b8abef5ed8356d736cbd60e0f153fed98b5fd
+
+    @classmethod
+    def main(cls):
+
+        url = Settings.MODEL_URL
+        engine = create_engine(url)
+        metadata = MetaData(engine)
+        metadata.reflect(engine)
+
+        # check table primary key
+        available_tables, invalid_tables = cls.check_primary_key()
+
+        # check the foreign key
+        metadata.reflect(engine, only=available_tables)
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+        available_table, invalid_table = cls.check_foreign_key(table_dict)
+        available_tables = available_table
+        invalid_tables += invalid_table
+
+        # check the keyword
+        metadata.reflect(engine, only=available_tables)
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+        available_table, invalid_table = cls.check_keyword_conflict(table_dict)
+        available_tables = available_table
+        invalid_tables += invalid_table
+
+        if len(invalid_tables) > 0:
+            loggings.warning(1,
+                             "The following {0} tables do not meet the specifications and cannot be generated: {1}".format(
+                                 len(invalid_tables), ",".join(invalid_tables)))
+            return available_tables if available_tables else None
+
+        loggings.info(1, "All table checks passed, a total of {0} tables ".format(len(available_tables + invalid_tables)))
+        return available_tables if available_tables else None
