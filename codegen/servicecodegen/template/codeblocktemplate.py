@@ -18,8 +18,6 @@ class CodeBlockTemplate(object):
 
     service_import = """import math
 
-from flask import current_app
-
 from app import db
 from controller.{table_name}Controller import {table_name_initials_upper}Controller
 from models.{table_name}Model import {table_name_initials_upper}{foreign_import}
