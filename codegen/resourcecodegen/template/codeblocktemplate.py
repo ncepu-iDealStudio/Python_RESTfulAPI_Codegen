@@ -35,11 +35,12 @@ from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
     urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{2}_list")'
 
-    urls_service_resource = """# join table query
+    urls_service_resource = """
+# join table query
 @{0}_blueprint.route('/query', methods=['GET'], endpoint='{0}_query')
 def {0}_query():
     return {1}OtherResource.join_table_query()
-    """
+"""
 
     resource_imports = """
 from controller.{0}Controller import {1}Controller

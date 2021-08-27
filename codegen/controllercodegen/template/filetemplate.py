@@ -40,7 +40,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Added successfully', 'data': results}}
         except Exception as e:
             db.session.rollback()
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to add', 'error': str(e)}}
         finally:
             db.session.close()
@@ -63,7 +63,7 @@ class {class_name}({parent_model}):
             results = commons.query_to_dict({model_lower}_info)
             return {{'code': RET.OK, 'message': 'Queried successfully', 'data': results}}
         except Exception as e:
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to query', 'error': str(e)}}
         finally:
             db.session.close()
@@ -80,7 +80,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Deleted successfully'}}
         except Exception as e:
             db.session.rollback()
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
         finally:
             db.session.close()
@@ -99,7 +99,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Deleted successfully'}}
         except Exception as e:
             db.session.rollback()
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
         finally:
             db.session.close()
@@ -118,7 +118,7 @@ class {class_name}({parent_model}):
             return {{'code': RET.OK, 'message': 'Updated successfully'}}
         except Exception as e:
             db.session.rollback()
-            loggings.error(1, str(e))
+            loggings.exception(1, e)
             return {{'code': RET.DBERR, 'message': 'Database exception, failed to update', 'error': str(e)}}
         finally:
             db.session.close()
