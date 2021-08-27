@@ -7,7 +7,7 @@
 # software: PyCharm
 
 """
-    Get metadata
+    Get metadata of all tables
 """
 
 from decimal import Decimal

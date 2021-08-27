@@ -1,0 +1,19 @@
+[
+  {
+  "database": "MySQL",
+  "data_map": {
+    "int": ["int","bigint","smallint","mediumint"],
+    "float":["float","double","real","numeric"],
+    "decimal":["decimal"]
+    }
+  },
+  {
+  "database": "PostgreSQL",
+  "data_map": {
+    "int": ["int","bigint","smallint","mediumint"],
+    "float":["float","double","decimal"],
+    "decimal":["decimal"],
+    "str": ["char","varchar","tinytext","text","mediumtext","longtext"]
+    }
+  }
+]
