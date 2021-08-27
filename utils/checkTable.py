@@ -76,11 +76,11 @@ class CheckTable(object):
         for table in table_dict.values():
             flag = True
             if keyword.iskeyword(table['table_name']):
-                loggings.error(1, 'table "{0}" is a keyword of python'.format(table['table_name']))
+                loggings.warning(1, 'table "{0}" is a keyword of python'.format(table['table_name']))
                 flag = False
             for column in table['columns'].values():
                 if keyword.iskeyword(column['name']):
-                    loggings.error(1, 'column "{0}.{1}" is a keyword of python'.format(table['table_name'], column['name']))
+                    loggings.warning(1, 'column "{0}.{1}" is a keyword of python'.format(table['table_name'], column['name']))
                     flag = False
             if flag:
                 available_table.append(table['table_name'])
@@ -104,10 +104,10 @@ class CheckTable(object):
                 continue
             # for foreign_key in table.get('foreign_key'):
             #     if not table_dict.get(foreign_key['target_table']):
-            #         loggings.error(1, 'the foreign key of "{source_key}" in "{source_table}" does not exist')
+            #         loggings.waring(1, 'the foreign key of "{source_key}" in "{source_table}" does not exist')
             #         flag = False
             if not table_dict.get(table['foreign_keys']['target_table']):
-                loggings.error(1, 'the target table "{target_table}" of foreign key "{source_table}.{source_key}" '
+                loggings.warning(1, 'the target table "{target_table}" of foreign key "{source_table}.{source_key}" '
                                   'does not exist'.format(target_table=table['foreign_keys']['target_table'],
                                                           source_table=table['table_name'],
                                                           source_key=table['foreign_keys']['key']))
