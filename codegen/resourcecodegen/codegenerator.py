@@ -143,10 +143,10 @@ class CodeGenerator(object):
             id_str = table.get('primaryKey')
 
             # get field list (except primary key)
-            parameter_str = ''
+            parameter_form_str = ''
             for j in table.get('columns').values():
                 if j.get('name') != table.get('primaryKey'):
-                    parameter_str += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
+                    parameter_form_str += CodeBlockTemplate.parameter_form.format(j.get('name'), j.get('type'))
 
             idCheck_str = CodeBlockTemplate.resource_id_check.format(id_str)
 
@@ -160,7 +160,7 @@ class CodeGenerator(object):
                                                 className=className_str,
                                                 id=id_str,
                                                 idCheck=idCheck_str,
-                                                parameter=parameter_str,
+                                                parameter=parameter_form_str,
                                                 getControllerInvoke=getControllerInvoke_str,
                                                 deleteControllerInvoke=deleteControllerInvoke_str,
                                                 putControllerInvoke=putControllerInvoke_str
@@ -184,10 +184,12 @@ class CodeGenerator(object):
             # get field list (except primary key)
             parameter_str1 = ''
             parameter_str2 = ''
+            parameter_str3 = ''
             for j in table.get('columns').values():
-                parameter_str2 += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
+                parameter_str2 += CodeBlockTemplate.parameter_args.format(j.get('name'), j.get('type'))
+                parameter_str3 += CodeBlockTemplate.parameter_args.format(j.get('name'), j.get('type'))
                 if j.get('name') != table.get('primaryKey'):
-                    parameter_str1 += CodeBlockTemplate.parameter.format(j.get('name'), j.get('type'))
+                    parameter_str1 += CodeBlockTemplate.parameter_form.format(j.get('name'), j.get('type'))
 
             getControllerInvoke_str = CodeBlockTemplate.other_resource_get_controller_invoke.format(className_str)
 
@@ -200,6 +202,7 @@ class CodeGenerator(object):
                                                       id=id_str,
                                                       parameter1=parameter_str1,
                                                       parameter2=parameter_str2,
+                                                      parameter3=parameter_str3,
                                                       getControllerInvoke=getControllerInvoke_str,
                                                       postControllerInvoke=postControllerInvoke_str,
                                                       getServiceInvoke=getServiceInvoke_str
