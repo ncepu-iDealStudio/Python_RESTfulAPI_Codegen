@@ -88,7 +88,7 @@ class CodeGenerator(object):
                                                         )
 
                 # Write the template to the file
-                with open(os.path.join(service_path, table_name + "Service"), 'w',
+                with open(os.path.join(service_path, table_name + "Service.py"), 'w',
                           encoding='utf-8') as f:
                     f.write(template)
 

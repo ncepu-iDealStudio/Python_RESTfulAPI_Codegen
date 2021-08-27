@@ -50,12 +50,12 @@ class Loggings(object):
         if location == 1:
             logger.remove()
             logger.add(sys.stdout)
-            logger.add("logs/codegen_log.log", encoding="utf-8", enqueue=True, rotation="1 MB")
+            logger.add("logs/codegen_log.log", encoding="utf-8", enqueue=True, rotation="100 KB")
 
         # 只在日志中出现
         elif location == 2:
             logger.remove()
-            logger.add("logs/codegen_log.log", encoding="utf-8", enqueue=True, rotation="1 MB")
+            logger.add("logs/codegen_log.log", encoding="utf-8", enqueue=True, rotation="100 KB")
 
 
 loggings = Loggings()

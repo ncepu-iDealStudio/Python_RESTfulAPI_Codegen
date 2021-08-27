@@ -26,7 +26,7 @@ class RET:
     UNKOWNERR = "5004"
 
 
-error_map = {
+error_map_CN = {
     RET.OK: u"成功",
     RET.NODATA: u"无数据",
     RET.DATAEXIST: u"数据已存在",
@@ -44,4 +44,24 @@ error_map = {
     RET.THIRDERR: u"第三方系统错误",
     RET.IOERR: u"文件读写错误",
     RET.UNKOWNERR: u"未知错误",
+}
+
+error_map_EN = {
+    RET.OK: "successfully!",
+    RET.NODATA: "no data!",
+    RET.DATAEXIST: "data exist!",
+    RET.DATAERR: "data error!",
+    RET.PARAMERR: "parameter error!",
+    RET.SESSIONERR: "user not logged in!",
+    RET.LOGINERR: "user login failed!",
+    RET.USERERR: "user does not exist or not activation! ",
+    RET.ROLEERR: "user role error!",
+    RET.PWDERR: "password error!",
+    RET.REQERR: "illegal request or limited number of requests",
+    RET.IPERR: "IP restricted!",
+
+    RET.DBERR: "database query error",
+    RET.THIRDERR: "third party system error",
+    RET.IOERR: "file read or write error!",
+    RET.UNKOWNERR: "unknown error!",
 }
