@@ -13,7 +13,6 @@
 """
 
 import os
-from decimal import Decimal
 
 from utils.loggings import loggings
 from config.setting import Settings
@@ -21,12 +20,6 @@ from utils.common import str_format_convert, new_file_or_dir, file_write
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
 from utils.tablesMetadata import TableMetadata
-
-type_map = {
-    int: 'int',
-    float: 'float',
-    Decimal: 'float'
-}
 
 
 class CodeGenerator(object):
