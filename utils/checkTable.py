@@ -10,6 +10,8 @@
     this is function description
 """
 
+import keyword
+
 from sqlalchemy import create_engine, MetaData
 from config.setting import Settings
 from utils.loggings import loggings
@@ -65,3 +67,40 @@ class CheckTable(object):
 
         loggings.info(1, "All table checks passed, a total of {0} tables ".format(len(tables)))
         return available_tables if available_tables else None
+
+    # check keywords of python
+    @classmethod
+    def check_keyword(cls, table_dict):
+        """
+        check the table name whether it is a keyword of python
+        :return: True while no table name is a keyword, else return False
+        """
+        flag = True
+        for table in table_dict.values():
+            if keyword.iskeyword(table['table_name']):
+                loggings.error(1, 'table "{}" is a keyword of python')
+                flag = False
+        return flag
+
+    # check the foreign key
+    @classmethod
+    def check_foreign_key(cls, table_dict):
+        """
+        check whether the target table of the foreign key exists
+        :return: True while the target table of the foreign key exists else False
+        """
+        flag = False
+        for table in table_dict.values():
+            if not table.get('foreign_keys'):
+                continue
+            # for foreign_key in table.get('foreign_key'):
+            #     if not table_dict.get(foreign_key['target_table']):
+            #         loggings.error(1, 'the foreign key of "{source_key}" in "{source_table}" does not exist')
+            #         flag = False
+            if not table_dict.get(table['foreign_keys']['target_table']):
+                loggings.error(1, 'the target table "{target_table}" of foreign key "{source_table}.{source_key}" '
+                                  'does not exist'.format(target_table=table['foreign_keys']['target_table'],
+                                                          source_table=table['table_name'],
+                                                          source_key=table['foreign_keys']['key']))
+                flag = False
+        return flag
