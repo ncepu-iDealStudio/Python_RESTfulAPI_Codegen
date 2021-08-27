@@ -37,8 +37,8 @@ from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
     urls_service_resource = """
 # joint query
-@{0}_blueprint.route('/query', methods=['GET'], endpoint='{0}_query')
-def {0}_query():
+@{0}_blueprint.route('/query', methods=['GET'], endpoint='{1}_query')
+def {1}_query():
     return {1}OtherResource.joint_query()
 """
 

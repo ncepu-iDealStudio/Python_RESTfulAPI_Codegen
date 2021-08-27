@@ -14,6 +14,7 @@
 
 import os
 
+from codegen import project_dir
 from utils.loggings import loggings
 from config.setting import Settings
 from utils.common import str_format_convert, new_file_or_dir, file_write
@@ -33,6 +34,8 @@ class CodeGenerator(object):
         try:
             # get the table list
             table_dict = TableMetadata.get_tables_metadata(self.metadata)
+
+            self.manage_codegen(table_dict)
 
             # app generation
             loggings.info(1, 'Start generating API layer, please wait...')
@@ -226,5 +229,18 @@ class CodeGenerator(object):
         except Exception as e:
             loggings.exception(1, e)
 
+    # manage generation
+    def manage_codegen(self, tables):
+        permission = ["apiVersion.apiVersion"]
+        for table in tables.values():
+            blueprint_name = str_format_convert(table.get('table_name'))
+            permission.append(blueprint_name + '.' + blueprint_name)
+            permission.append(blueprint_name + '.' + blueprint_name + '_list')
+            permission.append(blueprint_name + '.' + blueprint_name + '_query')
+
+        permission_str = FileTemplate.manage.format(permission=permission)
+        new_file_or_dir(2, project_dir)
+        manage_file = os.path.join(project_dir, 'manage.py')
+        file_write(manage_file, permission_str)
 
 
