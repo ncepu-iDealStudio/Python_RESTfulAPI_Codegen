@@ -53,4 +53,4 @@ def modelGenerate():
             )
             os.system(command)
     except Exception as e:
-        loggings.error(1, str(e))
+        loggings.exception(1, e)
