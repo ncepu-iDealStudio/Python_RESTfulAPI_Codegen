@@ -1,0 +1,1157 @@
+2021-08-27 14:16:32.483 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:16:33.072 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:16:33.691 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:16:34.255 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:16:34.260 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:16:34.265 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:16:34.270 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:16:34.276 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:16:34.281 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:16:34.285 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:16:34.290 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:16:34.295 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:16:34.299 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:16:34.304 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:16:34.309 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:16:34.313 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:16:34.318 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:16:34.324 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:16:34.329 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:16:34.333 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:16:34.338 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:16:34.343 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:16:34.348 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:16:34.352 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:16:34.357 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:16:34.362 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:16:34.369 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:16:34.375 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:16:34.381 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:16:34.387 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:16:34.391 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:16:34.398 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:16:34.403 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:16:34.409 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:16:34.414 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\manage.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:16:34.419 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:16:34.424 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:16:34.430 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:16:34.435 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:16:34.440 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:16:34.446 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:16:34.451 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:16:34.456 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:16:34.462 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:16:34.468 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:16:34.473 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:16:34.478 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:16:34.483 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:16:34.488 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:16:34.492 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 14:17:20.213 | WARNING  | utils.loggings:warning:37 - The following 2 tables do not meet the specifications and cannot be generated: import,python_keywords
+2021-08-27 14:17:20.626 | WARNING  | utils.loggings:warning:37 - The following 2 tables do not meet the specifications and cannot be generated: import,python_keywords
+2021-08-27 14:17:20.844 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:17:20.849 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:17:20.853 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:17:20.858 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:17:21.442 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:17:22.014 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:17:22.589 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:17:23.165 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:17:23.170 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:17:23.174 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:17:23.180 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:17:23.185 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:17:23.189 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:17:23.193 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:17:23.199 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:17:23.203 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:17:23.208 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:17:23.212 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:17:23.217 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:17:23.222 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:17:23.227 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:17:23.232 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:17:23.236 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:17:23.241 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:17:23.245 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:17:23.250 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:17:23.255 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:17:23.260 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:17:23.264 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:17:23.270 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:17:23.276 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:17:23.282 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:17:23.289 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:17:23.294 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:17:23.298 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:17:23.305 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:17:23.310 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:17:23.315 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:17:23.320 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\manage.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:17:23.325 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:17:23.330 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:17:23.335 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:17:23.340 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:17:23.345 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:17:23.350 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:17:23.356 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:17:23.362 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:17:23.368 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:17:23.374 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:17:23.379 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:17:23.385 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:17:23.391 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:17:23.395 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:17:23.400 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 14:18:00.760 | WARNING  | utils.loggings:warning:37 - The following 2 tables do not meet the specifications and cannot be generated: import,python_keywords
+2021-08-27 14:18:01.167 | WARNING  | utils.loggings:warning:37 - The following 2 tables do not meet the specifications and cannot be generated: import,python_keywords
+2021-08-27 14:18:01.375 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:18:01.381 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:18:01.385 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:18:01.390 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:18:01.944 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:18:02.532 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:18:03.081 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:18:03.673 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:18:03.677 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:18:03.683 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:18:03.687 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:18:03.692 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:18:03.697 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:18:03.701 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:18:03.705 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:18:03.709 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:18:03.714 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:18:03.718 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:18:03.723 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:18:03.729 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:18:03.732 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:18:03.737 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:18:03.742 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:18:03.747 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:18:03.751 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:18:03.755 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:18:03.759 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:18:03.765 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:18:03.769 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:18:03.775 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:18:03.781 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:18:03.789 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:18:03.794 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:18:03.799 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:18:03.804 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:18:03.811 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:18:03.816 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:18:03.821 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:18:03.832 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\manage.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:18:03.837 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:18:03.842 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:18:03.847 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:18:03.853 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:18:03.858 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:18:03.863 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:18:03.869 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:18:03.874 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:18:03.879 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:18:03.885 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:18:03.891 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:18:03.897 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:18:03.903 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:18:03.908 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:18:03.913 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 14:23:33.838 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:23:33.844 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:23:33.848 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:23:34.323 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:23:34.328 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:23:34.332 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:23:34.553 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:23:34.558 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:23:34.562 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:23:34.567 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:23:35.182 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:23:35.742 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:23:36.332 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:23:36.895 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:23:36.900 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:23:36.905 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:23:36.909 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:23:36.913 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:23:36.917 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:23:36.921 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:23:36.926 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:23:36.931 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:23:36.936 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:23:36.940 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:23:36.945 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:23:36.949 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:23:36.954 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:23:36.958 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:23:36.962 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:23:36.967 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:23:36.972 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:23:36.977 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:23:36.981 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:23:36.987 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:23:36.991 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:23:36.997 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:23:37.003 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:23:37.009 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:23:37.015 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:23:37.021 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:23:37.026 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:23:37.032 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:23:37.044 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:23:37.049 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:23:37.054 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\manage.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:23:37.059 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:23:37.063 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:23:37.069 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:23:37.074 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:23:37.078 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:23:37.084 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:23:37.089 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:23:37.094 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:23:37.099 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:23:37.104 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:23:37.109 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:23:37.115 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:23:37.120 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:23:37.124 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:23:37.127 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 14:30:34.126 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:30:34.143 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:30:34.153 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:30:34.696 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:30:34.705 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:30:34.715 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:30:34.954 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:30:34.964 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:30:34.975 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:30:34.988 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:30:35.609 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:30:36.220 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:30:36.795 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:30:37.389 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:30:37.400 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:30:37.411 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:30:37.422 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:30:37.433 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:30:37.444 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:30:37.455 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:30:37.465 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:30:37.477 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:30:37.488 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:30:37.498 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:30:37.508 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:30:37.518 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:30:37.529 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:30:37.540 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:30:37.551 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:30:37.562 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:30:37.572 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:30:37.583 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:30:37.593 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:34:38.333 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:34:38.338 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:34:38.343 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:34:38.840 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:34:38.844 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:34:38.848 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:34:39.073 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:34:39.078 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:34:39.083 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:34:39.087 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:34:39.667 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:34:40.230 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:34:40.801 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:34:41.374 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:34:41.378 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:34:41.383 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:34:41.388 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:34:41.393 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:34:41.397 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:34:41.403 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:34:41.407 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:34:41.411 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:34:41.416 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:34:41.420 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:34:41.425 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:34:41.429 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:34:41.433 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:34:41.438 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:34:41.442 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:34:41.446 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:34:41.451 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:34:41.456 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:34:41.460 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:34:41.465 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:34:41.470 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:34:41.476 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:34:41.482 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:34:41.487 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:34:41.493 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:34:41.498 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:34:41.501 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:34:41.508 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:34:41.514 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:34:41.520 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:34:41.524 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\manage.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:34:41.529 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:34:41.533 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:34:41.538 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:34:41.542 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:34:41.547 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:34:41.551 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:34:41.556 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:34:41.561 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:34:41.565 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:34:41.570 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:34:41.574 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:34:41.579 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:34:41.584 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:34:41.587 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:34:41.590 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 14:39:21.817 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:39:21.831 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:39:21.842 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:39:22.465 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:39:22.474 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:39:22.484 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:39:22.744 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:39:22.755 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:39:22.766 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:39:22.778 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:39:23.402 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:39:24.046 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:39:24.684 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:39:25.308 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:39:25.319 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:39:25.332 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:39:25.346 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:39:25.355 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:39:25.366 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:39:25.377 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:39:25.389 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:39:25.398 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:39:25.408 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:39:25.419 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:39:25.428 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:39:25.440 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:39:25.451 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:39:25.462 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:39:25.472 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:39:25.482 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:39:25.492 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:39:25.503 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:39:25.514 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:39:25.529 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:39:25.540 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:40:09.394 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:40:09.411 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:40:09.422 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:40:10.064 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:40:10.075 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:40:10.086 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:40:10.391 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:40:10.402 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:40:10.413 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:40:10.423 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:40:11.034 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:40:11.701 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:40:12.331 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:40:13.164 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:40:13.173 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:40:13.184 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:40:13.195 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:40:13.204 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:40:13.216 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:40:13.226 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:40:13.236 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:40:13.246 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:40:13.258 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:40:13.268 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:40:13.278 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:40:13.289 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:40:13.299 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:40:13.311 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:40:13.322 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:40:13.333 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:40:13.343 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:40:13.355 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:40:13.366 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:40:59.810 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:40:59.827 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:40:59.838 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:41:00.464 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:41:00.475 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:41:00.486 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:41:00.785 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:41:00.795 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:41:00.806 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:41:00.817 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:41:01.438 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:41:02.080 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:41:02.716 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:41:03.361 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:41:03.372 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:41:03.385 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:41:03.397 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:41:03.406 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:41:03.417 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:41:03.427 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:41:03.438 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:41:03.447 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:41:03.459 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:41:03.469 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:41:03.478 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:41:03.488 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:41:03.499 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:41:03.510 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:41:03.521 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:41:03.532 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:41:03.543 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:41:03.554 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:41:03.565 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:41:03.578 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:41:03.588 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:42:31.264 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:42:31.279 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:42:31.290 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:42:31.909 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:42:31.919 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:42:31.930 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:42:32.217 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:42:32.229 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:42:32.238 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:42:32.249 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:42:32.877 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:42:33.535 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:42:34.474 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:42:35.444 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:42:35.455 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:42:35.467 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:42:35.477 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:42:35.487 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:42:35.498 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:42:35.509 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:42:35.521 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:42:35.533 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:42:35.545 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:42:35.556 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:42:35.566 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:42:35.576 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:42:35.588 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:42:35.600 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:42:35.611 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:42:35.623 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:42:35.634 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:42:35.645 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:42:35.655 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:42:35.668 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:42:35.680 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:47:13.679 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:47:13.695 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:47:13.706 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:47:14.380 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:47:14.391 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:47:14.402 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:47:14.694 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:47:14.705 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:47:14.717 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:47:14.728 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:47:15.334 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:47:15.991 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:47:16.658 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:47:17.289 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:47:17.300 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:47:17.311 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:47:17.321 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:47:17.331 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:47:17.342 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:47:17.353 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:47:17.364 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:47:17.373 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:47:17.384 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:47:17.395 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:47:17.406 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:47:17.417 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:47:17.426 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:47:17.439 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:47:17.450 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:47:17.462 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:47:17.474 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:47:17.489 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:47:17.499 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:48:58.734 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:48:58.751 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:48:58.762 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:48:59.414 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:48:59.425 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:48:59.436 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:48:59.731 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:48:59.742 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:48:59.757 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:48:59.769 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:49:00.384 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:49:01.018 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:49:01.653 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:49:02.302 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:49:02.314 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:49:02.325 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:49:02.336 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:49:02.346 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:49:02.358 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:49:02.369 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:49:02.379 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:49:02.389 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:49:02.400 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:49:02.410 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:49:02.421 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:49:02.431 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:49:02.440 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:49:02.452 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:49:02.463 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:49:02.475 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:49:02.486 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:49:02.497 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:49:02.508 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:50:31.265 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:50:31.270 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:50:31.274 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:50:31.899 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:50:31.903 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:50:31.910 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:50:32.175 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:50:32.180 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:50:32.185 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:50:32.190 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:50:32.784 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:50:33.404 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:50:34.030 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:50:34.634 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:50:34.638 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:50:34.643 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:50:34.647 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:50:34.651 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:50:34.657 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:50:34.661 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:50:34.666 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:50:34.670 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:50:34.674 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:50:34.679 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:50:34.683 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:50:34.688 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:50:34.692 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:50:34.697 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:50:34.702 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:50:34.707 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:50:34.720 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:50:34.725 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:50:34.729 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:50:34.736 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:50:34.741 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:50:34.748 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:50:34.755 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:50:34.761 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:50:34.767 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:50:34.774 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:50:34.778 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:50:34.785 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:50:34.791 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:50:34.796 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:50:34.801 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\manage.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:50:34.807 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:50:34.812 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:50:34.818 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:50:34.824 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:50:34.829 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:50:34.834 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:50:34.840 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:50:34.846 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:50:34.851 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:50:34.858 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:50:34.863 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:50:34.868 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:50:34.874 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:50:34.879 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:50:34.883 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 14:51:53.540 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:51:53.546 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:51:53.550 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:51:54.146 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:51:54.151 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:51:54.156 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:51:54.408 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:51:54.413 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:51:54.417 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:51:54.422 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:51:55.012 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:51:55.658 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:51:56.266 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:51:56.928 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:51:56.932 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:51:56.937 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:51:56.942 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:51:56.947 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:51:56.952 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:51:56.956 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:51:56.960 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:51:56.966 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:51:56.970 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:51:56.974 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:51:56.980 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:51:56.984 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:51:56.989 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:51:56.995 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:51:56.999 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:51:57.003 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:51:57.006 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:51:57.011 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:51:57.015 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:51:57.021 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:51:57.025 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:51:57.031 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:51:57.038 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:51:57.044 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:51:57.050 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:51:57.056 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:51:57.062 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:51:57.068 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:51:57.073 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:51:57.078 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:51:57.083 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:51:57.088 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:51:57.093 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:51:57.099 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:51:57.105 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:51:57.110 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:51:57.116 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:51:57.122 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:51:57.128 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:51:57.133 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:51:57.138 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:51:57.143 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:51:57.148 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:51:57.154 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:51:57.159 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 14:52:28.479 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:52:28.483 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:52:28.487 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:52:29.079 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:52:29.083 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:52:29.088 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:52:29.319 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:52:29.324 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:52:29.328 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:52:29.333 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:52:29.951 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:52:30.575 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:52:31.190 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:52:31.810 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:52:31.814 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:52:31.818 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:52:31.823 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:52:31.827 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:52:31.833 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:52:31.837 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:52:31.843 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:52:31.847 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:52:31.852 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:52:31.856 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:52:31.862 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:52:31.867 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:52:31.872 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:52:31.877 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:52:31.882 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:52:31.886 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:52:31.891 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:52:31.896 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:52:31.900 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:52:31.906 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:52:31.910 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:52:31.915 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:52:31.922 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:52:31.927 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:52:31.932 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:52:31.937 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:52:31.941 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:52:31.946 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:52:31.951 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:52:31.955 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:52:31.959 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:52:31.964 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:52:31.970 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:52:31.974 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:52:31.979 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:52:31.983 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:52:31.988 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:52:31.993 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:52:31.997 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:52:32.002 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:52:32.006 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:52:32.011 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:52:32.016 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:52:32.019 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:52:32.023 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 14:53:52.888 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:53:52.892 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:53:52.896 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:53:53.466 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:53:53.471 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:53:53.475 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:53:53.481 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:53:54.324 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:53:54.947 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:53:55.541 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:53:56.160 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:53:56.165 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:53:56.170 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:53:56.174 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:53:56.179 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:53:56.184 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:53:56.188 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:53:56.194 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:53:56.199 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:53:56.203 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:53:56.207 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:53:56.213 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:53:56.217 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:53:56.221 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:53:56.227 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:53:56.231 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:53:56.237 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:53:56.241 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:53:56.246 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:53:56.250 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:53:56.255 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:53:56.259 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:53:56.264 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:53:56.270 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:53:56.277 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:53:56.282 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:53:56.288 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:53:56.295 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:53:56.302 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:53:56.308 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:53:56.312 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:53:56.317 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:53:56.323 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:53:56.328 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:53:56.334 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:53:56.339 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:53:56.345 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:53:56.350 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:53:56.355 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:53:56.360 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:53:56.366 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:53:56.372 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:53:56.377 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:53:56.383 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:53:56.388 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:53:56.393 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 14:59:45.617 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 14:59:45.623 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 14:59:45.628 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 14:59:45.847 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 14:59:45.851 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 14:59:45.856 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 14:59:45.862 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 14:59:46.473 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 14:59:47.063 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 14:59:47.646 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 14:59:48.235 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 14:59:48.239 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 14:59:48.243 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 14:59:48.249 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 14:59:48.253 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 14:59:48.258 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 14:59:48.263 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 14:59:48.269 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 14:59:48.274 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 14:59:48.279 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 14:59:48.282 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 14:59:48.288 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 14:59:48.293 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 14:59:48.298 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 14:59:48.302 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 14:59:48.307 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 14:59:48.312 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 14:59:48.316 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 14:59:48.322 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 14:59:48.327 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 14:59:48.331 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 14:59:48.336 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 14:59:48.342 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 14:59:48.348 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 14:59:48.354 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 14:59:48.361 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 14:59:48.366 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 14:59:48.370 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 14:59:48.376 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:59:48.381 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:59:48.387 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:59:48.392 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:59:48.397 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 14:59:48.402 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 14:59:48.408 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:59:48.413 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:59:48.418 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 14:59:48.422 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:59:48.427 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:59:48.432 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 14:59:48.437 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:59:48.442 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:59:48.448 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:59:48.454 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 14:59:48.460 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 14:59:48.463 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 15:00:40.454 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 15:00:40.459 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 15:00:40.463 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 15:00:40.696 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 15:00:40.701 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 15:00:40.705 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 15:00:40.711 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 15:00:41.295 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 15:00:41.876 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 15:00:42.440 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 15:00:43.013 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 15:00:43.018 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 15:00:43.023 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 15:00:43.027 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 15:00:43.032 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 15:00:43.036 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 15:00:43.040 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 15:00:43.045 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 15:00:43.050 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 15:00:43.054 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 15:00:43.059 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 15:00:43.063 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 15:00:43.067 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 15:00:43.072 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 15:00:43.077 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 15:00:43.083 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 15:00:43.087 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 15:00:43.093 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 15:00:43.097 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 15:00:43.101 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 15:00:43.107 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 15:00:43.112 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 15:00:43.118 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 15:00:43.124 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 15:00:43.129 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 15:00:43.135 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 15:00:43.140 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 15:00:43.144 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 15:00:43.151 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:00:43.156 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:00:43.161 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:00:43.166 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:00:43.171 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:00:43.176 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 15:00:43.181 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\config.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 15:00:43.187 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\security.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 15:00:43.192 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\config\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\config'
+2021-08-27 15:00:43.197 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:00:43.204 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:00:43.209 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:00:43.214 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:00:43.218 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:00:43.223 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:00:43.227 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:00:43.231 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 15:00:43.235 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 15:19:47.818 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 15:19:47.823 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 15:19:47.827 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 15:19:48.109 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 15:19:48.113 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 15:19:48.119 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 15:19:48.123 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 15:19:48.757 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 15:19:49.340 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 15:19:49.949 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 15:19:50.538 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 15:19:50.544 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 15:19:50.549 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 15:19:50.553 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 15:19:50.558 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 15:19:50.562 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 15:19:50.566 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 15:19:50.571 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 15:19:50.578 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 15:19:50.582 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 15:19:50.586 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 15:19:50.590 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 15:19:50.594 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 15:19:50.598 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 15:19:50.604 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 15:19:50.608 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 15:19:50.612 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 15:19:50.616 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 15:19:50.622 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 15:19:50.627 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 15:19:50.633 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 15:19:50.638 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 15:19:50.644 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 15:19:50.650 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 15:19:50.655 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 15:19:50.660 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 15:19:50.665 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 15:19:50.670 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 15:19:50.674 | ERROR    | utils.loggings:exception:45 - [Errno 2] No such file or directory: 'static/config/security.conf'
+Traceback (most recent call last):
+
+  File "E:\MyLife\python\python_sqla_codegen\start.py", line 58, in <module>
+    codegen.staticcodegen.main.main()
+    │       │             │    └ <function main at 0x000001CF13AC8C10>
+    │       │             └ <module 'codegen.staticcodegen.main' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\staticcodegen\\main.py'>
+    │       └ <module 'codegen.staticcodegen' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\staticcodegen\\__init__.py'>
+    └ <module 'codegen' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\__init__.py'>
+
+  File "E:\MyLife\python\python_sqla_codegen\codegen\staticcodegen\main.py", line 29, in main
+    CodeGenerator.generate_configuration_file("static/config/security.conf")
+    │             └ <classmethod object at 0x000001CF13AF3250>
+    └ <class 'codegen.staticcodegen.codegenerator.CodeGenerator'>
+
+> File "E:\MyLife\python\python_sqla_codegen\codegen\staticcodegen\codegenerator.py", line 40, in generate_configuration_file
+    with open(configuration_file_path, 'w', encoding="utf-8") as f:
+              └ 'static/config/security.conf'
+
+FileNotFoundError: [Errno 2] No such file or directory: 'static/config/security.conf'
+2021-08-27 15:19:50.695 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:19:50.700 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:19:50.706 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:19:50.711 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:19:50.715 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:19:50.720 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 15:19:50.725 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:19:50.729 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:19:50.734 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:19:50.738 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:19:50.743 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:19:50.748 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:19:50.753 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:19:50.757 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 15:19:50.760 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 15:20:00.107 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 15:20:00.111 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 15:20:00.117 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 15:20:00.356 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 15:20:00.360 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 15:20:00.365 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 15:20:00.373 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 15:20:00.990 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 15:20:01.594 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 15:20:02.179 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 15:20:02.758 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 15:20:02.762 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 15:20:02.768 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 15:20:02.771 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 15:20:02.777 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 15:20:02.783 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 15:20:02.787 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 15:20:02.791 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 15:20:02.795 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 15:20:02.799 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 15:20:02.803 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 15:20:02.808 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 15:20:02.814 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 15:20:02.818 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 15:20:02.823 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 15:20:02.829 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 15:20:02.835 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 15:20:02.839 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 15:20:02.843 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 15:20:02.849 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 15:20:02.855 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 15:20:02.861 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 15:20:02.867 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 15:20:02.874 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 15:20:02.881 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 15:20:02.896 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 15:20:02.902 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 15:20:02.906 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 15:20:02.912 | ERROR    | utils.loggings:exception:45 - [Errno 2] No such file or directory: 'static/config/security.conf'
+Traceback (most recent call last):
+
+  File "E:\MyLife\python\python_sqla_codegen\start.py", line 58, in <module>
+    codegen.staticcodegen.main.main()
+    │       │             │    └ <function main at 0x0000023204D58C10>
+    │       │             └ <module 'codegen.staticcodegen.main' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\staticcodegen\\main.py'>
+    │       └ <module 'codegen.staticcodegen' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\staticcodegen\\__init__.py'>
+    └ <module 'codegen' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\__init__.py'>
+
+  File "E:\MyLife\python\python_sqla_codegen\codegen\staticcodegen\main.py", line 29, in main
+    CodeGenerator.generate_configuration_file("static/config/security.conf")
+    │             └ <classmethod object at 0x0000023204D811C0>
+    └ <class 'codegen.staticcodegen.codegenerator.CodeGenerator'>
+
+> File "E:\MyLife\python\python_sqla_codegen\codegen\staticcodegen\codegenerator.py", line 40, in generate_configuration_file
+    with open(configuration_file_path, 'w', encoding="utf-8") as f:
+              └ 'static/config/security.conf'
+
+FileNotFoundError: [Errno 2] No such file or directory: 'static/config/security.conf'
+2021-08-27 15:20:02.923 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:20:02.931 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:20:02.936 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:20:02.940 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:20:02.945 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:20:02.950 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 15:20:02.956 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:20:02.961 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:20:02.965 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:20:02.971 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:20:02.976 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:20:02.981 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:20:02.986 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:20:02.991 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 15:20:02.995 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 15:29:10.625 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 15:29:10.629 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 15:29:10.634 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 15:29:10.870 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 15:29:10.874 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 15:29:10.878 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 15:29:10.884 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 15:29:11.469 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 15:29:12.077 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 15:29:12.656 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 15:29:13.241 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 15:29:13.246 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 15:29:13.251 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 15:29:13.256 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 15:29:13.261 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 15:29:13.265 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 15:29:13.269 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 15:29:13.273 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 15:29:13.277 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 15:29:13.281 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 15:29:13.285 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 15:29:13.290 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 15:29:13.296 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 15:29:13.301 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 15:29:13.305 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 15:29:13.310 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 15:29:13.314 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 15:29:13.319 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 15:29:13.323 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 15:29:13.328 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 15:29:13.334 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 15:29:13.338 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 15:29:13.344 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 15:29:13.350 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 15:29:13.356 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 15:29:13.361 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 15:29:13.366 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 15:29:13.371 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 15:29:13.375 | ERROR    | utils.loggings:exception:45 - [Errno 2] No such file or directory: 'static/config/security.conf'
+Traceback (most recent call last):
+
+  File "E:\MyLife\python\python_sqla_codegen\start.py", line 58, in <module>
+    codegen.staticcodegen.main.main()
+    │       │             │    └ <function main at 0x000001D54D0B8C10>
+    │       │             └ <module 'codegen.staticcodegen.main' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\staticcodegen\\main.py'>
+    │       └ <module 'codegen.staticcodegen' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\staticcodegen\\__init__.py'>
+    └ <module 'codegen' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\__init__.py'>
+
+  File "E:\MyLife\python\python_sqla_codegen\codegen\staticcodegen\main.py", line 29, in main
+    CodeGenerator.generate_configuration_file("static/config/security.conf")
+    │             └ <classmethod object at 0x000001D54D0E11C0>
+    └ <class 'codegen.staticcodegen.codegenerator.CodeGenerator'>
+
+> File "E:\MyLife\python\python_sqla_codegen\codegen\staticcodegen\codegenerator.py", line 40, in generate_configuration_file
+    with open(configuration_file_path, 'w', encoding="utf-8") as f:
+              └ 'static/config/security.conf'
+
+FileNotFoundError: [Errno 2] No such file or directory: 'static/config/security.conf'
+2021-08-27 15:29:13.386 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:13.391 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:13.397 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:13.402 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:13.407 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:13.412 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 15:29:13.416 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:29:13.421 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:29:13.425 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:29:13.430 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:29:13.434 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:29:13.439 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:29:13.444 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:29:13.447 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 15:29:13.451 | INFO     | utils.loggings:info:29 - Api project code generation completed
+2021-08-27 15:29:49.016 | ERROR    | utils.loggings:error:41 - table "import" is a keyword of python
+2021-08-27 15:29:49.020 | ERROR    | utils.loggings:error:41 - column "python_keywords.import" is a keyword of python
+2021-08-27 15:29:49.025 | WARNING  | utils.loggings:warning:37 - The following 4 tables do not meet the specifications and cannot be generated: import,python_keywords,import,python_keywords
+2021-08-27 15:29:49.272 | INFO     | utils.loggings:info:29 - Start checking the necessary parameters, please wait ...
+2021-08-27 15:29:49.276 | INFO     | utils.loggings:info:29 - Please wait a moment to verify the parameter logic ...
+2021-08-27 15:29:49.281 | INFO     | utils.loggings:info:29 - Start to build the Model layer code, please wait...
+2021-08-27 15:29:49.287 | INFO     | utils.loggings:info:29 - Model code for class_info table is being generated
+2021-08-27 15:29:49.841 | INFO     | utils.loggings:info:29 - Model code for student_info table is being generated
+2021-08-27 15:29:50.409 | INFO     | utils.loggings:info:29 - Model code for todo_list table is being generated
+2021-08-27 15:29:50.961 | INFO     | utils.loggings:info:29 - Model code for user_info table is being generated
+2021-08-27 15:29:51.529 | INFO     | utils.loggings:info:29 - Model layer code build completed
+2021-08-27 15:29:51.534 | INFO     | utils.loggings:info:29 - Start to build the Controller layer code, please wait...
+2021-08-27 15:29:51.539 | INFO     | utils.loggings:info:29 - Generating __init__...
+2021-08-27 15:29:51.543 | INFO     | utils.loggings:info:29 - __init__ generated successfully
+2021-08-27 15:29:51.548 | INFO     | utils.loggings:info:29 - Generating classInfoController...
+2021-08-27 15:29:51.552 | INFO     | utils.loggings:info:29 - classInfoController generated successfully
+2021-08-27 15:29:51.556 | INFO     | utils.loggings:info:29 - Generating studentInfoController...
+2021-08-27 15:29:51.561 | INFO     | utils.loggings:info:29 - studentInfoController generated successfully
+2021-08-27 15:29:51.566 | INFO     | utils.loggings:info:29 - Generating todoListController...
+2021-08-27 15:29:51.570 | INFO     | utils.loggings:info:29 - todoListController generated successfully
+2021-08-27 15:29:51.575 | INFO     | utils.loggings:info:29 - Generating userInfoController...
+2021-08-27 15:29:51.580 | INFO     | utils.loggings:info:29 - userInfoController generated successfully
+2021-08-27 15:29:51.584 | INFO     | utils.loggings:info:29 - Controller layer code build completed
+2021-08-27 15:29:51.589 | INFO     | utils.loggings:info:29 - Start to build the Service layer code, please wait...
+2021-08-27 15:29:51.594 | INFO     | utils.loggings:info:29 - Generating service layer code for "class_info" table
+2021-08-27 15:29:51.599 | INFO     | utils.loggings:info:29 - Generating service layer code for "student_info" table
+2021-08-27 15:29:51.603 | INFO     | utils.loggings:info:29 - Generating service layer code for "todo_list" table
+2021-08-27 15:29:51.607 | INFO     | utils.loggings:info:29 - Generating service layer code for "user_info" table
+2021-08-27 15:29:51.611 | INFO     | utils.loggings:info:29 - Service layer code build completed
+2021-08-27 15:29:51.616 | INFO     | utils.loggings:info:29 - Start to build the Resource layer code, please wait...
+2021-08-27 15:29:51.621 | INFO     | utils.loggings:info:29 - Start generating API layer, please wait...
+2021-08-27 15:29:51.626 | INFO     | utils.loggings:info:29 - Generating API layer complete
+2021-08-27 15:29:51.632 | INFO     | utils.loggings:info:29 - Generating class_infoResource
+2021-08-27 15:29:51.639 | INFO     | utils.loggings:info:29 - Generating student_infoResource
+2021-08-27 15:29:51.644 | INFO     | utils.loggings:info:29 - Generating todo_listResource
+2021-08-27 15:29:51.650 | INFO     | utils.loggings:info:29 - Generating user_infoResource
+2021-08-27 15:29:51.655 | INFO     | utils.loggings:info:29 - Resource layer code build completed
+2021-08-27 15:29:51.660 | INFO     | utils.loggings:info:29 - Start packing static files, please wait...
+2021-08-27 15:29:51.664 | ERROR    | utils.loggings:exception:45 - [Errno 2] No such file or directory: 'static/config/security.conf'
+Traceback (most recent call last):
+
+  File "E:\MyLife\python\python_sqla_codegen\start.py", line 58, in <module>
+    codegen.staticcodegen.main.main()
+    │       │             │    └ <function main at 0x0000023E23768C10>
+    │       │             └ <module 'codegen.staticcodegen.main' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\staticcodegen\\main.py'>
+    │       └ <module 'codegen.staticcodegen' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\staticcodegen\\__init__.py'>
+    └ <module 'codegen' from 'E:\\MyLife\\python\\python_sqla_codegen\\codegen\\__init__.py'>
+
+  File "E:\MyLife\python\python_sqla_codegen\codegen\staticcodegen\main.py", line 29, in main
+    CodeGenerator.generate_configuration_file("static/config/security.conf")
+    │             └ <classmethod object at 0x0000023E237911C0>
+    └ <class 'codegen.staticcodegen.codegenerator.CodeGenerator'>
+
+> File "E:\MyLife\python\python_sqla_codegen\codegen\staticcodegen\codegenerator.py", line 40, in generate_configuration_file
+    with open(configuration_file_path, 'w', encoding="utf-8") as f:
+              └ 'static/config/security.conf'
+
+FileNotFoundError: [Errno 2] No such file or directory: 'static/config/security.conf'
+2021-08-27 15:29:51.673 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\docker-compose.yml' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:51.678 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\dockerfile' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:51.682 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\gunicorn.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:51.687 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\requirements.txt' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:51.692 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com'
+2021-08-27 15:29:51.696 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\common\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\common'
+2021-08-27 15:29:51.703 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\gunicorn.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:29:51.707 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\nginx_flask.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:29:51.711 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\deploy\supervisord.conf' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\deploy'
+2021-08-27 15:29:51.716 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\commons.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:29:51.721 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\loggings.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:29:51.725 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\response_code.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:29:51.730 | INFO     | utils.loggings:info:29 - The file 'E:\MyLife\python\python_sqla_codegen\static\utils\__init__.py' has been copied to 'E:\MyLife\python\python_sqla_codegen\dist\api.sqlcodegen.com\utils'
+2021-08-27 15:29:51.733 | INFO     | utils.loggings:info:29 - Static resource packaging is complete
+2021-08-27 15:29:51.737 | INFO     | utils.loggings:info:29 - Api project code generation completed
