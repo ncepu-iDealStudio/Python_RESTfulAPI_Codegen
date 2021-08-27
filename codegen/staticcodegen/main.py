@@ -16,7 +16,6 @@
 import os
 import shutil
 from utils.loggings import loggings
-from utils.response_code import RET
 
 
 # 生成或拷贝目标项目所需要的静态配置等文件
@@ -39,6 +38,5 @@ def copy_static(target_dir, source_dir):
                     # 拷贝
                     shutil.copy(src_file, target_file)
                     loggings.info(1, "The file '{}' has been copied to '{}'".format(src_file, target_file))
-        return {'code': RET.OK, 'message': '拷贝成功'}
     except Exception as e:
-        return {'code': RET.IOERR, 'message': '静态资源拷贝过程出现错误', 'error': str(e)}
+        loggings.exception(1, e)
