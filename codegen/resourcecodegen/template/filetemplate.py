@@ -99,7 +99,7 @@ class {className}OtherResource(Resource):
     # list query
     def get(self):
         parser = reqparse.RequestParser()
-{parameter1}
+{parameter2}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         kwargs = parser.parse_args()
@@ -110,7 +110,7 @@ class {className}OtherResource(Resource):
     @classmethod
     def joint_query(cls):
         parser = reqparse.RequestParser()
-{parameter2}
+{parameter3}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         kwargs = parser.parse_args()

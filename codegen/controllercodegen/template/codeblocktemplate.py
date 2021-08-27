@@ -15,6 +15,8 @@ class CodeBlockTemplate(object):
 
     imports = '''
 from app import db
+import math
+
 from models.{model_name} import {parent_model}
 from utils import commons
 from utils.response_code import RET, error_map_EN

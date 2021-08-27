@@ -56,8 +56,8 @@ class {class_name}({parent_model}):
             else:
                 {get_filter_list}
             
-            page = int(kwargs.get('Page'), 1)
-            size = int(kwargs.get('Size'), 10)
+            page = int(kwargs.get('Page', 1))
+            size = int(kwargs.get('Size', 10))
             
             {model_lower}_info = db.session.query(cls).filter(*filter_list)
             
