@@ -1,6 +1,6 @@
 [
   {
-  "database": "MySQL",
+  "database": "DEFAULT",
   "data_map": {
     "int": ["int","bigint","smallint","mediumint"],
     "float":["float","double","real","numeric"],
