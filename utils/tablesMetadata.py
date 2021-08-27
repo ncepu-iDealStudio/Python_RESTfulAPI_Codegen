@@ -9,16 +9,16 @@
 """
     Get metadata of all tables
 """
+import json
 
-from decimal import Decimal
+from config.setting import Settings
 
 
 class TableMetadata(object):
-    type_map = {
-        int: 'int',
-        float: 'float',
-        Decimal: 'float'
-    }
+    with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
+        type_mapping = json.load(f)
+
+    database_type = Settings.DATABASE_TYPE
 
     @classmethod
     def get_tables_metadata(cls, metadata):
@@ -39,9 +39,14 @@ class TableMetadata(object):
                 table_dict[table_name]['columns'][str(column.name)] = {}
                 table_dict[table_name]['columns'][str(column.name)]['name'] = str(column.name)
 
-                # Possibly incomplete consideration of field types
-                table_dict[table_name]['columns'][str(column.name)]['type'] = TableMetadata.type_map[
-                    column.type.python_type] if TableMetadata.type_map.get(column.type.python_type) else 'str'
+                for type_ in cls.type_mapping:
+                    if cls.database_type != type_['database']:
+                        continue
+                    for python_type, sql_type_list in type_['data_map'].items():
+                        if str(column.type).lower() in sql_type_list:
+                            table_dict[table_name]['columns'][str(column.name)]['type'] = python_type
+                            break
+                table_dict[table_name]['columns'][str(column.name)].setdefault('type', 'str')
 
                 if column.primary_key:
                     table_dict[table_name]['primaryKey'] = str(column.name)

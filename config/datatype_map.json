@@ -2,7 +2,7 @@
   {
   "database": "DEFAULT",
   "data_map": {
-    "int": ["int","bigint","smallint","mediumint"],
+    "int": ["int","bigint","smallint","mediumint","integer"],
     "float":["float","double","real","numeric"],
     "decimal":["decimal"]
     }
