@@ -17,7 +17,7 @@ class CodeBlockTemplate(object):
 from app import db
 from models.{model_name} import {parent_model}
 from utils import commons
-from utils.response_code import RET
+from utils.response_code import RET, error_map_EN
 from utils.rsa_encryption_decryption import RSAEncryptionDecryption
 from utils.loggings import loggings'''
 
