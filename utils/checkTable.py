@@ -15,6 +15,7 @@ import keyword
 from sqlalchemy import create_engine, MetaData
 from config.setting import Settings
 from utils.loggings import loggings
+from utils.tablesMetadata import TableMetadata
 
 
 class CheckTable(object):
@@ -60,6 +61,20 @@ class CheckTable(object):
             else:
                 invalid_tables.append(table.key)
 
+        # check the foreign key
+        metadata.reflect(engine, only=available_tables)
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+        available_table, invalid_table = cls.check_foreign_key(table_dict)
+        available_tables = available_table
+        invalid_tables += invalid_table
+
+        # check the keyword
+        metadata.reflect(engine, only=available_tables)
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+        available_table, invalid_table = cls.check_keyword(table_dict)
+        available_tables = available_table
+        invalid_tables += invalid_table
+
         if len(invalid_tables) > 0:
             loggings.warning(1,
                              "The following {0} tables do not meet the specifications and cannot be generated: {1}".format(
@@ -69,6 +84,34 @@ class CheckTable(object):
         loggings.info(1, "All table checks passed, a total of {0} tables ".format(len(tables)))
         return available_tables if available_tables else None
 
+<<<<<<< HEAD
+=======
+    # check keywords of python in tables
+    # 检查表名和字段名，是否和Python的关键字冲突
+    @classmethod
+    def check_keyword(cls, table_dict):
+        """
+        check whether the table name or column name is a keyword of python
+        :return: True while no table name is a keyword, else return False
+        """
+        available_table = []
+        invalid_table = []
+        for table in table_dict.values():
+            flag = True
+            if keyword.iskeyword(table['table_name']):
+                loggings.error(1, 'table "{0}" is a keyword of python'.format(table['table_name']))
+                flag = False
+            for column in table['columns'].values():
+                if keyword.iskeyword(column['name']):
+                    loggings.error(1, 'column "{0}.{1}" is a keyword of python'.format(table['table_name'], column['name']))
+                    flag = False
+            if flag:
+                available_table.append(table['table_name'])
+            else:
+                invalid_table.append(table['table_name'])
+        return available_table, invalid_table
+
+>>>>>>> b60b8abef5ed8356d736cbd60e0f153fed98b5fd
     # check the foreign key
     # 检查表的外键约束
     @classmethod
@@ -77,8 +120,10 @@ class CheckTable(object):
         check whether the target table of the foreign key exists
         :return: True while the target table of the foreign key exists else False
         """
-        flag = False
+        available_table = []
+        invalid_table = []
         for table in table_dict.values():
+            flag = True
             if not table.get('foreign_keys'):
                 continue
             # for foreign_key in table.get('foreign_key'):
@@ -91,6 +136,7 @@ class CheckTable(object):
                                                           source_table=table['table_name'],
                                                           source_key=table['foreign_keys']['key']))
                 flag = False
+<<<<<<< HEAD
         return flag
 
     # check python keywords conflict in tables
@@ -109,3 +155,10 @@ class CheckTable(object):
         return flag
 
 
+=======
+            if flag:
+                available_table.append(table['table_name'])
+            else:
+                invalid_table.append(table['table_name'])
+        return available_table, invalid_table
+>>>>>>> b60b8abef5ed8356d736cbd60e0f153fed98b5fd
