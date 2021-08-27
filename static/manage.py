@@ -8,8 +8,8 @@
 from app import create_app
 from flask_script import Manager
 from flask import request, g, jsonify
-# from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-# from utils.response_code import RET
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from utils.response_code import RET
 
 # 创建flask的app对象
 app = create_app("develop")
