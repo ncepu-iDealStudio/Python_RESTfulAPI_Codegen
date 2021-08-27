@@ -55,13 +55,21 @@ class {class_name}({parent_model}):
                 filter_list.append(cls.{primary_key} == kwargs.get('{primary_key}'))
             else:
                 {get_filter_list}
-            {model_lower}_info = db.session.query(cls).filter(*filter_list).all()
+            
+            page = int(kwargs.get('Page'), 1)
+            size = int(kwargs.get('Size'), 10)
+            
+            {model_lower}_info = db.session.query(cls).filter(*filter_list)
+            
+            count = {model_lower}_info.count()
+            pages = math.ceil(count / size)
+            {model_lower}_info = {model_lower}_info.limit(size).offset((page - 1) * size).all()
 
             # judge whether the data is None
             if not {model_lower}_info:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No query results'}}
             results = commons.query_to_dict({model_lower}_info)
-            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'count': count, 'pages': pages 'data': results}}
         except Exception as e:
             loggings.exception(1, e)
             return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
