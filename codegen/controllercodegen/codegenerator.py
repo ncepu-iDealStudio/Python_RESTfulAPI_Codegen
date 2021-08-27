@@ -15,19 +15,12 @@
 """
 
 import os.path
-from decimal import Decimal
 
 from utils.common import str_format_convert
 from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
 from codegen.controllercodegen.template.filetemplate import FileTemplate
 from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
-
-type_map = {
-    int: 'int',
-    float: 'float',
-    Decimal: 'float'
-}
 
 
 class CodeGenerator(object):
