@@ -8,6 +8,7 @@
 import sys
 from loguru import logger
 
+
 class Loggings(object):
     __instance = None
 
@@ -33,6 +34,10 @@ class Loggings(object):
     def error(self, location, msg):
         Loggings.log_filter(location)
         return logger.error(msg)
+
+    def exception(self, location, msg):
+        Loggings.log_filter(location)
+        return logger.exception(msg)
 
     @staticmethod
     def log_filter(location):

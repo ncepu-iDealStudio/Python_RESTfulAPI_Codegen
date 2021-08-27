@@ -77,7 +77,6 @@ class CodeGenerator(object):
                 # Format the file template
                 template = FileTemplate.template.format(imports=imports,
                                                         table_name_initials_upper=table_name_initials_upper,
-                                                        table_name=table_name,
                                                         foreign_import=foreign_import,
                                                         filter_conditions=filter_conditions,
                                                         table_model=table_model,

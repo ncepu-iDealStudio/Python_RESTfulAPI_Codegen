@@ -230,11 +230,6 @@ class CodeGenerator(object):
             with open(app_init_file, 'w', encoding='utf8') as f:
                 f.write(FileTemplate.app_init.format(blueprint_register=blueprint_register_str))
 
-            # app_setting
-            app_setting_file = os.path.join(app_dir, 'setting.py')
-            new_file_or_dir(1, app_setting_file)
-            with open(app_setting_file, 'w', encoding='utf8') as f:
-                f.write(FileTemplate.app_setting)
         except Exception as e:
             loggings.exception(1, e)
 

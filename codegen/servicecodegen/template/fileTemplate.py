@@ -23,7 +23,7 @@ class FileTemplate(object):
 
 class {table_name_initials_upper}Service({table_name_initials_upper}Controller):
     @classmethod
-    def query_{table_name}(cls, **kwargs):
+    def joint_query(cls, **kwargs):
         try:
             filter_list = []
 {filter_conditions}          
@@ -37,7 +37,7 @@ class {table_name_initials_upper}Service({table_name_initials_upper}Controller):
             {result_name} = {result_name}.limit(size).offset((page - 1) * size).all()
             
         except Exception as e:
-            loggings.error(1, str(e))
+            loggings.exc(1, e)
             return {exception_return}
 
         if not {result_name}:

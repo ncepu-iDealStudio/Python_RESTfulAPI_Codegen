@@ -2,41 +2,48 @@
 # -*- coding:utf-8 -*-
 
 # file:createTableForTest.py
-# author:jackiex
+# author:Nathan
 # datetime:2021/8/21 16:38
 # software: PyCharm
 
 """
-    1 copy the static resource to target project directory;
-    2 you can put these static resource  into "static" directory,such as "dockerfile" and some
-     common tools(or function) that you will use in your target project;
-    3 some resource we need has already copied into default static directory;
+    this is function description
 """
-
 import os
-import shutil
+
+from codegen import project_dir
+from codegen.staticcodegen.codegenerator import CodeGenerator
+from codegen.staticcodegen.copyfile import copy_static
+from codegen.staticcodegen.template.filetemplate import FileTemplate
 from utils.loggings import loggings
 
 
-# 生成或拷贝目标项目所需要的静态配置等文件
-def copy_static(target_dir, source_dir):
+def staticGenerate():
+    """
+        一、 按照当前项目的config/security.conf 文件 生成 static/config/security.conf
+        二、 生成static/app  和static/manage.py
+        三、 拷贝static 到 dist文件夹
+    :return:
+    """
     try:
-        # 判断目标路径状态
-        if not os.path.exists(target_dir):
-            os.makedirs(target_dir)
+        # 第一步
+        CodeGenerator.generate_configuration_file("static/config/security.conf")
 
-        # 拷贝
-        if os.path.exists(source_dir):
-            for root, dirs, files in os.walk(source_dir):
-                for file in files:
-                    # 源文件路径
-                    src_file = os.path.join(root, file)
-                    # 目标文件路径
-                    target_file = target_dir + root.replace(source_dir, '')
-                    if not os.path.exists(target_file):
-                        os.makedirs(target_file)
-                    # 拷贝
-                    shutil.copy(src_file, target_file)
-                    loggings.info(1, "The file '{}' has been copied to '{}'".format(src_file, target_file))
+        # 第二步
+        # app_setting
+        app_setting_dir = os.path.join(project_dir, 'app')
+        os.makedirs(app_setting_dir, exist_ok=True)
+        with open(app_setting_dir + '/setting.py', 'w', encoding='utf8') as f:
+            f.write(FileTemplate.app_setting)
+
+        # 第三步
+        # 获取静态资源目录
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        source_dir = os.path.join(BASE_DIR, 'static')
+        # 创建目标路径
+        os.makedirs(project_dir, exist_ok=True)
+        # 调用拷贝函数
+        copy_static(project_dir, source_dir)
+
     except Exception as e:
         loggings.exception(1, e)
