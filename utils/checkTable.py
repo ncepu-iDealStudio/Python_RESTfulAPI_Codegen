@@ -118,6 +118,7 @@ class CheckTable(object):
                 invalid_table.append(table['table_name'])
         return available_table, invalid_table
 
+    # 入口函数定义
     @classmethod
     def main(cls):
 
