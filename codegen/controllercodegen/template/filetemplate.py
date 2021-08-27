@@ -37,11 +37,11 @@ class {class_name}({parent_model}):
             db.session.add(model)
             db.session.commit()
             results = commons.query_to_dict(model)
-            return {{'code': RET.OK, 'message': 'Added successfully', 'data': results}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
-            return {{'code': RET.DBERR, 'message': 'Database exception, failed to add', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
         finally:
             db.session.close()
 """
@@ -59,12 +59,12 @@ class {class_name}({parent_model}):
 
             # judge whether the data is None
             if not {model_lower}_info:
-                return {{'code': RET.NODATA, 'message': 'No query results', 'error': 'No query results'}}
+                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No query results'}}
             results = commons.query_to_dict({model_lower}_info)
-            return {{'code': RET.OK, 'message': 'Queried successfully', 'data': results}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
         except Exception as e:
             loggings.exception(1, e)
-            return {{'code': RET.DBERR, 'message': 'Database exception, failed to query', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
         finally:
             db.session.close()
 """
@@ -77,11 +77,11 @@ class {class_name}({parent_model}):
                 cls.{primary_key} == kwargs.get('{primary_key}')
             ).delete()
             db.session.commit()
-            return {{'code': RET.OK, 'message': 'Deleted successfully'}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
-            return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
         finally:
             db.session.close()
 """
@@ -94,13 +94,13 @@ class {class_name}({parent_model}):
                 cls.{primary_key} == kwargs.get('{primary_key}')
             ).with_for_update().update({{'IsDelete': 1}})
             if res < 1:
-                return {{'code': RET.NODATA, 'message': 'No data to delete', 'error': 'No data to delete'}}
+                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
             db.session.commit()
-            return {{'code': RET.OK, 'message': 'Deleted successfully'}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
-            return {{'code': RET.DBERR, 'message': 'Database exception, failed to delete', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
         finally:
             db.session.close()
 """
@@ -109,17 +109,18 @@ class {class_name}({parent_model}):
     @classmethod
     def update(cls, **kwargs):
         try:
+            {rsa_update}
             res = db.session.query(cls).filter(
                 cls.{primary_key} == kwargs.get('{primary_key}')
             ).with_for_update().update(kwargs)
             if res < 1:
-                return {{'code': RET.NODATA, 'message': 'No data to update', 'error': 'No data to update'}}
+                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}}
             db.session.commit()
-            return {{'code': RET.OK, 'message': 'Updated successfully'}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
-            return {{'code': RET.DBERR, 'message': 'Database exception, failed to update', 'error': str(e)}}
+            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
         finally:
             db.session.close()
 """

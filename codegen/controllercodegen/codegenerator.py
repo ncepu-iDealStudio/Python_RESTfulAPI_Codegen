@@ -16,11 +16,11 @@
 
 import os.path
 
+from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
+from codegen.controllercodegen.template.filetemplate import FileTemplate
 from utils.common import str_format_convert
 from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
-from codegen.controllercodegen.template.filetemplate import FileTemplate
-from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
 
 
 class CodeGenerator(object):
@@ -29,7 +29,7 @@ class CodeGenerator(object):
         super(CodeGenerator, self).__init__()
         self.metadata = metadata
 
-    def controller_codegen(self, controller_dir, delete_way='logic'):
+    def controller_codegen(self, controller_dir, rsa_table_column, delete_way='logic'):
         codes = {}
         # get table metadata
         table_dict = TableMetadata.get_tables_metadata(self.metadata)
@@ -52,9 +52,12 @@ class CodeGenerator(object):
             for column in table['columns'].values():
                 if column['name'] == primary_key:
                     continue
-                else:
+                # the column do not encrypt
+                elif not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column[table['table_name']]:
                     text = CodeBlockTemplate.add_column_init.format(column=column['name'])
-                    column_init += text
+                else:
+                    text = CodeBlockTemplate.rsa_add.format(column=column['name'])
+                column_init += text
             add = FileTemplate.add_template.format(parent_model=parent_model, column_init=column_init)
 
             # combine get_filter_list
@@ -64,12 +67,25 @@ class CodeGenerator(object):
                     continue
                 else:
                     if column['type'] in ['int', 'float']:
-                        text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
+                        # column type is a number
+                        if not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column.get(table['table_name']):
+                            # column do not encrypt
+                            text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
+                        else:
+                            text = CodeBlockTemplate.rsa_get_filter_num.format(column=column['name'])
                     else:
-                        text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
+                        # column type is a string
+                        if not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column.get(table['table_name']):
+                            # column do not encrypt
+                            text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
+                        else:
+                            text = CodeBlockTemplate.rsa_get_filter_str.format(column=column['name'])
                     get_filter_list += text
-            get = FileTemplate.get_template.format(primary_key=primary_key, get_filter_list=get_filter_list,
-                                                   model_lower=table['table_name'])
+            get = FileTemplate.get_template.format(
+                primary_key=primary_key,
+                get_filter_list=get_filter_list,
+                model_lower=table['table_name']
+            )
 
             # combine delete
             if delete_way == 'logic':
@@ -78,7 +94,13 @@ class CodeGenerator(object):
                 delete = FileTemplate.delete_template_physical.format(primary_key=primary_key)
 
             # combine update
-            update = FileTemplate.update_template.format(primary_key=primary_key)
+            rsa_update = ''
+            if rsa_table_column.get(table['table_name']):
+                # several columns should be encrypted
+                for sra_column in rsa_table_column[table['table_name']]:
+                    text = CodeBlockTemplate.rsa_update.format(column=sra_column)
+                    rsa_update += text
+            update = FileTemplate.update_template.format(primary_key=primary_key, rsa_update=rsa_update)
 
             # save into 'codes'
             file_name = hump_str + 'Controller'
