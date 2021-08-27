@@ -8,3 +8,4 @@ loguru==0.5.3
 PyMySQL==1.0.2
 SQLAlchemy==1.4.23
 cryptography==3.4.8
+crypto==1.4.1
