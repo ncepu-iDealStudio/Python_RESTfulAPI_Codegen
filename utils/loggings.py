@@ -40,6 +40,10 @@ class Loggings(object):
         Loggings.log_filter(location)
         return logger.error(msg)
 
+    def exception(self, location, msg):
+        Loggings.log_filter(location)
+        return logger.exception(msg)
+
     @staticmethod
     def log_filter(location):
         # 日志和控制台都出现
