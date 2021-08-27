@@ -25,7 +25,7 @@ class {table_name_initials_upper}Service({table_name_initials_upper}Controller):
     @classmethod
     def query_{table_name}(cls, **kwargs):
         try:
-            filter_list = [cls.IsDelete == 0]
+            filter_list = []
 {filter_conditions}          
             page = int(kwargs.get('Page'), 1)
             size = int(kwargs.get('Size'), 10)
