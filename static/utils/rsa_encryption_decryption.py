@@ -1,16 +1,20 @@
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_v1_5 as Cipher_pkcs1_v1_5
 import base64
-from flask import current_app
+from configparser import ConfigParser
+
+CONFIG_DIR = "config/config.conf"
+CONFIG = ConfigParser()
+CONFIG.read(CONFIG_DIR, encoding='utf-8')
 
 
-class RSAEncryptionDecryption():
+class RSAEncryptionDecryption(object):
     """
     用于解密前端的密码
     """
 
-    public_key = current_app.config["PUBLIC_KEY"]
-    private_key = current_app.config["PRIVATE_KEY"]
+    public_key = CONFIG['RSA']['public_key']
+    private_key = CONFIG['RSA']['private_key']
 
     # RSA加密
     @classmethod
