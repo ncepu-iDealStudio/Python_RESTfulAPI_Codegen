@@ -85,6 +85,6 @@ class Settings(object):
     if SECURITY_CONFIG['RSA_TABLE_COLUMN']:
         try:
             for table, columns in SECURITY_CONFIG['RSA_TABLE_COLUMN'].items():
-                RSA_TABLE_COLUMN[table] = columns.split(',')
+                RSA_TABLE_COLUMN[table] = columns.replace(' ', '').split(',')
         except Exception as e:
             raise Exception('RSA_TABLE_COLUMN参数读取失败')

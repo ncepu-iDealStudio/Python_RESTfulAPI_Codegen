@@ -8,18 +8,19 @@ class RSAEncryptionDecryption():
     """
     用于解密前端的密码
     """
-    def __init__(self):
-        self.public_key = current_app.config["PUBLIC_KEY"]
-        self.private_key = current_app.config["PRIVATE_KEY"]
+
+    public_key = current_app.config["PUBLIC_KEY"]
+    private_key = current_app.config["PRIVATE_KEY"]
 
     # RSA加密
-    def encrypt(self, message):
+    @classmethod
+    def encrypt(cls, message):
 
         # 数据类型也可以这样转换成byte
         # bytes(message, "utf-8")
 
         # 导入配置文件的公钥
-        public_key = RSA.importKey(self.public_key)
+        public_key = RSA.importKey(cls.public_key)
 
         # 生成对象
         cipher = Cipher_pkcs1_v1_5.new(public_key)
@@ -30,9 +31,10 @@ class RSAEncryptionDecryption():
         return cipher_text
 
     # RSA 解密
-    def decrypt(self, cipher_text):
+    @classmethod
+    def decrypt(cls, cipher_text):
         # 导入读取到的私钥
-        private_key = RSA.importKey(self.private_key)
+        private_key = RSA.importKey(cls.private_key)
 
         # 生成对象
         cipher = Cipher_pkcs1_v1_5.new(private_key)
