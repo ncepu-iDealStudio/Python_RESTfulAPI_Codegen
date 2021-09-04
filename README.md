@@ -1,4 +1,4 @@
-#####项目说明： Flask_Sqlachemy_RESTfulAPI_Codegen
+##### 项目说明： Flask_Sqlachemy_RESTfulAPI_Codegen
 https://github.com/ideal-ncepu/Flask_Sqlachemy_RESTfulAPI_Codegen
 是一个根据数据库表结构，自动生成Python基于Flask+sqlalchemy框架的接口项目，所生成的接口符合restful风格规范；
 
