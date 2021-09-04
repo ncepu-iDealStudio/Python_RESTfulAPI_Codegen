@@ -38,10 +38,10 @@ https://github.com/ideal-ncepu/Flask_Sqlachemy_RESTfulAPI_Codegen
     也可以在配置文件中设置目标项目的位置；
    
 二 目标项目测试
-1 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；
-2 为目标项目配置好虚拟环境；Pythond的版本>=3.8.0
-3 安装软件运行必须的包：pip install -r requirement.txt
-4 运行目标项目：python manage.py runserver
-5 打开postman进行接口测试：http://127.0.0.1:5000/api_1_0/apiversion
-  api_1_0为项目生成器中设置的版本号，如果配置参数为API_VERSION=1.0，则此时链接中的版本号字符串为：api_1_0
+1 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
+2 为目标项目配置好虚拟环境；Pythond的版本>=3.8.0  
+3 安装软件运行必须的包：pip install -r requirement.txt  
+4 运行目标项目：python manage.py runserver  
+5 打开postman进行接口测试：http://127.0.0.1:5000/api_1_0/apiversion  
+  api_1_0为项目生成器中设置的版本号，如果配置参数为API_VERSION=1.0，则此时链接中的版本号字符串为：api_1_0  
 6 测试基本业务相关接口
