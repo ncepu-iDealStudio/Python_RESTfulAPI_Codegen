@@ -24,6 +24,9 @@ https://github.com/ideal-ncepu/Flask_Sqlachemy_RESTfulAPI_Codegen
 * Excellent test coverage
 * 出色的测试覆盖率
 
+##### 目标项目生成结构：  
+![项目生成结构图](https://images.gitee.com/uploads/images/2021/0904/220114_eefd87e8_9201274.png "项目生成结构图")
+
 ##### 生成器项目的使用说明： 
 一 生成器项目使用
 1. 先从仓库clone代码到本地；
@@ -38,6 +41,7 @@ https://github.com/ideal-ncepu/Flask_Sqlachemy_RESTfulAPI_Codegen
     也可以在配置文件中设置目标项目的位置；
    
 二 目标项目测试  
+  
 1 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
 2 为目标项目配置好虚拟环境；Pythond的版本>=3.8.0  
 3 安装软件运行必须的包：pip install -r requirement.txt  
