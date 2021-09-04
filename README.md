@@ -37,7 +37,7 @@ https://github.com/ideal-ncepu/Flask_Sqlachemy_RESTfulAPI_Codegen
 7. 程序运行完毕后，会生成dist文件夹，文件夹下面及为我们需要的目标项目；   
     也可以在配置文件中设置目标项目的位置；
    
-二 目标项目测试
+二 目标项目测试 
 1 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
 2 为目标项目配置好虚拟环境；Pythond的版本>=3.8.0  
 3 安装软件运行必须的包：pip install -r requirement.txt  
