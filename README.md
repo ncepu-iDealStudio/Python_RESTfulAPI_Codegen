@@ -1,7 +1,6 @@
 ##### 项目说明： Flask_Sqlachemy_RESTfulAPI_Codegen
 https://github.com/ideal-ncepu/Flask_Sqlachemy_RESTfulAPI_Codegen
 是一个根据数据库表结构，自动生成Python基于Flask+sqlalchemy框架的接口项目，所生成的接口符合restful风格规范；
-
 本项目实体层基于flask-sqlacodegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；
 
 ##### 生成的目标接口项目特点：
@@ -32,7 +31,7 @@ https://github.com/ideal-ncepu/Flask_Sqlachemy_RESTfulAPI_Codegen
 2. 用Python开发工具(Pycharm或者vscode)打开项目；
 3. 为代码生成器项目配置好虚拟环境；Pythond的版本>=3.8.0
 4. 安装软件运行必须的包：pip install -r requirement.txt
-5. 设置根据说明文档，好配置文件：config文件夹下的config.conf和database.conf;
+5. 配置相关参数：根据说明文档，对配置文件中的参数进行设定，主要是config文件夹下的config.conf和database.conf（请注意查看参数前的注释）;
 6. 在虚拟环境下，运行根目录下的start.py; 
     程序运行时，会先检查各项配置文件是否有误；
 7. 程序运行完毕后，会生成dist文件夹，文件夹下面及为我们需要的目标项目；   
