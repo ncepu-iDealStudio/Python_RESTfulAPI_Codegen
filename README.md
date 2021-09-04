@@ -27,7 +27,7 @@ https://github.com/ideal-ncepu/Flask_Sqlachemy_RESTfulAPI_Codegen
 ##### 生成器项目的使用说明： 
 一 生成器项目使用
 1. 先从仓库clone代码到本地；
-   git clone git@gitee.com:ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen.git
+   git clone https://gitee.com/ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen.git
 2. 用Python开发工具(Pycharm或者vscode)打开项目；
 3. 为代码生成器项目配置好虚拟环境；Pythond的版本>=3.8.0
 4. 安装软件运行必须的包：pip install -r requirement.txt
