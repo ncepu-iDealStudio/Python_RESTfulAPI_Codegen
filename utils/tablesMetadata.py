@@ -33,6 +33,7 @@ class TableMetadata(object):
             table_dict[table_name] = {}
             table_dict[table_name]['columns'] = {}
             table_dict[table_name]['table_name'] = table_name
+            table_dict[table_name]['foreign_keys'] = []
 
             # Traverse each columns to get corresponding attributes
             for column in table.columns.values():
@@ -52,11 +53,11 @@ class TableMetadata(object):
                     table_dict[table_name]['primaryKey'] = str(column.name)
 
                 if column.foreign_keys:
-                    table_dict[table_name]['foreign_keys'] = {}
                     # Traverse each foreign_key to get corresponding attributes
                     for foreign_key in column.foreign_keys:
-                        table_dict[table_name]['foreign_keys']['key'] = str(column.name)
-                        table_dict[table_name]['foreign_keys']['target_table'] = str(foreign_key.column).split('.')[0]
-                        table_dict[table_name]['foreign_keys']['target_key'] = str(foreign_key.column).split('.')[1]
-
+                        table_dict[table_name]['foreign_keys'].append({
+                            'key': str(column.name),
+                            'target_table': str(foreign_key.column).split('.')[0],
+                            'target_key': str(foreign_key.column).split('.')[1]
+                        })
         return table_dict
