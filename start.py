@@ -13,7 +13,7 @@
 import codegen.servicecodegen.main
 import codegen.staticcodegen.main
 
-from codegen.controllercodegen.main import main
+from codegen.controllercodegen.main import controllerGenerate
 from codegen.modelcodegen.main import modelGenerate
 from codegen.resourcecodegen.main import resourceGenerate
 from utils.checkConfig import check_config
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
         # 第二步
         loggings.info(1, "Start to build the Controller layer code, please wait...")
-        main()
+        controllerGenerate()
         loggings.info(1, "Controller layer code build completed")
 
         # 第三步
