@@ -1,0 +1,11 @@
+[
+  {
+    "table": "user",
+    "column": "UserID"
+  },
+  {
+    "table": "student",
+    "column": "StudentID",
+    "template": "NoRule"
+  }
+]
