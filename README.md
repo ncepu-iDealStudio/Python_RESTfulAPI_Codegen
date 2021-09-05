@@ -74,7 +74,7 @@ https://gitee.com/ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen
 1. 先从仓库clone代码到本地；
    git clone https://gitee.com/ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen.git
 2. 用Python开发工具(Pycharm或者vscode)打开项目；
-3. 为代码生成器项目配置好虚拟环境；Pythond的版本>=3.8.0
+3. 为代码生成器项目配置好虚拟环境；Python的版本>=3.8.0
 4. 安装软件运行必须的包：pip install -r requirement.txt
 5. 配置相关参数：根据说明文档，对配置文件中的参数进行设定，主要是config文件夹下的config.conf和database.conf（请注意查看参数前的注释）;
 6. 在虚拟环境下，运行根目录下的start.py;   
