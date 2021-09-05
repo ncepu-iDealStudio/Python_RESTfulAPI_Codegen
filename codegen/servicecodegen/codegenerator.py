@@ -56,31 +56,30 @@ class CodeGenerator(object):
                 # table_model: The string of using a comma to combine the name of this table and the associated table
                 # join_table_statement: If there is a foreign key in the table, add join target table statement
                 # result_name: The string of using underline to combine the name of this table and the associated table
-                if foreign_key := table_dict[table].setdefault('foreign_keys', None):
-                    target_table_name = str_format_convert(foreign_key['target_table'])
-                    target_table_name_initials_upper = target_table_name[0].upper() + target_table_name[1:]
-                    foreign_import = '\nfrom models.{0}Model import {1}'.format(target_table_name,
-                                                                                target_table_name_initials_upper)
-                    table_model = '{0}, {1}'.format(table_name_initials_upper, target_table_name_initials_upper)
-                    join_table_statement = CodeBlockTemplate.join_statement.format(
-                        target_table=target_table_name_initials_upper,
-                        table_name_initials_upper=table_name_initials_upper,
-                        table_key=foreign_key['key'],
-                        target_key=foreign_key['target_key'])
-                    result_name = table_name + "_" + target_table_name + "_info"
-                    # Fields to be queried
-                    for columns in table_dict[foreign_key['target_table']]['columns']:
-                        columns_name = table_dict[foreign_key['target_table']]['columns'][columns]['name']
-                        Fields_list.append(
-                            "{table_model}.{columns_name}.label('{table_model}.{columns_name}')".format(
-                                table_model=target_table_name_initials_upper,
-                                columns_name=columns_name))
 
-                else:
-                    foreign_import = ""
-                    table_model = table_name_initials_upper
-                    join_table_statement = ""
-                    result_name = table_name + "_info"
+                foreign_import = ""
+                join_table_statement = ""
+                result_name = table_name
+                if foreign_keys := table_dict[table].setdefault('foreign_keys', None):
+                    for foreign_key in foreign_keys:
+                        target_table_name = str_format_convert(foreign_key['target_table'])
+                        target_table_name_initials_upper = target_table_name[0].upper() + target_table_name[1:]
+                        foreign_import += '\nfrom models.{0}Model import {1}'.format(target_table_name,
+                                                                                     target_table_name_initials_upper)
+                        join_table_statement += CodeBlockTemplate.join_statement.format(
+                            target_table=target_table_name_initials_upper,
+                            table_name_initials_upper=table_name_initials_upper,
+                            table_key=foreign_key['key'],
+                            target_key=foreign_key['target_key'])
+                        result_name += "_" + target_table_name
+
+                        # Fields to be queried
+                        for columns in table_dict[foreign_key['target_table']]['columns']:
+                            columns_name = table_dict[foreign_key['target_table']]['columns'][columns]['name']
+                            Fields_list.append(
+                                "{table_model}.{columns_name}.label('{table_model}.{columns_name}')".format(
+                                    table_model=target_table_name_initials_upper,
+                                    columns_name=columns_name))
 
                 # Fields required for splicing
                 Fields = ', '.join(Fields_list)
@@ -95,8 +94,8 @@ class CodeGenerator(object):
                                                         table_name_initials_upper=table_name_initials_upper,
                                                         foreign_import=foreign_import,
                                                         filter_conditions=filter_conditions,
-                                                        table_model=table_model,
-                                                        result_name=result_name,
+                                                        # table_model=table_model,
+                                                        result_name=result_name + '_info',
                                                         Fields=Fields,
                                                         join_table_statement=join_table_statement,
                                                         exception_return=CodeBlockTemplate.exception_return,
