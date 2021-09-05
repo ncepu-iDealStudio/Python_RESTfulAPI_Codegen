@@ -102,6 +102,7 @@ class CheckTable(object):
         for table in table_dict.values():
             flag = True
             if not table.get('foreign_keys'):
+                available_table.append(table['table_name'])
                 continue
             for foreign_key in table.get('foreign_keys'):
                 if not table_dict.get(foreign_key['target_table']):
@@ -111,12 +112,6 @@ class CheckTable(object):
                                                                              source_table=table['table_name'],
                                                                              source_key=foreign_key['key']))
                     flag = False
-            # if not table_dict.get(table['foreign_keys']['target_table']):
-            #     loggings.warning(1, 'the target table "{target_table}" of foreign key "{source_table}.{source_key}" '
-            #                         'does not exist'.format(target_table=table['foreign_keys']['target_table'],
-            #                                                 source_table=table['table_name'],
-            #                                                 source_key=table['foreign_keys']['key']))
-            #     flag = False
             if flag:
                 available_table.append(table['table_name'])
             else:
@@ -159,6 +154,7 @@ class CheckTable(object):
                 loggings.warning(1, 'the natural key {table}.{column} is an Auto increment '
                                     'primary key '.format(table=natural_key['table'],
                                                           column=natural_key['column']))
+                invalid_table.append(available_table.pop(available_table.index(natural_key['table'])))
 
         return available_table, invalid_table
 
@@ -175,6 +171,7 @@ class CheckTable(object):
         available_tables, invalid_tables = cls.check_primary_key()
 
         # check the foreign key
+        metadata = MetaData(engine)
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_foreign_key(table_dict)
@@ -182,6 +179,7 @@ class CheckTable(object):
         invalid_tables += invalid_table
 
         # check the keyword
+        metadata = MetaData(engine)
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
@@ -189,6 +187,7 @@ class CheckTable(object):
         invalid_tables += invalid_table
 
         # check the natural key
+        metadata = MetaData(engine)
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_natural_key(table_dict)
