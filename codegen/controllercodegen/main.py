@@ -17,7 +17,7 @@ from . import record_delete_way, rsa_table_column
 from .codegenerator import CodeGenerator
 
 
-def controllerGenerate():
+def main():
     """
     Generate Controller code
     :return: None
