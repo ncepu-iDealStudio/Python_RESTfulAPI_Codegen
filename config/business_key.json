@@ -1,11 +1,12 @@
 [
   {
     "table": "user",
-    "column": "UserID"
+    "column": "UserID",
+    "rule": ""
   },
   {
     "table": "student",
     "column": "StudentID",
-    "template": "NoRule"
+    "rule": "business_key_gen_code_block"
   }
 ]
