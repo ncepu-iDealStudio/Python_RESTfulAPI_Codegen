@@ -1,11 +1,15 @@
 [
   {
-    "table": "user",
-    "column": "UserID"
+    "table": "class_info",
+    "column": "ClassID",
+    "template": "NoRule"
   },
   {
-    "table": "student",
-    "column": "StudentID",
-    "template": "NoRule"
+    "table": "student_info",
+    "column": "StudentID"
+  },
+  {
+    "table": "class_info",
+    "column": "userID"
   }
 ]

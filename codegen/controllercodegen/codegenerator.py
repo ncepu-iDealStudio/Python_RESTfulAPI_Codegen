@@ -18,6 +18,7 @@ import os.path
 
 from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.controllercodegen.template.filetemplate import FileTemplate
+from config.natural_key_template import natural_key_template_dict
 from utils.common import str_format_convert
 from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
@@ -29,7 +30,8 @@ class CodeGenerator(object):
         super(CodeGenerator, self).__init__()
         self.metadata = metadata
 
-    def controller_codegen(self, controller_dir, rsa_table_column, delete_way='logic'):
+    def controller_codegen(self, controller_dir, rsa_table_column, natural_key_list, primary_key_mode,
+                           delete_way='logic'):
         codes = {}
         # get table metadata
         table_dict = TableMetadata.get_tables_metadata(self.metadata)
@@ -54,7 +56,21 @@ class CodeGenerator(object):
                     continue
                 # the column do not encrypt
                 elif not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column[table['table_name']]:
-                    text = CodeBlockTemplate.add_column_init.format(column=column['name'])
+                    if primary_key_mode == 'AutoID':
+                        # 仅自增主键模式
+                        text = CodeBlockTemplate.add_column_init.format(column=column['name'])
+                    else:
+                        # 业务主键模式
+                        flag = True
+                        for natural_key_table_column in natural_key_list:
+                            if table['table_name'] == natural_key_table_column['table'] and column['name'] == natural_key_table_column['column']:
+                                natural_key_template = natural_key_table_column.get('template') if natural_key_table_column.get('template') else 'default'
+                                if natural_key_template
+                                text = natural_key_template_dict[natural_key_table_column['template']].format(natural_key=natural_key_table_column['column'])
+                                flag = False
+                                break
+                        if flag:
+                            text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                 else:
                     text = CodeBlockTemplate.rsa_add.format(column=column['name'])
                 column_init += text

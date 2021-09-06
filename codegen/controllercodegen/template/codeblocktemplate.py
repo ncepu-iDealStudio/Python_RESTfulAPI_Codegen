@@ -16,6 +16,7 @@ class CodeBlockTemplate(object):
     imports = '''
 from app import db
 import math
+from sqlalchemy import func
 
 from models.{model_name} import {parent_model}
 from utils import commons
