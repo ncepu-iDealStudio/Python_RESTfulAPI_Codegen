@@ -4,6 +4,8 @@
 本项目实体层基于flask-sqlacodegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；
 
 ##### 生成的目标接口项目特点：
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0905/200245_9c40fbe9_9201274.png "屏幕截图.png")  
+
 1. 项目架构满足分层设计规范，分为实体层，控制器层和资源层(接口层)，
    用户可以添加服务层，作为商业逻辑层；
 2. 资源层(接口层)，生成了满足restful风格规范的接口，发布后，可以直接让前端调用；
@@ -11,26 +13,8 @@
 3. 项目定位于先有数据库设计和关系，后基于这些关系生成对象和实体及各层的代码；
 3. 目标项目包含基于Docker容器的部署脚本；
 
-产品特性
-* Supports SQLAlchemy 0.8.x - 1.3.x
-* 支持SQLAlchemy 0.8x - 1.3x
-* Produces declarative code that almost looks like it was hand written
-* 生成的声明性代码几乎看起来像是手写的
-* Produces `PEP 8`_ compliant code
-* 生成的代码符合 `PEP 8`_规范
-* Accurately determines relationships, including many-to-many, one-to-one
-* 准确判断包括多对多与一对一的关系
-* Automatically detects joined table inheritance
-* 自动检测连接表继承
-* Excellent test coverage
-* 出色的测试覆盖率  
 
-##### 目标项目生成结构：  
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0905/200245_9c40fbe9_9201274.png "屏幕截图.png")  
-
-##### 目标项目详细目录：  
-.  
+##### 目标项目详细目录：   
 └── api.sqlcodegen.com  
     ├── app  # 项目初始化文件夹  
     │   ├── __init__.py  
@@ -68,6 +52,20 @@
         ├── loggings.py  
         ├── response_code.py  
         └── rsa_encryption_decryption.py  
+
+产品特性
+* Supports SQLAlchemy 0.8.x - 1.3.x
+* 支持SQLAlchemy 0.8x - 1.3x
+* Produces declarative code that almost looks like it was hand written
+* 生成的声明性代码几乎看起来像是手写的
+* Produces `PEP 8`_ compliant code
+* 生成的代码符合 `PEP 8`_规范
+* Accurately determines relationships, including many-to-many, one-to-one
+* 准确判断包括多对多与一对一的关系
+* Automatically detects joined table inheritance
+* 自动检测连接表继承
+* Excellent test coverage
+* 出色的测试覆盖率  
 
 ##### 生成器项目的使用说明：
 一 生成器项目使用
