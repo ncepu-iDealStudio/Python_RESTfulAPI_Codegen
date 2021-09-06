@@ -97,7 +97,7 @@ class {className}OtherResource(Resource):
     @swag_from("ymls/{apiName}_post.yml")
     def post(self):
         parser = reqparse.RequestParser()
-{parameter1}
+{postParameter}
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {postControllerInvoke}
@@ -106,7 +106,7 @@ class {className}OtherResource(Resource):
     @swag_from("ymls/{apiName}_gets.yml")
     def get(self):
         parser = reqparse.RequestParser()
-{parameter2}
+{getParameter}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         kwargs = parser.parse_args()
@@ -117,7 +117,7 @@ class {className}OtherResource(Resource):
     @swag_from("ymls/{apiName}_joint_query.yml")
     def joint_query(self):
         parser = reqparse.RequestParser()
-{parameter3}
+{queryParameter}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         kwargs = parser.parse_args()

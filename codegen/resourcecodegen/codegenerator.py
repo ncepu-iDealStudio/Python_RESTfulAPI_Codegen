@@ -28,6 +28,7 @@ class CodeGenerator(object):
     def __init__(self, metadata):
         super(CodeGenerator, self).__init__()
         self.metadata = metadata
+        self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object'}
 
     # resource layer generation
     def resource_generator(self, api_dir, app_dir):
@@ -88,10 +89,10 @@ class CodeGenerator(object):
                 ymls_dir = os.path.join(resource_dir, 'ymls')
                 new_file_or_dir(2, ymls_dir)
                 yml_get_file = os.path.join(ymls_dir, '{0}'.format(str_format_convert(
-                    table_dict[table].get('table_name')))+'_get.yml')
+                    table_dict[table].get('table_name'))) + '_get.yml')
                 yml_get_list = self.yml_get_codegen(table_dict[table])
                 yml_gets_file = os.path.join(ymls_dir, '{0}'.format(str_format_convert(
-                    table_dict[table].get('table_name')))+'_gets.yml')
+                    table_dict[table].get('table_name'))) + '_gets.yml')
                 yml_gets_list = self.yml_gets_codegen(table_dict[table])
                 yml_post_file = os.path.join(ymls_dir, '{0}'.format(str_format_convert(
                     table_dict[table].get('table_name'))) + '_post.yml')
@@ -145,15 +146,21 @@ class CodeGenerator(object):
 
             api_str = CodeBlockTemplate.urls_api.format(api_name.lower())
 
-            primary_key_str = CodeBlockTemplate.primary_key.format(
-                api_name, str_format_convert(table.get('primaryKey')))
+            if table.get('business_key'):
+                primary_key_str = CodeBlockTemplate.primary_key.format(api_name, table.get('business_key').get('column'))
+            else:
+                primary_key_str = CodeBlockTemplate.primary_key.format(
+                    api_name, str_format_convert(table.get('primaryKey')))
+
             resource_str = CodeBlockTemplate.urls_resource.format(className_str, primary_key_str, api_name)
 
             other_resource_str = CodeBlockTemplate.urls_other_resource.format(className_str, api_name)
 
-            service_resource_str = CodeBlockTemplate.urls_service_resource.format(api_name.lower(), api_name, className_str)
+            service_resource_str = CodeBlockTemplate.urls_service_resource.format(api_name.lower(), api_name,
+                                                                                  className_str)
             return FileTemplate.urls.format(
-                imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str, serviceResource=service_resource_str)
+                imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str,
+                serviceResource=service_resource_str)
         except Exception as e:
             loggings.exception(1, e)
             return
@@ -168,13 +175,16 @@ class CodeGenerator(object):
             # template  generation
             imports_str = CodeBlockTemplate.resource_imports.format(api_name, className_str)
 
-            id_str = table.get('primaryKey')
+            if table.get('business_key'):
+                id_str = table.get('business_key').get('column')
+            else:
+                id_str = table.get('primaryKey')
 
             # get field list (except primary key)
             parameter_form_str = ''
-            for j in table.get('columns').values():
-                if j.get('name') != table.get('primaryKey'):
-                    parameter_form_str += CodeBlockTemplate.parameter_form.format(j.get('name'), j.get('type'))
+            for column in table.get('columns').values():
+                if column.get('name') != table.get('primaryKey') and column.get('name') != table.get('business_key').get('column'):
+                    parameter_form_str += CodeBlockTemplate.parameter_form.format(column.get('name'), column.get('type'))
 
             idCheck_str = CodeBlockTemplate.resource_id_check.format(id_str)
 
@@ -208,17 +218,35 @@ class CodeGenerator(object):
             # template generation
             imports_str = CodeBlockTemplate.other_resource_imports.format(api_name, className_str)
 
-            id_str = table.get('primaryKey')
+            if table.get('business_key'):
+                id_str = table.get('business_key').get('column')
+            else:
+                id_str = table.get('primaryKey')
 
             # get field list (except primary key)
-            parameter_str1 = ''
-            parameter_str2 = ''
-            parameter_str3 = ''
-            for j in table.get('columns').values():
-                parameter_str2 += CodeBlockTemplate.parameter_args.format(j.get('name'), j.get('type'))
-                parameter_str3 += CodeBlockTemplate.parameter_args.format(j.get('name'), j.get('type'))
-                if j.get('name') != table.get('primaryKey'):
-                    parameter_str1 += CodeBlockTemplate.parameter_form.format(j.get('name'), j.get('type'))
+            parameter_post = ''
+            parameter_get = ''
+            parameter_query = ''
+            for column in table.get('columns').values():
+                if not table.get('business_key'):
+                    if column.get('name') != table.get('primaryKey'):
+                        parameter_post += CodeBlockTemplate.parameter_form.format(column.get('name'), column.get('type'))
+                    parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
+                    parameter_query += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
+
+                else:
+                    if table.get('business_key').get('rule'):
+                        if column.get('name') != table.get('primaryKey'):
+                            parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
+                            parameter_query += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
+                        if column.get('name') != table.get('primaryKey') and column.get('name') != table.get('business_key').get('column'):
+                            parameter_post += CodeBlockTemplate.parameter_form.format(column.get('name'), column.get('type'))
+
+                    else:
+                        if column.get('name') != table.get('primaryKey'):
+                            parameter_post += CodeBlockTemplate.parameter_form.format(column.get('name'), column.get('type'))
+                            parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
+                            parameter_query += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
 
             getControllerInvoke_str = CodeBlockTemplate.other_resource_get_controller_invoke.format(className_str)
 
@@ -230,9 +258,9 @@ class CodeGenerator(object):
                                                       apiName=api_name,
                                                       className=className_str,
                                                       id=id_str,
-                                                      parameter1=parameter_str1,
-                                                      parameter2=parameter_str2,
-                                                      parameter3=parameter_str3,
+                                                      postParameter=parameter_post,
+                                                      getParameter=parameter_get,
+                                                      queryParameter=parameter_query,
                                                       getControllerInvoke=getControllerInvoke_str,
                                                       postControllerInvoke=postControllerInvoke_str,
                                                       getServiceInvoke=getServiceInvoke_str
@@ -284,10 +312,9 @@ class CodeGenerator(object):
     # yml generation
     def yml_get_codegen(self, table):
         # data codegen
-        maps = {'str': 'string', 'int': 'integer', 'obj': 'object'}
         data = ""
-        for c in table.get('columns').values():
-            data += CodeBlockTemplate.yml_data_template.format(c.get('name'), maps[c.get('type')])
+        for column in table.get('columns').values():
+            data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
 
         # yml_get codegen
         yml_get = FileTemplate.yml_get_template.format(table.get('table_name'), data)
@@ -295,12 +322,11 @@ class CodeGenerator(object):
 
     def yml_gets_codegen(self, table):
         # data codegen
-        maps = {'str': 'string', 'int': 'integer', 'obj': 'object'}
         data = ""
         parameter = ""
-        for c in table.get('columns').values():
-            data += CodeBlockTemplate.yml_data_template.format(c.get('name'), maps[c.get('type')])
-            parameter += CodeBlockTemplate.yml_get_parameter_template.format(c.get('name'), maps[c.get('type')])
+        for column in table.get('columns').values():
+            data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
+            parameter += CodeBlockTemplate.yml_get_parameter_template.format(column.get('name'), self.maps[column.get('type')])
 
         # yml_gets codegen
         yml_gets = FileTemplate.yml_gets_template.format(table.get('table_name'), parameter, data)
@@ -308,12 +334,11 @@ class CodeGenerator(object):
 
     def yml_post_codegen(self, table):
         # data codegen
-        maps = {'str': 'string', 'int': 'integer', 'obj': 'object'}
         data = ""
         parameter = ""
-        for c in table.get('columns').values():
-            data += CodeBlockTemplate.yml_data_template.format(c.get('name'), maps[c.get('type')])
-            parameter += CodeBlockTemplate.yml_post_parameter_template.format(c.get('name'), maps[c.get('type')])
+        for column in table.get('columns').values():
+            data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
+            parameter += CodeBlockTemplate.yml_post_parameter_template.format(column.get('name'), self.maps[column.get('type')])
 
         # yml_post codegen
         yml_post = FileTemplate.yml_post_template.format(table.get('table_name'), parameter, data)

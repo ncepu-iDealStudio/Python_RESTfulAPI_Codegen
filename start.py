@@ -13,9 +13,9 @@
 import codegen.servicecodegen.main
 import codegen.staticcodegen.main
 import codegen.controllercodegen.main
+import codegen.resourcecodegen.main
 
 from codegen.modelcodegen.main import modelGenerate
-from codegen.resourcecodegen.main import resourceGenerate
 from utils.checkConfig import check_config
 from utils.loggings import loggings
 
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
         # 第四步
         loggings.info(1, "Start to build the Resource layer code, please wait...")
-        resourceGenerate()
+        codegen.resourcecodegen.main.main()
         loggings.info(1, "Resource layer code build completed")
 
         # 第五步

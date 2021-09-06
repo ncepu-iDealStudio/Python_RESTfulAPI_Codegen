@@ -20,7 +20,7 @@ from utils.common import new_file_or_dir, file_write
 from utils.loggings import loggings
 
 
-def resourceGenerate():
+def main():
     """
     Generate resource layer code
     :return: None
