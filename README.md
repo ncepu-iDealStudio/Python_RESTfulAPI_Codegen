@@ -1,6 +1,6 @@
 ##### 项目说明： Flask_Sqlachemy_RESTfulAPI_Codegen
-https://gitee.com/ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen
-是一个根据数据库表结构，自动生成Python基于Flask+sqlalchemy框架的接口项目，所生成的接口符合restful风格规范；
+一个根据数据库表结构，自动生成Python基于Flask+sqlalchemy框架的接口项目，所生成的接口符合restful风格规范；  
+  
 本项目实体层基于flask-sqlacodegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；
 
 ##### 生成的目标接口项目特点：
