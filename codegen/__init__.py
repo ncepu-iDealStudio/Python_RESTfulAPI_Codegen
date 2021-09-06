@@ -26,7 +26,7 @@ project_dir = Settings.PROJECT_DIR
 target_dir = Settings.TARGET_DIR
 
 # 主键模式
-primary_key = Settings.PRIMARY_KEY
+primary_key_mode = Settings.PRIMARY_KEY
 # 业务主键列表
 natural_key_list = Settings.NATURAL_KEY_LIST
 
