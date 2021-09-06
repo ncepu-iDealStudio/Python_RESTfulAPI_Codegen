@@ -32,7 +32,7 @@ https://gitee.com/ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen
 ##### 目标项目详细目录：  
 .  
 └── api.sqlcodegen.com  
-    ├── app  # flask项目初始化  
+    ├── app  # 项目初始化文件夹  
     │   ├── __init__.py  
     │   └── setting.py  
     ├── config  # 项目配置  
@@ -69,7 +69,7 @@ https://gitee.com/ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen
         ├── response_code.py  
         └── rsa_encryption_decryption.py  
 
-##### 生成器项目的使用说明： 
+##### 生成器项目的使用说明：
 一 生成器项目使用
 1. 先从仓库clone代码到本地；
    git clone https://gitee.com/ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen.git
