@@ -2,19 +2,21 @@
   {
     "table": "user",
     "column": "UserID",
-    "rule": ""
-  },
-  {
-    "table": "student",
-    "column": "StudentID",
     "rule": "business_key_gen_code_block"
   },
   {
     "table": "student_info",
-    "column": "StudentID"
+    "column": "StudentID",
+    "rule": "business_key_gen_code_block"
   },
   {
     "table": "class_info",
-    "column": "userID"
+    "column": "ClassID",
+    "rule": "business_key_gen_code_block"
+  },
+  {
+    "table": "course_info",
+    "column": "CourseID",
+    "rule": "business_key_gen_code_block"
   }
 ]

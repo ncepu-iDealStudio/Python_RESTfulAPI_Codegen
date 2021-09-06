@@ -18,6 +18,7 @@ class TableMetadata(object):
     with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
         type_mapping = json.load(f)
 
+    business_key_config = Settings.NATURAL_KEY_LIST
     database_type = Settings.DATABASE_TYPE
 
     @classmethod
@@ -31,9 +32,15 @@ class TableMetadata(object):
             # get the table name
             table_name = str(table)
             table_dict[table_name] = {}
-            table_dict[table_name]['columns'] = {}
             table_dict[table_name]['table_name'] = table_name
+            table_dict[table_name]['columns'] = {}
             table_dict[table_name]['foreign_keys'] = []
+            table_dict[table_name]['business_key'] = {}
+
+            for index in range(len(cls.business_key_config)):
+                if cls.business_key_config[index]['table'] == table_name:
+                    table_dict[table_name]['business_key']['column'] = cls.business_key_config[index]['column']
+                    table_dict[table_name]['business_key']['rule'] = cls.business_key_config[index]['rule']
 
             # Traverse each columns to get corresponding attributes
             for column in table.columns.values():
