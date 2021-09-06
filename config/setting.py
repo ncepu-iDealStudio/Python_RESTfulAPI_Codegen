@@ -92,6 +92,6 @@ class Settings(object):
         except Exception as e:
             raise Exception('RSA_TABLE_COLUMN参数读取失败')
 
-    # 读取natural_key.json
+    # 读取business_key.json
     with open("config/business_key.json") as natural_key_json:
         NATURAL_KEY_LIST = json.load(natural_key_json)

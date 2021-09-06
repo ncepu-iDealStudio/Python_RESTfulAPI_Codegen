@@ -30,7 +30,7 @@ class CodeGenerator(object):
         super(CodeGenerator, self).__init__()
         self.metadata = metadata
 
-    def controller_codegen(self, controller_dir, rsa_table_column, natural_key_list, primary_key_mode,
+    def controller_codegen(self, controller_dir, rsa_table_column, business_key_list, primary_key_mode,
                            delete_way='logic'):
         codes = {}
         # get table metadata
@@ -62,11 +62,11 @@ class CodeGenerator(object):
                     else:
                         # 业务主键模式
                         flag = True
-                        for natural_key_table_column in natural_key_list:
+                        for natural_key_table_column in business_key_list:
                             if table['table_name'] == natural_key_table_column['table'] and column['name'] == natural_key_table_column['column']:
                                 natural_key_template = natural_key_table_column.get('template') if natural_key_table_column.get('template') else 'default'
-                                if natural_key_template
-                                text = natural_key_template_dict[natural_key_table_column['template']].format(natural_key=natural_key_table_column['column'])
+                                if natural_key_template:
+                                    text = natural_key_template_dict[natural_key_table_column['template']].format(natural_key=natural_key_table_column['column'])
                                 flag = False
                                 break
                         if flag:

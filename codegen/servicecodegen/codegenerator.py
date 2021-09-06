@@ -12,10 +12,11 @@
 
 import os
 
-from utils.common import str_format_convert
-from utils.loggings import loggings
+from codegen import primary_key_mode
 from codegen.servicecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.servicecodegen.template.fileTemplate import FileTemplate
+from utils.common import str_format_convert
+from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
 
 
@@ -44,6 +45,9 @@ class CodeGenerator(object):
                 # Traverse each column to generate the filter conditions
                 for columns in table_dict[table]['columns']:
                     columns_name = table_dict[table]['columns'][columns]['name']
+                    # If the primary key mode is "DoubleKey", then AutoID will not be used as a filter condition
+                    if columns_name == "AutoID" and primary_key_mode == "DoubleKey":
+                        continue
                     filter_conditions += CodeBlockTemplate.single_filter_condition.format(colums_name=columns_name)
                     Fields_list.append("{table_model}.{columns_name}".format(table_model=table_name_initials_upper,
                                                                              columns_name=columns_name))

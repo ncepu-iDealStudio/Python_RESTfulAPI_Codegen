@@ -28,7 +28,7 @@ target_dir = Settings.TARGET_DIR
 # 主键模式
 primary_key_mode = Settings.PRIMARY_KEY
 # 业务主键列表
-natural_key_list = Settings.NATURAL_KEY_LIST
+business_key_list = Settings.NATURAL_KEY_LIST
 
 # link to the database and get metadata by reflection
 engine = create_engine(url)
