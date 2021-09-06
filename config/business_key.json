@@ -1,5 +1,6 @@
 [
   {
+<<<<<<< HEAD:config/business_key.json
     "table": "user",
     "column": "UserID",
     "rule": ""
@@ -8,5 +9,18 @@
     "table": "student",
     "column": "StudentID",
     "rule": "business_key_gen_code_block"
+=======
+    "table": "class_info",
+    "column": "ClassID",
+    "template": "NoRule"
+  },
+  {
+    "table": "student_info",
+    "column": "StudentID"
+  },
+  {
+    "table": "class_info",
+    "column": "userID"
+>>>>>>> 171c53d56f3bdb92562a578057c16c6cca2266fe:config/natural_key.json
   }
 ]
