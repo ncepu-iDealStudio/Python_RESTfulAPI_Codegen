@@ -158,6 +158,36 @@ class CheckTable(object):
 
         return available_table, invalid_table
 
+    # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+    @classmethod
+    def check_business_key_template_and_table(cls, table_dict):
+        """
+        检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+        :return: 符合生成规则的表列表available_table和不符合生成规则的表列表invalid_table
+        """
+        available_table = [x['table_name'] for x in table_dict.values()]
+        invalid_table = []
+        if Settings.PRIMARY_KEY == 'AutoID':
+            return available_table, invalid_table
+        # 检验是否每张表都设置有业务主键
+        for table in [x['table_name'] for x in table_dict.values()]:
+            if table not in [x['table'] for x in Settings.BUSINESS_KEY_LIST]:
+                loggings.warning(1, '{}表没有设置业务主键'.format(table))
+                invalid_table.append(available_table.pop(available_table.index(table)))
+
+        # 检验业务主键生成模板是否存在
+        from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
+        for business_key_dict in Settings.BUSINESS_KEY_LIST:
+            if business_key_dict['table'] not in available_table:
+                continue
+            if business_key_dict['rule'] == '':
+                continue
+            if not hasattr(CodeBlockTemplate, business_key_dict['rule']):
+                loggings.warning(1, '业务主键生成模板{}不存在'.format(business_key_dict['rule']))
+                invalid_table.append(available_table.pop(available_table.index(business_key_dict['table'])))
+
+        return available_table, invalid_table
+
     # 入口函数定义
     @classmethod
     def main(cls):
@@ -183,6 +213,14 @@ class CheckTable(object):
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
+        available_tables = available_table
+        invalid_tables += invalid_table
+
+        # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+        metadata = MetaData(engine)
+        metadata.reflect(engine, only=available_tables)
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+        available_table, invalid_table = cls.check_business_key_template_and_table(table_dict)
         available_tables = available_table
         invalid_tables += invalid_table
 

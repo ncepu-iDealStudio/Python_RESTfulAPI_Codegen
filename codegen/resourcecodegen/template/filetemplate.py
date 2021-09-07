@@ -114,8 +114,8 @@ class {className}OtherResource(Resource):
 {getControllerInvoke}
 
     # join table query
-    @swag_from("ymls/{apiName}_joint_query.yml")
-    def joint_query(self):
+    @classmethod
+    def joint_query(cls):
         parser = reqparse.RequestParser()
 {queryParameter}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')

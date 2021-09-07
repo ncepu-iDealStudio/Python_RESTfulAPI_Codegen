@@ -22,7 +22,7 @@ from app import db
 from controller.{table_name}Controller import {table_name_initials_upper}Controller
 from models.{table_name}Model import {table_name_initials_upper}{foreign_import}
 from utils import commons
-from utils.response_code import RET
+from utils.response_code import RET, error_map_EN
 from utils.loggings import loggings
 """
 
@@ -31,6 +31,6 @@ from utils.loggings import loggings
 """
 
     join_statement = '.join({target_table}, {table_name_initials_upper}.{table_key} == {target_table}.{target_key})'
-    exception_return = "{'code': RET.DBERR, 'message': '数据库异常，获取信息失败', 'error': str(e)}"
-    notdata_return = "{'code': RET.NODATA, 'message': '查无信息', 'error': '查无信息'}"
-    success_return = "{'code': RET.OK, 'message': '查询成功', 'count': count, 'pages': pages, 'data': results}"
+    exception_return = "{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}"
+    notdata_return = "{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}"
+    success_return = "{'code': RET.OK, 'message': error_map_EN[RET.OK], 'count': count, 'pages': pages, 'data': results}"
