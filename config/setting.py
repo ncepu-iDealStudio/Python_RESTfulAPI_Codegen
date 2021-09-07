@@ -94,4 +94,4 @@ class Settings(object):
 
     # 读取business_key.json
     with open("config/business_key.json") as natural_key_json:
-        NATURAL_KEY_LIST = json.load(natural_key_json)
+        BUSINESS_KEY_LIST = json.load(natural_key_json)

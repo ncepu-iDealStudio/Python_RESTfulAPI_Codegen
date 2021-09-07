@@ -120,20 +120,20 @@ class CheckTable(object):
 
     # 检查业务主键是否存在
     @classmethod
-    def check_natural_key(cls, table_dict):
+    def check_business_key(cls, table_dict):
         """
         检查业务主键是否存在以及是否与自增主键重复
         :return: 符合生成规则的表列表available_table和不符合生成规则的表列表invalid_table
         """
         available_table = [x['table_name'] for x in table_dict.values()]
         invalid_table = []
-        natural_key_list = Settings.NATURAL_KEY_LIST
-        for natural_key in natural_key_list:
+        business_key_list = Settings.BUSINESS_KEY_LIST
+        for natural_key in business_key_list:
             flag = True
             # 检查表是否存在
             if natural_key['table'] not in available_table:
                 flag = False
-                loggings.warning(1, 'the target table {table} of natural key {table}.{column} '
+                loggings.warning(1, 'the target table {table} of business key {table}.{column} '
                                     'does not exist'.format(table=natural_key['table'],
                                                             column=natural_key['column']))
             if not flag:
@@ -142,7 +142,7 @@ class CheckTable(object):
             # 检查字段是否存在
             if natural_key['column'] not in table_dict[natural_key['table']]['columns'].keys():
                 flag = False
-                loggings.warning(1, 'the column of natural key {table}.{column} does not exist '
+                loggings.warning(1, 'the column of business key {table}.{column} does not exist '
                                     'in table {table}'.format(table=natural_key['table'],
                                                               column=natural_key['column']))
                 invalid_table.append(available_table.pop(available_table.index(natural_key['table'])))
@@ -151,7 +151,7 @@ class CheckTable(object):
 
             # 检查业务主键是否与自增主键重复
             if natural_key['column'] == table_dict[natural_key['table']]['primaryKey']:
-                loggings.warning(1, 'the natural key {table}.{column} is an Auto increment '
+                loggings.warning(1, 'the business key {table}.{column} is an Auto increment '
                                     'primary key '.format(table=natural_key['table'],
                                                           column=natural_key['column']))
                 invalid_table.append(available_table.pop(available_table.index(natural_key['table'])))
@@ -190,7 +190,7 @@ class CheckTable(object):
         metadata = MetaData(engine)
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
-        available_table, invalid_table = cls.check_natural_key(table_dict)
+        available_table, invalid_table = cls.check_business_key(table_dict)
         available_tables = available_table
         invalid_tables += invalid_table
 
