@@ -66,7 +66,7 @@ class CodeGenerator(object):
                             business_key_text = getattr(CodeBlockTemplate, table['business_key']['rule']).format(business_key=column['name'])
                             business_key_init += business_key_text
                         else:
-                            # 本字段不是业务主键
+                            # 本字段不是业务主键或业务主键没有生成规则
                             text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                 else:
                     text = CodeBlockTemplate.rsa_add.format(column=column['name'])
