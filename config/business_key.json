@@ -1,6 +1,6 @@
 [
   {
-    "table": "user",
+    "table": "user_info",
     "column": "UserID",
     "rule": "business_key_gen_code_block"
   },
