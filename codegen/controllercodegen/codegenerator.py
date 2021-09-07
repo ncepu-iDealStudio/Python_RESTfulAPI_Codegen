@@ -61,7 +61,7 @@ class CodeGenerator(object):
                         text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                     else:
                         # 业务主键模式
-                        if table['business_key'].get('column') == column['name']:
+                        if table['business_key'].get('column') == column['name'] and table['business_key'].get('rule'):
                             text = CodeBlockTemplate.business_key_add.format(column=column['name'])
                             business_key_text = getattr(CodeBlockTemplate, table['business_key']['rule']).format(business_key=column['name'])
                             business_key_init += business_key_text

@@ -123,6 +123,8 @@ def check_config():
         if Settings.PRIMARY_KEY == 'DoubleKey':
             from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
             for business_key_template in [x['rule'] for x in Settings.BUSINESS_KEY_LIST]:
+                if business_key_template == '':
+                    continue
                 if not hasattr(CodeBlockTemplate, business_key_template):
                     raise Exception('业务主键生成模板{}不存在')
 
