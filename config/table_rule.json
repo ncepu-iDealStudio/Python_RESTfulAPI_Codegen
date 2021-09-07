@@ -1,0 +1,17 @@
+{
+    "table_record_delete_logic_way":[
+        "person",
+        "user_info"
+    ],
+    "table_business_key_gen_rule":{
+        "user":{
+            "UserID":"business_key_gen_code_block"
+        },
+        "student_info":{
+            "StudentID":"business_key_gen_code_block"
+        },
+       "class_info":{
+            "ClassID":""
+        }
+   }
+}
