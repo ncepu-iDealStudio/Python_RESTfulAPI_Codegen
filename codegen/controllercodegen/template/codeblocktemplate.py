@@ -16,6 +16,7 @@ class CodeBlockTemplate(object):
     imports = '''
 from app import db
 import math
+import datetime
 from sqlalchemy import func
 
 from models.{model_name} import {parent_model}
@@ -28,6 +29,9 @@ from utils.loggings import loggings'''
                 '''
 
     rsa_add = '''{column}=RSAEncryptionDecryption.encrypt(kwargs.get('{column}')),
+                '''
+
+    business_key_add = '''{column}={column},
                 '''
 
     get_filter_num = '''if kwargs.get('{column}') is not None:
@@ -51,5 +55,5 @@ from utils.loggings import loggings'''
             '''
 
     # 业务主键代码块--定义生成业务主键的方式-八位数的年月日加上四位数的AutoID
-    business_key_gen_code_block = """       {natural_key} = (datetime.datetime.now()).strftime('%Y%m%d') + str(m_id).zfill(4)
-"""
+    business_key_gen_code_block = """{business_key} = (datetime.datetime.now()).strftime('%Y%m%d') + str(m_id).zfill(4)
+        """

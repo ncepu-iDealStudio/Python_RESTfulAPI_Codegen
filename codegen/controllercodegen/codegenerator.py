@@ -18,7 +18,6 @@ import os.path
 
 from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.controllercodegen.template.filetemplate import FileTemplate
-from config.natural_key_template import natural_key_template_dict
 from utils.common import str_format_convert
 from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
@@ -30,7 +29,7 @@ class CodeGenerator(object):
         super(CodeGenerator, self).__init__()
         self.metadata = metadata
 
-    def controller_codegen(self, controller_dir, rsa_table_column, business_key_list, primary_key_mode,
+    def controller_codegen(self, controller_dir, rsa_table_column, primary_key_mode,
                            delete_way='logic'):
         codes = {}
         # get table metadata
@@ -51,6 +50,7 @@ class CodeGenerator(object):
 
             # combine column_init
             column_init = ''
+            business_key_init = ''
             for column in table['columns'].values():
                 if column['name'] == primary_key:
                     continue
@@ -61,25 +61,29 @@ class CodeGenerator(object):
                         text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                     else:
                         # 业务主键模式
-                        flag = True
-                        for natural_key_table_column in business_key_list:
-                            if table['table_name'] == natural_key_table_column['table'] and column['name'] == natural_key_table_column['column']:
-                                natural_key_template = natural_key_table_column.get('template') if natural_key_table_column.get('template') else 'default'
-                                if natural_key_template:
-                                    text = natural_key_template_dict[natural_key_table_column['template']].format(natural_key=natural_key_table_column['column'])
-                                flag = False
-                                break
-                        if flag:
+                        if table['business_key'].get('column') == column['name']:
+                            text = CodeBlockTemplate.business_key_add.format(column=column['name'])
+                            business_key_text = getattr(CodeBlockTemplate, table['business_key']['rule']).format(business_key=column['name'])
+                            business_key_init += business_key_text
+                        else:
+                            # 本字段不是业务主键
                             text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                 else:
                     text = CodeBlockTemplate.rsa_add.format(column=column['name'])
                 column_init += text
-            add = FileTemplate.add_template.format(parent_model=parent_model, column_init=column_init)
+            add = FileTemplate.add_template.format(
+                parent_model=parent_model,
+                column_init=column_init,
+                business_key_init=business_key_init,
+                primary_key=primary_key
+            )
 
             # combine get_filter_list
             get_filter_list = ''
             for column in table['columns'].values():
                 if column['name'] == primary_key:
+                    continue
+                elif column['name'] == table['business_key'].get('column'):
                     continue
                 else:
                     if column['type'] in ['int', 'float']:
@@ -98,16 +102,20 @@ class CodeGenerator(object):
                             text = CodeBlockTemplate.rsa_get_filter_str.format(column=column['name'])
                     get_filter_list += text
             get = FileTemplate.get_template.format(
-                primary_key=primary_key,
+                primary_key=table['business_key']['column'] if primary_key_mode == 'DoubleKey' and table['business_key'].get('column') else primary_key,
                 get_filter_list=get_filter_list,
                 model_lower=table['table_name']
             )
 
             # combine delete
             if delete_way == 'logic':
-                delete = FileTemplate.delete_template_logic.format(primary_key=primary_key)
+                delete = FileTemplate.delete_template_logic.format(
+                    primary_key=table['business_key']['column'] if primary_key_mode == 'DoubleKey' and table['business_key'].get('column') else primary_key
+                )
             else:
-                delete = FileTemplate.delete_template_physical.format(primary_key=primary_key)
+                delete = FileTemplate.delete_template_physical.format(
+                    primary_key=table['business_key']['column'] if primary_key_mode == 'DoubleKey' and table['business_key'].get('column') else primary_key
+                )
 
             # combine update
             rsa_update = ''
@@ -116,7 +124,10 @@ class CodeGenerator(object):
                 for sra_column in rsa_table_column[table['table_name']]:
                     text = CodeBlockTemplate.rsa_update.format(column=sra_column)
                     rsa_update += text
-            update = FileTemplate.update_template.format(primary_key=primary_key, rsa_update=rsa_update)
+            update = FileTemplate.update_template.format(
+                primary_key=table['business_key']['column'] if primary_key_mode == 'DoubleKey' and table['business_key'].get('column') else primary_key,
+                rsa_update=rsa_update
+            )
 
             # save into 'codes'
             file_name = hump_str + 'Controller'
