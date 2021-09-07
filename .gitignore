@@ -12,4 +12,3 @@
 dist
 build
 logs
-config/database.conf
