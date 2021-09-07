@@ -30,7 +30,8 @@ def check_config():
             'project_name': Settings.PROJECT_NAME,
             'codegen_mode': Settings.CODEGEN_MODE,
             'codegen_layer': Settings.CODEGEN_LAYER,
-            'static_resource_dir': Settings.STATIC_RESOURCE_DIR
+            'static_resource_dir': Settings.STATIC_RESOURCE_DIR,
+            'primary_key': Settings.PRIMARY_KEY
         }
         for k, v in parameter.items():
             if not v:
@@ -106,6 +107,8 @@ def check_config():
         if Settings.CODEGEN_LAYER in ['default', 'controller']:
             if Settings.CONTROLLER_RECORD_DELETE_WAY not in ['logic', 'physical']:
                 raise Exception('RECORD_DELETE_WAY参数值不合法')
+        if Settings.PRIMARY_KEY not in ['AutoID', 'DoubleKey']:
+            raise Exception('PRIMARY_KEY参数值不合法')
 
         # 检验数据库中是否存在参数中的表名
         if Settings.CODEGEN_MODE == 'table':
