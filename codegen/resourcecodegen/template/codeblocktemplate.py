@@ -125,3 +125,10 @@ from utils.response_code import RET"""
            type: {1}
            description: {0}
            required: true"""
+
+    yml_put_parameter_template = """
+             - name: {0}
+               in: body
+               type: {1}
+               description: {0}
+               required: false"""

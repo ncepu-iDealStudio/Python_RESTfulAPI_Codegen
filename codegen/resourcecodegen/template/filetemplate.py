@@ -278,7 +278,7 @@ if __name__ == "__main__":
 tags:
  - name: '{0}'
 definitions:
- {0}_res_data:
+ {0}_get_res_data:
   type: object
   properties:
    code:
@@ -295,7 +295,7 @@ responses:
  200:
   description: response successfully
   schema:
-   $ref: '#/definitions/{0}_res_data'
+   $ref: '#/definitions/{0}_get_res_data'
 """
 
     yml_gets_template = """{0}_gets
@@ -305,7 +305,7 @@ tags:
 parameters:
 {1}
 definitions:
- {0}_res_data:
+ {0}_gets_res_data:
   type: object
   properties:
    code:
@@ -322,7 +322,7 @@ responses:
  200:
   description: response successfully
   schema:
-   $ref: '#/definitions/{0}_res_data'
+   $ref: '#/definitions/{0}_gets_res_data'
 """
 
     yml_post_template = """{0}_post
@@ -332,7 +332,7 @@ tags:
 parameters:
 {1}
 definitions:
- {0}_res_data:
+ {0}_post_res_data:
   type: object
   properties:
    code:
@@ -349,7 +349,7 @@ responses:
  200:
   description: response successfully
   schema:
-   $ref: '#/definitions/{0}_res_data'
+   $ref: '#/definitions/{0}_post_res_data'
 """
 
     yml_delete_template = """{0}_delete
@@ -357,7 +357,7 @@ responses:
 tags:
  - name: '{0}'
 definitions:
- {0}_res_data:
+ {0}_delete_res_data:
   type: object
   properties:
    code:
@@ -370,15 +370,17 @@ responses:
  200:
   description: response successfully
   schema:
-   $ref: '#/definitions/{0}_res_data'
+   $ref: '#/definitions/{0}_delete_res_data'
 """
 
     yml_put_template = """{0}_put
 ---
 tags:
  - name: '{0}'
+parameters:
+{1}
 definitions:
- {0}_res_data:
+ {0}_put_res_data:
   type: object
   properties:
    code:
@@ -391,5 +393,5 @@ responses:
  200:
   description: response successfully
   schema:
-   $ref: '#/definitions/{0}_res_data'
+   $ref: '#/definitions/{0}_put_res_data'
 """

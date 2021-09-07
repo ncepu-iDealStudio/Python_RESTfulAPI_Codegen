@@ -35,17 +35,17 @@ if __name__ == '__main__':
     if check_config():
         # 第一步
         loggings.info(1, "Start to build the Model layer code, please wait...")
-        modelGenerate()
+        # modelGenerate()
         loggings.info(1, "Model layer code build completed")
 
         # 第二步
         loggings.info(1, "Start to build the Controller layer code, please wait...")
-        codegen.controllercodegen.main.main()
+        # codegen.controllercodegen.main.main()
         loggings.info(1, "Controller layer code build completed")
 
         # 第三步
         loggings.info(1, "Start to build the Service layer code, please wait...")
-        codegen.servicecodegen.main.main()
+        # codegen.servicecodegen.main.main()
         loggings.info(1, "Service layer code build completed")
 
         # 第四步
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
         # 第五步
         loggings.info(1, "Start packing static files, please wait...")
-        codegen.staticcodegen.main.main()
+        # codegen.staticcodegen.main.main()
         loggings.info(1, "Static resource packaging is complete")
 
         loggings.info(1, "Api project code generation completed")
