@@ -119,6 +119,13 @@ def check_config():
                 if i not in metadata.tables.keys():
                     raise Exception('{}表不存在'.format(i))
 
+        # 检验业务主键生成模板是否存在
+        if Settings.PRIMARY_KEY == 'DoubleKey':
+            from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
+            for business_key_template in [x['business_key'] for x in Settings.BUSINESS_KEY_LIST]:
+                if not hasattr(CodeBlockTemplate, business_key_template):
+                    raise Exception('业务主键生成模板{}不存在')
+
     except Exception as e:
         loggings.error(1, str(e))
         return False

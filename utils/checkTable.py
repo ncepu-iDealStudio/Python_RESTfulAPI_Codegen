@@ -127,8 +127,8 @@ class CheckTable(object):
         """
         available_table = [x['table_name'] for x in table_dict.values()]
         invalid_table = []
-        natural_key_list = Settings.NATURAL_KEY_LIST
-        for natural_key in natural_key_list:
+        business_key_list = Settings.BUSINESS_KEY_LIST
+        for natural_key in business_key_list:
             flag = True
             # 检查表是否存在
             if natural_key['table'] not in available_table:

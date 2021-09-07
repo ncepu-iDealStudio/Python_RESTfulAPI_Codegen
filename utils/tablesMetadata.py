@@ -18,7 +18,7 @@ class TableMetadata(object):
     with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
         type_mapping = json.load(f)
 
-    business_key_config = Settings.NATURAL_KEY_LIST
+    business_key_config = Settings.BUSINESS_KEY_LIST
     database_type = Settings.DATABASE_TYPE
 
     @classmethod
