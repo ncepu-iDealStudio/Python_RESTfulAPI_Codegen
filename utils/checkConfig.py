@@ -119,14 +119,30 @@ def check_config():
                 if i not in metadata.tables.keys():
                     raise Exception('{}表不存在'.format(i))
 
-        # 检验业务主键生成模板是否存在
+        # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
         if Settings.PRIMARY_KEY == 'DoubleKey':
+            # 检验是否每张表都设置有业务主键
+            if Settings.CODEGEN_MODE == 'table':
+                # 表模式
+                for table in Settings.MODEL_TABLES.replace(' ', '').split(','):
+                    if table not in [x['table'] for x in Settings.BUSINESS_KEY_LIST]:
+                        raise Exception('{}表没有设置业务主键'.format(table))
+            else:
+                # 数据库模式
+                engine = create_engine(Settings.MODEL_URL)
+                metadata = MetaData(engine)
+                metadata.reflect(engine)
+                for table in metadata.tables.keys():
+                    if table not in [x['table'] for x in Settings.BUSINESS_KEY_LIST]:
+                        raise Exception('{}表没有设置业务主键'.format(table))
+
+            # 检验业务主键生成模板是否存在
             from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
             for business_key_template in [x['rule'] for x in Settings.BUSINESS_KEY_LIST]:
                 if business_key_template == '':
                     continue
                 if not hasattr(CodeBlockTemplate, business_key_template):
-                    raise Exception('业务主键生成模板{}不存在')
+                    raise Exception('业务主键生成模板{}不存在'.format(business_key_template))
 
     except Exception as e:
         loggings.error(1, str(e))
