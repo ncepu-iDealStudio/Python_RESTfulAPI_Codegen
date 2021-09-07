@@ -83,7 +83,7 @@ class CodeGenerator(object):
             for column in table['columns'].values():
                 if column['name'] == primary_key:
                     continue
-                elif column['name'] == table['business_key'].get('column'):
+                elif column['name'] == table['business_key'].get('column') and primary_key_mode == 'DoubleKey':
                     continue
                 else:
                     if column['type'] in ['int', 'float']:
