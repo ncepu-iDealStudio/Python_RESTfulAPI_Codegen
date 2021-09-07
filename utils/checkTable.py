@@ -170,7 +170,7 @@ class CheckTable(object):
         if Settings.PRIMARY_KEY == 'AutoID':
             return available_table, invalid_table
         # 检验是否每张表都设置有业务主键
-        for table in [x['table_name'] for x in table_dict.values]:
+        for table in [x['table_name'] for x in table_dict.values()]:
             if table not in [x['table'] for x in Settings.BUSINESS_KEY_LIST]:
                 loggings.warning(1, '{}表没有设置业务主键'.format(table))
                 invalid_table.append(available_table.pop(available_table.index(table)))
