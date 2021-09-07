@@ -106,3 +106,29 @@ from utils.response_code import RET"""
     from api_{1}.{0}Resource import {2}_blueprint
     app.register_blueprint({2}_blueprint, url_prefix="/api_{1}")
     """
+
+    yml_data_template = """
+         {0}:
+          type: {1}
+          description: {0}"""
+
+    yml_get_parameter_template = """
+         - name: {0}
+           in: query
+           type: {1}
+           description: {0}
+           required: false"""
+
+    yml_post_parameter_template = """
+         - name: {0}
+           in: body
+           type: {1}
+           description: {0}
+           required: true"""
+
+    yml_put_parameter_template = """
+             - name: {0}
+               in: body
+               type: {1}
+               description: {0}
+               required: false"""

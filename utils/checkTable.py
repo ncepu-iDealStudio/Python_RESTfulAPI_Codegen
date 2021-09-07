@@ -80,7 +80,8 @@ class CheckTable(object):
                 flag = False
             for column in table['columns'].values():
                 if keyword.iskeyword(column['name']):
-                    loggings.warning(1, 'column "{0}.{1}" is a keyword of python'.format(table['table_name'], column['name']))
+                    loggings.warning(1, 'column "{0}.{1}" is a keyword of python'.format(table['table_name'],
+                                                                                         column['name']))
                     flag = False
             if flag:
                 available_table.append(table['table_name'])
@@ -101,21 +102,90 @@ class CheckTable(object):
         for table in table_dict.values():
             flag = True
             if not table.get('foreign_keys'):
+                available_table.append(table['table_name'])
                 continue
-            # for foreign_key in table.get('foreign_key'):
-            #     if not table_dict.get(foreign_key['target_table']):
-            #         loggings.waring(1, 'the foreign key of "{source_key}" in "{source_table}" does not exist')
-            #         flag = False
-            if not table_dict.get(table['foreign_keys']['target_table']):
-                loggings.warning(1, 'the target table "{target_table}" of foreign key "{source_table}.{source_key}" '
-                                  'does not exist'.format(target_table=table['foreign_keys']['target_table'],
-                                                          source_table=table['table_name'],
-                                                          source_key=table['foreign_keys']['key']))
-                flag = False
+            for foreign_key in table.get('foreign_keys'):
+                if not table_dict.get(foreign_key['target_table']):
+                    loggings.waring(1, 'the target table or column "{target_table}.{target_key}" of "{source_table}.'
+                                       '{source_key}" does not exist'.format(target_table=foreign_key['target_table'],
+                                                                             target_key=foreign_key['target_key'],
+                                                                             source_table=table['table_name'],
+                                                                             source_key=foreign_key['key']))
+                    flag = False
             if flag:
                 available_table.append(table['table_name'])
             else:
                 invalid_table.append(table['table_name'])
+        return available_table, invalid_table
+
+    # 检查业务主键是否存在
+    @classmethod
+    def check_business_key(cls, table_dict):
+        """
+        检查业务主键是否存在以及是否与自增主键重复
+        :return: 符合生成规则的表列表available_table和不符合生成规则的表列表invalid_table
+        """
+        available_table = [x['table_name'] for x in table_dict.values()]
+        invalid_table = []
+        business_key_list = Settings.BUSINESS_KEY_LIST
+        for natural_key in business_key_list:
+            flag = True
+            # 检查表是否存在
+            if natural_key['table'] not in available_table:
+                flag = False
+                loggings.warning(1, 'the target table {table} of business key {table}.{column} '
+                                    'does not exist'.format(table=natural_key['table'],
+                                                            column=natural_key['column']))
+            if not flag:
+                continue
+
+            # 检查字段是否存在
+            if natural_key['column'] not in table_dict[natural_key['table']]['columns'].keys():
+                flag = False
+                loggings.warning(1, 'the column of business key {table}.{column} does not exist '
+                                    'in table {table}'.format(table=natural_key['table'],
+                                                              column=natural_key['column']))
+                invalid_table.append(available_table.pop(available_table.index(natural_key['table'])))
+            if not flag:
+                continue
+
+            # 检查业务主键是否与自增主键重复
+            if natural_key['column'] == table_dict[natural_key['table']]['primaryKey']:
+                loggings.warning(1, 'the business key {table}.{column} is an Auto increment '
+                                    'primary key '.format(table=natural_key['table'],
+                                                          column=natural_key['column']))
+                invalid_table.append(available_table.pop(available_table.index(natural_key['table'])))
+
+        return available_table, invalid_table
+
+    # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+    @classmethod
+    def check_business_key_template_and_table(cls, table_dict):
+        """
+        检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+        :return: 符合生成规则的表列表available_table和不符合生成规则的表列表invalid_table
+        """
+        available_table = [x['table_name'] for x in table_dict.values()]
+        invalid_table = []
+        if Settings.PRIMARY_KEY == 'AutoID':
+            return available_table, invalid_table
+        # 检验是否每张表都设置有业务主键
+        for table in [x['table_name'] for x in table_dict.values()]:
+            if table not in [x['table'] for x in Settings.BUSINESS_KEY_LIST]:
+                loggings.warning(1, '{}表没有设置业务主键'.format(table))
+                invalid_table.append(available_table.pop(available_table.index(table)))
+
+        # 检验业务主键生成模板是否存在
+        from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
+        for business_key_dict in Settings.BUSINESS_KEY_LIST:
+            if business_key_dict['table'] not in available_table:
+                continue
+            if business_key_dict['rule'] == '':
+                continue
+            if not hasattr(CodeBlockTemplate, business_key_dict['rule']):
+                loggings.warning(1, '业务主键生成模板{}不存在'.format(business_key_dict['rule']))
+                invalid_table.append(available_table.pop(available_table.index(business_key_dict['table'])))
+
         return available_table, invalid_table
 
     # 入口函数定义
@@ -131,6 +201,7 @@ class CheckTable(object):
         available_tables, invalid_tables = cls.check_primary_key()
 
         # check the foreign key
+        metadata = MetaData(engine)
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_foreign_key(table_dict)
@@ -138,17 +209,34 @@ class CheckTable(object):
         invalid_tables += invalid_table
 
         # check the keyword
+        metadata = MetaData(engine)
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
         available_tables = available_table
         invalid_tables += invalid_table
 
+        # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+        metadata = MetaData(engine)
+        metadata.reflect(engine, only=available_tables)
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+        available_table, invalid_table = cls.check_business_key_template_and_table(table_dict)
+        available_tables = available_table
+        invalid_tables += invalid_table
+
+        # check the natural key
+        metadata = MetaData(engine)
+        metadata.reflect(engine, only=available_tables)
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+        available_table, invalid_table = cls.check_business_key(table_dict)
+        available_tables = available_table
+        invalid_tables += invalid_table
+
         if len(invalid_tables) > 0:
-            loggings.warning(1,
-                             "The following {0} tables do not meet the specifications and cannot be generated: {1}".format(
-                                 len(invalid_tables), ",".join(invalid_tables)))
+            loggings.warning(1, "The following {0} tables do not meet the specifications and cannot "
+                                "be generated: {1}".format(len(invalid_tables), ",".join(invalid_tables)))
             return available_tables if available_tables else None
 
-        loggings.info(1, "All table checks passed, a total of {0} tables ".format(len(available_tables + invalid_tables)))
+        loggings.info(1, "All table checks passed, a total of {0} "
+                         "tables ".format(len(available_tables + invalid_tables)))
         return available_tables if available_tables else None

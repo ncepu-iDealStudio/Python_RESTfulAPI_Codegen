@@ -1,0 +1,27 @@
+[
+  {
+    "table": "user_info",
+    "column": "UserID",
+    "rule": "business_key_gen_code_block"
+  },
+  {
+    "table": "student_info",
+    "column": "StudentID",
+    "rule": "business_key_gen_code_block"
+  },
+  {
+    "table": "class_info",
+    "column": "ClassID",
+    "rule": "business_key_gen_code_block"
+  },
+  {
+    "table": "course_info",
+    "column": "CourseID",
+    "rule": "business_key_gen_code_block"
+  },
+  {
+    "table": "person",
+    "column": "IdNumber",
+    "rule": ""
+  }
+]

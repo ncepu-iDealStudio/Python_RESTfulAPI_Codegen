@@ -9,3 +9,4 @@ PyMySQL==1.0.2
 SQLAlchemy==1.4.23
 cryptography==3.4.8
 pycryptodome==3.10.1
+flasgger==0.9.5

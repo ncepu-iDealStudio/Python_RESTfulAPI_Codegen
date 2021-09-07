@@ -51,24 +51,28 @@ from flask_restful import Api
 
 from flask_restful import Resource, reqparse
 from flask import g, jsonify
+from flasgger import swag_from
 {imports}
 
 
 class {className}Resource(Resource):
 
     # query with primary_key
+    @swag_from("ymls/{apiName}_get.yml")
     def get(self, {id}):
         kwargs = {{}}
 {idCheck}
 {getControllerInvoke}
 
     # delete
+    @swag_from("ymls/{apiName}_delete.yml")
     def delete(self, {id}):
         kwargs = {{}}
 {idCheck}
 {deleteControllerInvoke}
 
     # put
+    @swag_from("ymls/{apiName}_put.yml")
     def put(self, {id}):
         parser = reqparse.RequestParser()
 {parameter}
@@ -83,23 +87,26 @@ class {className}Resource(Resource):
 
 from flask_restful import Resource, reqparse
 from flask import jsonify
+from flasgger import swag_from
 {imports}
 
 
 class {className}OtherResource(Resource):
 
     # add
+    @swag_from("ymls/{apiName}_post.yml")
     def post(self):
         parser = reqparse.RequestParser()
-{parameter1}
+{postParameter}
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {postControllerInvoke}
 
     # list query
+    @swag_from("ymls/{apiName}_gets.yml")
     def get(self):
         parser = reqparse.RequestParser()
-{parameter2}
+{getParameter}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         kwargs = parser.parse_args()
@@ -110,7 +117,7 @@ class {className}OtherResource(Resource):
     @classmethod
     def joint_query(cls):
         parser = reqparse.RequestParser()
-{parameter3}
+{queryParameter}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         kwargs = parser.parse_args()
@@ -187,12 +194,13 @@ api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiVersion')  # �
 from flask_restful import Resource
 from flask import jsonify
 from utils.response_code import RET
+from flasgger import swag_from
 
 
 class ApiVersionResource(Resource):
 
     # get the interface of apiVersion -- test
-    @classmethod
+    @swag_from("ymls/apiversion_get.yml")
     def get(self):
         back_data = {{
             'version': '{apiversion}'
@@ -210,6 +218,7 @@ class ApiVersionResource(Resource):
 from app import create_app
 from flask_script import Manager
 from flask import request, g, jsonify
+from flasgger import Swagger
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from utils.response_code import RET
 
@@ -217,6 +226,7 @@ from utils.response_code import RET
 app = create_app("develop")
 
 manager = Manager(app)
+swagger = Swagger(app)
 
 
 # 创建全站拦截器,每个请求之前做处理
@@ -257,7 +267,131 @@ def process_response(response):
         response.headers['Access-Control-Expose-Headers'] = 'VerifyCodeID,ext'
     return response
 
+
 if __name__ == "__main__":
     manager.run()
 
+"""
+
+    yml_get_template = """{0}_get
+---
+tags:
+ - name: '{0}'
+definitions:
+ {0}_get_res_data:
+  type: object
+  properties:
+   code:
+    type: string
+    description: response_code
+   message:
+    type: string
+    description: response_message
+   data:
+    type: object
+    description: response_data
+    properties:         {1}
+responses:
+ 200:
+  description: response successfully
+  schema:
+   $ref: '#/definitions/{0}_get_res_data'
+"""
+
+    yml_gets_template = """{0}_gets
+---
+tags:
+ - name: '{0}'
+parameters:
+{1}
+definitions:
+ {0}_gets_res_data:
+  type: object
+  properties:
+   code:
+    type: string
+    description: response_code
+   message:
+    type: string
+    description: response_message
+   data:
+    type: object
+    description: response_data
+    properties:         {2}
+responses:
+ 200:
+  description: response successfully
+  schema:
+   $ref: '#/definitions/{0}_gets_res_data'
+"""
+
+    yml_post_template = """{0}_post
+---
+tags:
+ - name: '{0}'
+parameters:
+{1}
+definitions:
+ {0}_post_res_data:
+  type: object
+  properties:
+   code:
+    type: string
+    description: response_code
+   message:
+    type: string
+    description: response_message
+   data:
+    type: object
+    description: response_data
+    properties:         {2}
+responses:
+ 200:
+  description: response successfully
+  schema:
+   $ref: '#/definitions/{0}_post_res_data'
+"""
+
+    yml_delete_template = """{0}_delete
+---
+tags:
+ - name: '{0}'
+definitions:
+ {0}_delete_res_data:
+  type: object
+  properties:
+   code:
+    type: string
+    description: response_code
+   message:
+    type: string
+    description: response_message
+responses:
+ 200:
+  description: response successfully
+  schema:
+   $ref: '#/definitions/{0}_delete_res_data'
+"""
+
+    yml_put_template = """{0}_put
+---
+tags:
+ - name: '{0}'
+parameters:
+{1}
+definitions:
+ {0}_put_res_data:
+  type: object
+  properties:
+   code:
+    type: string
+    description: response_code
+   message:
+    type: string
+    description: response_message
+responses:
+ 200:
+  description: response successfully
+  schema:
+   $ref: '#/definitions/{0}_put_res_data'
 """

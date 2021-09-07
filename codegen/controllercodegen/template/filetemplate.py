@@ -31,6 +31,20 @@ class {class_name}({parent_model}):
     @classmethod
     def add(cls, **kwargs):
         try:
+            # 获取最大autoID
+            max_id = db.session.query(func.max({parent_model}.{primary_key})).with_for_update().first()
+        except Exception as e:
+            # 在这里进行日志记录操作
+            loggings.exception(1, e)
+            db.session.close()
+            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
+
+        if max_id[0] is None:
+            m_id = 1
+        else:
+            m_id = max_id[0] + 1
+        {business_key_init}
+        try:
             model = {parent_model}(
                 {column_init}
             )

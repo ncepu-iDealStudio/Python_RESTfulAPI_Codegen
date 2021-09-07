@@ -2,6 +2,7 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_v1_5 as Cipher_pkcs1_v1_5
 import base64
 from configparser import ConfigParser
+from utils.loggings import loggings
 
 CONFIG_DIR = "config/config.conf"
 CONFIG = ConfigParser()
@@ -47,7 +48,7 @@ class RSAEncryptionDecryption(object):
             # 将密文解密成明文，返回的是一个bytes类型数据，需要自己转换成str
             text = cipher.decrypt(base64.b64decode(cipher_text), "ERROR").decode("utf-8")
         except Exception as e:
-            current_app.logger.error(e)
+            loggings.error(e)
             return None
         return text
 

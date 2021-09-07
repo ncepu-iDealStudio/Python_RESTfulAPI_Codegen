@@ -11,13 +11,13 @@
 """
 import os
 
-from codegen import codegen_layer, metadata, tables, project_dir, target_dir
+from codegen import codegen_layer, metadata, tables, project_dir, target_dir, primary_key_mode
 from utils.common import new_file_or_dir
 from . import record_delete_way, rsa_table_column
 from .codegenerator import CodeGenerator
 
 
-def controllerGenerate():
+def main():
     """
     Generate Controller code
     :return: None
@@ -40,7 +40,7 @@ def controllerGenerate():
     generator.controller_codegen(
         delete_way=record_delete_way,
         controller_dir=controller_dir,
+        primary_key_mode=primary_key_mode,
         rsa_table_column=rsa_table_column
     )
     return
-
