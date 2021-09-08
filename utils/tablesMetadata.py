@@ -40,9 +40,11 @@ class TableMetadata(object):
             table_dict[table_name]['foreign_keys'] = []
             table_dict[table_name]['business_key'] = {}
 
+            # Check record deletion method
             if table_name in cls.table_rule['table_record_delete_logic_way']:
                 table_dict[table_name]['is_logic_delete'] = True
 
+            # Check if the business key exists
             if table_name in cls.table_rule['table_business_key_gen_rule']:
                 business_key = table_dict[table_name]['business_key']
                 business_key['column'], business_key['rule'] = tuple(cls.table_rule['table_business_key_gen_rule'][
