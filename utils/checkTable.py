@@ -127,64 +127,43 @@ class CheckTable(object):
         """
         available_table = [x['table_name'] for x in table_dict.values()]
         invalid_table = []
-        business_key_list = Settings.BUSINESS_KEY_LIST
-        for natural_key in business_key_list:
-            flag = True
-            # 检查表是否存在
-            if natural_key['table'] not in available_table:
-                flag = False
-                loggings.warning(1, 'the target table {table} of business key {table}.{column} '
-                                    'does not exist'.format(table=natural_key['table'],
-                                                            column=natural_key['column']))
-            if not flag:
-                continue
 
-            # 检查字段是否存在
-            if natural_key['column'] not in table_dict[natural_key['table']]['columns'].keys():
-                flag = False
-                loggings.warning(1, 'the column of business key {table}.{column} does not exist '
-                                    'in table {table}'.format(table=natural_key['table'],
-                                                              column=natural_key['column']))
-                invalid_table.append(available_table.pop(available_table.index(natural_key['table'])))
-            if not flag:
+        # 检验业务主键字段是否存在
+        for table in table_dict.values():
+            if not table['business_key']:
+                continue
+            if table['business_key']['column'] not in table['columns'].keys():
+                loggings.warning(1, '表{0}的业务主键{1}不存在'.format(table['table_name'], table['business_key']['column']))
+                invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
                 continue
 
             # 检查业务主键是否与自增主键重复
-            if natural_key['column'] == table_dict[natural_key['table']]['primaryKey']:
-                loggings.warning(1, 'the business key {table}.{column} is an Auto increment '
-                                    'primary key '.format(table=natural_key['table'],
-                                                          column=natural_key['column']))
-                invalid_table.append(available_table.pop(available_table.index(natural_key['table'])))
+            if table['business_key']['column'] == table['primaryKey']:
+                loggings.warning(1, '表{0}的业务主键{1}与其自增主键重复')
+                invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
 
         return available_table, invalid_table
 
-    # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+    # 检验业务主键生成模板是否存在
     @classmethod
     def check_business_key_template_and_table(cls, table_dict):
         """
-        检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+        检验业务主键生成模板是否存在
         :return: 符合生成规则的表列表available_table和不符合生成规则的表列表invalid_table
         """
         available_table = [x['table_name'] for x in table_dict.values()]
         invalid_table = []
-        if Settings.PRIMARY_KEY == 'AutoID':
-            return available_table, invalid_table
-        # 检验是否每张表都设置有业务主键
-        for table in [x['table_name'] for x in table_dict.values()]:
-            if table not in [x['table'] for x in Settings.BUSINESS_KEY_LIST]:
-                loggings.warning(1, '{}表没有设置业务主键'.format(table))
-                invalid_table.append(available_table.pop(available_table.index(table)))
 
         # 检验业务主键生成模板是否存在
         from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
-        for business_key_dict in Settings.BUSINESS_KEY_LIST:
-            if business_key_dict['table'] not in available_table:
+        for table in table_dict.values():
+            if not table['business_key']:
                 continue
-            if business_key_dict['rule'] == '':
+            if table['business_key']['rule'] == '':
                 continue
-            if not hasattr(CodeBlockTemplate, business_key_dict['rule']):
-                loggings.warning(1, '业务主键生成模板{}不存在'.format(business_key_dict['rule']))
-                invalid_table.append(available_table.pop(available_table.index(business_key_dict['table'])))
+            if not hasattr(CodeBlockTemplate, table['business_key']['rule']):
+                loggings.warning(1, '业务主键生成模板{}不存在'.format(table['business_key']['rule']))
+                invalid_table.append(available_table.pop(available_table.index(table['business_key']['table'])))
 
         return available_table, invalid_table
 
@@ -224,7 +203,7 @@ class CheckTable(object):
         available_tables = available_table
         invalid_tables += invalid_table
 
-        # check the natural key
+        # check the business key
         metadata = MetaData(engine)
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)

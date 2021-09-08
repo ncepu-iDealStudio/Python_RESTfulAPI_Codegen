@@ -29,8 +29,7 @@ class CodeGenerator(object):
         super(CodeGenerator, self).__init__()
         self.metadata = metadata
 
-    def controller_codegen(self, controller_dir, rsa_table_column, primary_key_mode,
-                           delete_way='logic'):
+    def controller_codegen(self, controller_dir, rsa_table_column):
         codes = {}
         # get table metadata
         table_dict = TableMetadata.get_tables_metadata(self.metadata)
