@@ -5,10 +5,10 @@
     ],
     "table_business_key_gen_rule":{
         "user":{
-            "UserID":"business_key_gen_code_block"
+            "UserID":"create_id_by_autoID"
         },
         "student_info":{
-            "StudentID":"business_key_gen_code_block"
+            "StudentID":"create_id_by_autoID"
         },
        "class_info":{
             "ClassID":""

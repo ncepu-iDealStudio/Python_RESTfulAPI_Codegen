@@ -63,8 +63,7 @@ class CodeGenerator(object):
                         if table['business_key'].get('rule'):
                             # 是业务主键且有生成规则
                             text = CodeBlockTemplate.business_key_add.format(column=column['name'])
-                            business_key_text = getattr(CodeBlockTemplate, table['business_key']['rule']).format(business_key=column['name'])
-                            business_key_init += business_key_text
+                            business_key_init = CodeBlockTemplate.business_key_init.format(business_key=column['name'], rule=table['business_key']['rule'])
                         else:
                             # 是业务主键但是没有生成规则
                             text = CodeBlockTemplate.add_column_init.format(column=column['name'])

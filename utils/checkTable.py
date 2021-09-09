@@ -155,13 +155,13 @@ class CheckTable(object):
         invalid_table = []
 
         # 检验业务主键生成模板是否存在
-        from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
+        from static.utils.gernerate_id import GenerateID
         for table in table_dict.values():
             if not table['business_key']:
                 continue
             if table['business_key']['rule'] == '':
                 continue
-            if not hasattr(CodeBlockTemplate, table['business_key']['rule']):
+            if not hasattr(GenerateID, table['business_key']['rule']):
                 loggings.warning(1, '业务主键生成模板{}不存在'.format(table['business_key']['rule']))
                 invalid_table.append(available_table.pop(available_table.index(table['business_key']['table'])))
 

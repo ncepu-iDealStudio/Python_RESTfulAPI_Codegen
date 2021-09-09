@@ -54,6 +54,6 @@ from utils.loggings import loggings'''
                 kwargs['{column}'] = RSAEncryptionDecryption.encrypt(kwargs['{column}'])
             '''
 
-    # 业务主键代码块--定义生成业务主键的方式-八位数的年月日加上四位数的AutoID
-    business_key_gen_code_block = """{business_key} = (datetime.datetime.now()).strftime('%Y%m%d') + str(m_id).zfill(4)
+    business_key_init = """from utils.generate_id import GenerateID
+        {business_key} = GenerateID.{rule}
         """
