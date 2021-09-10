@@ -108,7 +108,7 @@ class {className}OtherResource(Resource):
         parser = reqparse.RequestParser()
 {getParameter}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
-        parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+        parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {getControllerInvoke}
