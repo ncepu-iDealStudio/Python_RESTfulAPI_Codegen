@@ -35,4 +35,4 @@ class GenerateID(object):
         import datetime
         import random
         random_number = random.sample('0123456789', N)
-        return datetime.datetime.now().strftime('%Y%m%d') + str(random_number)
+        return datetime.datetime.now().strftime('%Y%m%d') + ''.join(random_number)
