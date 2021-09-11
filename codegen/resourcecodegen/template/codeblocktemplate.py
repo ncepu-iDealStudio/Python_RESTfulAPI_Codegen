@@ -23,7 +23,10 @@ class CodeBlockTemplate():
 
     parameter_args = '        parser.add_argument("{0}", type={1}, location="args", required=False, help="{0}参数类型不正确或缺失")\n'
 
-    parameter_form = '        parser.add_argument("{0}", type={1}, location="form", required=False, help="{0}参数类型不正确或缺失")\n'
+    parameter_form_true = '        parser.add_argument("{0}", type={1}, location="form", required=True, help="{0}参数类型不正确或缺失")\n'
+
+    parameter_form_false = '        parser.add_argument("{0}", type={1}, location="form", required=False, help="{0}参数类型不正确或缺失")\n'
+
     init_blueprint = '{0}_blueprint = Blueprint("{1}", __name__)'
 
     urls_imports = """from . import {0}_blueprint

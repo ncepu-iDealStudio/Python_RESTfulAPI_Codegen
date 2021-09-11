@@ -186,8 +186,8 @@ class CodeGenerator(object):
             for column in table.get('columns').values():
                 if column.get('name') != table.get('primaryKey') and column.get('name') != table.get(
                         'business_key').get('column'):
-                    parameter_form_str += CodeBlockTemplate.parameter_form.format(column.get('name'),
-                                                                                  column.get('type'))
+                    parameter_form_str += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
+                                                                                        column.get('type'))
 
             idCheck_str = CodeBlockTemplate.resource_id_check.format(id_str)
 
@@ -233,8 +233,8 @@ class CodeGenerator(object):
             for column in table.get('columns').values():
                 if not table.get('business_key'):
                     if column.get('name') != table.get('primaryKey'):
-                        parameter_post += CodeBlockTemplate.parameter_form.format(column.get('name'),
-                                                                                  column.get('type'))
+                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                       column.get('type'))
                     parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
                     parameter_query += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
 
@@ -247,13 +247,13 @@ class CodeGenerator(object):
                                                                                        column.get('type'))
                         if column.get('name') != table.get('primaryKey') and column.get('name') != table.get(
                                 'business_key').get('column'):
-                            parameter_post += CodeBlockTemplate.parameter_form.format(column.get('name'),
-                                                                                      column.get('type'))
+                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                           column.get('type'))
 
                     else:
                         if column.get('name') != table.get('primaryKey'):
-                            parameter_post += CodeBlockTemplate.parameter_form.format(column.get('name'),
-                                                                                      column.get('type'))
+                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                           column.get('type'))
                             parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'),
                                                                                      column.get('type'))
                             parameter_query += CodeBlockTemplate.parameter_args.format(column.get('name'),
