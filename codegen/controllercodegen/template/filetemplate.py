@@ -82,9 +82,12 @@ class {class_name}({parent_model}):
     @classmethod
     def delete(cls, **kwargs):
         try:
-            db.session.query(cls).filter(
+            db_query = db.session.query(cls).filter(
                 cls.{primary_key} == kwargs.get('{primary_key}')
-            ).delete()
+            )
+            if not db_query.first():
+                return {{'code': RET.NODATA, 'message': error_mapEN[RET.NODATA], 'error': 'No data to delete'}}
+            db_query.delete()
             db.session.commit()
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
         except Exception as e:
