@@ -55,5 +55,5 @@ from utils.loggings import loggings'''
             '''
 
     business_key_init = """from utils.generate_id import GenerateID
-        {business_key} = GenerateID.{rule}
+        {business_key} = GenerateID.{rule}()
         """
