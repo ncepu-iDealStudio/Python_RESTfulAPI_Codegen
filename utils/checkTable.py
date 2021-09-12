@@ -155,7 +155,7 @@ class CheckTable(object):
         invalid_table = []
 
         # 检验业务主键生成模板是否存在
-        from static.utils.gernerate_id import GenerateID
+        from static.utils.generate_id import GenerateID
         for table in table_dict.values():
             if not table['business_key']:
                 continue

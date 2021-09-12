@@ -86,7 +86,7 @@ class {class_name}({parent_model}):
                 cls.{primary_key} == kwargs.get('{primary_key}')
             )
             if not db_query.first():
-                return {{'code': RET.NODATA, 'message': error_mapEN[RET.NODATA], 'error': 'No data to delete'}}
+                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
             db_query.delete()
             db.session.commit()
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# file:gernerate_id.py
+# file:generate_id.py
 # author:jackiex
 # datetime:2021/9/9 14:33
 # software: PyCharm
