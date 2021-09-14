@@ -103,7 +103,7 @@ class CodeGenerator(object):
                     get_filter_list += text
             get = FileTemplate.get_template.format(
                 primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
-                get_filter_list=get_filter_list,
+                get_filter_list=get_filter_list if get_filter_list else 'pass',
                 model_lower=table['table_name']
             )
 
