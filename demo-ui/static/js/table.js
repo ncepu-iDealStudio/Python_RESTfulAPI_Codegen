@@ -24,28 +24,32 @@ function toTableInfo() {
     let filed = document.getElementById("filed");
     let isBusinessKey = document.getElementById("isBusinessKey");
     let textRule = document.getElementById("textRule");
+    let selectBusinessKey = document.getElementById("selectBusinessKey");
     for (let item in data) {
         if (data[item].table == event.target.id) {
             currentTable = data[item].table;
 
             tablename.innerText = data[item].table;
             isDeleted.checked = data[item].isdeleted;
-            isBusinessKey.checked = data[item].isbusinesskey;
+            if (data[item].isbusinesskey != "") {
+                isBusinessKey.checked = true;
+            } else {
+                isBusinessKey.checked = false;
+            }
             textRule.value = data[item].businesskeyrule;
             businessKey();
 
             // 删除所有子节点
-            let filedchilds = filed.childNodes;
-            for (let item = filedchilds.length - 1; item >= 0; item--) {
-                filed.removeChild(filedchilds[item]);
-            }
-            // 加载加密字段
+            filed.innerHTML = "";
+            selectBusinessKey.innerHTML = "";
+            // 加载加密字段  业务主键自段
             for (let i in data[item].filed) {
                 let li = document.createElement("li");
                 let a = document.createElement("a");
                 let label = document.createElement("label");
                 let input = document.createElement("input");
                 let text = document.createElement("text");
+                let option = document.createElement("option");
                 let filedname = data[item].filed[i];
                 input.type = "checkbox";
                 for (i = 0; i < data[item].encrypt.length; i++) {
@@ -55,11 +59,16 @@ function toTableInfo() {
                     }
                 }
                 text.innerText = filedname;
+                option.innerText = filedname;
+                selectBusinessKey.appendChild(option)
                 filed.appendChild(li);
                 li.appendChild(a);
                 a.appendChild(label)
                 label.appendChild(input);
                 label.appendChild(text);
+            }
+            if (data[item].isbusinesskey != "") {
+                selectBusinessKey.value = data[item].isbusinesskey;
             }
             break;
         }
@@ -69,7 +78,8 @@ function toTableInfo() {
 function saveTableInfo() {
     let isDeleted = document.getElementById("isDeleted");
     let filed = document.getElementById("filed");
-    let isBusinessKey = document.getElementById("isBusinessKey");
+    let isBusinessKey = document.getElementById("isBusinessKey")
+    let selectBusinessKey = document.getElementById("selectBusinessKey")
     let textRule = document.getElementById("textRule");
     for (let item in data) {
         if (data[item].table == currentTable) {
@@ -78,8 +88,10 @@ function saveTableInfo() {
             let tablechilds = table.childNodes;
             tablechilds[1].style.color = "#0F9D24";
             data[item].isdeleted = isDeleted.checked;
-            data[item].isbusinesskey = isBusinessKey.checked;
-            data[item].businesskeyrule = textRule.value;
+            if (isBusinessKey.checked) {
+                data[item].isbusinesskey = selectBusinessKey.options[selectBusinessKey.selectedIndex].value;
+            }
+    data[item].businesskeyrule = textRule.value;
             // 保存加密字段
             let filedchilds = filed.childNodes;
             for (let i = 0; i < filedchilds.length; i++) {
@@ -112,7 +124,15 @@ function removeTableInfo() {
 }
 
 function sendData() {
-    // let xhr = new XMLHttpRequest();
-    // xhr.open("POST", "", true);
-    // xhr.send(data)
+    let jsonData = JSON.stringify(data);
+    window.location.href = "/tableinfo/" + jsonData;
+}
+
+function setActive() {
+    let active = document.getElementsByClassName("active");
+    for (let item in active) {
+        active[item].className = "";
+    }
+    let evt = event.target.parentNode;
+    evt.className = "active";
 }

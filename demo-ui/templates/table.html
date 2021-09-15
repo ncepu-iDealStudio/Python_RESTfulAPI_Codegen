@@ -40,7 +40,7 @@
                     <script type="text/javascript">
                         data.push("{{item}}")
                     </script>
-                    <li><a id="{{item.table}}" onclick=toTableInfo()>{{item.table}}<span
+                    <li onclick=setActive()><a id="{{item.table}}" onclick=toTableInfo()>{{item.table}}<span
                             class="glyphicon glyphicon-cog"></span></a>
                     </li>
                     {%endfor%}
@@ -79,6 +79,9 @@
             </div>
 
             <div id="businessKeyRule">
+                <label>业务主键</label>
+                <select class="form-control" id="selectBusinessKey">
+                </select>
                 <label>业务主键生成规则</label>
                 <a class="tooltip-test" data-toggle="tooltip" data-html="true"
                    title="业务主键生成规则可填写<br/>”business_key_gen_code_block“方式.如需自定义规则,请在codegen/controllercodegen/template/codeblocktemplate.py<br/>文件中修改 ”business_key_gen_code_block“的值"><span
@@ -102,9 +105,7 @@
             <span class="glyphicon glyphicon-arrow-left"></span>
         </button>
         <div class="btn-group btn-next">
-            <form method="post">
-                <button type="submit" class="btn btn-primary" onclick=sendData()>下一步</button>
-            </form>
+            <button type="button" class="btn btn-primary" onclick=sendData()>下一步</button>
         </div>
     </div>
 </div>
