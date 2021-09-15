@@ -219,3 +219,39 @@ class CheckTable(object):
         loggings.info(1, "All table checks passed, a total of {0} "
                          "tables ".format(len(available_tables + invalid_tables)))
         return available_tables if available_tables else None
+
+    # 检验数据库连接是否成功并返回所有表、字段信息（前端用）
+    @classmethod
+    def check_sql_link(cls):
+        """
+        检验数据库连接是否成功并返回所有表、字段信息（前端用）
+        :return code: 布尔型，True表示连接成功，False表示连接失败
+        :return message: 返回信息
+        :return error: 错误信息
+        :return data: 所有表的信息及字段
+        """
+        try:
+            url = Settings.MODEL_URL
+            engine = create_engine(url)
+            metadata = MetaData(engine)
+            metadata.reflect(engine)
+        except Exception as e:
+            return {'code': False, 'message': '数据库连接失败', 'error': str(e)}
+
+        data = []
+        for table in metadata.tables.values():
+            filed = []
+            for column in table.columns.values():
+                filed.append(str(column))
+            data.append({
+                'table': str(table.name),
+                'issave': '',
+                'isdeleted': '',
+                'filed': filed,
+                'encrypt': [],
+                'isbusinesskey': '',
+                'businesskeyrule': ''
+            })
+        return {'code': True, 'message': '数据库连接成功', 'data': data}
+
+
