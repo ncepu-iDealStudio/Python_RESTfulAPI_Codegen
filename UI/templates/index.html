@@ -18,6 +18,15 @@
         <h2> 数据库配置 </h2>
         请选择要生成接口项目代码的目标数据库，生成器将针对此数据库生成一个分层设计的接口项目
     </div>
+    {%if message %}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">
+            &times;
+        </button>
+        {{message}}
+    </div>
+    {% endif %}
     <form class="form-horizontal" role="form" method="post">
         <div class="panel-body container-body">
 
@@ -57,12 +66,7 @@
             <div class="form-group">
                 <label for="database" class="col-sm-2 control-label">数据库</label>
                 <div class="col-sm-10">
-                    <select class="form-control" name="database">
-                        <option>DEFAULT(MySQL)</option>
-                        <option>PostgreSQL</option>
-                        <option>SQL Server</option>
-                        <option>Oracleoption</option>
-                    </select>
+                    <input type="text" class="form-control" name="database">
                 </div>
             </div>
 

@@ -83,15 +83,20 @@ function saveTableInfo() {
     let textRule = document.getElementById("textRule");
     for (let item in data) {
         if (data[item].table == currentTable) {
-            data[item].issave = true;
+            data[item].issave = 'true';
             let table = document.getElementById(currentTable);
             let tablechilds = table.childNodes;
             tablechilds[1].style.color = "#0F9D24";
-            data[item].isdeleted = isDeleted.checked;
+            if (isDeleted.checked){
+                data[item].isdeleted='true';
+            }
+            else {
+                data[item].isdeleted='false';
+            }
             if (isBusinessKey.checked) {
                 data[item].isbusinesskey = selectBusinessKey.options[selectBusinessKey.selectedIndex].value;
             }
-    data[item].businesskeyrule = textRule.value;
+            data[item].businesskeyrule = textRule.value;
             // 保存加密字段
             let filedchilds = filed.childNodes;
             for (let i = 0; i < filedchilds.length; i++) {
@@ -109,7 +114,7 @@ function saveTableInfo() {
 function removeTableInfo() {
     for (let item in data) {
         if (data[item].table == currentTable) {
-            data[item].issave = false;
+            data[item].issave = '';
             let table = document.getElementById(currentTable);
             let tablechilds = table.childNodes;
             tablechilds[1].style.color = "#A7A7A7";

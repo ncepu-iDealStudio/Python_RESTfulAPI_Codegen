@@ -1,17 +1,14 @@
 {
-    "table_record_delete_logic_way":[
-        "person",
-        "user_info"
-    ],
-    "table_business_key_gen_rule":{
-        "user":{
-            "UserID":"create_id_by_autoID"
-        },
-        "student_info":{
-            "StudentID":"create_id_by_autoID"
-        },
-       "class_info":{
-            "ClassID":""
-        }
-   }
+  "table_record_delete_logic_way": [
+    "Score_info",
+    "student_info"
+  ],
+  "table_business_key_gen_rule": {
+    "Score_info": {
+      "Score_info.AutoID": "1234"
+    },
+    "student_info": {
+      "student_info.AutoID": "1234"
+    }
+  }
 }
