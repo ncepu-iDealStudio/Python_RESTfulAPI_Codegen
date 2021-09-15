@@ -1,0 +1,47 @@
+.nav-table {
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.table-index {
+    width: 40%;
+}
+
+.table-info {
+    width: 40%;
+    height: 470px;
+}
+
+.nav-field {
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.glyphicon-question-sign {
+    color: #A7A7A7;
+}
+
+.glyphicon-cog {
+    color: #A7A7A7;
+    float: right;
+}
+
+.container-body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+#businessKeyRule {
+    display: none;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+/*提示文字左对齐*/
+.tooltip-inner {
+    text-align: left;
+    word-wrap: break-word;
+}
