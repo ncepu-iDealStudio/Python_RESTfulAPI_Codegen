@@ -6,3 +6,5 @@ wincertstore==0.2
 loguru==0.5.3
 sqlacodegen==3.0.0b2
 flask-sqlacodegen==1.1.8
+Flask==2.0.1
+Flask-Bootstrap==3.3.7.1
