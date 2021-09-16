@@ -10,8 +10,8 @@ import json
 from flask import Flask, render_template, request, redirect, url_for
 from flask_bootstrap import Bootstrap
 import configparser
-
 from utils.checkSqlLink import check_sql_link
+from flask_socketio import SocketIO
 
 app = Flask(__name__, template_folder="UI/templates", static_folder="UI/static")
 Bootstrap(app)
@@ -85,11 +85,15 @@ def build():
 @app.route('/tableinfo/<tableinfo>')
 def tableinfo(tableinfo):
     info = ast.literal_eval(tableinfo)
-    configfile = "config/security.conf"
-    conf = configparser.ConfigParser()  # 实例类
-    conf.read(configfile, encoding='UTF-8')  # 读取配置文件
-    conf.remove_section("RSA_TABLE_COLUMN")
-    conf.add_section("RSA_TABLE_COLUMN")
+    security_configfile = "config/security.conf"
+    security_conf = configparser.ConfigParser()  # 实例类
+    security_conf.read(security_configfile, encoding='UTF-8')  # 读取配置文件
+    security_conf.remove_section("RSA_TABLE_COLUMN")
+    security_conf.add_section("RSA_TABLE_COLUMN")
+
+    config_configfile = "config/config.conf"
+    config_config = configparser.ConfigParser()  # 实例类
+    config_config.read(config_configfile, encoding='UTF-8')  # 读取配置文件
 
     table_rule = {
         "table_record_delete_logic_way": [
@@ -97,15 +101,20 @@ def tableinfo(tableinfo):
         "table_business_key_gen_rule": {
         }
     }
+    tables_str = ""
     for tableItem in info:
         if tableItem['issave'] == 'true':
+            tables_str = tables_str + tableItem['table'] + ","
+            config_config.set("MODEL", tableItem['TABLES'], tables_str[:-1])
+            with open(config_configfile, "w") as f:
+                config_config.write(f)
             if tableItem['encrypt'] != []:
                 encrypt_str = ""
                 for str in tableItem['encrypt']:
                     encrypt_str = encrypt_str + str + ","
-                conf.set("RSA_TABLE_COLUMN", tableItem['table'], encrypt_str[:-1])
-                with open(configfile, "w") as f:
-                    conf.write(f)
+                security_conf.set("RSA_TABLE_COLUMN", tableItem['table'], encrypt_str[:-1])
+                with open(security_configfile, "w") as f:
+                    security_conf.write(f)
             if tableItem['isdeleted'] == 'true':
                 table_rule['table_record_delete_logic_way'].append(tableItem['table'])
             if tableItem['isbusinesskey'] != '':

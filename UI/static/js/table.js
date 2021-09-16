@@ -4,6 +4,7 @@ window.onload = function () {
         data[item] = data[item].replace(/&#39;/g, "'");
         data[item] = eval("(" + data[item] + ")")
     }
+    document.getElementById(data[0].table).click();
 }
 
 currentTable = ""
@@ -87,17 +88,17 @@ function saveTableInfo() {
             let table = document.getElementById(currentTable);
             let tablechilds = table.childNodes;
             tablechilds[1].style.color = "#0F9D24";
-            if (isDeleted.checked){
-                data[item].isdeleted='true';
-            }
-            else {
-                data[item].isdeleted='false';
+            if (isDeleted.checked) {
+                data[item].isdeleted = 'true';
+            } else {
+                data[item].isdeleted = 'false';
             }
             if (isBusinessKey.checked) {
                 data[item].isbusinesskey = selectBusinessKey.options[selectBusinessKey.selectedIndex].value;
             }
             data[item].businesskeyrule = textRule.value;
             // 保存加密字段
+            data[item].encrypt = [];
             let filedchilds = filed.childNodes;
             for (let i = 0; i < filedchilds.length; i++) {
                 let filedcheck = filedchilds[i].firstChild.firstChild.firstChild;
