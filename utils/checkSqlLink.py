@@ -19,6 +19,13 @@ from config.setting import Settings
 def check_sql_link(dialect, driver, username, password, host, port, database):
     """
     检验数据库连接是否成功并返回所有表、字段信息（前端用）
+    :param dialect: 数据库种类
+    :param driver: 数据库驱动
+    :param username: 用户名
+    :param password: 密码
+    :param host: 数据库IP
+    :param port: 数据库端口号
+    :param database: 要连接的数据库
     :return code: 布尔型，True表示连接成功，False表示连接失败
     :return message: 返回信息
     :return error: 错误信息
