@@ -11,7 +11,6 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_bootstrap import Bootstrap
 import configparser
 from utils.checkSqlLink import check_sql_link
-from flask_socketio import SocketIO
 
 app = Flask(__name__, template_folder="UI/templates", static_folder="UI/static")
 Bootstrap(app)
