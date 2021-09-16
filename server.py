@@ -5,15 +5,13 @@
 # @File    : server.py
 # @Software: PyCharm
 
-
 import ast
 import json
-from dataclasses import replace
-
 from flask import Flask, render_template, request, redirect, url_for
 from flask_bootstrap import Bootstrap
 import configparser
-from utils.checkTable import CheckTable
+
+from utils.checkSqlLink import check_sql_link
 
 app = Flask(__name__, template_folder="UI/templates", static_folder="UI/static")
 Bootstrap(app)
@@ -30,22 +28,23 @@ def index():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        configfile = "config/database.conf"
-        conf = configparser.ConfigParser()  # 实例类
-        conf.read(configfile, encoding='UTF-8')  # 读取配置文件
+        # 检查数据库链接
+        result_sql = check_sql_link(dialect, driver, username, password, host, port, database)
 
-        conf.set("DEFAULT", "DIALECT", dialect)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
-        conf.set("DEFAULT", "DRIVER", driver)
-        conf.set("DEFAULT", "HOST", host)
-        conf.set("DEFAULT", "PORT", port)
-        conf.set("DEFAULT", "DATABASE", database)
-        conf.set("DEFAULT", "USERNAME", username)
-        conf.set("DEFAULT", "PASSWORD", password)
-        with open(configfile, "w") as f:
-            conf.write(f)
-
-        result_sql = CheckTable.check_sql_link()
         if result_sql['code']:
+            # 填写配置文件
+            configfile = "config/database.conf"
+            conf = configparser.ConfigParser()  # 实例类
+            conf.read(configfile, encoding='UTF-8')  # 读取配置文件
+            conf.set("DEFAULT", "DIALECT", dialect)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
+            conf.set("DEFAULT", "DRIVER", driver)
+            conf.set("DEFAULT", "HOST", host)
+            conf.set("DEFAULT", "PORT", port)
+            conf.set("DEFAULT", "DATABASE", database)
+            conf.set("DEFAULT", "USERNAME", username)
+            conf.set("DEFAULT", "PASSWORD", password)
+            with open(configfile, "w") as f:
+                conf.write(f)
             return redirect(url_for('table', info=result_sql['data']))
         else:
             return render_template("index.html", message=result_sql['message'])

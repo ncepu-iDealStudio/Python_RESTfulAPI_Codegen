@@ -13,7 +13,6 @@ this is function description
 
 # 检验数据库连接是否成功并返回所有表、字段信息（前端用）
 from sqlalchemy import create_engine, MetaData
-from config.setting import Settings
 
 
 def check_sql_link(dialect, driver, username, password, host, port, database):
