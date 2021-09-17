@@ -123,22 +123,26 @@ def check_config():
             tables = Settings.MODEL_TABLES.replace(' ', '').split(',')
             for i in tables:
                 if i not in metadata.tables.keys():
-                    raise Exception('{}表不存在'.format(i))
+                    raise Exception('The table {} does not exist'.format(i))
             # 检查table_rule配置文件中各表是否存在
             for table in table_rule['table_record_delete_logic_way']:
                 if table not in tables:
-                    loggings.warning(1, '要进行逻辑删除的表{}不在要生成的表中，请检查table_rule配置文件'.format(table))
+                    loggings.warning(1, 'The table {} to be logically deleted is not in the table to be generated, '
+                                        'please check the table_rule profile'.format(table))
             for table in table_rule['table_business_key_gen_rule'].keys():
                 if table not in tables:
-                    loggings.warning(1, '要设置业务主键的表{}不在要生成的表中，请检查table_rule配置文件'.format(table))
+                    loggings.warning(1, 'The table {} to set the business key is not in the table to be generated, '
+                                        'please check the table_rule profile'.format(table))
         else:
             # 检查table_rule配置文件中各表是否存在
             for table in table_rule['table_record_delete_logic_way']:
                 if table not in metadata.tables.keys():
-                    loggings.warning(1, '要进行逻辑删除的表{}不存在，请检查table_rule配置文件'.format(table))
+                    loggings.warning(1, 'The table deletion {} for logical deletion does not exist. Please check '
+                                        'table_rule profile'.format(table))
             for table in table_rule['table_business_key_gen_rule'].keys():
                 if table not in metadata.tables.keys():
-                    loggings.warning(1, '要设置业务主键的表{}不存在，请检查table_rule配置文件'.format(table))
+                    loggings.warning(1, 'The table {} to set the business primary key does not exist, please check '
+                                        'the table_rule profile'.format(table))
 
     except Exception as e:
         loggings.error(1, str(e))

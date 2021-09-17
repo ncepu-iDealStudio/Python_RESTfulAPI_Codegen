@@ -133,13 +133,15 @@ class CheckTable(object):
             if not table['business_key']:
                 continue
             if table['business_key']['column'] not in table['columns'].keys():
-                loggings.warning(1, '表{0}的业务主键{1}不存在'.format(table['table_name'], table['business_key']['column']))
+                loggings.warning(1, 'The business key {1} of table {0} does not exist'.
+                                 format(table['table_name'], table['business_key']['column']))
                 invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
                 continue
 
             # 检查业务主键是否与自增主键重复
             if table['business_key']['column'] == table['primaryKey']:
-                loggings.warning(1, '表{0}的业务主键{1}与其自增主键重复')
+                loggings.warning(1, 'The business key {1} of table {0} duplicates its auto increment primary key'.
+                                 format(table['table_name'], table['business_key']['column']))
                 invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
 
         return available_table, invalid_table
@@ -162,7 +164,8 @@ class CheckTable(object):
             if table['business_key']['rule'] == '':
                 continue
             if not hasattr(GenerateID, table['business_key']['rule']):
-                loggings.warning(1, '业务主键生成模板{}不存在'.format(table['business_key']['rule']))
+                loggings.warning(1, 'Business key generation template {} does not exist'.
+                                 format(table['business_key']['rule']))
                 invalid_table.append(available_table.pop(available_table.index(table['business_key']['table'])))
 
         return available_table, invalid_table
@@ -184,7 +187,8 @@ class CheckTable(object):
                 # 采取逻辑删除的表
                 if 'IsDelete' not in [x['name'] for x in table['columns'].values()]:
                     invalid_table.append(str(table['table_name']))
-                    loggings.warning(1, '要进行逻辑删除的表{}不存在IsDelete字段'.format(str(table['table_name'])))
+                    loggings.warning(1, 'The table {} for logical deletion does not have an IsDelete field'.
+                                     format(str(table['table_name'])))
                 else:
                     available_table.append(str(table['table_name']))
 
@@ -198,10 +202,10 @@ class CheckTable(object):
         engine = create_engine(url)
         metadata = MetaData(engine)
         if Settings.CODEGEN_MODE == 'database':
-            # 数据库模式
+            # database mode
             metadata.reflect(engine)
         else:
-            # 表模式
+            # table mode
             metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(','))
 
         # check table primary key
@@ -223,7 +227,7 @@ class CheckTable(object):
         available_tables = available_table
         invalid_tables += invalid_table
 
-        # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+        # Check whether the business key generation template exists and whether each table is set with a business key
         metadata.clear()
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
@@ -239,7 +243,7 @@ class CheckTable(object):
         available_tables = available_table
         invalid_tables += invalid_table
 
-        # 检查要进行逻辑删除的表中是否存在IsDelete字段
+        # Check whether the IsDelete field exists in the table to be logically deleted
         metadata.clear()
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
