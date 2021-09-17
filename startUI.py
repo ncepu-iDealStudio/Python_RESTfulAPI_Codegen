@@ -72,13 +72,17 @@ def project():
         conf.set("PARAMETER", "API_VERSION", interfaceVersion)
         with open(configfile, "w") as f:
             conf.write(f)
-        return redirect(url_for('build'))
+        return render_template("build.html")
     return render_template("project.html")
 
 
 @app.route('/build', methods=['GET'])
 def build():
-    return render_template("build.html")
+    from start import start
+    start()
+    with open('logs/codegen_log.log', "r") as f:
+        log_data = f.read()
+    return render_template("build.html", log_data=log_data)
 
 
 @app.route('/tableinfo/<tableinfo>')

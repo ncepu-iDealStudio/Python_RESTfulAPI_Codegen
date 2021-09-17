@@ -19,7 +19,8 @@ from codegen.modelcodegen.main import modelGenerate
 from utils.checkConfig import check_config
 from utils.loggings import loggings
 
-if __name__ == '__main__':
+
+def start():
     """
         步骤：
             零、 配置文件参数检查
@@ -62,3 +63,7 @@ if __name__ == '__main__':
 
     else:
         loggings.error(1, "Incorrect Configuration File")
+
+
+if __name__ == '__main__':
+    start()
