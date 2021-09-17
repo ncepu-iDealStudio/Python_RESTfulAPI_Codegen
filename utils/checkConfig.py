@@ -9,6 +9,8 @@
 """
     this is function description
 """
+import json
+
 from sqlalchemy import create_engine, MetaData
 
 from config.setting import Settings
@@ -110,14 +112,33 @@ def check_config():
         # if Settings.PRIMARY_KEY not in ['AutoID', 'DoubleKey']:
         #     raise Exception('PRIMARY_KEY参数值不合法')
 
-        # 检验数据库中是否存在参数中的表名
+        engine = create_engine(Settings.MODEL_URL)
+        metadata = MetaData(engine)
+        metadata.reflect(engine)
+        with open('config/table_rule.json', 'r', encoding='utf-8') as f:
+            table_rule = json.load(f)
+
         if Settings.CODEGEN_MODE == 'table':
-            engine = create_engine(Settings.MODEL_URL)
-            metadata = MetaData(engine)
-            metadata.reflect(engine)
-            for i in Settings.MODEL_TABLES.replace(' ', '').split(','):
+            # 检验数据库中是否存在参数中的表名
+            tables = Settings.MODEL_TABLES.replace(' ', '').split(',')
+            for i in tables:
                 if i not in metadata.tables.keys():
                     raise Exception('{}表不存在'.format(i))
+            # 检查table_rule配置文件中各表是否存在
+            for table in table_rule['table_record_delete_logic_way']:
+                if table not in tables:
+                    loggings.warning(1, '要进行逻辑删除的表{}不在要生成的表中，请检查table_rule配置文件'.format(table))
+            for table in table_rule['table_business_key_gen_rule'].keys():
+                if table not in tables:
+                    loggings.warning(1, '要设置业务主键的表{}不在要生成的表中，请检查table_rule配置文件'.format(table))
+        else:
+            # 检查table_rule配置文件中各表是否存在
+            for table in table_rule['table_record_delete_logic_way']:
+                if table not in metadata.tables.keys():
+                    loggings.warning(1, '要进行逻辑删除的表{}不存在，请检查table_rule配置文件'.format(table))
+            for table in table_rule['table_business_key_gen_rule'].keys():
+                if table not in metadata.tables.keys():
+                    loggings.warning(1, '要设置业务主键的表{}不存在，请检查table_rule配置文件'.format(table))
 
     except Exception as e:
         loggings.error(1, str(e))

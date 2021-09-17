@@ -197,7 +197,12 @@ class CheckTable(object):
         url = Settings.MODEL_URL
         engine = create_engine(url)
         metadata = MetaData(engine)
-        metadata.reflect(engine)
+        if Settings.CODEGEN_MODE == 'database':
+            # 数据库模式
+            metadata.reflect(engine)
+        else:
+            # 表模式
+            metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(','))
 
         # check table primary key
         available_tables, invalid_tables = cls.check_primary_key()
