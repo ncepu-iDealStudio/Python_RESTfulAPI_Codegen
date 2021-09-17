@@ -19,7 +19,7 @@ from utils.loggings import loggings
 from . import cmd
 
 
-def modelGenerate():
+def main():
     """
     model层代码的生成
     :return: None
