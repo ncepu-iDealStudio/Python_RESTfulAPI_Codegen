@@ -65,7 +65,6 @@ h3 {
     animation-duration: 2s;
     animation-iteration-count: 2;
     animation-direction: alternate;
-    animation-fill-mode: forwards;
 }
 
 .alert-save {

@@ -74,6 +74,8 @@ function toTableInfo() {
             break;
         }
     }
+    let animation = document.getElementById('btn-save');
+    animation.style.animationDuration = "0s";
 }
 
 function saveTableInfo() {
@@ -111,6 +113,7 @@ function saveTableInfo() {
         }
     }
     let animation = document.getElementById('btn-save');
+    animation.style.animationDuration = "2s";
     animation.addEventListener("animationend", nextAnimation);
     animation.className = "alert alert-success alert-show";
 
@@ -135,6 +138,8 @@ function removeTableInfo() {
             break;
         }
     }
+    let animation = document.getElementById('btn-save');
+    animation.style.animationDuration = "0s";
 }
 
 function sendData() {
