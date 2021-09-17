@@ -15,7 +15,7 @@
 }
 
 .nav-field {
-    /*height: 200px;*/
+    height: 200px;
     overflow-y: scroll;
 }
 
@@ -32,7 +32,7 @@
     display: none;
 }
 
-.form-control {
+.form-control, .btn {
     margin-bottom: 10px;
 }
 
@@ -40,4 +40,42 @@
 .tooltip-inner {
     text-align: left;
     word-wrap: break-word;
+}
+
+h3 {
+    margin-top: 0;
+}
+
+
+/* 动画代码 */
+@keyframes example {
+    0% {
+        position: relative;
+        bottom: 52px;
+    }
+    100% {
+        position: relative;
+        bottom: 0;
+    }
+}
+
+/* 向此元素应用动画效果 */
+.alert-show {
+    animation-name: example;
+    animation-duration: 2s;
+    animation-iteration-count: 2;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+.alert-save {
+    position: relative;
+    bottom: 52px;
+}
+
+.btn-save {
+    position: relative;
+    height: 52px;
+    background-color: #ffff;
+    z-index: 1;
 }

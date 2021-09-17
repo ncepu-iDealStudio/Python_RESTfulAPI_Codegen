@@ -6,11 +6,6 @@ input[type=checkbox] {
     margin-right: 3px;
 }
 
-
-button a {
-    color: #fff;
-}
-
 .panel {
     position: relative;
     min-height: 100%;
@@ -33,4 +28,14 @@ button a {
 
 .btn-next {
     float: right;
+}
+
+/*按钮按下弹起*/
+.btn:hover,
+.btn:focus{
+    outline: none;
+}
+
+.btn-body{
+    margin-bottom: 60px;
 }

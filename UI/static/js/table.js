@@ -110,6 +110,14 @@ function saveTableInfo() {
             break;
         }
     }
+    let animation = document.getElementById('btn-save');
+    animation.addEventListener("animationend", nextAnimation);
+    animation.className = "alert alert-success alert-show";
+
+}
+
+function nextAnimation() {
+    document.getElementById('btn-save').className = "alert alert-success alert-save";
 }
 
 function removeTableInfo() {
