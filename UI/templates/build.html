@@ -7,9 +7,14 @@
     <link rel="stylesheet" href="../static/css/global.css">
     <link rel="stylesheet" href="../static/css/build.css">
     <script>
-        {% if not log_data %}
-        window.location.href = "/build"
-        {% endif %}
+        window.onload = function () {
+            {% if not log_data %}
+                window.location.href = "/build";
+                document.getElementById('building').innerText = "生成中..";
+                document.getElementById('progress').style.display = "block";
+            {% endif %}
+
+        }
     </script>
 {% endblock %}
 
@@ -19,18 +24,17 @@
             <h3 class="panel-title">Flask_Sqlachemy_RESTfulAPI_Codegen</h3>
         </div>
         <div class="panel-body">
-            <h2>生成成功</h2>
+            <h2 id="building">生成成功</h2>
         </div>
 
         <div class="panel-body container-body">
             <!--进度条-->
-{#            <div class="progress progress-striped active">#}
-{#                <div class="progress-bar progress-bar-success" role="progressbar"#}
-{#                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"#}
-{#                     style="width: 40%;">#}
-{#                    <span class="sr-only">40% 完成</span>#}
-{#                </div>#}
-{#            </div>#}
+            <div class="progress progress-striped active" id="progress" style="display: none">
+                <div class="progress-bar progress-bar-success" role="progressbar"
+                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                     style="width: 40%;">
+                </div>
+            </div>
 
             <pre class="build-code">
                 {{ log_data }}
@@ -39,9 +43,7 @@
 
         </div>
         <div class="panel-footer">
-            <div class="btn-group btn-next">
-                <button type="button" class="btn btn-primary disabled">完成</button>
-            </div>
+
         </div>
     </div>
 {% endblock %}
