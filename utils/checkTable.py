@@ -133,13 +133,15 @@ class CheckTable(object):
             if not table['business_key']:
                 continue
             if table['business_key']['column'] not in table['columns'].keys():
-                loggings.warning(1, '表{0}的业务主键{1}不存在'.format(table['table_name'], table['business_key']['column']))
+                loggings.warning(1, 'The business key {1} of table {0} does not exist'.
+                                 format(table['table_name'], table['business_key']['column']))
                 invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
                 continue
 
             # 检查业务主键是否与自增主键重复
             if table['business_key']['column'] == table['primaryKey']:
-                loggings.warning(1, '表{0}的业务主键{1}与其自增主键重复')
+                loggings.warning(1, 'The business key {1} of table {0} duplicates its auto increment primary key'.
+                                 format(table['table_name'], table['business_key']['column']))
                 invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
 
         return available_table, invalid_table
@@ -162,8 +164,33 @@ class CheckTable(object):
             if table['business_key']['rule'] == '':
                 continue
             if not hasattr(GenerateID, table['business_key']['rule']):
-                loggings.warning(1, '业务主键生成模板{}不存在'.format(table['business_key']['rule']))
+                loggings.warning(1, 'Business key generation template {} does not exist'.
+                                 format(table['business_key']['rule']))
                 invalid_table.append(available_table.pop(available_table.index(table['business_key']['table'])))
+
+        return available_table, invalid_table
+
+    # 检查要逻辑删除的表中是否存在IsDelete字段
+    @classmethod
+    def check_logic_delete(cls, table_dict):
+        """
+        检验要逻辑删除的表中是否存在IsDelete字段，剔除不符合规范的表
+        :return:
+        """
+        available_table = []
+        invalid_table = []
+        for table in table_dict.values():
+            if not table['is_logic_delete']:
+                # 采取物理删除的表
+                available_table.append(str(table['table_name']))
+            else:
+                # 采取逻辑删除的表
+                if 'IsDelete' not in [x['name'] for x in table['columns'].values()]:
+                    invalid_table.append(str(table['table_name']))
+                    loggings.warning(1, 'The table {} for logical deletion does not have an IsDelete field'.
+                                     format(str(table['table_name'])))
+                else:
+                    available_table.append(str(table['table_name']))
 
         return available_table, invalid_table
 
@@ -174,13 +201,18 @@ class CheckTable(object):
         url = Settings.MODEL_URL
         engine = create_engine(url)
         metadata = MetaData(engine)
-        metadata.reflect(engine)
+        if Settings.CODEGEN_MODE == 'database':
+            # database mode
+            metadata.reflect(engine)
+        else:
+            # table mode
+            metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(','))
 
         # check table primary key
         available_tables, invalid_tables = cls.check_primary_key()
 
         # check the foreign key
-        metadata = MetaData(engine)
+        metadata.clear()
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_foreign_key(table_dict)
@@ -188,15 +220,15 @@ class CheckTable(object):
         invalid_tables += invalid_table
 
         # check the keyword
-        metadata = MetaData(engine)
+        metadata.clear()
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
         available_tables = available_table
         invalid_tables += invalid_table
 
-        # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
-        metadata = MetaData(engine)
+        # Check whether the business key generation template exists and whether each table is set with a business key
+        metadata.clear()
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_business_key_template_and_table(table_dict)
@@ -204,10 +236,18 @@ class CheckTable(object):
         invalid_tables += invalid_table
 
         # check the business key
-        metadata = MetaData(engine)
+        metadata.clear()
         metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_business_key(table_dict)
+        available_tables = available_table
+        invalid_tables += invalid_table
+
+        # Check whether the IsDelete field exists in the table to be logically deleted
+        metadata.clear()
+        metadata.reflect(engine, only=available_tables)
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+        available_table, invalid_table = cls.check_logic_delete(table_dict)
         available_tables = available_table
         invalid_tables += invalid_table
 
