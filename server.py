@@ -105,7 +105,7 @@ def tableinfo(tableinfo):
     for tableItem in info:
         if tableItem['issave'] == 'true':
             tables_str = tables_str + tableItem['table'] + ","
-            config_config.set("MODEL", tableItem['TABLES'], tables_str[:-1])
+            config_config.set("MODEL", 'TABLES', tables_str[:-1])
             with open(config_configfile, "w") as f:
                 config_config.write(f)
             if tableItem['encrypt'] != []:
