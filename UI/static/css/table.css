@@ -1,19 +1,21 @@
 .nav-table {
-    height: 400px;
+    height: 500px;
     overflow-y: scroll;
 }
 
 .table-index {
-    width: 40%;
+    width: 45%;
+    float: left;
 }
 
 .table-info {
-    width: 40%;
+    width: 45%;
     height: 570px;
+    float: right;
 }
 
 .nav-field {
-    height: 200px;
+    /*height: 200px;*/
     overflow-y: scroll;
 }
 
@@ -24,12 +26,6 @@
 .glyphicon-cog {
     color: #A7A7A7;
     float: right;
-}
-
-.container-body {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
 }
 
 #businessKeyRule {

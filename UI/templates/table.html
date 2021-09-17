@@ -29,10 +29,10 @@
             选择用于生成代码的数据表，并为每张表进行相应的配置
         </div>
 
-        <div class="panel-body container-body">
+        <div class="panel-body">
 
 
-            <div class="panel-body table-index">
+            <div class="table-index">
 
                 <div class="navbar navbar-default nav-table" role="navigation">
                     <ul class="nav nav-pills nav-stacked">
@@ -49,7 +49,7 @@
             </div>
 
 
-            <div class="panel-body table-info">
+            <div class="table-info">
 
                 <div>
                     <h3 id="tableName">Table</h3>
@@ -95,18 +95,17 @@
                     <button type="button" class="btn btn-danger" onclick=removeTableInfo()>清空</button>
                 </div>
 
-
             </div>
-
         </div>
 
-        <div class="panel-footer">
+        <div class="panel-body btn-body">
             <button type="button" class="btn btn-primary" onclick="window.history.back()">
                 <span class="glyphicon glyphicon-arrow-left"></span>
             </button>
-            <div class="btn-group btn-next">
-                <button type="button" class="btn btn-primary" onclick=sendData()>下一步</button>
-            </div>
+            <button type="submit" class="btn btn-primary btn-next" onclick="sendData()">下一步</button>
+        </div>
+
+        <div class="panel-footer">
         </div>
     </div>
 

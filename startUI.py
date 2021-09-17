@@ -7,6 +7,8 @@
 
 import ast
 import json
+import webbrowser
+
 from flask import Flask, render_template, request, redirect, url_for
 from flask_bootstrap import Bootstrap
 import configparser
@@ -80,7 +82,7 @@ def project():
 def build():
     from start import start
     start()
-    with open('logs/codegen_log.log', "r") as f:
+    with open('logs/codegen_log.log', "r",encoding="utf-8") as f:
         log_data = f.read()
     return render_template("build.html", log_data=log_data)
 
@@ -130,4 +132,5 @@ def tableinfo(tableinfo):
 
 
 if __name__ == '__main__':
+    webbrowser.open('http://127.0.0.1:5000')
     app.run()

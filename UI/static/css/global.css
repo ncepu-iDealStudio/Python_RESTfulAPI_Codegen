@@ -6,6 +6,7 @@ input[type=checkbox] {
     margin-right: 3px;
 }
 
+
 button a {
     color: #fff;
 }
@@ -17,10 +18,11 @@ button a {
     margin-bottom: 0;
 }
 
-.container-body {
-    margin-bottom: 60px;
-}
 
+.panel-heading, .panel-body {
+    padding-right: 20%;
+    padding-left: 20%;
+}
 
 .panel-footer {
     width: 100%;
@@ -30,15 +32,5 @@ button a {
 }
 
 .btn-next {
-    position: absolute;
-    right: 10px;
-}
-
-.form-control {
-    width: 80%;
-}
-
-.alert {
-    width: 80%;
-    margin-left: 10%;
+    float: right;
 }
