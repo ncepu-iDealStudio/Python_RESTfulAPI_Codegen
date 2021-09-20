@@ -124,27 +124,43 @@ function nextAnimation() {
 }
 
 function removeTableInfo() {
-    for (let item in data) {
-        if (data[item].table == currentTable) {
-            data[item].issave = '';
-            let table = document.getElementById(currentTable);
-            let tablechilds = table.childNodes;
-            tablechilds[1].style.color = "#A7A7A7";
-            data[item].isdeleted = "";
-            data[item].encrypt = [];
-            data[item].isbusinesskey = "";
-            data[item].businesskeyrule = "";
-            table.click();
-            break;
+    let msg = "清空后该表信息将不再被写入配置";
+    if (confirm(msg)) {
+        for (let item in data) {
+            if (data[item].table == currentTable) {
+                data[item].issave = '';
+                let table = document.getElementById(currentTable);
+                let tablechilds = table.childNodes;
+                tablechilds[1].style.color = "#A7A7A7";
+                data[item].isdeleted = "";
+                data[item].encrypt = [];
+                data[item].isbusinesskey = "";
+                data[item].businesskeyrule = "";
+                table.click();
+                break;
+            }
         }
+        let animation = document.getElementById('btn-save');
+        animation.style.animationDuration = "0s";
     }
-    let animation = document.getElementById('btn-save');
-    animation.style.animationDuration = "0s";
 }
 
 function sendData() {
-    let jsonData = JSON.stringify(data);
-    window.location.href = "/tableinfo/" + jsonData;
+    let isalert = true;
+    for (let item in data) {
+        if (data[item].issave)
+            isalert = false;
+    }
+    if (isalert) {
+        let msg = "你未配置任何一张数据库表!!!\n请确认是否续";
+        if (confirm(msg)) {
+            let jsonData = JSON.stringify(data);
+            window.location.href = "/tableinfo/" + jsonData;
+        }
+    } else {
+        let jsonData = JSON.stringify(data);
+        window.location.href = "/tableinfo/" + jsonData;
+    }
 }
 
 function setActive() {
