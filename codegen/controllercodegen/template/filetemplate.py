@@ -51,12 +51,11 @@ class {class_name}({parent_model}):
     @classmethod
     def get(cls, **kwargs):
         try:
-            filter_list = []
+            filter_list = [{get_filter_list_logic}]
             if kwargs.get('{primary_key}'):
                 filter_list.append(cls.{primary_key} == kwargs.get('{primary_key}'))
             else:
                 {get_filter_list}
-            
             page = int(kwargs.get('Page', 1))
             size = int(kwargs.get('Size', 10))
             
@@ -103,7 +102,8 @@ class {class_name}({parent_model}):
     def delete(cls, **kwargs):
         try:
             res = db.session.query(cls).filter(
-                cls.{primary_key} == kwargs.get('{primary_key}')
+                cls.{primary_key} == kwargs.get('{primary_key}'),
+                cls.IsDelete == 0
             ).with_for_update().update({{'IsDelete': 1}})
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}

@@ -53,6 +53,8 @@ class CodeGenerator(object):
             for column in table['columns'].values():
                 if column['name'] == primary_key:
                     continue
+                if column['name'] == 'IsDelete':
+                    continue
                 # the column do not encrypt
                 elif not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column[table['table_name']]:
                     if table['business_key'].get('column') != column['name']:
@@ -85,6 +87,9 @@ class CodeGenerator(object):
                 elif column['name'] == table['business_key'].get('column'):
                     # 当前字段是业务主键，跳过
                     continue
+                elif column['name'] == 'IsDelete':
+                    # 当前字段是删除标识位，跳过
+                    continue
                 else:
                     if column['type'] in ['int', 'float']:
                         # column type is a number
@@ -104,7 +109,8 @@ class CodeGenerator(object):
             get = FileTemplate.get_template.format(
                 primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
                 get_filter_list=get_filter_list if get_filter_list else 'pass',
-                model_lower=table['table_name']
+                model_lower=table['table_name'],
+                get_filter_list_logic=CodeBlockTemplate.get_filer_list_logic if table['is_logic_delete'] else ''
             )
 
             # combine delete

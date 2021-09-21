@@ -42,6 +42,8 @@ from utils.loggings import loggings'''
                     filter_list.append(cls.{column} == kwargs.get('{column}'))
                 '''
 
+    get_filer_list_logic = 'cls.IsDelete == 0'
+
     rsa_get_filter_num = '''if kwargs.get('{column}') is not None:
                     filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
                 '''
