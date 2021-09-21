@@ -116,7 +116,7 @@ class {class_name}({parent_model}):
         finally:
             db.session.close()
 """
-    update_template = """
+    update_template_physical = """
     # update
     @classmethod
     def update(cls, **kwargs):
@@ -124,6 +124,27 @@ class {class_name}({parent_model}):
             {rsa_update}
             res = db.session.query(cls).filter(
                 cls.{primary_key} == kwargs.get('{primary_key}')
+            ).with_for_update().update(kwargs)
+            if res < 1:
+                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}}
+            db.session.commit()
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+        except Exception as e:
+            db.session.rollback()
+            loggings.exception(1, e)
+            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
+        finally:
+            db.session.close()
+"""
+    update_template_logic = """
+    # update
+    @classmethod
+    def update(cls, **kwargs):
+        try:
+            {rsa_update}
+            res = db.session.query(cls).filter(
+                cls.{primary_key} == kwargs.get('{primary_key}'),
+                cls.IsDelete == 0
             ).with_for_update().update(kwargs)
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}}

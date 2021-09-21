@@ -126,10 +126,16 @@ class CodeGenerator(object):
                 for sra_column in rsa_table_column[table['table_name']]:
                     text = CodeBlockTemplate.rsa_update.format(column=sra_column)
                     rsa_update += text
-            update = FileTemplate.update_template.format(
-                primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
-                rsa_update=rsa_update
-            )
+            if not table['is_logic_delete']:
+                update = FileTemplate.update_template_physical.format(
+                    primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
+                    rsa_update=rsa_update
+                )
+            else:
+                update = FileTemplate.update_template_logic.format(
+                    primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
+                    rsa_update=rsa_update
+                )
 
             # save into 'codes'
             file_name = hump_str + 'Controller'
