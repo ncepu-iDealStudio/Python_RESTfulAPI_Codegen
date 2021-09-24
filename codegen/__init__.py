@@ -10,8 +10,6 @@
     load public settings and Initialize the parameters
 """
 
-from sqlalchemy import create_engine, MetaData
-
 from config.setting import Settings
 from utils.checkTable import CheckTable
 
@@ -21,11 +19,6 @@ url = Settings.MODEL_URL
 codegen_layer = Settings.CODEGEN_LAYER
 schema = Settings.MODEL_SCHEMA
 noviews = Settings.MODEL_NOVIEWS
-tables = CheckTable.main()
+table_dict = CheckTable.main()
 project_dir = Settings.PROJECT_DIR
 target_dir = Settings.TARGET_DIR
-
-# link to the database and get metadata by reflection
-engine = create_engine(url)
-metadata = MetaData(engine)
-metadata.reflect(engine, schema, not noviews, tables)

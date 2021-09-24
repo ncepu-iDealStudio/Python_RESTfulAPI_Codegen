@@ -148,7 +148,7 @@ class CheckTable(object):
 
     # 检验业务主键生成模板是否存在
     @classmethod
-    def check_business_key_template_and_table(cls, table_dict):
+    def check_business_key_template(cls, table_dict):
         """
         检验业务主键生成模板是否存在
         :return: 符合生成规则的表列表available_table和不符合生成规则的表列表invalid_table
@@ -207,55 +207,53 @@ class CheckTable(object):
         else:
             # table mode
             metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(','))
+        table_dict = TableMetadata.get_tables_metadata(metadata)
 
         # check table primary key
         available_tables, invalid_tables = cls.check_primary_key()
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
         # check the foreign key
-        metadata.clear()
-        metadata.reflect(engine, only=available_tables)
-        table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_foreign_key(table_dict)
-        available_tables = available_table
         invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
         # check the keyword
-        metadata.clear()
-        metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
-        available_tables = available_table
         invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
-        # Check whether the business key generation template exists and whether each table is set with a business key
-        metadata.clear()
-        metadata.reflect(engine, only=available_tables)
+        # Check whether the business key generation template exists
         table_dict = TableMetadata.get_tables_metadata(metadata)
-        available_table, invalid_table = cls.check_business_key_template_and_table(table_dict)
-        available_tables = available_table
+        available_table, invalid_table = cls.check_business_key_template(table_dict)
         invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
         # check the business key
-        metadata.clear()
-        metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_business_key(table_dict)
-        available_tables = available_table
         invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
         # Check whether the IsDelete field exists in the table to be logically deleted
-        metadata.clear()
-        metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_logic_delete(table_dict)
         available_tables = available_table
         invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
         if len(invalid_tables) > 0:
             loggings.warning(1, "The following {0} tables do not meet the specifications and cannot "
                                 "be generated: {1}".format(len(invalid_tables), ",".join(invalid_tables)))
-            return available_tables if available_tables else None
+            return table_dict if table_dict else None
 
         loggings.info(1, "All table checks passed, a total of {0} "
                          "tables ".format(len(available_tables + invalid_tables)))
-        return available_tables if available_tables else None
+        return table_dict if table_dict else None

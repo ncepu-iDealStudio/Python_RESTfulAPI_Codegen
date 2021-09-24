@@ -20,19 +20,18 @@ from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTempla
 from codegen.controllercodegen.template.filetemplate import FileTemplate
 from utils.common import str_format_convert
 from utils.loggings import loggings
-from utils.tablesMetadata import TableMetadata
 
 
 class CodeGenerator(object):
 
-    def __init__(self, metadata):
+    def __init__(self, table_dict):
         super(CodeGenerator, self).__init__()
-        self.metadata = metadata
+        self.table_dict = table_dict
 
     def controller_codegen(self, controller_dir, rsa_table_column):
         codes = {}
         # get table metadata
-        table_dict = TableMetadata.get_tables_metadata(self.metadata)
+        table_dict = self.table_dict
 
         # generate code and save in 'codes'
         for table in table_dict.values():
