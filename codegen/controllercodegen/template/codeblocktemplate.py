@@ -17,7 +17,8 @@ class CodeBlockTemplate(object):
 from app import db
 import math
 import datetime
-from sqlalchemy import func
+import json
+from sqlalchemy import func, or_
 
 from models.{model_name} import {parent_model}
 from utils import commons
@@ -59,3 +60,10 @@ from utils.loggings import loggings'''
     business_key_init = """from utils.generate_id import GenerateID
         {business_key} = GenerateID.{rule}()
         """
+
+    add_list_column_init = '''{column}=param_dict.get('{column}'),
+                '''
+
+    add_list_business_key_init = """from utils.generate_id import GenerateID
+            {business_key} = GenerateID.{rule}()
+            """
