@@ -10,11 +10,11 @@
     this is function description
 """
 
-# import codegen.servicecodegen.main
-# import codegen.staticcodegen.main
+import codegen.servicecodegen.main
+import codegen.staticcodegen.main
 import codegen.controllercodegen.main
-# import codegen.resourcecodegen.main
-# import codegen.modelcodegen.main
+import codegen.resourcecodegen.main
+import codegen.modelcodegen.main
 
 from utils.checkConfig import check_config
 from utils.loggings import loggings
@@ -38,7 +38,7 @@ def start():
 
         # 第一步
     loggings.info(1, "Start to build the Model layer code, please wait...")
-    # codegen.modelcodegen.main.main()
+    codegen.modelcodegen.main.main()
     loggings.info(1, "Model layer code build completed")
 
     # 第二步
@@ -48,17 +48,17 @@ def start():
 
     # 第三步
     loggings.info(1, "Start to build the Service layer code, please wait...")
-    # codegen.servicecodegen.main.main()
+    codegen.servicecodegen.main.main()
     loggings.info(1, "Service layer code build completed")
 
     # 第四步
     loggings.info(1, "Start to build the Resource layer code, please wait...")
-    # codegen.resourcecodegen.main.main()
+    codegen.resourcecodegen.main.main()
     loggings.info(1, "Resource layer code build completed")
 
     # 第五步
     loggings.info(1, "Start packing static files, please wait...")
-    # codegen.staticcodegen.main.main()
+    codegen.staticcodegen.main.main()
     loggings.info(1, "Static resource packaging is complete")
 
     loggings.info(1, "Api project code generation completed")

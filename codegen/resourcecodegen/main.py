@@ -13,7 +13,7 @@
 # file write
 import os
 
-from codegen import codegen_layer, tables, metadata
+from codegen import codegen_layer, table_dict
 from codegen.resourcecodegen.codegenerator import CodeGenerator
 from config.setting import Settings
 from utils.common import new_file_or_dir, file_write
@@ -30,7 +30,7 @@ def main():
         if codegen_layer not in ['default', 'resource']:
             return
 
-        if not tables:
+        if not list(table_dict.keys()):
             return
 
         # Get target directory
@@ -45,7 +45,7 @@ def main():
         app_dir = os.path.join(Settings.PROJECT_DIR, 'app')
         new_file_or_dir(2, app_dir)
 
-        generator = CodeGenerator(metadata)
+        generator = CodeGenerator()
         generator.resource_generator(api_dir, app_dir)
     except Exception as e:
         loggings.error(1, str(e))

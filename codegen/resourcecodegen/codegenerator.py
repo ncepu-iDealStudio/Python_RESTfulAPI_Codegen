@@ -14,28 +14,23 @@
 
 import os
 
-from codegen import project_dir
-from utils.loggings import loggings
-from config.setting import Settings
-from utils.common import str_format_convert, new_file_or_dir, file_write
+from codegen import project_dir, table_dict
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
-from utils.tablesMetadata import TableMetadata
+from config.setting import Settings
+from utils.common import str_format_convert, new_file_or_dir, file_write
+from utils.loggings import loggings
 
 
 class CodeGenerator(object):
 
-    def __init__(self, metadata):
+    def __init__(self):
         super(CodeGenerator, self).__init__()
-        self.metadata = metadata
         self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object'}
 
     # resource layer generation
     def resource_generator(self, api_dir, app_dir):
         try:
-            # get the table list
-            table_dict = TableMetadata.get_tables_metadata(self.metadata)
-
             self.manage_codegen(table_dict)
 
             # app generation

@@ -12,24 +12,21 @@
 
 import os
 
+from codegen import table_dict
 from codegen.servicecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.servicecodegen.template.fileTemplate import FileTemplate
 from utils.common import str_format_convert
 from utils.loggings import loggings
-from utils.tablesMetadata import TableMetadata
 
 
 class CodeGenerator(object):
 
-    def __init__(self, metadata):
+    def __init__(self):
         super().__init__()
-        self.metadata = metadata
 
     # resource layer generation
     def service_generator(self, service_path):
         try:
-            table_dict = TableMetadata.get_tables_metadata(self.metadata)
-
             # Traverse each table to generate the corresponding service layer code
             for table in table_dict.keys():
                 loggings.info(1, 'Generating service layer code for "{table_name}" table'.format(
