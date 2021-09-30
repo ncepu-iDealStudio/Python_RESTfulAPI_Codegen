@@ -39,6 +39,7 @@ class {class_name}({parent_model}):
             db.session.commit()
             results = commons.query_to_dict(model)
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
+            
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
@@ -70,6 +71,7 @@ class {class_name}({parent_model}):
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No query results'}}
             results = commons.query_to_dict({model_lower}_info)
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'count': count, 'pages': pages, 'data': results}}
+            
         except Exception as e:
             loggings.exception(1, e)
             return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
@@ -94,6 +96,7 @@ class {class_name}({parent_model}):
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
             db.session.commit()
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+            
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
@@ -106,7 +109,7 @@ class {class_name}({parent_model}):
     @classmethod
     def delete(cls, **kwargs):
         try:
-            filter_list = []
+            filter_list = [cls.IsDelete == 0]
             if kwargs.get('{primary_key}'):
                 primary_key_list = []
                 for primary_key in kwargs.get('{primary_key}').replace(' ', '').split(','):
@@ -119,6 +122,7 @@ class {class_name}({parent_model}):
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
             db.session.commit()
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+            
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
@@ -139,6 +143,7 @@ class {class_name}({parent_model}):
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}}
             db.session.commit()
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+            
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
@@ -160,6 +165,7 @@ class {class_name}({parent_model}):
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}}
             db.session.commit()
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+            
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
@@ -185,6 +191,7 @@ class {class_name}({parent_model}):
             db.session.commit()
             
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+            
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)

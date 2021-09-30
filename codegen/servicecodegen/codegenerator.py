@@ -37,7 +37,8 @@ class CodeGenerator(object):
                 table_name_initials_upper = table_name[0].upper() + table_name[1:]
                 Fields_list = []
                 # Database query conditions
-                filter_conditions = ""
+                filter_conditions = '            filter_list.append(cls.IsDelete == 0)\n' if table_dict[table][
+                    'is_logic_delete'] else ""
                 # Traverse each column to generate the filter conditions
                 for columns in table_dict[table]['columns']:
                     columns_name = table_dict[table]['columns'][columns]['name']
