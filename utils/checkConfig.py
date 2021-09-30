@@ -9,6 +9,8 @@
 """
     this is function description
 """
+import json
+
 from sqlalchemy import create_engine, MetaData
 
 from config.setting import Settings
@@ -31,7 +33,7 @@ def check_config():
             'codegen_mode': Settings.CODEGEN_MODE,
             'codegen_layer': Settings.CODEGEN_LAYER,
             'static_resource_dir': Settings.STATIC_RESOURCE_DIR,
-            'primary_key': Settings.PRIMARY_KEY
+            # 'primary_key': Settings.PRIMARY_KEY
         }
         for k, v in parameter.items():
             if not v:
@@ -73,11 +75,11 @@ def check_config():
         if Settings.CODEGEN_LAYER in ['default', 'model']:
             # 代码生成层级为默认或控制器层
             controller = {
-                'record_delete_way': Settings.CONTROLLER_RECORD_DELETE_WAY
+                # 'record_delete_way': Settings.CONTROLLER_RECORD_DELETE_WAY
             }
-            for k, v in controller.items():
-                if not v:
-                    raise Exception('{}参数缺失'.format(k))
+            # for k, v in controller.items():
+            #     if not v:
+            #         raise Exception('{}参数缺失'.format(k))
         # 读取RESOURCE参数
         if Settings.CODEGEN_LAYER in ['default', 'resource']:
             # 代码生成层级为默认或接口层，读取RESOURCE参数
@@ -104,20 +106,43 @@ def check_config():
             raise Exception('CODEGEN_MODE参数值不合法')
         if Settings.CODEGEN_LAYER not in ['default', 'model', 'controller', 'resource', 'static']:
             raise Exception('CODEGEN_LAYER参数值不合法')
-        if Settings.CODEGEN_LAYER in ['default', 'controller']:
-            if Settings.CONTROLLER_RECORD_DELETE_WAY not in ['logic', 'physical']:
-                raise Exception('RECORD_DELETE_WAY参数值不合法')
-        if Settings.PRIMARY_KEY not in ['AutoID', 'DoubleKey']:
-            raise Exception('PRIMARY_KEY参数值不合法')
+        # if Settings.CODEGEN_LAYER in ['default', 'controller']:
+        #     if Settings.CONTROLLER_RECORD_DELETE_WAY not in ['logic', 'physical']:
+        #         raise Exception('RECORD_DELETE_WAY参数值不合法')
+        # if Settings.PRIMARY_KEY not in ['AutoID', 'DoubleKey']:
+        #     raise Exception('PRIMARY_KEY参数值不合法')
 
-        # 检验数据库中是否存在参数中的表名
+        engine = create_engine(Settings.MODEL_URL)
+        metadata = MetaData(engine)
+        metadata.reflect(engine)
+        with open('config/table_rule.json', 'r', encoding='utf-8') as f:
+            table_rule = json.load(f)
+
         if Settings.CODEGEN_MODE == 'table':
-            engine = create_engine(Settings.MODEL_URL)
-            metadata = MetaData(engine)
-            metadata.reflect(engine)
-            for i in Settings.MODEL_TABLES.replace(' ', '').split(','):
+            # 检验数据库中是否存在参数中的表名
+            tables = Settings.MODEL_TABLES.replace(' ', '').split(',')
+            for i in tables:
                 if i not in metadata.tables.keys():
-                    raise Exception('{}表不存在'.format(i))
+                    raise Exception('The table {} does not exist'.format(i))
+            # 检查table_rule配置文件中各表是否存在
+            for table in table_rule['table_record_delete_logic_way']:
+                if table not in tables:
+                    loggings.warning(1, 'The table {} to be logically deleted is not in the table to be generated, '
+                                        'please check the table_rule profile'.format(table))
+            for table in table_rule['table_business_key_gen_rule'].keys():
+                if table not in tables:
+                    loggings.warning(1, 'The table {} to set the business key is not in the table to be generated, '
+                                        'please check the table_rule profile'.format(table))
+        else:
+            # 检查table_rule配置文件中各表是否存在
+            for table in table_rule['table_record_delete_logic_way']:
+                if table not in metadata.tables.keys():
+                    loggings.warning(1, 'The table deletion {} for logical deletion does not exist. Please check '
+                                        'table_rule profile'.format(table))
+            for table in table_rule['table_business_key_gen_rule'].keys():
+                if table not in metadata.tables.keys():
+                    loggings.warning(1, 'The table {} to set the business primary key does not exist, please check '
+                                        'the table_rule profile'.format(table))
 
     except Exception as e:
         loggings.error(1, str(e))

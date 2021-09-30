@@ -42,8 +42,6 @@ class Settings(object):
     CODEGEN_LAYER = CONFIG['PARAMETER']['CODEGEN_LAYER']
     # 定义静态资源文件路径
     STATIC_RESOURCE_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['STATIC_RESOURCE_DIR'])
-    # 主键模式
-    PRIMARY_KEY = CONFIG['PARAMETER']['PRIMARY_KEY']
 
     # 读取用户使用的数据库类型
     DATABASE_TYPE = CONFIG['DATABASE']['DATABASE']
@@ -80,9 +78,6 @@ class Settings(object):
     except Exception as e:
         raise Exception('{}参数不是一个合法的布尔型'.format(i))
 
-    # controller层配置
-    CONTROLLER_RECORD_DELETE_WAY = CONFIG['CONTROLLER']['RECORD_DELETE_WAY']
-
     RSA_TABLE_COLUMN = {}
     # security层配置
     if SECURITY_CONFIG['RSA_TABLE_COLUMN']:
@@ -91,7 +86,3 @@ class Settings(object):
                 RSA_TABLE_COLUMN[table] = columns.replace(' ', '').split(',')
         except Exception as e:
             raise Exception('RSA_TABLE_COLUMN参数读取失败')
-
-    # 读取business_key.json
-    with open("config/business_key.json") as natural_key_json:
-        BUSINESS_KEY_LIST = json.load(natural_key_json)

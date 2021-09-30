@@ -20,20 +20,18 @@ from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTempla
 from codegen.controllercodegen.template.filetemplate import FileTemplate
 from utils.common import str_format_convert
 from utils.loggings import loggings
-from utils.tablesMetadata import TableMetadata
 
 
 class CodeGenerator(object):
 
-    def __init__(self, metadata):
+    def __init__(self, table_dict):
         super(CodeGenerator, self).__init__()
-        self.metadata = metadata
+        self.table_dict = table_dict
 
-    def controller_codegen(self, controller_dir, rsa_table_column, primary_key_mode,
-                           delete_way='logic'):
+    def controller_codegen(self, controller_dir, rsa_table_column):
         codes = {}
         # get table metadata
-        table_dict = TableMetadata.get_tables_metadata(self.metadata)
+        table_dict = self.table_dict
 
         # generate code and save in 'codes'
         for table in table_dict.values():
@@ -54,19 +52,24 @@ class CodeGenerator(object):
             for column in table['columns'].values():
                 if column['name'] == primary_key:
                     continue
+                if column['name'] == 'IsDelete':
+                    continue
                 # the column do not encrypt
                 elif not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column[table['table_name']]:
-                    if primary_key_mode == 'AutoID':
-                        # 仅自增主键模式
+                    if table['business_key'].get('column') != column['name']:
+                        # 当前字段不是业务主键
                         text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                     else:
-                        # 业务主键模式
-                        if table['business_key'].get('column') == column['name'] and table['business_key'].get('rule'):
+                        # 当前字段是业务主键
+                        if table['business_key'].get('rule'):
+                            # 是业务主键且有生成规则
                             text = CodeBlockTemplate.business_key_add.format(column=column['name'])
-                            business_key_text = getattr(CodeBlockTemplate, table['business_key']['rule']).format(business_key=column['name'])
-                            business_key_init += business_key_text
+                            business_key_init = CodeBlockTemplate.business_key_init.format(
+                                business_key=column['name'],
+                                rule=table['business_key']['rule']
+                            )
                         else:
-                            # 本字段不是业务主键或业务主键没有生成规则
+                            # 是业务主键但是没有生成规则
                             text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                 else:
                     text = CodeBlockTemplate.rsa_add.format(column=column['name'])
@@ -83,38 +86,49 @@ class CodeGenerator(object):
             for column in table['columns'].values():
                 if column['name'] == primary_key:
                     continue
-                elif column['name'] == table['business_key'].get('column') and primary_key_mode == 'DoubleKey':
+                elif column['name'] == table['business_key'].get('column'):
+                    # 当前字段是业务主键，跳过
+                    continue
+                elif column['name'] == 'IsDelete':
+                    # 当前字段是删除标识位，跳过
                     continue
                 else:
                     if column['type'] in ['int', 'float']:
                         # column type is a number
-                        if not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column.get(table['table_name']):
+                        if not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column.get(
+                                table['table_name']):
                             # column do not encrypt
                             text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
                         else:
                             text = CodeBlockTemplate.rsa_get_filter_num.format(column=column['name'])
                     else:
                         # column type is a string
-                        if not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column.get(table['table_name']):
+                        if not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column.get(
+                                table['table_name']):
                             # column do not encrypt
                             text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
                         else:
                             text = CodeBlockTemplate.rsa_get_filter_str.format(column=column['name'])
                     get_filter_list += text
             get = FileTemplate.get_template.format(
-                primary_key=table['business_key']['column'] if primary_key_mode == 'DoubleKey' and table['business_key'].get('column') else primary_key,
-                get_filter_list=get_filter_list,
-                model_lower=table['table_name']
+                primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
+                get_filter_list=get_filter_list if get_filter_list else 'pass',
+                model_lower=table['table_name'],
+                get_filter_list_logic=CodeBlockTemplate.get_filer_list_logic if table['is_logic_delete'] else ''
             )
 
             # combine delete
-            if delete_way == 'logic':
+            if table['is_logic_delete']:
+                # logic delete
                 delete = FileTemplate.delete_template_logic.format(
-                    primary_key=table['business_key']['column'] if primary_key_mode == 'DoubleKey' and table['business_key'].get('column') else primary_key
+                    primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
+                    delete_filter_list=get_filter_list if get_filter_list else 'pass'
                 )
             else:
+                # physical delete
                 delete = FileTemplate.delete_template_physical.format(
-                    primary_key=table['business_key']['column'] if primary_key_mode == 'DoubleKey' and table['business_key'].get('column') else primary_key
+                    primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
+                    delete_filter_list=get_filter_list if get_filter_list else 'pass'
                 )
 
             # combine update
@@ -124,14 +138,55 @@ class CodeGenerator(object):
                 for sra_column in rsa_table_column[table['table_name']]:
                     text = CodeBlockTemplate.rsa_update.format(column=sra_column)
                     rsa_update += text
-            update = FileTemplate.update_template.format(
-                primary_key=table['business_key']['column'] if primary_key_mode == 'DoubleKey' and table['business_key'].get('column') else primary_key,
-                rsa_update=rsa_update
+            if not table['is_logic_delete']:
+                update = FileTemplate.update_template_physical.format(
+                    primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
+                    rsa_update=rsa_update
+                )
+            else:
+                update = FileTemplate.update_template_logic.format(
+                    primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
+                    rsa_update=rsa_update
+                )
+
+            # combine add_list
+            add_list_column_init = ''
+            add_list_business_key_init = ''
+            for column in table['columns'].values():
+                if column['name'] == primary_key:
+                    continue
+                if column['name'] == 'IsDelete':
+                    continue
+                # the column do not encrypt
+                elif not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column[table['table_name']]:
+                    if table['business_key'].get('column') != column['name']:
+                        # 当前字段不是业务主键
+                        text = CodeBlockTemplate.add_list_column_init.format(column=column['name'])
+                    else:
+                        # 当前字段是业务主键
+                        if table['business_key'].get('rule'):
+                            # 是业务主键且有生成规则
+                            text = CodeBlockTemplate.business_key_add.format(column=column['name'])
+                            add_list_business_key_init = CodeBlockTemplate.add_list_business_key_init.format(
+                                business_key=column['name'],
+                                rule=table['business_key']['rule']
+                            )
+                        else:
+                            # 是业务主键但是没有生成规则
+                            text = CodeBlockTemplate.add_list_column_init.format(column=column['name'])
+                else:
+                    text = CodeBlockTemplate.rsa_add.format(column=column['name'])
+                add_list_column_init += text
+            add_list = FileTemplate.add_list_template.format(
+                parent_model=parent_model,
+                add_list_column_init=add_list_column_init,
+                add_list_business_key_init=add_list_business_key_init,
+                primary_key=primary_key
             )
 
             # save into 'codes'
             file_name = hump_str + 'Controller'
-            codes[file_name] = basic + add + get + delete + update
+            codes[file_name] = basic + add + get + delete + update + add_list
 
         # generate files
         loggings.info(1, 'Generating __init__...')
