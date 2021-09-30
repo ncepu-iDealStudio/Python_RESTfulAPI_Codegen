@@ -67,7 +67,15 @@
 
 
 ##### 生成器项目的使用说明： 
-一 生成器项目使用
+一 数据库表设计（三"必须"三"推荐"）  
+1. 数据库表名称必须全小写，可使用"_"连接。如：user_info;  
+2. 必须包含名称为"AutoID"的自增主键；  
+3. 表的名称和表字段名称必须不是python的关键字。如：def，False都是不正确的  
+4. 表的字段名称推荐使用"大驼峰"命名法。如：UserName；  
+5. 推荐设计一个timestamp类型的"CreateTime"字段，默认为当前时间戳
+6. 推荐设计一个tinyint类型的"IsDelete"字段，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段为必须）
+ 
+二 生成器项目使用
 1. 先从仓库clone代码到本地;  
    git clone https://gitee.com/ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen.git
 2. 用Python开发工具(Pycharm或者vscode)打开项目；
@@ -78,7 +86,7 @@
 6. 程序运行完毕后，会生成dist文件夹，文件夹下面及为我们需要的目标项目；     
     也可以在配置文件中设置目标项目的位置；
    
-二 目标项目测试  
+三 目标项目测试  
   
 1. 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
 2. 为目标项目配置好虚拟环境；Pythond的版本>=3.8.0；  
@@ -88,5 +96,5 @@
   api_1_0为项目生成器中设置的版本号，如果配置参数为API_VERSION=1.0，则此时链接中的版本号字符串为：api_1_0；  
 6. 测试基本业务相关接口；  
 
-三 生成器项目详细使用指南  
+四 生成器项目详细使用指南  
 - <a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
