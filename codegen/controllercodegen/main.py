@@ -11,9 +11,9 @@
 """
 import os
 
-from codegen import codegen_layer, metadata, tables, project_dir, target_dir, primary_key_mode
+from codegen import codegen_layer, table_dict, project_dir, target_dir
 from utils.common import new_file_or_dir
-from . import record_delete_way, rsa_table_column
+from . import rsa_table_column
 from .codegenerator import CodeGenerator
 
 
@@ -27,7 +27,7 @@ def main():
     if codegen_layer not in ['default', 'controller']:
         return
 
-    if not tables:
+    if not table_dict:
         return
 
     # create the target dir
@@ -36,11 +36,9 @@ def main():
     controller_dir = os.path.join(project_dir, 'controller')
     new_file_or_dir(2, controller_dir)
 
-    generator = CodeGenerator(metadata)
+    generator = CodeGenerator(table_dict)
     generator.controller_codegen(
-        delete_way=record_delete_way,
         controller_dir=controller_dir,
-        primary_key_mode=primary_key_mode,
         rsa_table_column=rsa_table_column
     )
     return

@@ -30,19 +30,6 @@ class {class_name}({parent_model}):
     # add
     @classmethod
     def add(cls, **kwargs):
-        try:
-            # 获取最大autoID
-            max_id = db.session.query(func.max({parent_model}.{primary_key})).with_for_update().first()
-        except Exception as e:
-            # 在这里进行日志记录操作
-            loggings.exception(1, e)
-            db.session.close()
-            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
-
-        if max_id[0] is None:
-            m_id = 1
-        else:
-            m_id = max_id[0] + 1
         {business_key_init}
         try:
             model = {parent_model}(
@@ -64,12 +51,11 @@ class {class_name}({parent_model}):
     @classmethod
     def get(cls, **kwargs):
         try:
-            filter_list = []
+            filter_list = [{get_filter_list_logic}]
             if kwargs.get('{primary_key}'):
                 filter_list.append(cls.{primary_key} == kwargs.get('{primary_key}'))
             else:
                 {get_filter_list}
-            
             page = int(kwargs.get('Page', 1))
             size = int(kwargs.get('Size', 10))
             
@@ -95,9 +81,17 @@ class {class_name}({parent_model}):
     @classmethod
     def delete(cls, **kwargs):
         try:
-            db.session.query(cls).filter(
-                cls.{primary_key} == kwargs.get('{primary_key}')
-            ).delete()
+            filter_list = []
+            if kwargs.get('{primary_key}'):
+                primary_key_list = []
+                for primary_key in kwargs.get('{primary_key}').replace(' ', '').split(','):
+                    primary_key_list.append(cls.{primary_key} == primary_key)
+                filter_list.append(or_(*primary_key_list))
+            else:
+                {delete_filter_list}
+            res = db.session.query(cls).filter(*filter_list).with_for_update().delete()
+            if res < 1:
+                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
             db.session.commit()
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
         except Exception as e:
@@ -112,9 +106,15 @@ class {class_name}({parent_model}):
     @classmethod
     def delete(cls, **kwargs):
         try:
-            res = db.session.query(cls).filter(
-                cls.{primary_key} == kwargs.get('{primary_key}')
-            ).with_for_update().update({{'IsDelete': 1}})
+            filter_list = []
+            if kwargs.get('{primary_key}'):
+                primary_key_list = []
+                for primary_key in kwargs.get('{primary_key}').replace(' ', '').split(','):
+                    primary_key_list.append(cls.{primary_key} == primary_key)
+                filter_list.append(or_(*primary_key_list))
+            else:
+                {delete_filter_list}
+            res = db.session.query(cls).filter(*filter_list).with_for_update().update({{'IsDelete': 1}})
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
             db.session.commit()
@@ -126,7 +126,7 @@ class {class_name}({parent_model}):
         finally:
             db.session.close()
 """
-    update_template = """
+    update_template_physical = """
     # update
     @classmethod
     def update(cls, **kwargs):
@@ -146,4 +146,49 @@ class {class_name}({parent_model}):
         finally:
             db.session.close()
 """
-
+    update_template_logic = """
+    # update
+    @classmethod
+    def update(cls, **kwargs):
+        try:
+            {rsa_update}
+            res = db.session.query(cls).filter(
+                cls.{primary_key} == kwargs.get('{primary_key}'),
+                cls.IsDelete == 0
+            ).with_for_update().update(kwargs)
+            if res < 1:
+                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}}
+            db.session.commit()
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+        except Exception as e:
+            db.session.rollback()
+            loggings.exception(1, e)
+            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
+        finally:
+            db.session.close()
+"""
+    add_list_template = """
+    # batch add
+    @classmethod
+    def add_list(cls, **kwargs):
+        param_list = json.loads(kwargs.get('Params'))
+        model_list = []
+        for param_dict in param_list:
+            {add_list_business_key_init}
+            model = {parent_model}(
+                {add_list_column_init}
+            )
+            model_list.append(model)
+        
+        try:
+            db.session.add_all(model_list)
+            db.session.commit()
+            
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+        except Exception as e:
+            db.session.rollback()
+            loggings.exception(1, e)
+            return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}}
+        finally:
+            db.session.close()
+"""

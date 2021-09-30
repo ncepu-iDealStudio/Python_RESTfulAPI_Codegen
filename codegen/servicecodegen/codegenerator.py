@@ -12,25 +12,21 @@
 
 import os
 
-from codegen import primary_key_mode
+from codegen import table_dict
 from codegen.servicecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.servicecodegen.template.fileTemplate import FileTemplate
 from utils.common import str_format_convert
 from utils.loggings import loggings
-from utils.tablesMetadata import TableMetadata
 
 
 class CodeGenerator(object):
 
-    def __init__(self, metadata):
+    def __init__(self):
         super().__init__()
-        self.metadata = metadata
 
     # resource layer generation
     def service_generator(self, service_path):
         try:
-            table_dict = TableMetadata.get_tables_metadata(self.metadata)
-
             # Traverse each table to generate the corresponding service layer code
             for table in table_dict.keys():
                 loggings.info(1, 'Generating service layer code for "{table_name}" table'.format(
@@ -46,27 +42,25 @@ class CodeGenerator(object):
                 for columns in table_dict[table]['columns']:
                     columns_name = table_dict[table]['columns'][columns]['name']
                     # If the primary key mode is "DoubleKey", then AutoID will not be used as a filter condition
-                    if columns_name == "AutoID" and primary_key_mode == "DoubleKey":
+                    if columns_name == "AutoID" and table_dict[table]['business_key']:
                         continue
                     filter_conditions += CodeBlockTemplate.single_filter_condition.format(colums_name=columns_name)
                     Fields_list.append("{table_model}.{columns_name}".format(table_model=table_name_initials_upper,
                                                                              columns_name=columns_name))
 
-                # If there is a foreign key in the table, supplement the related template of the associated table
-                # The following is an explanation of the variables required to generate the template file：
-                # target_table_name: The name of the foreign key associated table (ps. Use CamelCase format)
-                # target_table_name_initials_upper: Capitalize the name of the association table
-                # foreign_import：If there is a foreign key in the table, add import statement
-                # table_model: The string of using a comma to combine the name of this table and the associated table
-                # join_table_statement: If there is a foreign key in the table, add join target table statement
-                # result_name: The string of using underline to combine the name of this table and the associated table
-
+                # If there is a foreign key in the table, add import statement
                 foreign_import = ""
+                # If there is a foreign key in the table, add join target table statement
                 join_table_statement = ""
+                # The string of using underline to combine the name of this table and the associated table
                 result_name = table_name
+
+                # If there is a foreign key in the table, supplement the related template of the associated table
                 if foreign_keys := table_dict[table].setdefault('foreign_keys', None):
                     for foreign_key in foreign_keys:
+                        # The name of the foreign key associated table (ps. Use CamelCase format)
                         target_table_name = str_format_convert(foreign_key['target_table'])
+                        # Capitalize the name of the association table
                         target_table_name_initials_upper = target_table_name[0].upper() + target_table_name[1:]
                         foreign_import += '\nfrom models.{0}Model import {1}'.format(target_table_name,
                                                                                      target_table_name_initials_upper)

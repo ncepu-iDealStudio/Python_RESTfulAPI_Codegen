@@ -127,64 +127,70 @@ class CheckTable(object):
         """
         available_table = [x['table_name'] for x in table_dict.values()]
         invalid_table = []
-        business_key_list = Settings.BUSINESS_KEY_LIST
-        for natural_key in business_key_list:
-            flag = True
-            # 检查表是否存在
-            if natural_key['table'] not in available_table:
-                flag = False
-                loggings.warning(1, 'the target table {table} of business key {table}.{column} '
-                                    'does not exist'.format(table=natural_key['table'],
-                                                            column=natural_key['column']))
-            if not flag:
-                continue
 
-            # 检查字段是否存在
-            if natural_key['column'] not in table_dict[natural_key['table']]['columns'].keys():
-                flag = False
-                loggings.warning(1, 'the column of business key {table}.{column} does not exist '
-                                    'in table {table}'.format(table=natural_key['table'],
-                                                              column=natural_key['column']))
-                invalid_table.append(available_table.pop(available_table.index(natural_key['table'])))
-            if not flag:
+        # 检验业务主键字段是否存在
+        for table in table_dict.values():
+            if not table['business_key']:
+                continue
+            if table['business_key']['column'] not in table['columns'].keys():
+                loggings.warning(1, 'The business key {1} of table {0} does not exist'.
+                                 format(table['table_name'], table['business_key']['column']))
+                invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
                 continue
 
             # 检查业务主键是否与自增主键重复
-            if natural_key['column'] == table_dict[natural_key['table']]['primaryKey']:
-                loggings.warning(1, 'the business key {table}.{column} is an Auto increment '
-                                    'primary key '.format(table=natural_key['table'],
-                                                          column=natural_key['column']))
-                invalid_table.append(available_table.pop(available_table.index(natural_key['table'])))
+            if table['business_key']['column'] == table['primaryKey']:
+                loggings.warning(1, 'The business key {1} of table {0} duplicates its auto increment primary key'.
+                                 format(table['table_name'], table['business_key']['column']))
+                invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
 
         return available_table, invalid_table
 
-    # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+    # 检验业务主键生成模板是否存在
     @classmethod
-    def check_business_key_template_and_table(cls, table_dict):
+    def check_business_key_template(cls, table_dict):
         """
-        检验业务主键生成模板是否存在及是否每张表都设置有业务主键
+        检验业务主键生成模板是否存在
         :return: 符合生成规则的表列表available_table和不符合生成规则的表列表invalid_table
         """
         available_table = [x['table_name'] for x in table_dict.values()]
         invalid_table = []
-        if Settings.PRIMARY_KEY == 'AutoID':
-            return available_table, invalid_table
-        # 检验是否每张表都设置有业务主键
-        for table in [x['table_name'] for x in table_dict.values()]:
-            if table not in [x['table'] for x in Settings.BUSINESS_KEY_LIST]:
-                loggings.warning(1, '{}表没有设置业务主键'.format(table))
-                invalid_table.append(available_table.pop(available_table.index(table)))
 
         # 检验业务主键生成模板是否存在
-        from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
-        for business_key_dict in Settings.BUSINESS_KEY_LIST:
-            if business_key_dict['table'] not in available_table:
+        from static.utils.generate_id import GenerateID
+        for table in table_dict.values():
+            if not table['business_key']:
                 continue
-            if business_key_dict['rule'] == '':
+            if table['business_key']['rule'] == '':
                 continue
-            if not hasattr(CodeBlockTemplate, business_key_dict['rule']):
-                loggings.warning(1, '业务主键生成模板{}不存在'.format(business_key_dict['rule']))
-                invalid_table.append(available_table.pop(available_table.index(business_key_dict['table'])))
+            if not hasattr(GenerateID, table['business_key']['rule']):
+                loggings.warning(1, 'Business key generation template {} does not exist'.
+                                 format(table['business_key']['rule']))
+                invalid_table.append(available_table.pop(available_table.index(table['business_key']['table'])))
+
+        return available_table, invalid_table
+
+    # 检查要逻辑删除的表中是否存在IsDelete字段
+    @classmethod
+    def check_logic_delete(cls, table_dict):
+        """
+        检验要逻辑删除的表中是否存在IsDelete字段，剔除不符合规范的表
+        :return:
+        """
+        available_table = []
+        invalid_table = []
+        for table in table_dict.values():
+            if not table['is_logic_delete']:
+                # 采取物理删除的表
+                available_table.append(str(table['table_name']))
+            else:
+                # 采取逻辑删除的表
+                if 'IsDelete' not in [x['name'] for x in table['columns'].values()]:
+                    invalid_table.append(str(table['table_name']))
+                    loggings.warning(1, 'The table {} for logical deletion does not have an IsDelete field'.
+                                     format(str(table['table_name'])))
+                else:
+                    available_table.append(str(table['table_name']))
 
         return available_table, invalid_table
 
@@ -195,48 +201,59 @@ class CheckTable(object):
         url = Settings.MODEL_URL
         engine = create_engine(url)
         metadata = MetaData(engine)
-        metadata.reflect(engine)
+        if Settings.CODEGEN_MODE == 'database':
+            # database mode
+            metadata.reflect(engine)
+        else:
+            # table mode
+            metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(','))
+        table_dict = TableMetadata.get_tables_metadata(metadata)
 
         # check table primary key
         available_tables, invalid_tables = cls.check_primary_key()
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
         # check the foreign key
-        metadata = MetaData(engine)
-        metadata.reflect(engine, only=available_tables)
-        table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_foreign_key(table_dict)
-        available_tables = available_table
         invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
         # check the keyword
-        metadata = MetaData(engine)
-        metadata.reflect(engine, only=available_tables)
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
-        available_tables = available_table
         invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
-        # 检验业务主键生成模板是否存在及是否每张表都设置有业务主键
-        metadata = MetaData(engine)
-        metadata.reflect(engine, only=available_tables)
+        # Check whether the business key generation template exists
         table_dict = TableMetadata.get_tables_metadata(metadata)
-        available_table, invalid_table = cls.check_business_key_template_and_table(table_dict)
-        available_tables = available_table
+        available_table, invalid_table = cls.check_business_key_template(table_dict)
         invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
-        # check the natural key
-        metadata = MetaData(engine)
-        metadata.reflect(engine, only=available_tables)
+        # check the business key
         table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_business_key(table_dict)
+        invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
+
+        # Check whether the IsDelete field exists in the table to be logically deleted
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+        available_table, invalid_table = cls.check_logic_delete(table_dict)
         available_tables = available_table
         invalid_tables += invalid_table
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
 
         if len(invalid_tables) > 0:
             loggings.warning(1, "The following {0} tables do not meet the specifications and cannot "
                                 "be generated: {1}".format(len(invalid_tables), ",".join(invalid_tables)))
-            return available_tables if available_tables else None
+            return table_dict if table_dict else None
 
         loggings.info(1, "All table checks passed, a total of {0} "
                          "tables ".format(len(available_tables + invalid_tables)))
-        return available_tables if available_tables else None
+        return table_dict if table_dict else None

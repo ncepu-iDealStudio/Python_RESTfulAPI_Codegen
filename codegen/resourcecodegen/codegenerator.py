@@ -14,28 +14,23 @@
 
 import os
 
-from codegen import project_dir
-from utils.loggings import loggings
-from config.setting import Settings
-from utils.common import str_format_convert, new_file_or_dir, file_write
+from codegen import project_dir, table_dict
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
-from utils.tablesMetadata import TableMetadata
+from config.setting import Settings
+from utils.common import str_format_convert, new_file_or_dir, file_write
+from utils.loggings import loggings
 
 
 class CodeGenerator(object):
 
-    def __init__(self, metadata):
+    def __init__(self):
         super(CodeGenerator, self).__init__()
-        self.metadata = metadata
         self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object'}
 
     # resource layer generation
     def resource_generator(self, api_dir, app_dir):
         try:
-            # get the table list
-            table_dict = TableMetadata.get_tables_metadata(self.metadata)
-
             self.manage_codegen(table_dict)
 
             # app generation
@@ -186,8 +181,8 @@ class CodeGenerator(object):
             for column in table.get('columns').values():
                 if column.get('name') != table.get('primaryKey') and column.get('name') != table.get(
                         'business_key').get('column'):
-                    parameter_form_str += CodeBlockTemplate.parameter_form.format(column.get('name'),
-                                                                                  column.get('type'))
+                    parameter_form_str += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
+                                                                                        column.get('type'))
 
             idCheck_str = CodeBlockTemplate.resource_id_check.format(id_str)
 
@@ -233,8 +228,8 @@ class CodeGenerator(object):
             for column in table.get('columns').values():
                 if not table.get('business_key'):
                     if column.get('name') != table.get('primaryKey'):
-                        parameter_post += CodeBlockTemplate.parameter_form.format(column.get('name'),
-                                                                                  column.get('type'))
+                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                       column.get('type'))
                     parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
                     parameter_query += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
 
@@ -247,13 +242,13 @@ class CodeGenerator(object):
                                                                                        column.get('type'))
                         if column.get('name') != table.get('primaryKey') and column.get('name') != table.get(
                                 'business_key').get('column'):
-                            parameter_post += CodeBlockTemplate.parameter_form.format(column.get('name'),
-                                                                                      column.get('type'))
+                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                           column.get('type'))
 
                     else:
                         if column.get('name') != table.get('primaryKey'):
-                            parameter_post += CodeBlockTemplate.parameter_form.format(column.get('name'),
-                                                                                      column.get('type'))
+                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                           column.get('type'))
                             parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'),
                                                                                      column.get('type'))
                             parameter_query += CodeBlockTemplate.parameter_args.format(column.get('name'),

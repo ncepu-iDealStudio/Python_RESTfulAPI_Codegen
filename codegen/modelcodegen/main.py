@@ -12,14 +12,14 @@
 
 import os
 
-from codegen import project_dir, tables
+from codegen import project_dir, table_dict
 from config.setting import Settings
 from utils.common import str_format_convert
 from utils.loggings import loggings
 from . import cmd
 
 
-def modelGenerate():
+def main():
     """
     model层代码的生成
     :return: None
@@ -32,6 +32,8 @@ def modelGenerate():
 
         with open(os.path.join(models_path, '__init__.py'), 'w', encoding='utf-8') as f:
             f.write("#!/usr/bin/env python\n# -*- coding:utf-8 -*-\n")
+
+        tables = list(table_dict.keys())
 
         for table in tables:
             loggings.info(1, "Model code for {0} table is being generated".format(table))

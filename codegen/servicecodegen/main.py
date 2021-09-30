@@ -11,7 +11,7 @@
 """
 import os
 
-from codegen import project_dir, metadata
+from codegen import project_dir
 from codegen.servicecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
@@ -28,7 +28,7 @@ def main():
         with open(os.path.join(service_path, '__init__.py'), 'w', encoding='utf-8') as f:
             f.write("#!/usr/bin/env python\n# -*- coding:utf-8 -*-\n")
 
-        generator = CodeGenerator(metadata)
+        generator = CodeGenerator()
         generator.service_generator(service_path)
     except Exception as e:
         loggings.exception(1, e)

@@ -17,7 +17,8 @@ class CodeBlockTemplate(object):
 from app import db
 import math
 import datetime
-from sqlalchemy import func
+import json
+from sqlalchemy import func, or_
 
 from models.{model_name} import {parent_model}
 from utils import commons
@@ -42,6 +43,8 @@ from utils.loggings import loggings'''
                     filter_list.append(cls.{column} == kwargs.get('{column}'))
                 '''
 
+    get_filer_list_logic = 'cls.IsDelete == 0'
+
     rsa_get_filter_num = '''if kwargs.get('{column}') is not None:
                     filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
                 '''
@@ -54,6 +57,13 @@ from utils.loggings import loggings'''
                 kwargs['{column}'] = RSAEncryptionDecryption.encrypt(kwargs['{column}'])
             '''
 
-    # 业务主键代码块--定义生成业务主键的方式-八位数的年月日加上四位数的AutoID
-    business_key_gen_code_block = """{business_key} = (datetime.datetime.now()).strftime('%Y%m%d') + str(m_id).zfill(4)
+    business_key_init = """from utils.generate_id import GenerateID
+        {business_key} = GenerateID.{rule}()
         """
+
+    add_list_column_init = '''{column}=param_dict.get('{column}'),
+                '''
+
+    add_list_business_key_init = """from utils.generate_id import GenerateID
+            {business_key} = GenerateID.{rule}()
+            """
