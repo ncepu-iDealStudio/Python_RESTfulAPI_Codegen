@@ -217,43 +217,40 @@ class CheckTable(object):
         # check the foreign key
         available_table, invalid_table = cls.check_foreign_key(table_dict)
         invalid_tables += invalid_table
-        for invalid in invalid_tables:
+        for invalid in invalid_table:
             table_dict.pop(invalid)
 
         # check the keyword
-        table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
         invalid_tables += invalid_table
-        for invalid in invalid_tables:
+        for invalid in invalid_table:
             table_dict.pop(invalid)
 
         # Check whether the business key generation template exists
-        table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_business_key_template(table_dict)
         invalid_tables += invalid_table
-        for invalid in invalid_tables:
+        for invalid in invalid_table:
             table_dict.pop(invalid)
 
         # check the business key
-        table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_business_key(table_dict)
         invalid_tables += invalid_table
-        for invalid in invalid_tables:
+        for invalid in invalid_table:
             table_dict.pop(invalid)
 
         # Check whether the IsDelete field exists in the table to be logically deleted
-        table_dict = TableMetadata.get_tables_metadata(metadata)
         available_table, invalid_table = cls.check_logic_delete(table_dict)
         available_tables = available_table
         invalid_tables += invalid_table
-        for invalid in invalid_tables:
+        for invalid in invalid_table:
+            print(1)
             table_dict.pop(invalid)
 
         if len(invalid_tables) > 0:
             loggings.warning(1, "The following {0} tables do not meet the specifications and cannot "
                                 "be generated: {1}".format(len(invalid_tables), ",".join(invalid_tables)))
-            return table_dict if table_dict else None
+            return table_dict
 
         loggings.info(1, "All table checks passed, a total of {0} "
                          "tables ".format(len(available_tables + invalid_tables)))
-        return table_dict if table_dict else None
+        return table_dict
