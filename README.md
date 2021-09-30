@@ -73,7 +73,8 @@
 2. 用Python开发工具(Pycharm或者vscode)打开项目；
 3. 为代码生成器项目配置好虚拟环境；Pythond的版本>=3.8.0
 4. 安装软件运行必须的包：pip install -r requirement.txt  
-5. 配置相关参数：启动startUI.py打开网页进行对应的参数进行设定(请注意查看参数的注释),并点击生成代码
+5. 配置相关参数：启动`startUI.py`打开网页进行对应的参数进行设定(推荐),并点击生成代码  
+也可以选择使用`start.py`启动(注：启动前请配置好详情参数)
 6. 程序运行完毕后，会生成dist文件夹，文件夹下面及为我们需要的目标项目；     
     也可以在配置文件中设置目标项目的位置；
    
@@ -88,4 +89,4 @@
 6. 测试基本业务相关接口；  
 
 三 生成器项目详细使用指南  
-[使用指南](https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》)
+- <a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
