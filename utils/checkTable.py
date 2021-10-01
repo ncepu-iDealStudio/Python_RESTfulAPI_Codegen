@@ -174,7 +174,7 @@ class CheckTable(object):
     @classmethod
     def check_logic_delete(cls, table_dict):
         """
-        检验要逻辑删除的表中是否存在IsDelete字段，剔除不符合规范的表
+        检验要逻辑删除的表中是否存在IsDelete字段且数据类型为int，剔除不符合规范的表
         :return:
         """
         available_table = []
@@ -188,6 +188,11 @@ class CheckTable(object):
                 if 'IsDelete' not in [x['name'] for x in table['columns'].values()]:
                     invalid_table.append(str(table['table_name']))
                     loggings.warning(1, 'The table {} for logical deletion does not have an IsDelete field'.
+                                     format(str(table['table_name'])))
+                elif table['columns']['IsDelete']['type'] != 'int':
+                    # IsDelete字段不为int型
+                    invalid_table.append(str(table['table_name']))
+                    loggings.warning(1, 'The column IsDelete of table {} is not an int type'.
                                      format(str(table['table_name'])))
                 else:
                     available_table.append(str(table['table_name']))
