@@ -1,6 +1,6 @@
-##### 项目说明： Flask_Sqlachemy_RESTfulAPI_Codegen
-一个根据数据库表结构，自动生成Python基于Flask+sqlalchemy框架的接口项目，所生成的接口符合restful风格规范；
-本项目实体层基于flask-sqlacodegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；
+##### 项目说明： Python_RESTfulAPI_Codegen
+能根据已有数据库表结构，自动生成Python完整的基础接口项目(包含接口的文档)；生成的目标项目基于Flask+sqlalchemy框架；所生成的接口符合restful风格规范；
+本项目实体层基于flask-sqlacodegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；基本接口已经生成，用户只需要在此基础上进行扩展增加和具体商业逻辑相关的接口即可；
 
 ##### 生成的目标接口项目特点：
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0905/200245_9c40fbe9_9201274.png "屏幕截图.png")
@@ -8,8 +8,9 @@
    用户可以添加服务层，作为商业逻辑层；
 2. 资源层(接口层)，生成了满足restful风格规范的接口，发布后，可以直接让前端调用；
    生产环境中，用户可以自行扩展接口层，对接新增加的服务层(具体商业逻辑)代码；
-3. 项目定位于先有数据库设计和关系，后基于这些关系生成对象和实体及各层的代码；
+3. 项目定位于先有数据库表设计，后基于这些关系生成对象和实体及各层的代码；
 4. 目标项目包含基于Docker容器的部署脚本；
+5. 生成的目标项目包含在线文档（基于flasgger）；
 
 
 ##### 目标项目详细目录：   
@@ -67,17 +68,17 @@
 
 
 ##### 生成器项目的使用说明： 
-一 数据库表设计（三"必须"三"推荐"）  
-1. 数据库表名称必须全小写，可使用"_"连接。如：user_info;  
-2. 必须包含名称为"AutoID"的自增主键；  
-3. 表的名称和表字段名称必须不是python的关键字。如：def，False都是不正确的  
-4. 表的字段名称推荐使用"大驼峰"命名法。如：UserName；  
-5. 推荐设计一个timestamp类型的"CreateTime"字段，默认为当前时间戳
-6. 推荐设计一个tinyint类型的"IsDelete"字段，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段为必须）
+一 数据库满足以下的设计规范（三"必须"三"建议"）  
+1. 数据库表名称必须全小写，如student；如果涉及多个描述词，可使用"_"连接。如：user_info;  
+2. 数据库表的字段中，必须包含名称为"AutoID"的自增主键；  
+3. 表的名称和表字段名称，不能是python的关键字。如：def，False都是不正确的  
+4. 建议表的字段名称使用"大驼峰"命名法。如：UserName；  
+5. 建议设计一个timestamp类型的"CreateTime"字段，默认为当前时间戳(用来记录数据创建的时间)；
+6. 建议设计一个tinyint类型的"IsDelete"字段(用来实现记录的逻辑删除，0--有效，1--已删除)，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段为必须）
  
 二 生成器项目使用
 1. 先从仓库clone代码到本地;  
-   git clone https://gitee.com/ncepu-bj/Flask_Sqlachemy_RESTfulAPI_Codegen.git
+   git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen
 2. 用Python开发工具(Pycharm或者vscode)打开项目；
 3. 为代码生成器项目配置好虚拟环境；Pythond的版本>=3.8.0
 4. 安装软件运行必须的包：pip install -r requirement.txt  
