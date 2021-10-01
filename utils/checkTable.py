@@ -12,7 +12,6 @@
 
 import keyword
 
-from sqlalchemy import create_engine, MetaData
 from config.setting import Settings
 from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
@@ -23,15 +22,11 @@ class CheckTable(object):
     # check the Primary key
     # 检查table主键
     @classmethod
-    def check_primary_key(cls):
+    def check_primary_key(cls, metadata):
         """
         根据代码生成模式，自动读取所有表或所需表，检验主键后返回合规的表列表
         :return: 符合规范的表名列表，即有且仅有一个自增主键，没有符合规范的情况下返回None
         """
-        url = Settings.MODEL_URL
-        engine = create_engine(url)
-        metadata = MetaData(engine)
-        metadata.reflect(engine)
         tables = []
         # 根据代码生成模式获取表列表
         if Settings.CODEGEN_MODE == 'table':
@@ -206,7 +201,7 @@ class CheckTable(object):
         table_dict = TableMetadata.get_tables_metadata(metadata)
 
         # check table primary key
-        available_tables, invalid_tables = cls.check_primary_key()
+        available_tables, invalid_tables = cls.check_primary_key(metadata)
         for invalid in invalid_tables:
             table_dict.pop(invalid)
 
