@@ -30,8 +30,11 @@ class CheckTable(object):
         tables = []
         # 根据代码生成模式获取表列表
         if Settings.CODEGEN_MODE == 'table':
-            for i in Settings.MODEL_TABLES.replace(' ', '').split(','):
-                tables.append(metadata.tables[i])
+            if Settings.MODEL_TABLES:
+                for i in Settings.MODEL_TABLES.replace(' ', '').split(','):
+                    tables.append(metadata.tables[i])
+            else:
+                tables = metadata.tables.values()
         elif Settings.CODEGEN_MODE == 'database':
             tables = metadata.tables.values()
 
