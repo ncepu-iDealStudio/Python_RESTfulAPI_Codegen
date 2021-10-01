@@ -15,16 +15,18 @@ from configparser import ConfigParser
 # 配置文件目录
 CONFIG_DIR = "config/config.conf"
 CONFIG = ConfigParser()
-CONFIG.read(CONFIG_DIR, encoding='utf-8')
 DATABASE_CONFIG_DIR = "config/database.conf"
 DATABASE_CONFIG = ConfigParser()
-DATABASE_CONFIG.read(DATABASE_CONFIG_DIR, encoding='utf-8')
 SECURITY_CONFIG_DIR = "config/security.conf"
 SECURITY_CONFIG = ConfigParser()
-SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
 
 
 class Settings(object):
+    # 读取配置文件
+    CONFIG.read(CONFIG_DIR, encoding='utf-8')
+    DATABASE_CONFIG.read(DATABASE_CONFIG_DIR, encoding='utf-8')
+    SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
+
     # 生成项目的名称
     PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
     # 项目生成的目标路径
@@ -88,6 +90,11 @@ class Settings(object):
 
     @classmethod
     def reload(cls):
+        # 读取配置文件
+        CONFIG.read(CONFIG_DIR, encoding='utf-8')
+        DATABASE_CONFIG.read(DATABASE_CONFIG_DIR, encoding='utf-8')
+        SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
+
         # 生成项目的名称
         cls.PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
         # 项目生成的目标路径
