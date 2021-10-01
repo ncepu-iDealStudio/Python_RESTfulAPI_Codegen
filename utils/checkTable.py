@@ -240,7 +240,6 @@ class CheckTable(object):
         available_tables = available_table
         invalid_tables += invalid_table
         for invalid in invalid_table:
-            print(1)
             table_dict.pop(invalid)
 
         if len(invalid_tables) > 0:
