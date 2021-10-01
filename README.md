@@ -8,9 +8,9 @@
    用户可以添加服务层，作为商业逻辑层；
 2. 资源层(接口层)，生成了满足restful风格规范的接口，发布后，可以直接让前端调用；
    生产环境中，用户可以自行扩展接口层，对接新增加的服务层(具体商业逻辑)代码；
-3. 项目定位于先有数据库表设计，后基于这些关系生成对象和实体及各层的代码；
+3. 项目定位于先有数据库表设计(数据库及表设计规范，见下面的使用说明)，后基于这些关系生成对象和实体及各层的代码；
 4. 目标项目包含基于Docker容器的部署脚本；
-5. 生成的目标项目包含在线文档（基于flasgger）；
+5. 生成的目标项目包含基础接口的在线接口文档（基于flasgger）；
 
 
 ##### 目标项目详细目录：   
@@ -52,19 +52,6 @@
         ├── response_code.py  
         └── rsa_encryption_decryption.py  
 
-产品特性
-* Supports SQLAlchemy 0.8.x - 1.3.x
-* 支持SQLAlchemy 0.8x - 1.3x
-* Produces declarative code that almost looks like it was hand written
-* 生成的声明性代码几乎看起来像是手写的
-* Produces `PEP 8`_ compliant code
-* 生成的代码符合 `PEP 8`_规范
-* Accurately determines relationships, including many-to-many, one-to-one
-* 准确判断包括多对多与一对一的关系
-* Automatically detects joined table inheritance
-* 自动检测连接表继承
-* Excellent test coverage
-* 出色的测试覆盖率  
 
 
 ##### 生成器项目的使用说明： 
@@ -99,3 +86,17 @@
 
 四 生成器项目详细使用指南  
 - <a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
+
+
+产品特性
+* Supports SQLAlchemy 0.8.x - 1.3.x
+* 支持SQLAlchemy 0.8x - 1.3x
+* Produces declarative code that almost looks like it was hand written
+* 生成的声明性代码几乎看起来像是手写的
+* Produces `PEP 8`_ compliant code
+* 生成的代码符合 `PEP 8`_规范
+* Accurately determines relationships, including many-to-many, one-to-one
+* 准确判断包括多对多与一对一的关系
+* Automatically detects joined table inheritance
+* 自动检测连接表继承
+* Excellent test coverage
