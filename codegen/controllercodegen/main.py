@@ -13,7 +13,7 @@ import os
 
 from codegen import codegen_layer, table_dict, project_dir, target_dir
 from utils.common import new_file_or_dir
-from . import rsa_table_column
+from config.setting import Settings
 from .codegenerator import CodeGenerator
 
 
@@ -22,6 +22,10 @@ def main():
     Generate Controller code
     :return: None
     """
+    # reload settings
+    Settings.reload()
+
+    rsa_table_column = Settings.RSA_TABLE_COLUMN
 
     # return, while codegen_layer is not 'default' or 'controller'
     if codegen_layer not in ['default', 'controller']:
