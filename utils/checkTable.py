@@ -201,17 +201,8 @@ class CheckTable(object):
 
     # 入口函数定义
     @classmethod
-    def main(cls):
+    def main(cls, metadata):
 
-        url = Settings.MODEL_URL
-        engine = create_engine(url)
-        metadata = MetaData(engine)
-        if Settings.CODEGEN_MODE == 'database':
-            # database mode
-            metadata.reflect(engine)
-        else:
-            # table mode
-            metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(','))
         table_dict = TableMetadata.get_tables_metadata(metadata)
 
         # check table primary key
