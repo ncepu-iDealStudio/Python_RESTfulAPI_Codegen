@@ -201,6 +201,9 @@ class CheckTable(object):
     @classmethod
     def main(cls, metadata):
 
+        # reload settings
+        Settings.reload()
+
         table_dict = TableMetadata.get_tables_metadata(metadata)
 
         # check table primary key

@@ -25,6 +25,8 @@ def main():
     :return: None
     """
 
+    Settings.reload()
+
     try:
 
         # 在项目文件夹中创建models的目录

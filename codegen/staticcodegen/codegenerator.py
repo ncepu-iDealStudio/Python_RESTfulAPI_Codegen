@@ -29,6 +29,9 @@ class CodeGenerator(object):
         :return: None
         """
         try:
+            # reload settings
+            Settings.reload()
+
             target_config = ConfigParser()
 
             # write configueration about databse

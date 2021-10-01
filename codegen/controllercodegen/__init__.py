@@ -12,4 +12,7 @@
 
 from config.setting import Settings
 
+# reload settings
+Settings.reload()
+
 rsa_table_column = Settings.RSA_TABLE_COLUMN
