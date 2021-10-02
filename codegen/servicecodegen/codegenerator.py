@@ -43,7 +43,7 @@ class CodeGenerator(object):
                 for columns in table_dict[table]['columns']:
                     columns_name = table_dict[table]['columns'][columns]['name']
                     # If the primary key mode is "DoubleKey", then AutoID will not be used as a filter condition
-                    if columns_name == "AutoID" and table_dict[table]['business_key']:
+                    if table_dict[table]['business_key'] and columns_name == table_dict[table]['primaryKey']:
                         continue
                     filter_conditions += CodeBlockTemplate.single_filter_condition.format(colums_name=columns_name)
                     Fields_list.append("{table_model}.{columns_name}".format(table_model=table_name_initials_upper,

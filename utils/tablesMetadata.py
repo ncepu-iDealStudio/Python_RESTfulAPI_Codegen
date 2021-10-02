@@ -24,6 +24,14 @@ class TableMetadata(object):
     database_type = Settings.DATABASE_TYPE
 
     @classmethod
+    def reload(cls):
+        with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
+            cls.type_mapping = json.load(f)
+
+        with open('config/table_rule.json', 'r', encoding='utf-8') as f:
+            cls.table_rule = json.load(f)
+
+    @classmethod
     def get_tables_metadata(cls, metadata):
         # Get all tables object
         table_objs = metadata.tables.values()
