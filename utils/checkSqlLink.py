@@ -45,6 +45,8 @@ def check_sql_link(dialect, driver, username, password, host, port, database):
     for table in table_dict.values():
         filed = []
         for column in table['columns'].values():
+            if str(column['name']) == table['primaryKey']:
+                continue
             filed.append(str(column['name']))
         data.append({
             'table': str(table['table_name']),
