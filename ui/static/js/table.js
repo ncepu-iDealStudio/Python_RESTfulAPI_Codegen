@@ -20,6 +20,7 @@ function businessKey() {
 }
 
 function toTableInfo() {
+
     let tablename = document.getElementById("tableName");
     let isDeleted = document.getElementById("isDeleted");
     let filed = document.getElementById("filed");
@@ -28,8 +29,19 @@ function toTableInfo() {
     let selectBusinessKey = document.getElementById("selectBusinessKey");
     for (let item in data) {
         if (data[item].table == event.target.id) {
+            for (let filed in data[item]['filed']){
+                console.log(data[item]['filed'][filed]);
+                if(data[item]['filed'][filed]=="IsDelete"){
+                    document.getElementById("isDeleted").disabled=false;
+                    document.getElementById("isDeleted").style="cursor: auto;";
+                    break;
+                }
+                else {
+                    document.getElementById("isDeleted").disabled=true;
+                    document.getElementById("isDeleted").style="cursor: not-allowed;";
+                }
+            }
             currentTable = data[item].table;
-
             tablename.innerText = data[item].table;
             isDeleted.checked = data[item].isdeleted;
             if (data[item].isbusinesskey != "") {
@@ -71,7 +83,6 @@ function toTableInfo() {
             if (data[item].isbusinesskey != "") {
                 selectBusinessKey.value = data[item].isbusinesskey;
             }
-            break;
         }
     }
     let animation = document.getElementById('btn-save');
