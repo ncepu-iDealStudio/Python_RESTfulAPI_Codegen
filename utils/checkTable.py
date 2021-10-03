@@ -32,7 +32,11 @@ class CheckTable(object):
         if Settings.CODEGEN_MODE == 'table':
             if Settings.MODEL_TABLES:
                 for table_name in Settings.MODEL_TABLES.replace(' ', '').split(','):
-                    if metadata.tables.get(table_name):
+                    try:
+                        if not metadata.tables.get(table_name):
+                            continue
+                    except TypeError:
+                        # 由于Table类没有定义Boolean，改用try判断是否为空
                         tables.append(metadata.tables.get(table_name))
             else:
                 tables = metadata.tables.values()
