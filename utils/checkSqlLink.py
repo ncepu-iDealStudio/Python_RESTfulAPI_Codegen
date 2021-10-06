@@ -2,16 +2,14 @@
 # -*- coding:utf-8 -*-
 
 # file:checkSqlLink.py
-# author:吴凯博
+# author:Itsuka
 # datetime:2021/9/16 12:20
 # software: PyCharm
 """
-this is function description
+    检验数据库连接是否成功并返回所有表、字段信息（前端用）
 """
-# import module your need
 
 
-# 检验数据库连接是否成功并返回所有表、字段信息（前端用）
 from sqlalchemy import create_engine, MetaData
 from utils.checkTable import CheckTable
 
