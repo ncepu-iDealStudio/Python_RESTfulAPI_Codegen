@@ -109,7 +109,8 @@ addlist_datas = []"""
 import pytest
 from utils.response_code import RET
 from .datas import *
-{imports}
+from controller.{controllerName}Controller import {controllerName}Controller
+
 
 @pytest.mark.controller
 def test_add():
