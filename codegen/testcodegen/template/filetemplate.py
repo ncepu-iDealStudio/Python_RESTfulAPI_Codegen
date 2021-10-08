@@ -109,72 +109,103 @@ addlist_datas = []"""
 import pytest
 from utils.response_code import RET
 from .datas import *
-from controller.{controllerName}Controller import {controllerName}Controller
+from controller.{controllerName}Controller import {controllerClassName}Controller
 
 
 @pytest.mark.controller
 def test_add():
     for data in add_datas:
-        result = {controllerName}Controller.add(**data)
+        result = {controllerClassName}Controller.add(**data)
         assert result['code'] == RET.OK
 
 
 @pytest.mark.controller
 def test_get():
     for data in get_datas:
-        result = {controllerName}Controller.get(**data)
+        result = {controllerClassName}Controller.get(**data)
         assert result['code'] == RET.OK
 
 
 @pytest.mark.controller
 def test_delet():
     for data in delet_datas:
-        result = {controllerName}Controller.delete(**data)
+        result = {controllerClassName}Controller.delete(**data)
         assert result['code'] == RET.OK
 
 
 @pytest.mark.controller
 def test_update():
     for data in update_datas:
-        result = {controllerName}Controller.update(**data)
+        result = {controllerClassName}Controller.update(**data)
         assert result['code'] == RET.OK
 
 
 @pytest.mark.controller
 def test_addlist():
     for data in addlist_datas:
-        result = {controllerName}Controller.add_list(**data)
+        result = {controllerClassName}Controller.add_list(**data)
         assert result['code'] == RET.OK"""
 
     resource_datas = """#!/usr/bin/env python
-    # -*- coding:utf-8 -*-
-    # add test_datas here:
-    # example:
-    # add_datas = [
-    #     {
-    #         'UserID': 123456789,
-    #         'UserName':xxxxxx,
-    #         ......
-    #     },
-    #     {
-    #         'UserID': 124356363,
-    #         'UserName':xxxxxx,
-    #         ......
-    #     },
-    #     ......
-    # ]
+# -*- coding:utf-8 -*-
+# add test_datas here:
+# example:
+# add_datas = [
+#     {
+#         'UserID': 123456789,
+#         'UserName':xxxxxx,
+#         ......
+#     },
+#     {
+#         'UserID': 124356363,
+#         'UserName':xxxxxx,
+#         ......
+#     },
+#     ......
+# ]
 
-    get_data = []
+get_data = []
 
-    delete_data = []
+delete_data = []
 
-    put_data = []
+put_data = []
 
-    post_data = []
+post_data = []
 
-    get_query_data = []
+get_query_data = []
 
-    joint_query_data = []"""
+joint_query_data = []"""
+
+    test_resource_utils = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+import json
+import requests
+
+def printResponse(response):
+    print('\\n\\n------------------------------------------')
+    print(response.status_code)
+
+    for k, v in response.headers.items():
+        print(f'{k}: {v}')
+
+    print('')
+
+    print(response.content.decode('utf8'))
+    print('------------------------------------------\\n\\n')
+
+
+# 模拟登录,获取token
+def get_token(api_url, request_data):
+    response = requests.post(api_url,
+                             data=request_data
+                             )
+
+    response_data_dict = json.loads(response.text)
+    token = response_data_dict['data']['Token']
+    # printResponse(response)
+    print('token:', token)
+    return token
+    """
 
     test_resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-

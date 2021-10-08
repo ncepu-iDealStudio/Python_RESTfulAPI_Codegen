@@ -61,7 +61,8 @@ class CodeGenerator(object):
                 # test_xController generation
                 test_controller_file = os.path.join(test_xController_dir,
                                                     'test_{0}Controller.py'.format(tableName))
-                test_controller_list = self.controllertest_codegen(tableName)
+                test_controller_list = self.controllertest_codegen(tableName,
+                                                                   tableName[0].upper() + tableName[1:])
 
                 # file write
                 loggings.info(1, 'Generating {0}'.format('Test_{0}Controller'.format(tableName)))
@@ -77,9 +78,16 @@ class CodeGenerator(object):
             # Test_Resource dir generation
             TestResource_dir = os.path.join(test_dir, 'Test_Resource')
             new_file_or_dir(2, TestResource_dir)
+
+            # Test_Resource init generation
             init_file = os.path.join(TestResource_dir, '__init__.py')
             init_list = self.init_codegen()
             file_write(init_file, init_list)
+
+            # Test_Resource  utils  generation
+            utils_file = os.path.join(TestResource_dir, 'utils.py')
+            utils_list = self.resource_utils_codegen()
+            file_write(utils_file, utils_list)
 
             # Test_xResource generation
             for table in table_dict.keys():
@@ -143,9 +151,10 @@ class CodeGenerator(object):
         return FileTemplate.init
 
     # controllertest generation
-    def controllertest_codegen(self, controllerName_str):
+    def controllertest_codegen(self, controllerName_str, controllerClassName_str):
         return FileTemplate.test_controller.format(
-            controllerName=controllerName_str
+            controllerName=controllerName_str,
+            controllerClassName=controllerClassName_str
         )
 
     #  controller_datas generation
@@ -171,3 +180,6 @@ class CodeGenerator(object):
     #  generation
     def resource_datas_codegen(self):
         return FileTemplate.resource_datas
+
+    def resource_utils_codegen(self):
+        return FileTemplate.test_resource_utils
