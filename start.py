@@ -15,6 +15,7 @@ import codegen.staticcodegen.main
 import codegen.controllercodegen.main
 import codegen.resourcecodegen.main
 import codegen.modelcodegen.main
+import codegen.testcodegen.main
 
 from utils.checkConfig import check_config
 from utils.loggings import loggings
@@ -36,7 +37,7 @@ def start():
         loggings.error(1, "Incorrect Configuration File")
         return
 
-        # 第一步
+    # 第一步
     loggings.info(1, "Start to build the Model layer code, please wait...")
     codegen.modelcodegen.main.main()
     loggings.info(1, "Model layer code build completed")
@@ -62,6 +63,11 @@ def start():
     loggings.info(1, "Static resource packaging is complete")
 
     loggings.info(1, "Api project code generation completed")
+
+    # 第六步
+    loggings.info(1, "Start to build the Test layer code, please wait...")
+    codegen.testcodegen.main.main()
+    loggings.info(1, "Test layer code build completed")
 
 
 if __name__ == '__main__':

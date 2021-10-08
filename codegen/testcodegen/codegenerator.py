@@ -10,9 +10,7 @@
 
 import os
 
-from codegen import project_dir, table_dict
-
-from codegen.testcodegen.template.codeblocktemplate import CodeBlockTemplate
+from codegen import table_dict
 from codegen.testcodegen.template.filetemplate import FileTemplate
 from config.setting import Settings
 from utils.common import str_format_convert, new_file_or_dir, file_write
@@ -33,22 +31,6 @@ class CodeGenerator(object):
 
             # test generation
             loggings.info(1, 'Start generating Test layer, please wait...')
-
-            # test init file generation
-            test_init_dir = os.path.join(test_dir, '__init__.py')
-            new_file_or_dir(1, test_init_dir)
-
-            # pytest ini file generation
-            pytestini_dir = os.path.join(test_dir, 'pytest.ini')
-            new_file_or_dir(1, pytestini_dir)
-
-            # test start file generation
-            test_start_dir = os.path.join(test_dir, 'test_start.py')
-            new_file_or_dir(1, test_start_dir)
-
-            # report dir generation
-            report_dir = os.path.join(test_dir, 'report')
-            new_file_or_dir(2, report_dir)
 
             # Test_Controller generation
             loggings.info(1, 'Start generating TestController layer, please wait...')
@@ -189,5 +171,3 @@ class CodeGenerator(object):
     #  generation
     def resource_datas_codegen(self):
         return FileTemplate.resource_datas
-
-    pass
