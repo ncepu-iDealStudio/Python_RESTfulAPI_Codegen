@@ -48,10 +48,6 @@ from flask_restful import Api
 
     resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
-
-from flask_restful import Resource, reqparse
-from flask import g, jsonify
-from flasgger import swag_from
 {imports}
 
 
@@ -75,30 +71,16 @@ class {className}Resource(Resource):
     @swag_from("ymls/{apiName}_put.yml")
     def put(self, {id}):
         parser = reqparse.RequestParser()
-{parameter}
-        kwargs = parser.parse_args()
+{putParameter}        kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {idCheck}
 {putControllerInvoke}
-"""
-
-    other_resource = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-from flask_restful import Resource, reqparse
-from flask import jsonify
-from flasgger import swag_from
-{imports}
-
-
-class {className}OtherResource(Resource):
 
     # add
     @swag_from("ymls/{apiName}_post.yml")
     def post(self):
         parser = reqparse.RequestParser()
-{postParameter}
-        kwargs = parser.parse_args()
+{postParameter}        kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 {postControllerInvoke}
 
@@ -106,19 +88,25 @@ class {className}OtherResource(Resource):
     @swag_from("ymls/{apiName}_gets.yml")
     def get(self):
         parser = reqparse.RequestParser()
-{getParameter}
-        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+{getsParameter}        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
-{getControllerInvoke}
+{getsControllerInvoke}
+"""
+
+    other_resource = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+{imports}
+
+
+class {className}OtherResource(Resource):
 
     # join table query
     @classmethod
     def joint_query(cls):
         parser = reqparse.RequestParser()
-{queryParameter}
-        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+{queryParameter}        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
