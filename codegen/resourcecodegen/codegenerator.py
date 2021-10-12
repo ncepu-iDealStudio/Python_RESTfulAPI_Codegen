@@ -26,7 +26,7 @@ class CodeGenerator(object):
 
     def __init__(self):
         super(CodeGenerator, self).__init__()
-        self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object'}
+        self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object', 'float': 'float'}
 
     # resource layer generation
     def resource_generator(self, api_dir, app_dir):
@@ -101,8 +101,6 @@ class CodeGenerator(object):
                 with open(os.path.join(ymls_dir, '{0}'.format(str_format_convert(
                         table_dict[table].get('table_name'))) + '_delete.yml'), 'w', encoding='utf8') as f:
                     f.write(FileTemplate.yml_delete_template.format(table_dict[table].get('table_name')))
-
-            return
         except Exception as e:
             loggings.exception(1, e)
             return
