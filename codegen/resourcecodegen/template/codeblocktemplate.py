@@ -100,6 +100,7 @@ from flask import jsonify
 from controller.{0}Controller import {1}Controller
 from service.{0}Service import {1}Service
 from utils import commons
+from utils.loggings import loggings
 from utils.response_code import RET"""
 
     other_resource_get_service_invoke = """
