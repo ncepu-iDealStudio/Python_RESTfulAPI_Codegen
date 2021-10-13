@@ -54,6 +54,7 @@ class CodeGenerator(object):
                     continue
                 if column['name'] == 'IsDelete':
                     continue
+
                 # the column do not encrypt
                 elif not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column[table['table_name']]:
                     if table['business_key'].get('column') != column['name']:
@@ -73,7 +74,9 @@ class CodeGenerator(object):
                             text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                 else:
                     text = CodeBlockTemplate.rsa_add.format(column=column['name'])
+
                 column_init += text
+
             add = FileTemplate.add_template.format(
                 parent_model=parent_model,
                 column_init=column_init,
@@ -101,6 +104,7 @@ class CodeGenerator(object):
                             text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
                         else:
                             text = CodeBlockTemplate.rsa_get_filter_num.format(column=column['name'])
+
                     else:
                         # column type is a string
                         if not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column.get(
@@ -109,7 +113,9 @@ class CodeGenerator(object):
                             text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
                         else:
                             text = CodeBlockTemplate.rsa_get_filter_str.format(column=column['name'])
+
                     get_filter_list += text
+
             get = FileTemplate.get_template.format(
                 primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
                 get_filter_list=get_filter_list if get_filter_list else 'pass',
@@ -138,11 +144,13 @@ class CodeGenerator(object):
                 for sra_column in rsa_table_column[table['table_name']]:
                     text = CodeBlockTemplate.rsa_update.format(column=sra_column)
                     rsa_update += text
+
             if not table['is_logic_delete']:
                 update = FileTemplate.update_template_physical.format(
                     primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
                     rsa_update=rsa_update
                 )
+
             else:
                 update = FileTemplate.update_template_logic.format(
                     primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
@@ -157,6 +165,7 @@ class CodeGenerator(object):
                     continue
                 if column['name'] == 'IsDelete':
                     continue
+
                 # the column do not encrypt
                 elif not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column[table['table_name']]:
                     if table['business_key'].get('column') != column['name']:
@@ -174,9 +183,12 @@ class CodeGenerator(object):
                         else:
                             # 是业务主键但是没有生成规则
                             text = CodeBlockTemplate.add_list_column_init.format(column=column['name'])
+
                 else:
                     text = CodeBlockTemplate.rsa_add.format(column=column['name'])
+
                 add_list_column_init += text
+
             add_list = FileTemplate.add_list_template.format(
                 parent_model=parent_model,
                 add_list_column_init=add_list_column_init,
@@ -193,6 +205,7 @@ class CodeGenerator(object):
         inti_file = os.path.join(controller_dir, '__init__.py')
         with open(inti_file, 'w', encoding='utf-8') as fw:
             fw.write(FileTemplate.init_template)
+
         loggings.info(1, '__init__ generated successfully')
         for file_name, code in codes.items():
             loggings.info(1, 'Generating {}...'.format(file_name))

@@ -5,6 +5,7 @@
 # author:Itsuka
 # datetime:2021/9/16 12:20
 # software: PyCharm
+
 """
     检验数据库连接是否成功并返回所有表、字段信息（前端用）
 """

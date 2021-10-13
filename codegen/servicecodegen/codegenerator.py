@@ -39,6 +39,7 @@ class CodeGenerator(object):
                 # Database query conditions
                 filter_conditions = '            filter_list.append(cls.IsDelete == 0)\n' if table_dict[table][
                     'is_logic_delete'] else ""
+
                 # Traverse each column to generate the filter conditions
                 for columns in table_dict[table]['columns']:
                     columns_name = table_dict[table]['columns'][columns]['name']
@@ -84,23 +85,26 @@ class CodeGenerator(object):
                 Fields = ', '.join(Fields_list)
 
                 # Format the code block template
-                imports = CodeBlockTemplate.service_import.format(table_name=table_name,
-                                                                  table_name_initials_upper=table_name_initials_upper,
-                                                                  foreign_import=foreign_import)
+                imports = CodeBlockTemplate.service_import.format(
+                    table_name=table_name,
+                    table_name_initials_upper=table_name_initials_upper,
+                    foreign_import=foreign_import
+                )
 
                 # Format the file template
-                template = FileTemplate.template.format(imports=imports,
-                                                        table_name_initials_upper=table_name_initials_upper,
-                                                        foreign_import=foreign_import,
-                                                        filter_conditions=filter_conditions,
-                                                        # table_model=table_model,
-                                                        result_name=result_name + '_info',
-                                                        Fields=Fields,
-                                                        join_table_statement=join_table_statement,
-                                                        exception_return=CodeBlockTemplate.exception_return,
-                                                        notdata_return=CodeBlockTemplate.notdata_return,
-                                                        success_return=CodeBlockTemplate.success_return
-                                                        )
+                template = FileTemplate.template.format(
+                    imports=imports,
+                    table_name_initials_upper=table_name_initials_upper,
+                    foreign_import=foreign_import,
+                    filter_conditions=filter_conditions,
+                    # table_model=table_model,
+                    result_name=result_name + '_info',
+                    Fields=Fields,
+                    join_table_statement=join_table_statement,
+                    exception_return=CodeBlockTemplate.exception_return,
+                    notdata_return=CodeBlockTemplate.notdata_return,
+                    success_return=CodeBlockTemplate.success_return
+                )
 
                 # Write the template to the file
                 with open(os.path.join(service_path, table_name + "Service.py"), 'w',

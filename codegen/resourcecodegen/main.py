@@ -16,7 +16,6 @@ import os
 from codegen import codegen_layer, table_dict
 from codegen.resourcecodegen.codegenerator import CodeGenerator
 from config.setting import Settings
-from utils.common import new_file_or_dir, file_write
 from utils.loggings import loggings
 
 
@@ -25,6 +24,7 @@ def main():
     Generate resource layer code
     :return: None
     """
+
     try:
         #  It returns directly if the code generation level is not the 'default' or 'resource'
         if codegen_layer not in ['default', 'resource']:
@@ -39,5 +39,6 @@ def main():
 
         generator = CodeGenerator()
         generator.resource_generator(api_dir, app_dir)
+
     except Exception as e:
         loggings.error(1, str(e))

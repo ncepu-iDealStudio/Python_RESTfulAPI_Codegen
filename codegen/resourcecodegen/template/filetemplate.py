@@ -20,6 +20,7 @@ class FileTemplate():
     app_init_: template for app/__init__.py
     app_setting_: template for app/__setting__.py
     """
+
     init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 

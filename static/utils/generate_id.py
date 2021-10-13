@@ -5,9 +5,10 @@
 # author:jackiex
 # datetime:2021/9/9 14:33
 # software: PyCharm
-'''
+
+"""
     为数据库的某些需要的字段，生成唯一健
-'''
+"""
 
 
 # import module your need

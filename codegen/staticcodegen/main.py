@@ -7,8 +7,9 @@
 # software: PyCharm
 
 """
-    this is function description
+    静态资源层代码生成入口
 """
+
 import os
 
 from codegen import project_dir
@@ -19,11 +20,13 @@ from utils.loggings import loggings
 
 def main():
     """
+    步骤：
         一、 按照当前项目的config/security.conf 文件 生成 static/config/security.conf
-        二、 生成static/app  和static/manage.py
+        二、 生成static/app
         三、 拷贝static 到 dist文件夹
     :return:
     """
+
     try:
         # 第一步
         os.makedirs(os.path.join(project_dir, "config"), exist_ok=True)

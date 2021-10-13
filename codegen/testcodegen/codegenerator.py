@@ -119,6 +119,7 @@ class CodeGenerator(object):
             loggings.info(1, 'Generating TestResource layer complete')
 
             loggings.info(1, 'Generating Test layer complete')
+
         except Exception as e:
             loggings.exception(1, e)
             return

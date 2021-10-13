@@ -19,6 +19,7 @@ class CodeBlockTemplate():
     other_resource_: template for api_x/otherResource.py
     app_init_: template for api_x/app.__init__.py
     """
+
     primary_key = '"/{0}/<int:{1}>", "/{0}/"'
 
     parameter_args = '        parser.add_argument("{0}", type={1}, location="args", required=False, help="{0}参数类型不正确或缺失")\n'

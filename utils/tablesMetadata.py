@@ -9,6 +9,7 @@
 """
     Get metadata of all tables
 """
+
 import json
 
 from config.setting import Settings

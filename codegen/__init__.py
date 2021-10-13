@@ -9,6 +9,7 @@
 """
     load public settings and Initialize the parameters
 """
+
 from sqlalchemy import create_engine, MetaData
 
 from config.setting import Settings
@@ -24,15 +25,29 @@ TableMetadata.reload()
 url = Settings.MODEL_URL
 engine = create_engine(url)
 metadata = MetaData(engine)
+
 if Settings.CODEGEN_MODE == 'database':
     # database mode
     metadata.reflect(engine)
 else:
     # table mode
     metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(','))
+
+# 代码生成的层次
 codegen_layer = Settings.CODEGEN_LAYER
+
+# 数据库魔术
 schema = Settings.MODEL_SCHEMA
+
+# 无视图
 noviews = Settings.MODEL_NOVIEWS
-table_dict = CheckTable.main(metadata)
+
+# 项目路径
 project_dir = Settings.PROJECT_DIR
+
+# 目标项目路径
 target_dir = Settings.TARGET_DIR
+
+# 数据表信息字典
+table_dict = CheckTable.main(metadata)
+

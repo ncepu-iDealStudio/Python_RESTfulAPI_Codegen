@@ -9,6 +9,7 @@
 """
     this is function description
 """
+
 import os
 import shutil
 from configparser import ConfigParser
@@ -57,6 +58,7 @@ class CodeGenerator(object):
 
             with open(configuration_file_path, 'w', encoding="utf-8") as f:
                 target_config.write(f)
+
         except Exception as e:
             loggings.exception(1, e)
 
@@ -90,5 +92,6 @@ class CodeGenerator(object):
                         # 拷贝
                         shutil.copy(src_file, target_file)
                         loggings.info(1, "The file '{}' has been copied to '{}'".format(src_file, target_file))
+
         except Exception as e:
             loggings.exception(1, e)

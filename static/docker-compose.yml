@@ -12,7 +12,7 @@ services:
        - /docker/deploy/your project/logs:/deploy/app/your project/logs/
        - /docker/deploy/your project/gunicorn_log:/deploy/app/your project/gunicorn_log
      ports:
-       - "8004:8003"
+       - "5000:5000"
      command:
        - /bin/bash
        - -c

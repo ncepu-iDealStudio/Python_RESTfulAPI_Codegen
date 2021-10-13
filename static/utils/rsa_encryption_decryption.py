@@ -50,6 +50,7 @@ class RSAEncryptionDecryption(object):
         except Exception as e:
             loggings.error(e)
             return None
+
         return text
 
 

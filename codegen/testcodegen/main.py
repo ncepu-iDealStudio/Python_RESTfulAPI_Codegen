@@ -6,7 +6,6 @@
 # @Software:PyCharm
 
 
-# file write
 import os
 
 from codegen import codegen_layer, table_dict
@@ -22,6 +21,7 @@ def main():
     Generate resource layer code
     :return: None
     """
+
     try:
         #  It returns directly if the code generation level is not the 'default' or 'resource'
         if codegen_layer not in ['default', 'resource']:
@@ -53,5 +53,6 @@ def main():
 
         generator = CodeGenerator()
         generator.test_generator(test_dir)
+
     except Exception as e:
         loggings.error(1, str(e))

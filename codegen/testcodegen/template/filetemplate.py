@@ -5,7 +5,7 @@
 # @File:filetemplate.py
 # @Software:PyCharm
 
-class FileTemplate():
+class FileTemplate(object):
     """
     init_: template for Test_Controller/init.py,Test_Resource/init.py,
     test_init_:template for test/init.py
@@ -17,6 +17,7 @@ class FileTemplate():
     test_resource_: template for Test_xResource/test_xResource.py
 
     """
+
     init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
     """

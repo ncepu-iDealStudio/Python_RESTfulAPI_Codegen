@@ -9,6 +9,7 @@
 """
   应用的配置加载项
 """
+
 import os
 from configparser import ConfigParser
 

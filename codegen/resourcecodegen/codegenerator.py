@@ -101,6 +101,7 @@ class CodeGenerator(object):
                 with open(os.path.join(ymls_dir, '{0}'.format(str_format_convert(
                         table_dict[table].get('table_name'))) + '_delete.yml'), 'w', encoding='utf8') as f:
                     f.write(FileTemplate.yml_delete_template.format(table_dict[table].get('table_name')))
+
         except Exception as e:
             loggings.exception(1, e)
             return
@@ -114,6 +115,7 @@ class CodeGenerator(object):
             # template generation
             blueprint_str = CodeBlockTemplate.init_blueprint.format(blueprint_name.lower(), blueprint_name)
             return FileTemplate.init.format(blueprint=blueprint_str)
+
         except Exception as e:
             loggings.exception(1, e)
             return
@@ -147,6 +149,7 @@ class CodeGenerator(object):
             return FileTemplate.urls.format(
                 imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str,
                 serviceResource=service_resource_str)
+
         except Exception as e:
             loggings.exception(1, e)
             return
@@ -173,7 +176,7 @@ class CodeGenerator(object):
                 if column.get('name') != table.get('primaryKey') and column.get('name') != table.get(
                         'business_key').get('column'):
                     parameter_gets += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
-                                                                                   column.get('type'))
+                                                                                    column.get('type'))
                     parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
                                                                                    column.get('type'))
 
@@ -189,20 +192,22 @@ class CodeGenerator(object):
 
             postControllerInvoke_str = CodeBlockTemplate.resource_post_controller_invoke.format(className_str)
 
-            return FileTemplate.resource.format(imports=imports_str,
-                                                apiName=api_name,
-                                                className=className_str,
-                                                id=id_str,
-                                                idCheck=idCheck_str,
-                                                putParameter=parameter_gets,
-                                                getsParameter=parameter_gets,
-                                                postParameter=parameter_post,
-                                                getControllerInvoke=getControllerInvoke_str,
-                                                deleteControllerInvoke=deleteControllerInvoke_str,
-                                                putControllerInvoke=putControllerInvoke_str,
-                                                getsControllerInvoke=getsControllerInvoke_str,
-                                                postControllerInvoke=postControllerInvoke_str
-                                                )
+            return FileTemplate.resource.format(
+                imports=imports_str,
+                apiName=api_name,
+                className=className_str,
+                id=id_str,
+                idCheck=idCheck_str,
+                putParameter=parameter_gets,
+                getsParameter=parameter_gets,
+                postParameter=parameter_post,
+                getControllerInvoke=getControllerInvoke_str,
+                deleteControllerInvoke=deleteControllerInvoke_str,
+                putControllerInvoke=putControllerInvoke_str,
+                getsControllerInvoke=getsControllerInvoke_str,
+                postControllerInvoke=postControllerInvoke_str
+            )
+
         except Exception as e:
             loggings.exception(1, e)
             return
@@ -232,13 +237,15 @@ class CodeGenerator(object):
 
             getServiceInvoke_str = CodeBlockTemplate.other_resource_get_service_invoke.format(className_str)
 
-            return FileTemplate.other_resource.format(imports=imports_str,
-                                                      apiName=api_name,
-                                                      className=className_str,
-                                                      id=id_str,
-                                                      queryParameter=parameter_query,
-                                                      getServiceInvoke=getServiceInvoke_str
-                                                      )
+            return FileTemplate.other_resource.format(
+                imports=imports_str,
+                apiName=api_name,
+                className=className_str,
+                id=id_str,
+                queryParameter=parameter_query,
+                getServiceInvoke=getServiceInvoke_str
+            )
+
         except Exception as e:
             loggings.exception(1, e)
             return
@@ -249,12 +256,14 @@ class CodeGenerator(object):
             # app_init
             blueprint_register_str = '''from api_{0}.apiVersionResource import apiversion_blueprint
     app.register_blueprint(apiversion_blueprint, url_prefix="/api_{0}")\n'''.format(Settings.API_VERSION)
+
             for table in tables:
                 table_name = str_format_convert(tables[str(table)].get('table_name'))
                 blueprint_name = table_name.lower()
                 blueprint_register_str += CodeBlockTemplate.app_init_blueprint.format(
                     table_name, Settings.API_VERSION, blueprint_name,
                 )
+
             # print(blueprint_register_str)
             app_init_file = os.path.join(app_dir, '__init__.py')
             new_file_or_dir(1, app_init_file)
@@ -305,6 +314,7 @@ class CodeGenerator(object):
                         'business_key').get('column'):
                     parameter += CodeBlockTemplate.yml_get_parameter_template.format(column.get('name'),
                                                                                      self.maps[column.get('type')])
+
             else:
                 if column.get('name') != table.get('primaryKey'):
                     parameter += CodeBlockTemplate.yml_get_parameter_template.format(column.get('name'),
@@ -325,6 +335,7 @@ class CodeGenerator(object):
                         'business_key').get('column'):
                     parameter += CodeBlockTemplate.yml_post_parameter_template.format(column.get('name'),
                                                                                       self.maps[column.get('type')])
+
             else:
                 if column.get('name') != table.get('primaryKey'):
                     parameter += CodeBlockTemplate.yml_post_parameter_template.format(column.get('name'),
@@ -345,6 +356,7 @@ class CodeGenerator(object):
                         'business_key').get('column'):
                     parameter += CodeBlockTemplate.yml_put_parameter_template.format(column.get('name'),
                                                                                      self.maps[column.get('type')])
+
             else:
                 if column.get('name') != table.get('primaryKey'):
                     parameter += CodeBlockTemplate.yml_put_parameter_template.format(column.get('name'),
