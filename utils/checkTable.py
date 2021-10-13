@@ -42,6 +42,9 @@ class CheckTable(object):
                 tables = metadata.tables.values()
         elif Settings.CODEGEN_MODE == 'database':
             tables = metadata.tables.values()
+        else:
+            loggings.warning(1, 'codegen_mode goes wrong, code generated according to database mode')
+            tables = metadata.tables.values()
 
         available_tables = []
         invalid_tables = []
@@ -248,10 +251,11 @@ class CheckTable(object):
             table_dict.pop(invalid)
 
         if len(invalid_tables) > 0:
-            loggings.warning(1, "The following {0} tables do not meet the specifications and cannot "
-                                "be generated: {1}".format(len(invalid_tables), ",".join(invalid_tables)))
+            loggings.warning(1, "A total of {0} tables check passed.\n"
+                                "The following {1} tables do not meet the specifications and cannot "
+                                "be generated: {2}".format(len(available_tables), len(invalid_tables), ",".join(invalid_tables)))
             return table_dict
 
         loggings.info(1, "All table checks passed, a total of {0} "
-                         "tables ".format(len(available_tables + invalid_tables)))
+                         "tables ".format(len(available_tables)))
         return table_dict
