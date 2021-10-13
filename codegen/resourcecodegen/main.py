@@ -16,7 +16,6 @@ import os
 from codegen import codegen_layer, table_dict
 from codegen.resourcecodegen.codegenerator import CodeGenerator
 from config.setting import Settings
-from utils.common import new_file_or_dir, file_write
 from utils.loggings import loggings
 
 

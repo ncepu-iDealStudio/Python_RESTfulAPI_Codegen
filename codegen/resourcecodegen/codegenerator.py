@@ -18,7 +18,7 @@ from codegen import project_dir, table_dict
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
 from config.setting import Settings
-from utils.common import str_format_convert, new_file_or_dir, file_write
+from utils.common import str_format_convert
 from utils.loggings import loggings
 
 
@@ -257,7 +257,7 @@ class CodeGenerator(object):
                 )
             # print(blueprint_register_str)
             app_init_file = os.path.join(app_dir, '__init__.py')
-            new_file_or_dir(1, app_init_file)
+            # new_file_or_dir(1, app_init_file)
             with open(app_init_file, 'w', encoding='utf8') as f:
                 f.write(FileTemplate.app_init.format(blueprint_register=blueprint_register_str))
 
@@ -278,10 +278,11 @@ class CodeGenerator(object):
         permission.append('flasgger.static')
         permission.append('flasgger.apispec_1')
 
-        permission_str = FileTemplate.manage.format(permission=permission)
-        new_file_or_dir(2, project_dir)
+        # new_file_or_dir(2, project_dir)
+        os.makedirs(project_dir, exist_ok=True)
         manage_file = os.path.join(project_dir, 'manage.py')
-        file_write(manage_file, permission_str)
+        with open(manage_file, 'w', encoding='utf8') as f:
+            f.write(FileTemplate.manage.format(permission=permission))
 
     # yml generation
     def yml_get_codegen(self, table):
