@@ -38,6 +38,8 @@ def index():
         conf = configparser.ConfigParser()
         conf.read(configfile, encoding='UTF-8')
         conf.set("MODEL", "TABLES", '')
+        with open(configfile, "w") as f:
+            conf.write(f)
         # 检查数据库链接
         result_sql = check_sql_link(dialect, driver, username, password, host, port, database)
 
