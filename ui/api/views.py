@@ -32,6 +32,12 @@ def index():
         username = request.form.get("username")
         password = request.form.get("password")
 
+
+        # tables 为空
+        configfile = "config/config.conf"
+        conf = configparser.ConfigParser()
+        conf.read(configfile, encoding='UTF-8')
+        conf.set("MODEL", "TABLES", '')
         # 检查数据库链接
         result_sql = check_sql_link(dialect, driver, username, password, host, port, database)
 
