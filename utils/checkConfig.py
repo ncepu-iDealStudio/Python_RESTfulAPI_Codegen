@@ -35,9 +35,9 @@ def check_config():
             'static_resource_dir': Settings.STATIC_RESOURCE_DIR,
             # 'primary_key': Settings.PRIMARY_KEY
         }
-        for k, v in parameter.items():
-            if not v:
-                raise Exception('{}参数为空'.format(k))
+        for key, value in parameter.items():
+            if not value:
+                raise Exception('{}参数为空'.format(key))
 
         # 读取DATABASE参数
         database = {
@@ -52,11 +52,11 @@ def check_config():
             'sqlalchemy_pool_size': Settings.SQLALCHEMY_POOL_SIZE,
             'sqlalchemy_max_overflow': Settings.SQLALCHEMY_MAX_OVERFLOW
         }
-        for k, v in database.items():
-            if k == 'password':
+        for key, value in database.items():
+            if key == 'password':
                 continue
-            if not v:
-                raise Exception('{}参数为空'.format(k))
+            if not value:
+                raise Exception('{}参数为空'.format(key))
 
         # 读取MODEL参数
         if Settings.CODEGEN_LAYER in ['default', 'model']:
@@ -77,9 +77,9 @@ def check_config():
             controller = {
                 # 'record_delete_way': Settings.CONTROLLER_RECORD_DELETE_WAY
             }
-            # for k, v in controller.items():
-            #     if not v:
-            #         raise Exception('{}参数缺失'.format(k))
+            # for key, value in controller.items():
+            #     if not value:
+            #         raise Exception('{}参数缺失'.format(key))
         # 读取RESOURCE参数
         if Settings.CODEGEN_LAYER in ['default', 'resource']:
             # 代码生成层级为默认或接口层，读取RESOURCE参数
@@ -115,8 +115,8 @@ def check_config():
         engine = create_engine(Settings.MODEL_URL)
         metadata = MetaData(engine)
         metadata.reflect(engine)
-        with open('config/table_rule.json', 'r', encoding='utf-8') as f:
-            table_rule = json.load(f)
+        with open('config/table_rule.json', 'r', encoding='utf-8') as fr:
+            table_rule = json.load(fr)
 
         if Settings.CODEGEN_MODE == 'table':
             # 检验数据库中是否存在参数中的表名

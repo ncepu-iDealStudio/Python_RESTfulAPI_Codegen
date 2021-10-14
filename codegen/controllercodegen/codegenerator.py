@@ -25,7 +25,7 @@ from utils.loggings import loggings
 class CodeGenerator(object):
 
     def __init__(self, table_dict):
-        super(CodeGenerator, self).__init__()
+        super().__init__()
         self.table_dict = table_dict
 
     def controller_codegen(self, controller_dir, rsa_table_column):

@@ -19,6 +19,7 @@ from utils.tablesMetadata import TableMetadata
 
 class CheckTable(object):
 
+
     # check the Primary key
     # 检查table主键
     @classmethod
