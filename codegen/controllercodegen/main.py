@@ -11,8 +11,7 @@
 """
 import os
 
-from codegen import codegen_layer, table_dict, project_dir, target_dir
-from utils.common import new_file_or_dir
+from codegen import codegen_layer, table_dict, project_dir
 from config.setting import Settings
 from .codegenerator import CodeGenerator
 
@@ -34,11 +33,8 @@ def main():
     if not table_dict:
         return
 
-    # create the target dir
-    new_file_or_dir(2, target_dir)
-    new_file_or_dir(2, project_dir)
-    controller_dir = os.path.join(project_dir, 'controller')
-    new_file_or_dir(2, controller_dir)
+    # create the controller file
+    os.makedirs(controller_dir := os.path.join(project_dir, 'controller'), exist_ok=True)
 
     generator = CodeGenerator(table_dict)
     generator.controller_codegen(
