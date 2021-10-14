@@ -36,39 +36,34 @@ class CodeGenerator(object):
             loggings.info(1, 'Start generating TestController layer, please wait...')
 
             # Test_Controller dir generation
-            TestController_dir = os.path.join(test_dir, 'Test_Controller')
-            new_file_or_dir(2, TestController_dir)
-            init_file = os.path.join(TestController_dir, '__init__.py')
-            init_list = self.init_codegen()
-            file_write(init_file, init_list)
+            os.makedirs(TestController_dir := os.path.join(test_dir, 'Test_Controller'), exist_ok=True)
+            with open(os.path.join(TestController_dir, '__init__.py'), 'w', encoding='utf8') as f:
+                f.write(self.init_codegen())
 
             # Test_xController generation
             for table in table_dict.keys():
                 tableName = str_format_convert(table_dict[table].get('table_name'))
 
-                test_xController_dir = os.path.join(test_dir, TestController_dir,
-                                                    'Test_{0}Controller'.format(tableName))
-                new_file_or_dir(2, test_xController_dir)
+                os.makedirs(test_xController_dir := os.path.join(test_dir, TestController_dir,
+                                                                 'Test_{0}Controller'.format(tableName)), exist_ok=True)
 
                 # init generation
-                init_file = os.path.join(test_xController_dir, '__init__.py')
-                init_list = self.init_codegen()
+                with open(os.path.join(test_xController_dir, '__init__.py'), 'w', encoding='utf8') as f:
+                    f.write(self.init_codegen())
 
                 # datas.py generation
-                datas_file = os.path.join(test_xController_dir, 'datas.py')
-                datas_list = self.controller_datas_codegen()
+                with open(os.path.join(test_xController_dir, 'datas.py'), 'w', encoding='utf8') as f:
+                    f.write(self.controller_datas_codegen())
 
                 # test_xController generation
-                test_controller_file = os.path.join(test_xController_dir,
-                                                    'test_{0}Controller.py'.format(tableName))
-                test_controller_list = self.controllertest_codegen(tableName,
-                                                                   tableName[0].upper() + tableName[1:])
+                with open(os.path.join(test_xController_dir, 'test_{0}Controller.py'.format(tableName)), 'w',
+                          encoding='utf8') as f:
+                    f.write(self.controllertest_codegen(tableName,
+                                                        tableName[0].upper() + tableName[1:]))
 
                 # file write
                 loggings.info(1, 'Generating {0}'.format('Test_{0}Controller'.format(tableName)))
-                file_write(init_file, init_list)
-                file_write(datas_file, datas_list)
-                file_write(test_controller_file, test_controller_list)
+
 
             loggings.info(1, 'Generating TestController layer complete')
 
@@ -76,45 +71,39 @@ class CodeGenerator(object):
             loggings.info(1, 'Start generating TestResource layer, please wait...')
 
             # Test_Resource dir generation
-            TestResource_dir = os.path.join(test_dir, 'Test_Resource')
-            new_file_or_dir(2, TestResource_dir)
+            os.makedirs(TestResource_dir := os.path.join(test_dir, 'Test_Resource'), exist_ok=True)
 
             # Test_Resource init generation
-            init_file = os.path.join(TestResource_dir, '__init__.py')
-            init_list = self.init_codegen()
-            file_write(init_file, init_list)
+            with open(os.path.join(TestResource_dir, '__init__.py'), 'w', encoding='utf8') as f:
+                f.write(self.init_codegen())
 
             # Test_Resource  utils  generation
-            utils_file = os.path.join(TestResource_dir, 'utils.py')
-            utils_list = self.resource_utils_codegen()
-            file_write(utils_file, utils_list)
+            with open(os.path.join(TestResource_dir, 'utils.py'), 'w', encoding='utf8') as f:
+                f.write(self.resource_utils_codegen())
 
             # Test_xResource generation
             for table in table_dict.keys():
                 tableName = str_format_convert(table_dict[table].get('table_name'))
 
-                test_xResource_dir = os.path.join(test_dir, TestResource_dir,
-                                                  'Test_{0}Resource'.format(tableName))
-                new_file_or_dir(2, test_xResource_dir)
+                os.makedirs(test_xResource_dir := os.path.join(test_dir, TestResource_dir,
+                                                               'Test_{0}Resource'.format(tableName)), exist_ok=True)
 
                 # init generation
-                init_file = os.path.join(test_xResource_dir, '__init__.py')
-                init_list = self.init_codegen()
+                with open(os.path.join(test_xResource_dir, '__init__.py'), 'w', encoding='utf8') as f:
+                    f.write(self.init_codegen())
 
                 # datas.py generation
-                datas_file = os.path.join(test_xResource_dir, 'datas.py')
-                datas_list = self.resource_datas_codegen()
+                with open(os.path.join(test_xResource_dir, 'datas.py'), 'w', encoding='utf8') as f:
+                    f.write(self.resource_datas_codegen())
 
                 # test_xResource generation
-                test_rescource_file = os.path.join(test_xResource_dir,
-                                                   'test_{0}Controller.py'.format(tableName))
-                test_rescource_list = self.resourcetest_codegen(tableName)
+                with open(os.path.join(test_xResource_dir, 'test_{0}Controller.py'.format(tableName)), 'w',
+                          encoding='utf8') as f:
+                    f.write(self.resourcetest_codegen(tableName))
 
                 # file write
                 loggings.info(1, 'Generating {0}'.format('Test_{0}Controller'.format(tableName)))
-                file_write(init_file, init_list)
-                file_write(datas_file, datas_list)
-                file_write(test_rescource_file, test_rescource_list)
+
 
             loggings.info(1, 'Generating TestResource layer complete')
 
@@ -123,7 +112,7 @@ class CodeGenerator(object):
         except Exception as e:
             loggings.exception(1, e)
             return
-        pass
+
 
     # init generation
     def init_codegen(self):
