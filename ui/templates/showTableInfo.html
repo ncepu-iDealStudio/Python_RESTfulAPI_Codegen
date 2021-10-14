@@ -43,11 +43,13 @@
                             </td>
                             <td>
                                 {% for itemencrypt in item.encrypt %}
-                                    {{ itemencrypt }},
-                                {% endfor %}
-                                {% if item.encrypt==[] %}
+                                    {{ itemencrypt }}
+                                    {% if not loop.last %}
+                                        ,
+                                    {% endif %}
+                                {% else %}
                                     /
-                                {% endif %}
+                                {% endfor %}
                             </td>
                             <td>
                                 {{ item.isbusinesskey }}
