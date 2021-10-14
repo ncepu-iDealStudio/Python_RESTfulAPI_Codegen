@@ -40,8 +40,13 @@
                             <script type="text/javascript">
                                 data.push("{{item}}")
                             </script>
-                            <li onclick=setActive()><a id="{{ item.table }}" onclick=toTableInfo()>{{ item.table }}<span
-                                    class="glyphicon glyphicon-cog"></span></a>
+                            <li onclick=setActive()><a id="{{ item.table }}" onclick=toTableInfo()>{{ item.table }}
+                                {% if item.issave=='true' %}
+                                    <span class="glyphicon glyphicon-cog" style="color:#0F9D24"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                {% endif %}
+                            </a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -87,7 +92,7 @@
                        title="业务主键生成规则使用已定义的规则：‘create_id_by_autoID’,‘create_hashlib_id’,‘create_uid’.以及无生成规则，默认为无生成规则"><span
                             class="glyphicon glyphicon-question-sign"></span></a>
 
-{#                    <input type="text" class="form-control" id="textRule">#}
+                    {#                    <input type="text" class="form-control" id="textRule">#}
                     <select class="form-control" id="textRule">
                         <option></option>
                         <option>create_id_by_autoID</option>

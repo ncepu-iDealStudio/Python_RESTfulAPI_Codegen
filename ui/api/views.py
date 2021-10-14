@@ -41,6 +41,8 @@ def index():
             conf.write(f)
         # 检查数据库链接
         result_sql = check_sql_link(dialect, driver, username, password, host, port, database)
+        global tabledata
+        tabledata = result_sql['data']
 
         if result_sql['code']:
             # 填写配置文件
@@ -56,7 +58,7 @@ def index():
             conf.set("DEFAULT", "PASSWORD", password)
             with open(configfile, "w") as f:
                 conf.write(f)
-            return redirect(url_for('table', info=result_sql['data']))
+            return redirect(url_for('table'))
 
         else:
             return render_template("index.html", message=result_sql['message'])
@@ -64,11 +66,10 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/table/<info>')
-def table(info):
-    info = ast.literal_eval(info)
-
-    return render_template("table.html", data=info)
+@app.route('/table')
+def table():
+    global tabledata
+    return render_template("table.html", data=tabledata)
 
 
 @app.route('/project', methods=['GET', 'POST'])
@@ -87,8 +88,7 @@ def project():
         conf.set("PARAMETER", "API_VERSION", interfaceVersion)
         with open(configfile, "w") as f:
             conf.write(f)
-        return render_template("build.html")
-
+        return redirect(url_for("showtableinfo"))
     return render_template("project.html")
 
 
@@ -104,7 +104,8 @@ def build():
 
 @app.route('/tableinfo/<tableinfo>')
 def tableinfo(tableinfo):
-    info = ast.literal_eval(tableinfo)
+    global tabledata
+    tabledata = ast.literal_eval(tableinfo)
     security_configfile = "config/security.conf"
     security_conf = configparser.ConfigParser()  # 实例类
     security_conf.read(security_configfile, encoding='UTF-8')  # 读取配置文件
@@ -123,7 +124,7 @@ def tableinfo(tableinfo):
     }
 
     tables_str = ""
-    for tableItem in info:
+    for tableItem in tabledata:
         if tableItem['issave'] == 'true':
             tables_str = tables_str + tableItem['table'] + ","
             config_config.set("MODEL", 'TABLES', tables_str[:-1])
@@ -150,3 +151,10 @@ def tableinfo(tableinfo):
         f.write(table_rule_json)
 
     return redirect(url_for('project'))
+
+
+@app.route('/showtableinfo', methods=['GET', 'POST'])
+def showtableinfo():
+    if request.method == 'POST':
+        return render_template("build.html")
+    return render_template("showTableInfo.html", tabledata=tabledata)

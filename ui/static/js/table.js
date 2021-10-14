@@ -104,7 +104,7 @@ function saveTableInfo() {
             if (isDeleted.checked) {
                 data[item].isdeleted = 'true';
             } else {
-                data[item].isdeleted = 'false';
+                data[item].isdeleted = '';
             }
             if (isBusinessKey.checked) {
                 data[item].isbusinesskey = selectBusinessKey.options[selectBusinessKey.selectedIndex].value;
