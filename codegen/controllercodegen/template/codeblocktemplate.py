@@ -67,3 +67,6 @@ from utils.loggings import loggings'''
     add_list_business_key_init = """from utils.generate_id import GenerateID
             {business_key} = GenerateID.{rule}()
             """
+
+    add_list_rsa_add = '''{column}=RSAEncryptionDecryption.encrypt(param_dict.get('{column}')),
+                '''

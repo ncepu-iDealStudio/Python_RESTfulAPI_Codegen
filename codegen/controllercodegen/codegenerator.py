@@ -106,7 +106,7 @@ class CodeGenerator(object):
 
                     else:
                         # column type is a string
-                        if column['name'] not in table['table_name']:
+                        if column['name'] not in table['rsa_columns']:
                             # column do not encrypt
                             text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
                         else:
@@ -183,7 +183,7 @@ class CodeGenerator(object):
                             text = CodeBlockTemplate.add_list_column_init.format(column=column['name'])
 
                 else:
-                    text = CodeBlockTemplate.rsa_add.format(column=column['name'])
+                    text = CodeBlockTemplate.add_list_rsa_add.format(column=column['name'])
 
                 add_list_column_init += text
 
