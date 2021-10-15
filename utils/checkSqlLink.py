@@ -46,7 +46,10 @@ def check_sql_link(dialect, driver, username, password, host, port, database):
         for column in table['columns'].values():
             if str(column['name']) == table['primaryKey']:
                 continue
-            filed.append(str(column['name']))
+            filed.append({
+                'field_name': column['name'],
+                'field_type': column['type']
+            })
         data.append({
             'table': str(table['table_name']),
             'issave': '',
