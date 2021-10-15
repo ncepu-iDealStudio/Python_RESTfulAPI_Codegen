@@ -286,6 +286,7 @@ class CodeGenerator(object):
         permission.append('flasgger.apidocs')
         permission.append('flasgger.static')
         permission.append('flasgger.apispec_1')
+        permission.append('flasgger.<lambda>')
 
         # new_file_or_dir(2, project_dir)
         os.makedirs(project_dir, exist_ok=True)
