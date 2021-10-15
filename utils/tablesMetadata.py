@@ -61,6 +61,9 @@ class TableMetadata(object):
                     continue
                 table_dict[table_name]['rsa_colums'] = value
 
+            # 初始化为空列表
+            table_dict[table_name]['primaryKey'] = []
+
             # Traverse each columns to get corresponding attributes
             for column in table.columns.values():
                 table_dict[table_name]['columns'][str(column.name)] = {}
@@ -76,7 +79,7 @@ class TableMetadata(object):
                 table_dict[table_name]['columns'][str(column.name)].setdefault('type', 'str')
 
                 if column.primary_key:
-                    table_dict[table_name]['primaryKey'] = str(column.name)
+                    table_dict[table_name]['primaryKey'].append(str(column.name))
 
                 # 是否自动递增
                 table_dict[table_name]['columns'][str(column.name)][
