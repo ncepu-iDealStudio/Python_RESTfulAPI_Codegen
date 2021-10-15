@@ -24,8 +24,6 @@ def main():
     # reload settings
     Settings.reload()
 
-    rsa_table_column = Settings.RSA_TABLE_COLUMN
-
     # return, while codegen_layer is not 'default' or 'controller'
     if codegen_layer not in ['default', 'controller']:
         return
@@ -38,7 +36,6 @@ def main():
 
     generator = CodeGenerator(table_dict)
     generator.controller_codegen(
-        controller_dir=controller_dir,
-        rsa_table_column=rsa_table_column
+        controller_dir=controller_dir
     )
     return

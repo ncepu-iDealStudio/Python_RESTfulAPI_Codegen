@@ -19,59 +19,34 @@ from utils.tablesMetadata import TableMetadata
 
 class CheckTable(object):
 
-
     # check the Primary key
     # 检查table主键
     @classmethod
-    def check_primary_key(cls, metadata):
+    def check_primary_key(cls, table_dict):
         """
         根据代码生成模式，自动读取所有表或所需表，检验主键后返回合规的表列表
         :return: 符合规范的表名列表，即有且仅有一个自增主键，没有符合规范的情况下返回None
         """
 
-        tables = []
-        # 根据代码生成模式获取表列表
-        if Settings.CODEGEN_MODE == 'table':
-            if Settings.MODEL_TABLES:
-                for table_name in Settings.MODEL_TABLES.replace(' ', '').split(','):
-                    try:
-                        if not metadata.tables.get(table_name):
-                            continue
-                    except TypeError:
-                        # 由于Table类没有定义Boolean，改用try判断是否为空
-                        tables.append(metadata.tables.get(table_name))
-            else:
-                tables = metadata.tables.values()
-
-        elif Settings.CODEGEN_MODE == 'database':
-            tables = metadata.tables.values()
-
-        else:
-            loggings.warning(1, 'codegen_mode goes wrong, code generated according to database mode')
-            tables = metadata.tables.values()
-
         available_tables = []
         invalid_tables = []
 
-        for table in tables:
-            primary_flag = False  # 有无主键
-            autoincrement_flag = False  # 是否自增
-            repeat_flag = False  # 主键是否重复
-            for column in table.c.values():
-                if column.primary_key:
-                    if not primary_flag:
-                        primary_flag = True
-                    else:
-                        repeat_flag = True
-                        break
-                if column.primary_key and column.autoincrement:
-                    autoincrement_flag = True
-
-            # 如果有自增主键并且主键不重复
-            if primary_flag and autoincrement_flag and not repeat_flag:
-                available_tables.append(table.key)
+        for table in table_dict.values():
+            if len(table['primaryKey']) == 0:
+                # 表中没有主键
+                invalid_tables.append(table['table_name'])
+                loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']))
+            elif len(table['primaryKey']) > 1:
+                # 表中有复数个主键
+                invalid_tables.append(table['table_name'])
+                loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
             else:
-                invalid_tables.append(table.key)
+                # 仅有一个主键，检验是否自增
+                if not table['columns'][table['primaryKey'][0]]['is_autoincrement']:
+                    invalid_tables.append(table['table_name'])
+                    loggings.warning(1, 'table {0} do not have an autoincrement primary key'.format(table['table_name']))
+                else:
+                    available_tables.append(table['table_name'])
 
         return available_tables, invalid_tables
 
@@ -131,10 +106,12 @@ class CheckTable(object):
                 # 如果目标数据表不存在
                 if not table_dict.get(foreign_key['target_table']):
                     loggings.waring(1, 'the target table or column "{target_table}.{target_key}" of "{source_table}.'
-                                       '{source_key}" does not exist'.format(target_table=foreign_key['target_table'],
-                                                                             target_key=foreign_key['target_key'],
-                                                                             source_table=table['table_name'],
-                                                                             source_key=foreign_key['key']))
+                                       '{source_key}" does not exist'.format(
+                                        target_table=foreign_key['target_table'],
+                                        target_key=foreign_key['target_key'],
+                                        source_table=table['table_name'],
+                                        source_key=foreign_key['key'])
+                                    )
                     flag = False
 
             if flag:
@@ -247,7 +224,7 @@ class CheckTable(object):
         table_dict = TableMetadata.get_tables_metadata(metadata)
 
         # check table primary key
-        available_tables, invalid_tables = cls.check_primary_key(metadata)
+        available_table, invalid_tables = cls.check_primary_key(table_dict)
         for invalid in invalid_tables:
             table_dict.pop(invalid)
 
@@ -287,7 +264,11 @@ class CheckTable(object):
                 1,
                 "A total of {0} tables check passed.\n"
                 "The following {1} tables do not meet the specifications and cannot be generated: {2}."
-                .format(len(available_tables), len(invalid_tables), ",".join(invalid_tables))
+                    .format(
+                        len(available_tables),
+                        len(invalid_tables),
+                        ",".join(invalid_tables)
+                    )
             )
 
             return table_dict

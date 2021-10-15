@@ -31,7 +31,7 @@ if Settings.CODEGEN_MODE == 'database':
     metadata.reflect(engine)
 else:
     # table mode
-    metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(','))
+    metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(',') if Settings.MODEL_TABLES else None)
 
 # 代码生成的层次
 codegen_layer = Settings.CODEGEN_LAYER

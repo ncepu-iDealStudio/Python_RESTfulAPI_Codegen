@@ -54,12 +54,12 @@ class TableMetadata(object):
                                                                          table_name].items())[0]
 
             # 需要RSA加密的字段
-            table_dict[table_name]['rsa_colums'] = []
+            table_dict[table_name]['rsa_columns'] = []
             for key, value in Settings.RSA_TABLE_COLUMN.items():
                 # 如果表名不匹配则进入下一轮循环
                 if table_name != key:
                     continue
-                table_dict[table_name]['rsa_colums'] = value
+                table_dict[table_name]['rsa_columns'] = value
 
             # 初始化为空列表
             table_dict[table_name]['primaryKey'] = []

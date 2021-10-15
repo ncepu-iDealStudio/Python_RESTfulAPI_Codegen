@@ -28,9 +28,9 @@ class CodeGenerator(object):
         super().__init__()
         self.table_dict = table_dict
 
-    def controller_codegen(self, controller_dir, rsa_table_column):
+    def controller_codegen(self, controller_dir):
         codes = {}
-        # get table metadata
+        # get table dict
         table_dict = self.table_dict
 
         # generate code and save in 'codes'
@@ -39,7 +39,7 @@ class CodeGenerator(object):
             model_name = hump_str + 'Model'
             class_name = hump_str[0].upper() + hump_str[1:] + 'Controller'
             parent_model = hump_str[0].upper() + hump_str[1:]
-            primary_key = table['primaryKey']
+            primary_key = table['primaryKey'][0]
 
             # combine imports
             imports = CodeBlockTemplate.imports.format(model_name=model_name, parent_model=parent_model)
@@ -56,7 +56,7 @@ class CodeGenerator(object):
                     continue
 
                 # the column do not encrypt
-                elif not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column[table['table_name']]:
+                elif column['name'] not in table['rsa_columns']:
                     if table['business_key'].get('column') != column['name']:
                         # 当前字段不是业务主键
                         text = CodeBlockTemplate.add_column_init.format(column=column['name'])
@@ -98,8 +98,7 @@ class CodeGenerator(object):
                 else:
                     if column['type'] in ['int', 'float']:
                         # column type is a number
-                        if not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column.get(
-                                table['table_name']):
+                        if column['name'] not in table['rsa_columns']:
                             # column do not encrypt
                             text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
                         else:
@@ -107,8 +106,7 @@ class CodeGenerator(object):
 
                     else:
                         # column type is a string
-                        if not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column.get(
-                                table['table_name']):
+                        if column['name'] not in table['table_name']:
                             # column do not encrypt
                             text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
                         else:
@@ -139,9 +137,9 @@ class CodeGenerator(object):
 
             # combine update
             rsa_update = ''
-            if rsa_table_column.get(table['table_name']):
+            if table['rsa_columns']:
                 # several columns should be encrypted
-                for sra_column in rsa_table_column[table['table_name']]:
+                for sra_column in table['rsa_columns']:
                     text = CodeBlockTemplate.rsa_update.format(column=sra_column)
                     rsa_update += text
 
@@ -167,7 +165,7 @@ class CodeGenerator(object):
                     continue
 
                 # the column do not encrypt
-                elif not rsa_table_column.get(table['table_name']) or column['name'] not in rsa_table_column[table['table_name']]:
+                elif column['name'] not in table['rsa_columns']:
                     if table['business_key'].get('column') != column['name']:
                         # 当前字段不是业务主键
                         text = CodeBlockTemplate.add_list_column_init.format(column=column['name'])
