@@ -29,16 +29,14 @@ function toTableInfo() {
     let selectBusinessKey = document.getElementById("selectBusinessKey");
     for (let item in data) {
         if (data[item].table == event.target.id) {
-            for (let filed in data[item]['filed']){
-                console.log(data[item]['filed'][filed]);
-                if(data[item]['filed'][filed]=="IsDelete"){
-                    document.getElementById("isDeleted").disabled=false;
-                    document.getElementById("isDeleted").style="cursor: auto;";
+            for (let filed in data[item]['filed']) {
+                if (data[item]['filed'][filed] == "IsDelete") {
+                    document.getElementById("isDeleted").disabled = false;
+                    document.getElementById("isDeleted").style = "cursor: auto;";
                     break;
-                }
-                else {
-                    document.getElementById("isDeleted").disabled=true;
-                    document.getElementById("isDeleted").style="cursor: not-allowed;";
+                } else {
+                    document.getElementById("isDeleted").disabled = true;
+                    document.getElementById("isDeleted").style = "cursor: not-allowed;";
                 }
             }
             currentTable = data[item].table;
@@ -63,14 +61,20 @@ function toTableInfo() {
                 let input = document.createElement("input");
                 let text = document.createElement("text");
                 let option = document.createElement("option");
-                let filedname = data[item].filed[i];
+                let filedname = data[item].filed[i].field_name;
                 input.type = "checkbox";
-                for (i = 0; i < data[item].encrypt.length; i++) {
+                  if(data[item].filed[i].field_type!='str'){
+                    console.log("ssss",data[item].filed[i].field_type)
+                    input.disabled = true;
+                    input.style = "cursor: not-allowed;";
+                }
+                for (let i = 0; i < data[item].encrypt.length; i++) {
                     if (data[item].encrypt[i] == filedname) {
                         input.checked = true;
                         break;
                     }
                 }
+
                 text.innerText = filedname;
                 option.innerText = filedname;
                 selectBusinessKey.appendChild(option)
