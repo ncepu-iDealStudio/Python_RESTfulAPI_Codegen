@@ -14,6 +14,8 @@ import json
 import os
 from configparser import ConfigParser
 
+os.chdir(os.path.dirname(os.path.dirname(__file__)))
+
 # 配置文件目录
 CONFIG_DIR = "config/config.conf"
 CONFIG = ConfigParser()
