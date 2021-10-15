@@ -15,14 +15,14 @@ from utils.loggings import loggings
 
 
 # 连字符转驼峰
-def str_format_convert(s):
-    ss = ''
-    for i in s.split('_'):
-        if ss:
-            ss += i.lower().capitalize()
+def str_format_convert(string):
+    neo_string = ''
+    for i in string.split('_'):
+        if neo_string:
+            neo_string += i.lower().capitalize()
         else:
-            ss = i
-    return ss
+            neo_string = i
+    return neo_string
 
 
 # 创建文件或文件夹
