@@ -9,7 +9,7 @@
 """
   应用的配置加载项
 """
-
+import json
 import os
 from configparser import ConfigParser
 
@@ -27,6 +27,13 @@ class Settings(object):
     CONFIG.read(CONFIG_DIR, encoding='utf-8')
     DATABASE_CONFIG.read(DATABASE_CONFIG_DIR, encoding='utf-8')
     SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
+
+    # 读取json文件
+    with open('config/table_rule.json', 'r', encoding='utf-8') as f:
+        TABLE_RULE = json.load(f)
+
+    with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
+        TYPE_MAPPING = json.load(f)
 
     # 生成项目的名称
     PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
@@ -95,6 +102,13 @@ class Settings(object):
         CONFIG.read(CONFIG_DIR, encoding='utf-8')
         DATABASE_CONFIG.read(DATABASE_CONFIG_DIR, encoding='utf-8')
         SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
+
+        # 读取json文件
+        with open('config/table_rule.json', 'r', encoding='utf-8') as f:
+            cls.TABLE_RULE = json.load(f)
+
+        with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
+            cls.TYPE_MAPPING = json.load(f)
 
         # 生成项目的名称
         cls.PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']

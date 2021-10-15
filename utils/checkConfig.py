@@ -7,10 +7,8 @@
 # software: Pycharm
 
 """
-    this is function description
+    检验配置文件
 """
-import json
-
 from sqlalchemy import create_engine, MetaData
 
 from config.setting import Settings
@@ -115,8 +113,8 @@ def check_config():
         engine = create_engine(Settings.MODEL_URL)
         metadata = MetaData(engine)
         metadata.reflect(engine)
-        with open('config/table_rule.json', 'r', encoding='utf-8') as fr:
-            table_rule = json.load(fr)
+
+        table_rule = Settings.TABLE_RULE
 
         if Settings.CODEGEN_MODE == 'table':
             # 检验数据库中是否存在参数中的表名
