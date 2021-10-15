@@ -85,7 +85,7 @@
 
                 <div id="businessKeyRule">
                     <label>业务主键</label>
-                    <select class="form-control" id="selectBusinessKey">
+                    <select class="form-control" id="selectBusinessKey" onclick="selectBusinessKeyRule()">
                     </select>
                     <label>业务主键生成规则</label>
                     <a class="tooltip-test" data-toggle="tooltip" data-html="true"
@@ -93,11 +93,6 @@
                             class="glyphicon glyphicon-question-sign"></span></a>
 
                     <select class="form-control" id="textRule">
-                        <option></option>
-                        <option>create_random_id</option>
-                        <option>create_hashlib_id</option>
-                        <option>create_uid</option>
-
                     </select>
                 </div>
 

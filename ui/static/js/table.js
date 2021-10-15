@@ -47,7 +47,7 @@ function toTableInfo() {
             } else {
                 isBusinessKey.checked = false;
             }
-            textRule.value = data[item].businesskeyrule;
+
             businessKey();
 
             // 删除所有子节点
@@ -63,11 +63,6 @@ function toTableInfo() {
                 let option = document.createElement("option");
                 let filedname = data[item].filed[i].field_name;
                 input.type = "checkbox";
-                  if(data[item].filed[i].field_type!='str'){
-                    console.log("ssss",data[item].filed[i].field_type)
-                    input.disabled = true;
-                    input.style = "cursor: not-allowed;";
-                }
                 for (let i = 0; i < data[item].encrypt.length; i++) {
                     if (data[item].encrypt[i] == filedname) {
                         input.checked = true;
@@ -83,14 +78,57 @@ function toTableInfo() {
                 a.appendChild(label)
                 label.appendChild(input);
                 label.appendChild(text);
+                if (data[item].filed[i].field_type != 'str') {
+                    input.disabled = true;
+                    input.style = "cursor: not-allowed;";
+                }
             }
             if (data[item].isbusinesskey != "") {
                 selectBusinessKey.value = data[item].isbusinesskey;
             }
+            selectBusinessKeyRule();
+            textRule.value = data[item].businesskeyrule;
         }
     }
     let animation = document.getElementById('btn-save');
     animation.style.animationDuration = "0s";
+
+}
+
+function selectBusinessKeyRule() {
+    let selectBusinessKey = document.getElementById("selectBusinessKey");
+    let tablename = document.getElementById("tableName");
+    let textRule = document.getElementById("textRule");
+    for (let item in data) {
+        if (data[item].table == tablename.innerText) {
+            for (let i in data[item].filed) {
+                if (data[item].filed[i].field_name == selectBusinessKey.options[selectBusinessKey.selectedIndex].value) {
+                    textRule.innerHTML = '';
+                    if (data[item].filed[i].field_type == 'int') {
+                        let option_create_random_id = document.createElement("option");
+                        textRule.appendChild(option_create_random_id);
+                        option_create_random_id.innerText = "create_random_id";
+                        textRule.appendChild(option_create_random_id);
+                    } else if (data[item].filed[i].field_type == 'str') {
+                        let option_create_random_id = document.createElement("option");
+                        textRule.appendChild(option_create_random_id);
+                        option_create_random_id.innerText = "create_random_id";
+                        textRule.appendChild(option_create_random_id);
+
+                        let create_hashlib_id = document.createElement("option");
+                        textRule.appendChild(create_hashlib_id);
+                        create_hashlib_id.innerText = "create_hashlib_id";
+                        textRule.appendChild(create_hashlib_id);
+
+                        let create_uid = document.createElement("option");
+                        textRule.appendChild(create_uid);
+                        create_uid.innerText = "create_uid";
+                        textRule.appendChild(create_uid);
+                    }
+                }
+            }
+        }
+    }
 }
 
 function saveTableInfo() {
