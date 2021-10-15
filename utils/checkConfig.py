@@ -78,6 +78,7 @@ def check_config():
             # for key, value in controller.items():
             #     if not value:
             #         raise Exception('{}参数缺失'.format(key))
+
         # 读取RESOURCE参数
         if Settings.CODEGEN_LAYER in ['default', 'resource']:
             # 代码生成层级为默认或接口层，读取RESOURCE参数
@@ -91,6 +92,7 @@ def check_config():
             static = {
 
             }
+
     except Exception as e:
         loggings.error(1, str(e))
         return False
@@ -131,6 +133,7 @@ def check_config():
                 if table not in tables:
                     loggings.warning(1, 'The table {} to set the business key is not in the table to be generated, '
                                         'please check the table_rule profile'.format(table))
+
         else:
             # 检查table_rule配置文件中各表是否存在
             for table in table_rule['table_record_delete_logic_way']:

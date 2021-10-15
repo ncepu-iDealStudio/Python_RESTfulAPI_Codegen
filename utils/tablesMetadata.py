@@ -10,7 +10,6 @@
     Get metadata of all tables
 """
 
-import json
 
 from config.setting import Settings
 
@@ -19,14 +18,13 @@ class TableMetadata(object):
 
     type_mapping = Settings.TYPE_MAPPING
     table_rule = Settings.TABLE_RULE
-
     database_type = Settings.DATABASE_TYPE
 
     @classmethod
     def reload(cls):
-
         cls.type_mapping = Settings.TYPE_MAPPING
         cls.table_rule = Settings.TABLE_RULE
+        cls.database_type = Settings.DATABASE_TYPE
 
     @classmethod
     def get_tables_metadata(cls, metadata):
@@ -55,6 +53,14 @@ class TableMetadata(object):
                 business_key['column'], business_key['rule'] = tuple(cls.table_rule['table_business_key_gen_rule'][
                                                                          table_name].items())[0]
 
+            # 需要RSA加密的字段
+            table_dict[table_name]['rsa_colums'] = []
+            for key, value in Settings.RSA_TABLE_COLUMN.items():
+                # 如果表名不匹配则进入下一轮循环
+                if table_name != key:
+                    continue
+                table_dict[table_name]['rsa_colums'] = value
+
             # Traverse each columns to get corresponding attributes
             for column in table.columns.values():
                 table_dict[table_name]['columns'][str(column.name)] = {}
@@ -72,6 +78,10 @@ class TableMetadata(object):
                 if column.primary_key:
                     table_dict[table_name]['primaryKey'] = str(column.name)
 
+                # 是否自动递增
+                table_dict[table_name]['columns'][str(column.name)][
+                    'is_autoincrement'] = True if column.autoincrement is True else False
+
                 if column.foreign_keys:
                     # Traverse each foreign_key to get corresponding attributes
                     for foreign_key in column.foreign_keys:
@@ -80,4 +90,5 @@ class TableMetadata(object):
                             'target_table': str(foreign_key.column).split('.')[0],
                             'target_key': str(foreign_key.column).split('.')[1]
                         })
+
         return table_dict
