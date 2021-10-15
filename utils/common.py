@@ -13,20 +13,6 @@
 import os
 from utils.loggings import loggings
 
-from sqlalchemy import CheckConstraint
-
-
-def get_column_names(constraint):
-    if isinstance(constraint.columns, list):
-        return constraint.columns
-    return list(constraint.columns.keys())
-
-
-def get_constraint_sort_key(constraint):
-    if isinstance(constraint, CheckConstraint):
-        return 'C{0}'.format(constraint.sqltext)
-    return constraint.__class__.__name__[0] + repr(get_column_names(constraint))
-
 
 # 连字符转驼峰
 def str_format_convert(s):
