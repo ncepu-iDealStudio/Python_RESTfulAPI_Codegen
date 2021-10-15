@@ -32,7 +32,7 @@ class GenerateID(object):
 
     # 根据时间戳+N位随机数生成自定义唯一健
     @staticmethod
-    def create_id_by_autoID(N=4):
+    def create_random_id(N=4):
         import datetime
         import random
         random_number = random.sample('0123456789', N)
