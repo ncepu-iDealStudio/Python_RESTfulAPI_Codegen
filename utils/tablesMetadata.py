@@ -16,21 +16,17 @@ from config.setting import Settings
 
 
 class TableMetadata(object):
-    with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
-        type_mapping = json.load(f)
 
-    with open('config/table_rule.json', 'r', encoding='utf-8') as f:
-        table_rule = json.load(f)
+    type_mapping = Settings.TYPE_MAPPING
+    table_rule = Settings.TABLE_RULE
 
     database_type = Settings.DATABASE_TYPE
 
     @classmethod
     def reload(cls):
-        with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
-            cls.type_mapping = json.load(f)
 
-        with open('config/table_rule.json', 'r', encoding='utf-8') as f:
-            cls.table_rule = json.load(f)
+        cls.type_mapping = Settings.TYPE_MAPPING
+        cls.table_rule = Settings.TABLE_RULE
 
     @classmethod
     def get_tables_metadata(cls, metadata):

@@ -7,7 +7,7 @@
 # software: PyCharm
 
 """
-    this is function description
+    检验表是否符合生成规则
 """
 
 import keyword
