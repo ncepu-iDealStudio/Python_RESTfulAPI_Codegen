@@ -105,13 +105,13 @@ class CheckTable(object):
             for foreign_key in table.get('foreign_keys'):
                 # 如果目标数据表不存在
                 if not table_dict.get(foreign_key['target_table']):
-                    loggings.waring(1, 'the target table or column "{target_table}.{target_key}" of "{source_table}.'
-                                       '{source_key}" does not exist'.format(
-                                        target_table=foreign_key['target_table'],
-                                        target_key=foreign_key['target_key'],
-                                        source_table=table['table_name'],
-                                        source_key=foreign_key['key'])
-                                    )
+                    loggings.warning(1, 'the target table or column "{target_table}.{target_key}" of "{source_table}.'
+                                        '{source_key}" does not exist'.format(
+                                         target_table=foreign_key['target_table'],
+                                         target_key=foreign_key['target_key'],
+                                         source_table=table['table_name'],
+                                         source_key=foreign_key['key'])
+                                     )
                     flag = False
 
             if flag:
