@@ -93,7 +93,7 @@ def project():
 
 @app.route('/build', methods=['GET'])
 def build():
-    from start import start
+    from codegen.main import start
     start()
     with open('logs/codegen_log.log', "r", encoding="utf-8") as f:
         log_data = f.read()
