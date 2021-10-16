@@ -43,6 +43,8 @@ class CodeGenerator(object):
 
             # combine imports
             imports = CodeBlockTemplate.imports.format(model_name=model_name, parent_model=parent_model)
+            if table['rsa_columns']:
+                imports += '\nfrom utils.rsa_encryption_decryption import RSAEncryptionDecryption'
             basic = FileTemplate.basic_template.format(imports=imports, class_name=class_name,
                                                        parent_model=parent_model)
 
