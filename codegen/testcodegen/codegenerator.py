@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-# @time:2021/10/4 18:51
+
+# File:codegenerator.py
 # Author:yuanronghao
-# @File:codegenerator.py
-# @Software:PyCharm
+# time:2021/10/4 21:20
+# Software:PyCharm
+
 """
-   generate test layer code.
+    this is function description
 """
 
 import os

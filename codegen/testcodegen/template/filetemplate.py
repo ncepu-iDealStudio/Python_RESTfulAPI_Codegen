@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-# @time:2021/10/4 18:52
+
+# File:filetemplate.py
 # Author:yuanronghao
-# @File:filetemplate.py
-# @Software:PyCharm
+# time:2021/10/4 21:20
+# Software:PyCharm
+
+"""
+    this is function description
+"""
 
 class FileTemplate(object):
     """
@@ -111,7 +116,7 @@ addlist_datas = []"""
 
 import pytest
 from utils.response_code import RET
-from .datas import *
+from .datas import add_datas, delet_datas, put_datas, get_datas
 from controller.{controllerName}Controller import {controllerClassName}Controller
 
 
@@ -130,7 +135,7 @@ def test_get():
 
 
 @pytest.mark.controller
-def test_delet():
+def test_delete():
     for data in delet_datas:
         result = {controllerClassName}Controller.delete(**data)
         assert result['code'] == RET.OK
@@ -219,7 +224,7 @@ def get_token(api_url, request_data):
 import json
 import requests
 import pytest
-from .datas import *
+from .datas import get_data, delete_data, post_data, put_data, get_query_data, joint_query_data
 from ..utils import printResponse
 from utils.response_code import RET
 
@@ -238,7 +243,7 @@ def test_get_{resourceName}Resource():
 
 
 @pytest.mark.resource
-def test_delet_{resourceName}Resource():
+def test_delete_{resourceName}Resource():
     for data in delete_data:
         api_url = ""
         response = requests.delete(
