@@ -35,28 +35,31 @@ def check_sql_link(dialect, driver, username, password, host, port, database):
         engine = create_engine(url)
         metadata = MetaData(engine)
         metadata.reflect(engine)
+
+        table_dict = CheckTable.main(metadata)
+
+        data = []
+        for table in table_dict.values():
+            filed = []
+            for column in table['columns'].values():
+                if str(column['name']) == table['primaryKey'][0]:
+                    continue
+                filed.append({
+                    'field_name': column['name'],
+                    'field_type': column['type']
+                })
+            data.append({
+                'table': str(table['table_name']),
+                'issave': '',
+                'isdeleted': '',
+                'filed': filed,
+                'encrypt': [],
+                'isbusinesskey': '',
+                'businesskeyrule': ''
+            })
+        return {'code': True, 'message': '数据库连接成功', 'data': data}
+
     except Exception as e:
         return {'code': False, 'message': '数据库连接失败', 'error': str(e)}
 
-    table_dict = CheckTable.main(metadata)
 
-    data = []
-    for table in table_dict.values():
-        filed = []
-        for column in table['columns'].values():
-            if str(column['name']) == table['primaryKey'][0]:
-                continue
-            filed.append({
-                'field_name': column['name'],
-                'field_type': column['type']
-            })
-        data.append({
-            'table': str(table['table_name']),
-            'issave': '',
-            'isdeleted': '',
-            'filed': filed,
-            'encrypt': [],
-            'isbusinesskey': '',
-            'businesskeyrule': ''
-        })
-    return {'code': True, 'message': '数据库连接成功', 'data': data}
