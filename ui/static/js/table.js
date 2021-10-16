@@ -104,6 +104,10 @@ function selectBusinessKeyRule() {
             for (let i in data[item].filed) {
                 if (data[item].filed[i].field_name == selectBusinessKey.options[selectBusinessKey.selectedIndex].value) {
                     textRule.innerHTML = '';
+                    let option_null = document.createElement("option");
+                        textRule.appendChild(option_null);
+                        option_null.innerText = "";
+                        textRule.appendChild(option_null);
                     if (data[item].filed[i].field_type == 'int') {
                         let option_create_random_id = document.createElement("option");
                         textRule.appendChild(option_create_random_id);
