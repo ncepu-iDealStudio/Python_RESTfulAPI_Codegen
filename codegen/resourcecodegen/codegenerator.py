@@ -275,7 +275,7 @@ class CodeGenerator(object):
 
     # manage generation
     def manage_codegen(self, tables):
-        permission = ["apiVersion.apiVersion"]
+        permission = ["apiVersion.apiversion"]
         for table in tables.values():
             blueprint_name = str_format_convert(table.get('table_name'))
             permission.append(blueprint_name + '.' + blueprint_name)
