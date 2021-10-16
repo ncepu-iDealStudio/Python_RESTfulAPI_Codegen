@@ -119,9 +119,9 @@ class {className}OtherResource(Resource):
     app_init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-'''
-   xxx
-'''
+\"\"\"
+   定义应用初始化
+\"\"\"
 
 from flask import Flask
 from flask_session import Session

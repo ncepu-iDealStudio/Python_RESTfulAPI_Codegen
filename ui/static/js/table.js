@@ -30,7 +30,7 @@ function toTableInfo() {
     for (let item in data) {
         if (data[item].table == event.target.id) {
             for (let filed in data[item]['filed']) {
-                if (data[item]['filed'][filed].field_name == "IsDelete") {
+                if (data[item]['filed'][filed] == "IsDelete") {
                     document.getElementById("isDeleted").disabled = false;
                     document.getElementById("isDeleted").style = "cursor: auto;";
                     break;
@@ -104,10 +104,6 @@ function selectBusinessKeyRule() {
             for (let i in data[item].filed) {
                 if (data[item].filed[i].field_name == selectBusinessKey.options[selectBusinessKey.selectedIndex].value) {
                     textRule.innerHTML = '';
-                    let option_null = document.createElement("option");
-                        textRule.appendChild(option_null);
-                        option_null.innerText = "";
-                        textRule.appendChild(option_null);
                     if (data[item].filed[i].field_type == 'int') {
                         let option_create_random_id = document.createElement("option");
                         textRule.appendChild(option_create_random_id);

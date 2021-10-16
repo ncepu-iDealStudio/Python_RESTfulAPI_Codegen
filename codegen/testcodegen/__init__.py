@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
-# File:__init__.py
+# @time:2021/10/4 18:50
 # Author:yuanronghao
-# time:2021/10/4 21:20
-# Software:PyCharm
-
-"""
-    this is function description
-"""
+# @File:__init__.py
+# @Software:PyCharm
