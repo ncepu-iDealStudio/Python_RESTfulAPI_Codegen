@@ -38,7 +38,7 @@ from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
     urls_resource = 'api.add_resource({0}Resource, {1}, endpoint="{2}")'
 
-    urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{1}_list")'
+    # urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{1}_list")'
 
     urls_service_resource = """
 # joint query
@@ -49,7 +49,7 @@ def {2}_query():
 
     resource_imports = """
 from flask_restful import Resource, reqparse
-from flask import g, jsonify
+from flask import jsonify
 from flasgger import swag_from
 from controller.{0}Controller import {1}Controller
 from utils import commons
@@ -98,7 +98,6 @@ from utils.response_code import RET"""
     other_resource_imports = """
 from flask_restful import Resource, reqparse
 from flask import jsonify
-from controller.{0}Controller import {1}Controller
 from service.{0}Service import {1}Service
 from utils import commons
 from utils.loggings import loggings
