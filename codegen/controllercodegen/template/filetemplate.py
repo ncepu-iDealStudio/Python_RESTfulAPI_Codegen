@@ -90,7 +90,7 @@ class {class_name}({parent_model}):
             filter_list = []
             if kwargs.get('{primary_key}'):
                 primary_key_list = []
-                for primary_key in kwargs.get('{primary_key}').replace(' ', '').split(','):
+                for primary_key in str(kwargs.get('{primary_key}')).replace(' ', '').split(','):
                     primary_key_list.append(cls.{primary_key} == primary_key)
                 filter_list.append(or_(*primary_key_list))
                 
@@ -120,7 +120,7 @@ class {class_name}({parent_model}):
             filter_list = [cls.IsDelete == 0]
             if kwargs.get('{primary_key}'):
                 primary_key_list = []
-                for primary_key in kwargs.get('{primary_key}').replace(' ', '').split(','):
+                for primary_key in str(kwargs.get('{primary_key}')).replace(' ', '').split(','):
                     primary_key_list.append(cls.{primary_key} == primary_key)
                 filter_list.append(or_(*primary_key_list))
                 
