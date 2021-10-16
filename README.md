@@ -43,7 +43,7 @@
     │   └── userInfoController.py  
     ├── service  # 业务层 -- 负责项目主要业务逻辑的编写  
     │   └── userInfoService.py  
-    ├── api_1_1  # 资源层 -- 负责对外暴露接口  
+    ├── api_1_0  # 资源层 -- 负责对外暴露接口  
     │   ├── apiVersionResource  
     │   │   ├── apiVersionResource.py  
     │   │   ├── __init__.py  
@@ -88,7 +88,7 @@
 
 2. 为目标项目配置好虚拟环境；Pythond的版本>=3.8.0；  
 
-3. 安装软件运行必须的包：pip install -r requirement.txt；  
+3. 安装软件运行必须的包：pip install -r requirements.txt；  
 
 4. 运行目标项目：python manage.py runserver；  
 
@@ -102,7 +102,3 @@
      打开目标项目下的test文件夹，在Test_xxxController/datas.py 及 Test_xxxResource/datas.py 中添加测试数据；
 
      运行test_start.py文件并生成测试报告；
-
-     
-
-     
