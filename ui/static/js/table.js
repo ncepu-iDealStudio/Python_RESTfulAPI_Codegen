@@ -30,7 +30,7 @@ function toTableInfo() {
     for (let item in data) {
         if (data[item].table == event.target.id) {
             for (let filed in data[item]['filed']) {
-                if (data[item]['filed'][filed] == "IsDelete") {
+                if (data[item]['filed'][filed].field_name == "IsDelete") {
                     document.getElementById("isDeleted").disabled = false;
                     document.getElementById("isDeleted").style = "cursor: auto;";
                     break;
