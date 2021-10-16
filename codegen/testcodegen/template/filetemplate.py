@@ -31,8 +31,7 @@ app = create_app("develop")
 app.app_context().push()
 """
 
-    pytest_ini = """
-[pytest]
+    pytest_ini = """[pytest]
 markers =
     resource: marks tests as resource
     controller: marks tests as controller
@@ -191,8 +190,8 @@ def printResponse(response):
     print('\\n\\n------------------------------------------')
     print(response.status_code)
 
-    for k, v in response.headers.items():
-        print(f'{k}: {v}')
+    for key, value in response.headers.items():
+        print(f'{key}: {value}')
 
     print('')
 
@@ -211,6 +210,7 @@ def get_token(api_url, request_data):
     token = response_data_dict['data']['Token']
     # printResponse(response)
     print('token:', token)
+    
     return token
     """
 
