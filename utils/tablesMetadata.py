@@ -21,12 +21,6 @@ class TableMetadata(object):
     database_type = Settings.DATABASE_TYPE
 
     @classmethod
-    def reload(cls):
-        cls.type_mapping = Settings.TYPE_MAPPING
-        cls.table_rule = Settings.TABLE_RULE
-        cls.database_type = Settings.DATABASE_TYPE
-
-    @classmethod
     def get_tables_metadata(cls, metadata):
         # Get all tables object
         table_objs = metadata.tables.values()

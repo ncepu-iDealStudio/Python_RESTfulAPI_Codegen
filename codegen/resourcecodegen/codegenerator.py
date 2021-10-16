@@ -142,13 +142,12 @@ class CodeGenerator(object):
 
             resource_str = CodeBlockTemplate.urls_resource.format(className_str, primary_key_str, api_name)
 
-            other_resource_str = CodeBlockTemplate.urls_other_resource.format(className_str, api_name)
+            # other_resource_str = CodeBlockTemplate.urls_other_resource.format(className_str, api_name)
 
             service_resource_str = CodeBlockTemplate.urls_service_resource.format(api_name.lower(), api_name,
                                                                                   className_str)
             return FileTemplate.urls.format(
-                imports=import_str, api=api_str, resource=resource_str, otherResource=other_resource_str,
-                serviceResource=service_resource_str)
+                imports=import_str, api=api_str, resource=resource_str, serviceResource=service_resource_str)
 
         except Exception as e:
             loggings.exception(1, e)
@@ -275,7 +274,7 @@ class CodeGenerator(object):
 
     # manage generation
     def manage_codegen(self, tables):
-        permission = ["apiVersion.apiVersion"]
+        permission = ["apiVersion.apiversion"]
         for table in tables.values():
             blueprint_name = str_format_convert(table.get('table_name'))
             permission.append(blueprint_name + '.' + blueprint_name)
@@ -286,6 +285,7 @@ class CodeGenerator(object):
         permission.append('flasgger.apidocs')
         permission.append('flasgger.static')
         permission.append('flasgger.apispec_1')
+        permission.append('flasgger.<lambda>')
 
         # new_file_or_dir(2, project_dir)
         os.makedirs(project_dir, exist_ok=True)

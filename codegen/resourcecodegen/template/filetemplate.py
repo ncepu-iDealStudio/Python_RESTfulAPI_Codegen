@@ -42,8 +42,6 @@ from flask_restful import Api
 
 {resource}
 
-{otherResource}
-
 {serviceResource}
 """
 
@@ -122,7 +120,7 @@ class {className}OtherResource(Resource):
 # -*- coding:utf-8 -*-
 
 '''
-   定义应用初始化过程
+   xxx
 '''
 
 from flask import Flask
@@ -132,6 +130,7 @@ from .setting import Settings
 
 # 数据库
 db = SQLAlchemy()
+
 
 # 工厂模式创建app应用对象
 def create_app(config_name):
@@ -164,7 +163,7 @@ def create_app(config_name):
 
 from flask import Blueprint
 
-apiversion_blueprint = Blueprint("apiVersion", __name__)
+apiversion_blueprint = Blueprint("apiversion", __name__)
 
 from . import urls
 """
@@ -178,7 +177,7 @@ from api_{apiversion}.apiVersionResource.apiVersionResource import ApiVersionRes
 
 api = Api(apiversion_blueprint)
 
-api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiVersion')  # 测试接口，获取当前接口的版本
+api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiversion')  # 测试接口，获取当前接口的版本
 """
 
     api_version_resource = """#!/usr/bin/env python
@@ -192,7 +191,7 @@ from flasgger import swag_from
 
 class ApiVersionResource(Resource):
 
-    # get the interface of apiVersion -- test
+    # get the interface of apiversion -- test
     @swag_from("ymls/apiversion_get.yml")
     def get(self):
         back_data = {{
