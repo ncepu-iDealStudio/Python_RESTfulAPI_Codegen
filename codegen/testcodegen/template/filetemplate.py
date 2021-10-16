@@ -49,11 +49,13 @@ log_file_format ="""
     test_start = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-import pytest
 import os
+import webbrowser
+
+import pytest
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
-import webbrowser
+
 
 # run all test
 def start_test():
@@ -76,7 +78,8 @@ def index():
 if __name__ == '__main__':
     start_test()
     webbrowser.open('http://127.0.0.1:8001')
-    app.run(port=8001)"""
+    app.run(port=8001)
+"""
 
     controller_datas = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -298,7 +301,6 @@ def test_joint_query_{resourceName}Resource():
         response = requests.get(
             api_url,
             params=data,
-        )
         )
         response.encoding = 'utf8'
         printResponse(response)
