@@ -24,6 +24,7 @@ class FileTemplate(object):
 
     test_init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 from app import create_app
 
 app = create_app("develop")
@@ -48,6 +49,7 @@ log_file_format ="""
 
     test_start = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 import pytest
 import os
 from flask import Flask, render_template
@@ -107,6 +109,7 @@ addlist_datas = []"""
 
     test_controller = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 import pytest
 from utils.response_code import RET
 from .datas import *
@@ -149,6 +152,7 @@ def test_addlist():
 
     resource_datas = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 # add test_datas here:
 # example:
 # add_datas = [
@@ -179,6 +183,7 @@ joint_query_data = []"""
 
     test_resource_utils = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 import json
 import requests
 
@@ -197,9 +202,10 @@ def printResponse(response):
 
 # 模拟登录,获取token
 def get_token(api_url, request_data):
-    response = requests.post(api_url,
-                             data=request_data
-                             )
+    response = requests.post(
+        api_url,
+        data=request_data
+    )
 
     response_data_dict = json.loads(response.text)
     token = response_data_dict['data']['Token']
@@ -222,9 +228,10 @@ from utils.response_code import RET
 def test_get_{resourceName}Resource():
     api_url = "http://xxxxxx"
     for data in get_data:
-        response = requests.get(api_url,
-                                params=data,
-                                )
+        response = requests.get(
+            api_url,
+            params=data,
+        )
         response.encoding = 'utf8'
         printResponse(response)
         assert json.loads(response.text)['code'] == RET.OK
@@ -234,9 +241,10 @@ def test_get_{resourceName}Resource():
 def test_delet_{resourceName}Resource():
     for data in delete_data:
         api_url = ""
-        response = requests.delete(api_url,
-                                   data=data,
-                                   )
+        response = requests.delete(
+            api_url,
+            data=data,
+        )
         response.encoding = 'utf8'
         printResponse(response)
         assert json.loads(response.text)['code'] == RET.OK
@@ -246,9 +254,10 @@ def test_delet_{resourceName}Resource():
 def test_put_{resourceName}Resource():
     for data in put_data:
         api_url = ""
-        response = requests.put(api_url,
-                                data=data,
-                                )
+        response = requests.put(
+            api_url,
+            data=data,
+        )
         response.encoding = 'utf8'
         printResponse(response)
         assert json.loads(response.text)['code'] == RET.OK
@@ -258,9 +267,10 @@ def test_put_{resourceName}Resource():
 def test_post_{resourceName}Resource():
     for data in post_data:
         api_url = ""
-        response = requests.post(api_url,
-                                 data=data,
-                                 )
+        response = requests.post(
+            api_url,
+            data=data,
+        )
         response.encoding = 'utf8'
         printResponse(response)
         assert json.loads(response.text)['code'] == RET.OK
@@ -270,9 +280,10 @@ def test_post_{resourceName}Resource():
 def test_get_query_{resourceName}Resource():
     for data in get_query_data:
         api_url = ""
-        response = requests.get(api_url,
-                                params=data,
-                                )
+        response = requests.get(
+            api_url,
+            params=data,
+        )
         response.encoding = 'utf8'
         printResponse(response)
         assert json.loads(response.text)['code'] == RET.OK
@@ -282,9 +293,11 @@ def test_get_query_{resourceName}Resource():
 def test_joint_query_{resourceName}Resource():
     for data in joint_query_data:
         api_url = ""
-        response = requests.get(api_url,
-                                params=data,
-                                )
+        response = requests.get(
+            api_url,
+            params=data,
+        )
         response.encoding = 'utf8'
         printResponse(response)
-        assert json.loads(response.text)['code'] == RET.OK"""
+        assert json.loads(response.text)['code'] == RET.OK
+"""
