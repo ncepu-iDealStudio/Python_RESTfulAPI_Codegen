@@ -1,1 +1,6 @@
-{"table_record_delete_logic_way": ["class_info", "course_info", "student_course", "student_info"], "table_business_key_gen_rule": {"class_info": {"ClassID": "create_random_id"}, "course_info": {"CourseID": "create_random_id"}, "student_course": {"StudentCourseID": "create_random_id"}, "student_info": {"StudentID": "create_random_id"}}}
+{
+  "table_record_delete_logic_way": [
+  ],
+  "table_business_key_gen_rule": {
+  }
+}
