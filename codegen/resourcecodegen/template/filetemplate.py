@@ -209,7 +209,7 @@ class ApiVersionResource(Resource):
 
 from app import create_app
 from flask_script import Manager
-from flask import request, g, jsonify
+from flask import request, jsonify
 from flasgger import Swagger
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from utils.response_code import RET
