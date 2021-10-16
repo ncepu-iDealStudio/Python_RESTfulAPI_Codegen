@@ -41,10 +41,9 @@ def index():
             conf.write(f)
         # 检查数据库链接
         result_sql = check_sql_link(dialect, driver, username, password, host, port, database)
-        global tabledata
-        tabledata = result_sql['data']
-
         if result_sql['code']:
+            global tabledata
+            tabledata = result_sql['data']
             # 填写配置文件
             configfile = "config/database.conf"
             conf = configparser.ConfigParser()  # 实例类
