@@ -97,12 +97,12 @@ class CodeGenerator(object):
                     f.write(self.resource_datas_codegen())
 
                 # test_xResource generation
-                with open(os.path.join(test_xResource_dir, 'test_{0}Controller.py'.format(tableName)), 'w',
+                with open(os.path.join(test_xResource_dir, 'test_{0}Resource.py'.format(tableName)), 'w',
                           encoding='utf8') as f:
                     f.write(self.resourcetest_codegen(tableName))
 
                 # file write
-                loggings.info(1, 'Generating {0}'.format('Test_{0}Controller'.format(tableName)))
+                loggings.info(1, 'Generating {0}'.format('Test_{0}Resource'.format(tableName)))
 
 
             loggings.info(1, 'Generating TestResource layer complete')
