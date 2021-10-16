@@ -99,7 +99,7 @@ add_datas = []
 
 get_datas = []
 
-delet_datas = []
+delete_datas = []
 
 update_datas = []
 
@@ -109,7 +109,7 @@ addlist_datas = []"""
 # -*- coding:utf-8 -*-
 import pytest
 from utils.response_code import RET
-from .datas import *
+from .datas import add_datas,get_datas,delete_datas,update_datas,addlist_datas
 from controller.{controllerName}Controller import {controllerClassName}Controller
 
 
@@ -128,8 +128,8 @@ def test_get():
 
 
 @pytest.mark.controller
-def test_delet():
-    for data in delet_datas:
+def test_delete():
+    for data in delete_datas:
         result = {controllerClassName}Controller.delete(**data)
         assert result['code'] == RET.OK
 
@@ -215,7 +215,7 @@ def get_token(api_url, request_data):
 import json
 import requests
 import pytest
-from .datas import *
+from .datas import get_data ,delete_data,put_data ,post_data ,get_query_data,joint_query_data
 from ..utils import printResponse
 from utils.response_code import RET
 
@@ -233,7 +233,7 @@ def test_get_{resourceName}Resource():
 
 
 @pytest.mark.resource
-def test_delet_{resourceName}Resource():
+def test_delete_{resourceName}Resource():
     for data in delete_data:
         api_url = ""
         response = requests.delete(api_url,
