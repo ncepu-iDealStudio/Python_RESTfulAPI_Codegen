@@ -1,6 +1,6 @@
 ##### 项目说明： Flask_Sqlachemy_RESTfulAPI_Codegen
 一个根据数据库表结构，自动生成Python基于Flask+sqlalchemy框架的接口项目，所生成的接口符合restful风格规范；  
-  
+
 本项目实体层基于flask-sqlacodegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；
 
 ##### 生成的目标接口项目特点：
@@ -81,14 +81,28 @@
     程序运行时，会先检查各项配置文件是否有误；
 7. 程序运行完毕后，会生成dist文件夹，文件夹下面及为我们需要的目标项目；     
     也可以在配置文件中设置目标项目的位置；
-   
+
 二 目标项目测试  
-  
+
 1. 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
+
 2. 为目标项目配置好虚拟环境；Pythond的版本>=3.8.0；  
+
 3. 安装软件运行必须的包：pip install -r requirement.txt；  
+
 4. 运行目标项目：python manage.py runserver；  
+
 5. 打开postman进行接口测试：http://127.0.0.1:5000/api_1_0/apiversion  
-  api_1_0为项目生成器中设置的版本号，如果配置参数为API_VERSION=1.0，则此时链接中的版本号字符串为：api_1_0；  
+    api_1_0为项目生成器中设置的版本号，如果配置参数为API_VERSION=1.0，则此时链接中的版本号字符串为：api_1_0；  
+    
 6. 测试基本业务相关接口；
-  
+
+7. 目标项目自动化测试（基于pytest）：
+
+     打开目标项目下的test文件夹，在Test_xxxController/datas.py 及 Test_xxxResource/datas.py 中添加测试数据；
+
+     运行test_start.py文件并生成测试报告；
+
+     
+
+     
