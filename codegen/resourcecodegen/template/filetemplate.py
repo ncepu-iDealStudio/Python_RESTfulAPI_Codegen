@@ -42,8 +42,6 @@ from flask_restful import Api
 
 {resource}
 
-{otherResource}
-
 {serviceResource}
 """
 
@@ -122,7 +120,7 @@ class {className}OtherResource(Resource):
 # -*- coding:utf-8 -*-
 
 '''
-   定义应用初始化过程
+   xxx
 '''
 
 from flask import Flask
@@ -132,6 +130,7 @@ from .setting import Settings
 
 # 数据库
 db = SQLAlchemy()
+
 
 # 工厂模式创建app应用对象
 def create_app(config_name):
