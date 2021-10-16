@@ -182,6 +182,7 @@ joint_query_data = []"""
 import json
 import requests
 
+
 def printResponse(response):
     print('\\n\\n------------------------------------------')
     print(response.status_code)
@@ -210,6 +211,7 @@ def get_token(api_url, request_data):
 
     test_resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 import json
 import requests
 import pytest
