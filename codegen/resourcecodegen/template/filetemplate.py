@@ -146,7 +146,8 @@ class {className}OtherResource(Resource):
     @classmethod
     def joint_query(cls):
         parser = reqparse.RequestParser()
-{queryParameter}        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+        {queryParameter}
+        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         try:
             kwargs = parser.parse_args()
@@ -154,7 +155,7 @@ class {className}OtherResource(Resource):
         except Exception as e:
             loggings.exception(1, e)
             return jsonify(code=RET.PARAMERR, message="参数类型不正确或缺失", error="参数类型不正确或缺失")
-{getServiceInvoke}
+        {getServiceInvoke}
 """
 
     app_init = """#!/usr/bin/env python

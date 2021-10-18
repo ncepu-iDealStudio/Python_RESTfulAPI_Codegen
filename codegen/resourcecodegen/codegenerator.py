@@ -225,7 +225,7 @@ class CodeGenerator(object):
             for column in table.get('columns').values():
                 if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
                         'business_key').get('column'):
-                    parameter_query += CodeBlockTemplate.parameter_args.format(column.get('name'),
+                    parameter_query += CodeBlockTemplate.parameter_args_joint.format(column.get('name'),
                                                                                column.get('type'))
 
             getServiceInvoke_str = CodeBlockTemplate.other_resource_get_service_invoke.format(className_str)
