@@ -170,41 +170,35 @@ class CodeGenerator(object):
 
             # get field list (except primary key)
             parameter_post = ''
-            parameter_gets = ''
+            parameter_get = ''
+            parameter_put = ''
+            parameter_delete = ''
             for column in table.get('columns').values():
-                if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
-                        'business_key').get('column'):
-                    parameter_gets += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
-                                                                                    column.get('type'))
+                if column.get('name') == table.get('primaryKey')[0]:
+                    continue
+                elif column.get('name') == table.get('business_key').get('column'):
                     parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
                                                                                    column.get('type'))
-
-            idCheck_str = CodeBlockTemplate.resource_id_check.format(id_str)
-
-            getControllerInvoke_str = CodeBlockTemplate.resource_get_controller_invoke.format(className_str)
-
-            deleteControllerInvoke_str = CodeBlockTemplate.resource_delete_controller_invoke.format(className_str)
-
-            putControllerInvoke_str = CodeBlockTemplate.resource_put_controller_invoke.format(className_str)
-
-            getsControllerInvoke_str = CodeBlockTemplate.resource_gets_controller_invoke.format(className_str)
-
-            postControllerInvoke_str = CodeBlockTemplate.resource_post_controller_invoke.format(className_str)
+                    parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
+                                                                                     column.get('type'))
+                else:
+                    parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                   column.get('type'))
+                    parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
+                                                                                             column.get('type'))
+                    parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
+                    parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column.get('name'),
+                                                                                       column.get('type'))
 
             return FileTemplate.resource.format(
                 imports=imports_str,
                 apiName=api_name,
                 className=className_str,
                 id=id_str,
-                idCheck=idCheck_str,
-                putParameter=parameter_gets,
-                getsParameter=parameter_gets,
+                putParameter=parameter_put,
+                getParameter=parameter_get,
                 postParameter=parameter_post,
-                getControllerInvoke=getControllerInvoke_str,
-                deleteControllerInvoke=deleteControllerInvoke_str,
-                putControllerInvoke=putControllerInvoke_str,
-                getsControllerInvoke=getsControllerInvoke_str,
-                postControllerInvoke=postControllerInvoke_str
+                deleteParameter=parameter_delete
             )
 
         except Exception as e:

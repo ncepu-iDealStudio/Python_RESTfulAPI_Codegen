@@ -52,46 +52,87 @@ from flask_restful import Api
 
 class {className}Resource(Resource):
 
-    # query with primary_key
+    # get
     @swag_from("ymls/{apiName}_get.yml")
-    def get(self, {id}):
-        kwargs = {{}}
-{idCheck}
-{getControllerInvoke}
-
+    def get(self, {id}=None):
+        if not {id}:
+            parser = reqparse.RequestParser()
+            {getParameter}
+            parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+            parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
+            kwargs = parser.parse_args()
+            kwargs = commons.put_remove_none(**kwargs)
+            res = {className}Controller.get(**kwargs)
+            if res['code'] == RET.OK:
+                return jsonify(code=res['code'], message=res['message'], data=res['data'], pages=res['pages'], count=res['count'])
+            else:
+                return jsonify(code=res['code'], message=res['message'], error=res['error'])
+        
+        kwargs = {{
+            '{id}': {id}
+        }}
+        res = {className}Controller.get(**kwargs)
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'], data=res['data'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error'])
+            
     # delete
     @swag_from("ymls/{apiName}_delete.yml")
-    def delete(self, {id}):
-        kwargs = {{}}
-{idCheck}
-{deleteControllerInvoke}
+    def delete(self, {id}=None):
+        if {id}:
+            kwargs = {{
+                '{id}': {id}
+            }}
+        else:
+            parser = reqparse.RequestParser()
+            {deleteParameter}
+            kwargs = parser.parse_args()
+            kwargs = commons.put_remove_none(**kwargs)
+        res = {className}Controller.delete(**kwargs)
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error'])
 
     # put
     @swag_from("ymls/{apiName}_put.yml")
     def put(self, {id}):
+        if not {id}:
+            return jsonify(code=RET.NODATA, message='primary key missed', error='primary key missed')
+        
         parser = reqparse.RequestParser()
-{putParameter}        kwargs = parser.parse_args()
+        {putParameter}
+        kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
-{idCheck}
-{putControllerInvoke}
+        kwargs['{id}'] = {id}
+        res = {className}Controller.add_list(**kwargs)
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error'])
 
     # add
     @swag_from("ymls/{apiName}_post.yml")
     def post(self):
         parser = reqparse.RequestParser()
-{postParameter}        kwargs = parser.parse_args()
-        kwargs = commons.put_remove_none(**kwargs)
-{postControllerInvoke}
-
-    # list query
-    @swag_from("ymls/{apiName}_gets.yml")
-    def get(self):
-        parser = reqparse.RequestParser()
-{getsParameter}        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
-        parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
+        parser.add_argument('Params', type=str, location='form', required=False, help='Params参数类型不正确或缺失')
+        {postParameter}
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
-{getsControllerInvoke}
+        
+        if kwargs.get('params'):
+            res = {className}Controller.add_list(**kwargs)
+            if res['code'] == RET.OK:
+                return jsonify(code=res['code'], message=res['message'])
+            else:
+                return jsonify(code=res['code'], message=res['message'], error=res['error'])
+        else:
+            res = {className}Controller.add(**kwargs)
+            if res['code'] == RET.OK:
+                return jsonify(code=res['code'], message=res['message'], data=res['data'])
+            else:
+                return jsonify(code=res['code'], message=res['message'], error=res['error'])
 """
 
     other_resource = """#!/usr/bin/env python
