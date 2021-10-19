@@ -18,6 +18,7 @@ from utils.tablesMetadata import TableMetadata
 
 # reload settings
 Settings.reload()
+TableMetadata.reload()
 
 # Initialize the parameters for this code generator.
 # 为代码生成器初始化参数
