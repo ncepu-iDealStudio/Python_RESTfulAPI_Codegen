@@ -62,6 +62,7 @@ class {className}Resource(Resource):
             parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
             kwargs = parser.parse_args()
             kwargs = commons.put_remove_none(**kwargs)
+            
             res = {className}Controller.get(**kwargs)
             if res['code'] == RET.OK:
                 return jsonify(code=res['code'], message=res['message'], data=res['data'], pages=res['pages'], count=res['count'])
@@ -71,6 +72,7 @@ class {className}Resource(Resource):
         kwargs = {{
             '{id}': {id}
         }}
+        
         res = {className}Controller.get(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'])
@@ -84,11 +86,14 @@ class {className}Resource(Resource):
             kwargs = {{
                 '{id}': {id}
             }}
+        
         else:
             parser = reqparse.RequestParser()
             {deleteParameter}
+            parser.add_argument('{id}', type=str, location='form', required=False, help='{id}参数类型不正确或缺失')
             kwargs = parser.parse_args()
             kwargs = commons.put_remove_none(**kwargs)
+            
         res = {className}Controller.delete(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'])
@@ -106,7 +111,8 @@ class {className}Resource(Resource):
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
         kwargs['{id}'] = {id}
-        res = {className}Controller.add_list(**kwargs)
+        
+        res = {className}Controller.update(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'])
         else:
@@ -116,17 +122,18 @@ class {className}Resource(Resource):
     @swag_from("ymls/{apiName}_post.yml")
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('Params', type=str, location='form', required=False, help='Params参数类型不正确或缺失')
         {postParameter}
+        parser.add_argument('Params', type=str, location='form', required=False, help='Params参数类型不正确或缺失')
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
         
-        if kwargs.get('params'):
+        if kwargs.get('Params'):
             res = {className}Controller.add_list(**kwargs)
             if res['code'] == RET.OK:
                 return jsonify(code=res['code'], message=res['message'])
             else:
                 return jsonify(code=res['code'], message=res['message'], error=res['error'])
+                
         else:
             res = {className}Controller.add(**kwargs)
             if res['code'] == RET.OK:
@@ -149,6 +156,7 @@ class {className}OtherResource(Resource):
         {queryParameter}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+        
         try:
             kwargs = parser.parse_args()
             kwargs = commons.put_remove_none(**kwargs)

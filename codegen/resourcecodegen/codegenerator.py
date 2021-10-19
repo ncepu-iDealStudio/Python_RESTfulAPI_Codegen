@@ -177,10 +177,11 @@ class CodeGenerator(object):
                 if column.get('name') == table.get('primaryKey')[0]:
                     continue
                 elif column.get('name') == table.get('business_key').get('column'):
-                    parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
-                                                                                   column.get('type'))
-                    parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
-                                                                                     column.get('type'))
+                    continue
+                    # parameter_put += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                    #                                                               column.get('type'))
+                    # parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
+                    #                                                                          column.get('type'))
                 else:
                     parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
                                                                                    column.get('type'))
@@ -226,7 +227,7 @@ class CodeGenerator(object):
                 if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
                         'business_key').get('column'):
                     parameter_query += CodeBlockTemplate.parameter_args_joint.format(column.get('name'),
-                                                                               column.get('type'))
+                                                                                     column.get('type'))
 
             getServiceInvoke_str = CodeBlockTemplate.other_resource_get_service_invoke.format(className_str)
 
