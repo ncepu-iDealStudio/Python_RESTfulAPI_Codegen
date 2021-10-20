@@ -33,4 +33,4 @@ from utils.loggings import loggings
     join_statement = '.join({target_table}, {table_name_initials_upper}.{table_key} == {target_table}.{target_key})'
     exception_return = "{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'error': str(e)}"
     notdata_return = "{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}"
-    success_return = "{'code': RET.OK, 'message': error_map_EN[RET.OK], 'count': count, 'pages': pages, 'data': results}"
+    success_return = "{'code': RET.OK, 'message': error_map_EN[RET.OK], 'totalCount': count, 'totalPage': pages, 'data': results}"
