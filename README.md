@@ -6,7 +6,7 @@
 
 ##### 生成的目标接口项目特点：
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0905/200245_9c40fbe9_9201274.png "屏幕截图.png")
+![5DqRi9.png](https://z3.ax1x.com/2021/10/20/5DqRi9.png)](https://imgtu.com/i/5DqRi9)
 
 1. 项目架构满足分层设计规范，分为实体层，控制器层和资源层(接口层)，
    用户可以添加服务层，作为商业逻辑层；
