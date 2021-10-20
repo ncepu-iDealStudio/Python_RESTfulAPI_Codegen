@@ -73,7 +73,7 @@ class {class_name}({parent_model}):
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No query results'}}
                 
             results = commons.query_to_dict({model_lower}_info)
-            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'count': count, 'pages': pages, 'data': results}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'totalCount': count, 'totalPages': pages, 'data': results}}
             
         except Exception as e:
             loggings.exception(1, e)
@@ -195,7 +195,7 @@ class {class_name}({parent_model}):
     # batch add
     @classmethod
     def add_list(cls, **kwargs):
-        param_list = json.loads(kwargs.get('Params'))
+        param_list = json.loads(kwargs.get('{parent_model}List'))
         model_list = []
         for param_dict in param_list:
             {add_list_business_key_init}
@@ -207,8 +207,11 @@ class {class_name}({parent_model}):
         try:
             db.session.add_all(model_list)
             db.session.commit()
+            results = []
+            for model in model_list:
+                results.append(commons.query_to_dict(model))
             
-            return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
             
         except Exception as e:
             db.session.rollback()
