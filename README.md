@@ -1,19 +1,25 @@
 ##### 项目说明： Python_RESTfulAPI_Codegen
-能根据已有数据库表结构，自动生成Python完整的基础接口项目(包含接口的文档)；生成的目标项目基于Flask+sqlalchemy框架；所生成的接口符合restful风格规范；
+
+能根据已有数据库表结构，自动生成Python完整的基础接口项目(包含接口的文档)；生成的目标项目基于Flask+sqlalchemy框架；所生成的接口符合restful风格规范；  
+
 本项目实体层基于flask-sqlacodegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；基本接口已经生成，用户只需要在此基础上进行扩展增加和具体商业逻辑相关的接口即可；
 
 ##### 生成的目标接口项目特点：
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0905/200245_9c40fbe9_9201274.png "屏幕截图.png")
+
 1. 项目架构满足分层设计规范，分为实体层，控制器层和资源层(接口层)，
    用户可以添加服务层，作为商业逻辑层；
 2. 资源层(接口层)，生成了满足restful风格规范的接口，发布后，可以直接让前端调用；
    生产环境中，用户可以自行扩展接口层，对接新增加的服务层(具体商业逻辑)代码；
 3. 项目定位于先有数据库表设计(数据库及表设计规范，见下面的使用说明)，后基于这些关系生成对象和实体及各层的代码；
 4. 目标项目包含基于Docker容器的部署脚本；
-5. 生成的目标项目包含基础接口的在线接口文档（基于flasgger）；
+5. 生成的目标项目包含基础接口的在线接口文档(基于flasgger)；
+6. 自动化生成单元测试代码；
 
 
 ##### 目标项目详细目录：   
+
 └── api.sqlcodegen.com  
     ├── app  # 项目初始化文件夹  
     │   ├── __init__.py  
@@ -26,7 +32,7 @@
     │   └── userInfoController.py  
     ├── service  # 业务层 -- 负责项目主要业务逻辑的编写  
     │   └── userInfoService.py  
-    ├── api_1_1  # 资源层 -- 负责对外暴露接口  
+    ├── api_1_0  # 资源层 -- 负责对外暴露接口  
     │   ├── apiVersionResource  
     │   │   ├── apiVersionResource.py  
     │   │   ├── __init__.py  
@@ -55,40 +61,55 @@
 
 
 ##### 生成器项目的使用说明： 
+
 一 数据库满足以下的设计规范（三"必须"三"建议"）  
+
 1. 数据库表名称必须全小写，如student；如果涉及多个描述词，可使用"_"连接。如：user_info;  
-2. 数据库表的字段中，必须包含名称为"AutoID"的自增主键；  
+2. 数据库表的字段中，必须包含一个自增主键；建议为：AutoID；
 3. 表的名称和表字段名称，不能是python的关键字。如：def，False都是不正确的  
 4. 建议表的字段名称使用"大驼峰"命名法。如：UserName；  
 5. 建议设计一个timestamp类型的"CreateTime"字段，默认为当前时间戳(用来记录数据创建的时间)；
-6. 建议设计一个tinyint类型的"IsDelete"字段(用来实现记录的逻辑删除，0--有效，1--已删除)，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段为必须）
- 
+6. 建议设计一个tinyint类型的"IsDelete"字段(用来实现记录的逻辑删除，0--有效，1--已删除)，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段必须存在）
+
 二 生成器项目使用
+
 1. 先从仓库clone代码到本地;  
    git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen
 2. 用Python开发工具(Pycharm或者vscode)打开项目；
-3. 为代码生成器项目配置好虚拟环境；Pythond的版本>=3.8.0
-4. 安装软件运行必须的包：pip install -r requirement.txt  
-5. 配置相关参数：启动`startUI.py`打开网页进行对应的参数进行设定(推荐),并点击生成代码  
-也可以选择使用`start.py`启动(注：启动前请配置好详情参数)
-6. 程序运行完毕后，会生成dist文件夹，文件夹下面及为我们需要的目标项目；     
-    也可以在配置文件中设置目标项目的位置；
-   
+3. 为代码生成器项目配置好虚拟环境；Pythond的版本>=`3.8.0`
+4. 安装软件运行必须的包：`pip install -r requirement.txt`
+5. 在虚拟环境下，运行根目录下的start.py，在UI界面中进行相关参数的配置;
+6. 程序运行完毕后，会生成dist文件夹，文件夹下即为我们需要的目标项目；
+   也可以在配置文件中设置目标项目的位置；
+
 三 目标项目测试  
-  
+
 1. 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
-2. 为目标项目配置好虚拟环境；Pythond的版本>=3.8.0；  
-3. 安装软件运行必须的包：pip install -r requirement.txt；  
-4. 运行目标项目：python manage.py runserver；  
+
+2. 为目标项目配置好虚拟环境；Pythond的版本>=`3.8.0`；  
+
+3. 安装软件运行必须的包：`pip install -r requirements.txt`；  
+
+4. 运行目标项目：`python manage.py runserver`；  
+
 5. 打开postman进行接口测试：http://127.0.0.1:5000/api_1_0/apiversion  
-  api_1_0为项目生成器中设置的版本号，如果配置参数为API_VERSION=1.0，则此时链接中的版本号字符串为：api_1_0；  
+   api_1_0为项目生成器中设置的版本号，如果`接口版本`参数为1.0，则此时链接中的版本号字符串为：api_1_0；  
+
 6. 测试基本业务相关接口；  
 
+7. 目标项目自动化测试（基于pytest）：
+
+   打开目标项目下的test文件夹，在Test_xxxController/datas.py 及 Test_xxxResource/datas.py 中添加测试数据；
+
+   运行test_start.py文件并生成测试报告；
+
 四 生成器项目详细使用指南  
+
 - <a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
 
 
 产品特性
+
 * Supports SQLAlchemy 0.8.x - 1.3.x
 * 支持SQLAlchemy 0.8x - 1.3x
 * Produces declarative code that almost looks like it was hand written

@@ -20,6 +20,7 @@ function businessKey() {
 }
 
 function toTableInfo() {
+
     let tablename = document.getElementById("tableName");
     let isDeleted = document.getElementById("isDeleted");
     let filed = document.getElementById("filed");
@@ -28,8 +29,17 @@ function toTableInfo() {
     let selectBusinessKey = document.getElementById("selectBusinessKey");
     for (let item in data) {
         if (data[item].table == event.target.id) {
+            for (let filed in data[item]['filed']) {
+                if (data[item]['filed'][filed].field_name == "IsDelete") {
+                    document.getElementById("isDeleted").disabled = false;
+                    document.getElementById("isDeleted").style = "cursor: auto;";
+                    break;
+                } else {
+                    document.getElementById("isDeleted").disabled = true;
+                    document.getElementById("isDeleted").style = "cursor: not-allowed;";
+                }
+            }
             currentTable = data[item].table;
-
             tablename.innerText = data[item].table;
             isDeleted.checked = data[item].isdeleted;
             if (data[item].isbusinesskey != "") {
@@ -37,7 +47,7 @@ function toTableInfo() {
             } else {
                 isBusinessKey.checked = false;
             }
-            textRule.value = data[item].businesskeyrule;
+
             businessKey();
 
             // 删除所有子节点
@@ -51,14 +61,15 @@ function toTableInfo() {
                 let input = document.createElement("input");
                 let text = document.createElement("text");
                 let option = document.createElement("option");
-                let filedname = data[item].filed[i];
+                let filedname = data[item].filed[i].field_name;
                 input.type = "checkbox";
-                for (i = 0; i < data[item].encrypt.length; i++) {
+                for (let i = 0; i < data[item].encrypt.length; i++) {
                     if (data[item].encrypt[i] == filedname) {
                         input.checked = true;
                         break;
                     }
                 }
+
                 text.innerText = filedname;
                 option.innerText = filedname;
                 selectBusinessKey.appendChild(option)
@@ -67,15 +78,61 @@ function toTableInfo() {
                 a.appendChild(label)
                 label.appendChild(input);
                 label.appendChild(text);
+                if (data[item].filed[i].field_type != 'str') {
+                    input.disabled = true;
+                    input.style = "cursor: not-allowed;";
+                }
             }
             if (data[item].isbusinesskey != "") {
                 selectBusinessKey.value = data[item].isbusinesskey;
             }
-            break;
+            selectBusinessKeyRule();
+            textRule.value = data[item].businesskeyrule;
         }
     }
     let animation = document.getElementById('btn-save');
     animation.style.animationDuration = "0s";
+
+}
+
+function selectBusinessKeyRule() {
+    let selectBusinessKey = document.getElementById("selectBusinessKey");
+    let tablename = document.getElementById("tableName");
+    let textRule = document.getElementById("textRule");
+    for (let item in data) {
+        if (data[item].table == tablename.innerText) {
+            for (let i in data[item].filed) {
+                if (data[item].filed[i].field_name == selectBusinessKey.options[selectBusinessKey.selectedIndex].value) {
+                    textRule.innerHTML = '';
+                    let option_null = document.createElement("option");
+                        textRule.appendChild(option_null);
+                        option_null.innerText = "";
+                        textRule.appendChild(option_null);
+                    if (data[item].filed[i].field_type == 'int') {
+                        let option_create_random_id = document.createElement("option");
+                        textRule.appendChild(option_create_random_id);
+                        option_create_random_id.innerText = "create_random_id";
+                        textRule.appendChild(option_create_random_id);
+                    } else if (data[item].filed[i].field_type == 'str') {
+                        let option_create_random_id = document.createElement("option");
+                        textRule.appendChild(option_create_random_id);
+                        option_create_random_id.innerText = "create_random_id";
+                        textRule.appendChild(option_create_random_id);
+
+                        let create_hashlib_id = document.createElement("option");
+                        textRule.appendChild(create_hashlib_id);
+                        create_hashlib_id.innerText = "create_hashlib_id";
+                        textRule.appendChild(create_hashlib_id);
+
+                        let create_uid = document.createElement("option");
+                        textRule.appendChild(create_uid);
+                        create_uid.innerText = "create_uid";
+                        textRule.appendChild(create_uid);
+                    }
+                }
+            }
+        }
+    }
 }
 
 function saveTableInfo() {
@@ -93,7 +150,7 @@ function saveTableInfo() {
             if (isDeleted.checked) {
                 data[item].isdeleted = 'true';
             } else {
-                data[item].isdeleted = 'false';
+                data[item].isdeleted = '';
             }
             if (isBusinessKey.checked) {
                 data[item].isbusinesskey = selectBusinessKey.options[selectBusinessKey.selectedIndex].value;

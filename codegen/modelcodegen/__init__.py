@@ -7,7 +7,7 @@
 # software: PyCharm
 
 """
-    this is function description
+    初始化model层所需参数
 """
 
 cmd = "flask-sqlacodegen {url}{schema}{tables}{noviews}{noindexes}" \

@@ -78,3 +78,7 @@ h3 {
     background-color: #ffff;
     z-index: 1;
 }
+
+#isDeleted{
+    cursor: not-allowed;
+}

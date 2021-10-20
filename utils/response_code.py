@@ -25,7 +25,6 @@ class RET:
 error_map = {
     RET.OK: u"成功",
 
-
     RET.NODATA: u"无数据",
     RET.DATAEXIST: u"数据已存在",
     RET.DATAERR: u"数据错误",
@@ -38,7 +37,6 @@ error_map = {
     RET.REQERR: u"非法请求或请求次数受限",
     RET.IPERR: u"IP受限",
     RET.USERLOCKERR: u"账号被锁定",
-
     RET.DBERR: u"数据库查询错误",
     RET.THIRDERR: u"第三方系统错误",
     RET.IOERR: u"文件读写错误",

@@ -26,6 +26,7 @@ class FileTemplate(object):
 
 class {class_name}({parent_model}):
 """
+
     add_template = """
     # add
     @classmethod
@@ -47,6 +48,7 @@ class {class_name}({parent_model}):
         finally:
             db.session.close()
 """
+
     get_template = """
     # get
     @classmethod
@@ -69,8 +71,9 @@ class {class_name}({parent_model}):
             # judge whether the data is None
             if not {model_lower}_info:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No query results'}}
+                
             results = commons.query_to_dict({model_lower}_info)
-            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'count': count, 'pages': pages, 'data': results}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'totalCount': count, 'totalPages': pages, 'data': results}}
             
         except Exception as e:
             loggings.exception(1, e)
@@ -78,6 +81,7 @@ class {class_name}({parent_model}):
         finally:
             db.session.close()
 """
+
     delete_template_physical = """    
     # delete
     @classmethod
@@ -86,14 +90,17 @@ class {class_name}({parent_model}):
             filter_list = []
             if kwargs.get('{primary_key}'):
                 primary_key_list = []
-                for primary_key in kwargs.get('{primary_key}').replace(' ', '').split(','):
+                for primary_key in str(kwargs.get('{primary_key}')).replace(' ', '').split(','):
                     primary_key_list.append(cls.{primary_key} == primary_key)
                 filter_list.append(or_(*primary_key_list))
+                
             else:
                 {delete_filter_list}
+                
             res = db.session.query(cls).filter(*filter_list).with_for_update().delete()
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
+                
             db.session.commit()
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
             
@@ -104,6 +111,7 @@ class {class_name}({parent_model}):
         finally:
             db.session.close()
 """
+
     delete_template_logic = """
     # delete
     @classmethod
@@ -112,14 +120,17 @@ class {class_name}({parent_model}):
             filter_list = [cls.IsDelete == 0]
             if kwargs.get('{primary_key}'):
                 primary_key_list = []
-                for primary_key in kwargs.get('{primary_key}').replace(' ', '').split(','):
+                for primary_key in str(kwargs.get('{primary_key}')).replace(' ', '').split(','):
                     primary_key_list.append(cls.{primary_key} == primary_key)
                 filter_list.append(or_(*primary_key_list))
+                
             else:
                 {delete_filter_list}
+                
             res = db.session.query(cls).filter(*filter_list).with_for_update().update({{'IsDelete': 1}})
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
+                
             db.session.commit()
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
             
@@ -130,6 +141,7 @@ class {class_name}({parent_model}):
         finally:
             db.session.close()
 """
+
     update_template_physical = """
     # update
     @classmethod
@@ -139,9 +151,11 @@ class {class_name}({parent_model}):
             res = db.session.query(cls).filter(
                 cls.{primary_key} == kwargs.get('{primary_key}')
             ).with_for_update().update(kwargs)
+            
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}}
             db.session.commit()
+            
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
             
         except Exception as e:
@@ -151,6 +165,7 @@ class {class_name}({parent_model}):
         finally:
             db.session.close()
 """
+
     update_template_logic = """
     # update
     @classmethod
@@ -161,9 +176,11 @@ class {class_name}({parent_model}):
                 cls.{primary_key} == kwargs.get('{primary_key}'),
                 cls.IsDelete == 0
             ).with_for_update().update(kwargs)
+            
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to update'}}
             db.session.commit()
+            
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
             
         except Exception as e:
@@ -173,11 +190,12 @@ class {class_name}({parent_model}):
         finally:
             db.session.close()
 """
+
     add_list_template = """
     # batch add
     @classmethod
     def add_list(cls, **kwargs):
-        param_list = json.loads(kwargs.get('Params'))
+        param_list = json.loads(kwargs.get('{parent_model}List'))
         model_list = []
         for param_dict in param_list:
             {add_list_business_key_init}
@@ -189,8 +207,11 @@ class {class_name}({parent_model}):
         try:
             db.session.add_all(model_list)
             db.session.commit()
+            results = []
+            for model in model_list:
+                results.append(commons.query_to_dict(model))
             
-            return {{'code': RET.OK, 'message': error_map_EN[RET.OK]}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
             
         except Exception as e:
             db.session.rollback()
