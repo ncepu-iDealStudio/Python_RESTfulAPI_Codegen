@@ -9,6 +9,7 @@
 """
     Operation log record
 """
+
 import sys
 
 from loguru import logger

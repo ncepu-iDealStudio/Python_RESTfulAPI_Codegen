@@ -32,10 +32,18 @@ def index():
         username = request.form.get("username")
         password = request.form.get("password")
 
+        # tables 为空
+        configfile = "config/config.conf"
+        conf = configparser.ConfigParser()
+        conf.read(configfile, encoding='UTF-8')
+        conf.set("MODEL", "TABLES", '')
+        with open(configfile, "w") as f:
+            conf.write(f)
         # 检查数据库链接
         result_sql = check_sql_link(dialect, driver, username, password, host, port, database)
-
         if result_sql['code']:
+            global tabledata
+            tabledata = result_sql['data']
             # 填写配置文件
             configfile = "config/database.conf"
             conf = configparser.ConfigParser()  # 实例类
@@ -49,16 +57,18 @@ def index():
             conf.set("DEFAULT", "PASSWORD", password)
             with open(configfile, "w") as f:
                 conf.write(f)
-            return redirect(url_for('table', info=result_sql['data']))
+            return redirect(url_for('table'))
+
         else:
             return render_template("index.html", message=result_sql['message'])
+
     return render_template("index.html")
 
 
-@app.route('/table/<info>')
-def table(info):
-    info = ast.literal_eval(info)
-    return render_template("table.html", data=info)
+@app.route('/table')
+def table():
+    global tabledata
+    return render_template("table.html", data=tabledata)
 
 
 @app.route('/project', methods=['GET', 'POST'])
@@ -77,22 +87,24 @@ def project():
         conf.set("PARAMETER", "API_VERSION", interfaceVersion)
         with open(configfile, "w") as f:
             conf.write(f)
-        return render_template("build.html")
+        return redirect(url_for("showtableinfo"))
     return render_template("project.html")
 
 
 @app.route('/build', methods=['GET'])
 def build():
-    from start import start
+    from codegen.main import start
     start()
     with open('logs/codegen_log.log', "r", encoding="utf-8") as f:
         log_data = f.read()
+
     return render_template("build.html", log_data=log_data)
 
 
 @app.route('/tableinfo/<tableinfo>')
 def tableinfo(tableinfo):
-    info = ast.literal_eval(tableinfo)
+    global tabledata
+    tabledata = ast.literal_eval(tableinfo)
     security_configfile = "config/security.conf"
     security_conf = configparser.ConfigParser()  # 实例类
     security_conf.read(security_configfile, encoding='UTF-8')  # 读取配置文件
@@ -109,13 +121,15 @@ def tableinfo(tableinfo):
         "table_business_key_gen_rule": {
         }
     }
+
     tables_str = ""
-    for tableItem in info:
+    for tableItem in tabledata:
         if tableItem['issave'] == 'true':
             tables_str = tables_str + tableItem['table'] + ","
             config_config.set("MODEL", 'TABLES', tables_str[:-1])
             with open(config_configfile, "w") as f:
                 config_config.write(f)
+
             if tableItem['encrypt'] != []:
                 encrypt_str = ""
                 for str in tableItem['encrypt']:
@@ -123,12 +137,23 @@ def tableinfo(tableinfo):
                 security_conf.set("RSA_TABLE_COLUMN", tableItem['table'], encrypt_str[:-1])
                 with open(security_configfile, "w") as f:
                     security_conf.write(f)
+
             if tableItem['isdeleted'] == 'true':
                 table_rule['table_record_delete_logic_way'].append(tableItem['table'])
+
             if tableItem['isbusinesskey'] != '':
                 table_rule['table_business_key_gen_rule'][tableItem['table']] = {
                     tableItem['isbusinesskey']: tableItem['businesskeyrule']}
+
     table_rule_json = json.dumps(table_rule)
     with open("config/table_rule.json", "w") as f:
         f.write(table_rule_json)
+
     return redirect(url_for('project'))
+
+
+@app.route('/showtableinfo', methods=['GET', 'POST'])
+def showtableinfo():
+    if request.method == 'POST':
+        return render_template("build.html")
+    return render_template("showTableInfo.html", tabledata=tabledata)

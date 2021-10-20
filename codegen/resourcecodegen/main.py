@@ -16,7 +16,6 @@ import os
 from codegen import codegen_layer, table_dict
 from codegen.resourcecodegen.codegenerator import CodeGenerator
 from config.setting import Settings
-from utils.common import new_file_or_dir, file_write
 from utils.loggings import loggings
 
 
@@ -25,6 +24,7 @@ def main():
     Generate resource layer code
     :return: None
     """
+
     try:
         #  It returns directly if the code generation level is not the 'default' or 'resource'
         if codegen_layer not in ['default', 'resource']:
@@ -34,18 +34,11 @@ def main():
             return
 
         # Get target directory
-        new_file_or_dir(2, Settings.TARGET_DIR)
-        new_file_or_dir(2, Settings.PROJECT_DIR)
-        api_dir = os.path.join(Settings.PROJECT_DIR, 'api_' + Settings.API_VERSION)
-        new_file_or_dir(2, api_dir)
-
-        api_init_file = os.path.join(api_dir, '__init__.py')
-        file_write(api_init_file, '#!/usr/bin/env python \n# -*- coding:utf-8 -*-')
-
-        app_dir = os.path.join(Settings.PROJECT_DIR, 'app')
-        new_file_or_dir(2, app_dir)
+        os.makedirs(api_dir := os.path.join(Settings.PROJECT_DIR, 'api_' + Settings.API_VERSION), exist_ok=True)
+        os.makedirs(app_dir := os.path.join(Settings.PROJECT_DIR, 'app'), exist_ok=True)
 
         generator = CodeGenerator()
         generator.resource_generator(api_dir, app_dir)
+
     except Exception as e:
         loggings.error(1, str(e))

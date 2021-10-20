@@ -40,8 +40,13 @@
                             <script type="text/javascript">
                                 data.push("{{item}}")
                             </script>
-                            <li onclick=setActive()><a id="{{ item.table }}" onclick=toTableInfo()>{{ item.table }}<span
-                                    class="glyphicon glyphicon-cog"></span></a>
+                            <li onclick=setActive()><a id="{{ item.table }}" onclick=toTableInfo()>{{ item.table }}
+                                {% if item.issave=='true' %}
+                                    <span class="glyphicon glyphicon-cog" style="color:#0F9D24"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                {% endif %}
+                            </a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -63,7 +68,7 @@
                 <div>
                     <label>字段加密</label>
                     <a class="tooltip-test" data-toggle="tooltip" data-html="true"
-                       title="请勾选加密的字段<br/>RSA公私钥请在security.conf中配置"><span
+                       title="请勾选加密的字段<br/>RSA公私钥请在security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密"><span
                             class="glyphicon glyphicon-question-sign"></span></a>
                     <div class="navbar navbar-default nav-field" role="navigation">
                         <ul class="nav nav-pills nav-stacked" id="filed">
@@ -80,20 +85,14 @@
 
                 <div id="businessKeyRule">
                     <label>业务主键</label>
-                    <select class="form-control" id="selectBusinessKey">
+                    <select class="form-control" id="selectBusinessKey" onclick="selectBusinessKeyRule()">
                     </select>
                     <label>业务主键生成规则</label>
                     <a class="tooltip-test" data-toggle="tooltip" data-html="true"
-                       title="业务主键生成规则使用已定义的规则：‘create_id_by_autoID’,‘create_hashlib_id’,‘create_uid’.以及无生成规则，默认为无生成规则"><span
+                       title="业务主键生成规则使用已定义的规则：‘create_random_id’,‘create_hashlib_id’,‘create_uid’.以及无生成规则，默认为无生成规则"><span
                             class="glyphicon glyphicon-question-sign"></span></a>
 
-{#                    <input type="text" class="form-control" id="textRule">#}
                     <select class="form-control" id="textRule">
-                        <option></option>
-                        <option>create_id_by_autoID</option>
-                        <option>create_hashlib_id</option>
-                        <option>create_uid</option>
-
                     </select>
                 </div>
 

@@ -20,6 +20,7 @@ class FileTemplate():
     app_init_: template for app/__init__.py
     app_setting_: template for app/__setting__.py
     """
+
     init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
@@ -41,96 +42,140 @@ from flask_restful import Api
 
 {resource}
 
-{otherResource}
-
 {serviceResource}
 """
 
     resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
-
-from flask_restful import Resource, reqparse
-from flask import g, jsonify
-from flasgger import swag_from
 {imports}
 
 
 class {className}Resource(Resource):
 
-    # query with primary_key
+    # get
     @swag_from("ymls/{apiName}_get.yml")
-    def get(self, {id}):
-        kwargs = {{}}
-{idCheck}
-{getControllerInvoke}
-
+    def get(self, {id}=None):
+        if {id}:
+            kwargs = {{
+                '{id}': {id}
+            }}
+        
+            res = {className}Controller.get(**kwargs)
+            if res['code'] == RET.OK:
+                return jsonify(code=res['code'], message=res['message'], data=res['data'])
+            else:
+                return jsonify(code=res['code'], message=res['message'], error=res['error'])
+                
+        parser = reqparse.RequestParser()
+        {getParameter}
+        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+        parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
+        
+        kwargs = parser.parse_args()
+        kwargs = commons.put_remove_none(**kwargs)
+        
+        res = {className}Controller.get(**kwargs)
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'], data=res['data'], totalPage=res['totalPage'], totalCount=res['totalCount'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error']) 
+            
     # delete
     @swag_from("ymls/{apiName}_delete.yml")
-    def delete(self, {id}):
-        kwargs = {{}}
-{idCheck}
-{deleteControllerInvoke}
+    def delete(self, {id}=None):
+        if {id}:
+            kwargs = {{
+                '{id}': {id}
+            }}
+        
+        else:
+            parser = reqparse.RequestParser()
+            {deleteParameter}
+            parser.add_argument('{id}', type=str, location='form', required=False, help='{id}参数类型不正确或缺失')
+            
+            kwargs = parser.parse_args()
+            kwargs = commons.put_remove_none(**kwargs)
+            
+        res = {className}Controller.delete(**kwargs)
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error'])
 
     # put
     @swag_from("ymls/{apiName}_put.yml")
     def put(self, {id}):
+        if not {id}:
+            return jsonify(code=RET.NODATA, message='primary key missed', error='primary key missed')
+            
         parser = reqparse.RequestParser()
-{parameter}
+        {putParameter}
+        
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
-{idCheck}
-{putControllerInvoke}
-"""
-
-    other_resource = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-from flask_restful import Resource, reqparse
-from flask import jsonify
-from flasgger import swag_from
-{imports}
-
-
-class {className}OtherResource(Resource):
+        kwargs['{id}'] = {id}
+            
+        res = {className}Controller.update(**kwargs)
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error'])
 
     # add
     @swag_from("ymls/{apiName}_post.yml")
     def post(self):
         parser = reqparse.RequestParser()
-{postParameter}
+        parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')
+        
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
-{postControllerInvoke}
+        
+        if kwargs.get('{className}List'):
+            res = {className}Controller.add_list(**kwargs)
+              
+        else:
+            {postParameter}
+            kwargs = parser.parse_args()
+            kwargs = commons.put_remove_none(**kwargs)
+            
+            res = {className}Controller.add(**kwargs)
+            
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'], data=res['data'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error'])
+"""
 
-    # list query
-    @swag_from("ymls/{apiName}_gets.yml")
-    def get(self):
-        parser = reqparse.RequestParser()
-{getParameter}
-        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
-        parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
-        kwargs = parser.parse_args()
-        kwargs = commons.put_remove_none(**kwargs)
-{getControllerInvoke}
+    other_resource = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+{imports}
+
+
+class {className}OtherResource(Resource):
 
     # join table query
     @classmethod
     def joint_query(cls):
         parser = reqparse.RequestParser()
-{queryParameter}
+        {queryParameter}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
-        kwargs = parser.parse_args()
-        kwargs = commons.put_remove_none(**kwargs)
-{getServiceInvoke}
+        
+        try:
+            kwargs = parser.parse_args()
+            kwargs = commons.put_remove_none(**kwargs)
+        except Exception as e:
+            loggings.exception(1, e)
+            return jsonify(code=RET.PARAMERR, message="参数类型不正确或缺失", error="参数类型不正确或缺失")
+        {getServiceInvoke}
 """
 
     app_init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-'''
-   定义应用初始化过程
-'''
+\"\"\"
+   定义应用初始化
+\"\"\"
 
 from flask import Flask
 from flask_session import Session
@@ -139,6 +184,7 @@ from .setting import Settings
 
 # 数据库
 db = SQLAlchemy()
+
 
 # 工厂模式创建app应用对象
 def create_app(config_name):
@@ -171,7 +217,7 @@ def create_app(config_name):
 
 from flask import Blueprint
 
-apiversion_blueprint = Blueprint("apiVersion", __name__)
+apiversion_blueprint = Blueprint("apiversion", __name__)
 
 from . import urls
 """
@@ -185,7 +231,7 @@ from api_{apiversion}.apiVersionResource.apiVersionResource import ApiVersionRes
 
 api = Api(apiversion_blueprint)
 
-api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiVersion')  # 测试接口，获取当前接口的版本
+api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiversion')  # 测试接口，获取当前接口的版本
 """
 
     api_version_resource = """#!/usr/bin/env python
@@ -199,7 +245,7 @@ from flasgger import swag_from
 
 class ApiVersionResource(Resource):
 
-    # get the interface of apiVersion -- test
+    # get the interface of apiversion -- test
     @swag_from("ymls/apiversion_get.yml")
     def get(self):
         back_data = {{
@@ -217,7 +263,7 @@ class ApiVersionResource(Resource):
 
 from app import create_app
 from flask_script import Manager
-from flask import request, g, jsonify
+from flask import request, jsonify
 from flasgger import Swagger
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from utils.response_code import RET

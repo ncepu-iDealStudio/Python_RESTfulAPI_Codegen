@@ -1,8 +1,13 @@
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_v1_5 as Cipher_pkcs1_v1_5
 import base64
+import os
 from configparser import ConfigParser
+
+from Crypto.Cipher import PKCS1_v1_5 as Cipher_pkcs1_v1_5
+from Crypto.PublicKey import RSA
+
 from utils.loggings import loggings
+
+os.chdir(os.path.dirname(os.path.dirname(__file__)))
 
 CONFIG_DIR = "config/config.conf"
 CONFIG = ConfigParser()
@@ -50,6 +55,7 @@ class RSAEncryptionDecryption(object):
         except Exception as e:
             loggings.error(e)
             return None
+
         return text
 
 

@@ -9,7 +9,3 @@
 """
     load settings and Initialize the parameters
 """
-
-from config.setting import Settings
-
-rsa_table_column = Settings.RSA_TABLE_COLUMN

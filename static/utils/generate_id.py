@@ -5,9 +5,10 @@
 # author:jackiex
 # datetime:2021/9/9 14:33
 # software: PyCharm
-'''
+
+"""
     为数据库的某些需要的字段，生成唯一健
-'''
+"""
 
 
 # import module your need
@@ -31,8 +32,8 @@ class GenerateID(object):
 
     # 根据时间戳+N位随机数生成自定义唯一健
     @staticmethod
-    def create_id_by_autoID(N=4):
+    def create_random_id(N=4):
         import datetime
         import random
         random_number = random.sample('0123456789', N)
-        return datetime.datetime.now().strftime('%Y%m%d') + ''.join(random_number)
+        return datetime.datetime.now().strftime('%Y%m%d%H%M%S') + ''.join(random_number)

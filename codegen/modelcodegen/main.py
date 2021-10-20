@@ -25,16 +25,21 @@ def main():
     :return: None
     """
 
+    # 配置重载
+    Settings.reload()
+
     try:
 
         # 在项目文件夹中创建models的目录
         os.makedirs(models_path := os.path.join(project_dir, 'models'), exist_ok=True)
 
+        # 创建空的 __init__.py 文件
         with open(os.path.join(models_path, '__init__.py'), 'w', encoding='utf-8') as f:
             f.write("#!/usr/bin/env python\n# -*- coding:utf-8 -*-\n")
 
         tables = list(table_dict.keys())
 
+        # 为每张表生成model层代码
         for table in tables:
             loggings.info(1, "Model code for {0} table is being generated".format(table))
             command = cmd.format(
@@ -54,5 +59,6 @@ def main():
                 ignore_cols=""
             )
             os.system(command)
+
     except Exception as e:
         loggings.exception(1, e)
