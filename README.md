@@ -32,6 +32,7 @@
     │   └── userInfoController.py  
     ├── service  # 业务层 -- 负责项目主要业务逻辑的编写  
     │   └── userInfoService.py  
+    ├── test # 单元测试层 -- 负责项目接口测试
     ├── api_1_0  # 资源层 -- 负责对外暴露接口  
     │   ├── apiVersionResource  
     │   │   ├── apiVersionResource.py  
