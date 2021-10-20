@@ -87,7 +87,7 @@
 
 1. 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
 
-2. 为目标项目配置好虚拟环境；Pythond的版本>=`3.8.0`；  
+2. 为目标项目配置好虚拟环境；Python的版本>=`3.8.0`；  
 
 3. 安装软件运行必须的包：`pip install -r requirements.txt`；  
 
