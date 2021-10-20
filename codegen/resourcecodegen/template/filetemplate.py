@@ -70,6 +70,7 @@ class {className}Resource(Resource):
         {getParameter}
         parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
         parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
+        
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
         
@@ -91,6 +92,7 @@ class {className}Resource(Resource):
             parser = reqparse.RequestParser()
             {deleteParameter}
             parser.add_argument('{id}', type=str, location='form', required=False, help='{id}参数类型不正确或缺失')
+            
             kwargs = parser.parse_args()
             kwargs = commons.put_remove_none(**kwargs)
             
@@ -103,16 +105,16 @@ class {className}Resource(Resource):
     # put
     @swag_from("ymls/{apiName}_put.yml")
     def put(self, {id}):
-        if {id}:
-            parser = reqparse.RequestParser()
-            {putParameter}
-            kwargs = parser.parse_args()
-            kwargs = commons.put_remove_none(**kwargs)
-            kwargs['{id}'] = {id}
-            
-        else:
+        if not {id}:
             return jsonify(code=RET.NODATA, message='primary key missed', error='primary key missed')
+            
+        parser = reqparse.RequestParser()
+        {putParameter}
         
+        kwargs = parser.parse_args()
+        kwargs = commons.put_remove_none(**kwargs)
+        kwargs['{id}'] = {id}
+            
         res = {className}Controller.update(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'])
@@ -123,8 +125,8 @@ class {className}Resource(Resource):
     @swag_from("ymls/{apiName}_post.yml")
     def post(self):
         parser = reqparse.RequestParser()
-        
         parser.add_argument('Params', type=str, location='form', required=False, help='Params参数类型不正确或缺失')
+        
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
         
@@ -137,6 +139,9 @@ class {className}Resource(Resource):
                 
         else:
             {postParameter}
+            kwargs = parser.parse_args()
+            kwargs = commons.put_remove_none(**kwargs)
+            
             res = {className}Controller.add(**kwargs)
             if res['code'] == RET.OK:
                 return jsonify(code=res['code'], message=res['message'], data=res['data'])

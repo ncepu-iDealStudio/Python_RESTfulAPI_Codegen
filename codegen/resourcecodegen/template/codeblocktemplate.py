@@ -32,7 +32,7 @@ class CodeBlockTemplate():
             '''
 
     parameter_form_put_false = '''parser.add_argument("{0}", type={1}, location="form", required=False, help="{0}参数类型不正确或缺失")
-            '''
+        '''
 
     parameter_form_delete_false = '''parser.add_argument("{0}", type={1}, location="form", required=False, help="{0}参数类型不正确或缺失")
             '''
