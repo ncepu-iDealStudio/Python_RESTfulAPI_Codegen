@@ -117,7 +117,7 @@ from utils.response_code import RET"""
     other_resource_get_service_invoke = """
         res = {0}Service.joint_query(**kwargs)
         if res['code'] == RET.OK:
-            return jsonify(code=res['code'], message=res['message'], data=res['data'], count=res['count'], pages=res['pages'])
+            return jsonify(code=res['code'], message=res['message'], data=res['data'], totalCount=res['totalCount'], totalPage=res['totalPage'])
         else:
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
