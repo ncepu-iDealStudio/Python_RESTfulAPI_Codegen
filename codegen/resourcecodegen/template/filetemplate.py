@@ -76,7 +76,7 @@ class {className}Resource(Resource):
         
         res = {className}Controller.get(**kwargs)
         if res['code'] == RET.OK:
-            return jsonify(code=res['code'], message=res['message'], data=res['data'], pages=res['pages'], count=res['count'])
+            return jsonify(code=res['code'], message=res['message'], data=res['data'], totalPage=res['totalPage'], totalCount=res['totalCount'])
         else:
             return jsonify(code=res['code'], message=res['message'], error=res['error']) 
             
@@ -125,28 +125,25 @@ class {className}Resource(Resource):
     @swag_from("ymls/{apiName}_post.yml")
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('Params', type=str, location='form', required=False, help='Params参数类型不正确或缺失')
+        parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')
         
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
         
-        if kwargs.get('Params'):
+        if kwargs.get('{className}List'):
             res = {className}Controller.add_list(**kwargs)
-            if res['code'] == RET.OK:
-                return jsonify(code=res['code'], message=res['message'])
-            else:
-                return jsonify(code=res['code'], message=res['message'], error=res['error'])
-                
+              
         else:
             {postParameter}
             kwargs = parser.parse_args()
             kwargs = commons.put_remove_none(**kwargs)
             
             res = {className}Controller.add(**kwargs)
-            if res['code'] == RET.OK:
-                return jsonify(code=res['code'], message=res['message'], data=res['data'])
-            else:
-                return jsonify(code=res['code'], message=res['message'], error=res['error'])
+            
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'], data=res['data'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], error=res['error'])
 """
 
     other_resource = """#!/usr/bin/env python
