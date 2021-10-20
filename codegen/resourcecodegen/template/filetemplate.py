@@ -110,7 +110,6 @@ class {className}Resource(Resource):
             
         parser = reqparse.RequestParser()
         {putParameter}
-        
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
         kwargs['{id}'] = {id}

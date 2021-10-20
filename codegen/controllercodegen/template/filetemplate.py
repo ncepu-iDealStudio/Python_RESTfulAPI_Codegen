@@ -73,7 +73,7 @@ class {class_name}({parent_model}):
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No query results'}}
                 
             results = commons.query_to_dict({model_lower}_info)
-            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'totalCount': count, 'totalPages': pages, 'data': results}}
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'totalCount': count, 'totalPage': pages, 'data': results}}
             
         except Exception as e:
             loggings.exception(1, e)
