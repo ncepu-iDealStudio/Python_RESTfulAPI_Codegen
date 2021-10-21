@@ -96,7 +96,6 @@ class {class_name}({parent_model}):
                 
             else:
                 {delete_filter_list}
-                
             res = db.session.query(cls).filter(*filter_list).with_for_update().delete()
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
@@ -126,7 +125,6 @@ class {class_name}({parent_model}):
                 
             else:
                 {delete_filter_list}
-                
             res = db.session.query(cls).filter(*filter_list).with_for_update().update({{'IsDelete': 1}})
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
