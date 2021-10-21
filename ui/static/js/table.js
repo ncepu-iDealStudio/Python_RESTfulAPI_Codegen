@@ -40,7 +40,7 @@ function toTableInfo() {
                 }
             }
             currentTable = data[item].table;
-            tablename.innerText = data[item].table+"表参数设置:";
+            tablename.innerText = data[item].table;
             isDeleted.checked = data[item].isdeleted;
             if (data[item].isbusinesskey != "") {
                 isBusinessKey.checked = true;
