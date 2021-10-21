@@ -32,6 +32,7 @@
     │   └── userInfoController.py  
     ├── service  # 业务层 -- 负责项目主要业务逻辑的编写  
     │   └── userInfoService.py  
+    ├── test # 单元测试层 -- 负责项目接口测试
     ├── api_1_0  # 资源层 -- 负责对外暴露接口  
     │   ├── apiVersionResource  
     │   │   ├── apiVersionResource.py  
@@ -53,10 +54,10 @@
     ├── manage.py  
     ├── requirements.txt  
     └── utils  # 常用方法工具包  
-        ├── commons.py  
-        ├── loggings.py  
-        ├── response_code.py  
-        └── rsa_encryption_decryption.py  
+    &nbsp;&nbsp;├── commons.py  
+    &nbsp;&nbsp;├── loggings.py  
+    &nbsp;&nbsp;├── response_code.py  
+    &nbsp;&nbsp;└── rsa_encryption_decryption.py  
 
 
 
@@ -66,7 +67,7 @@
 
 1. 数据库表名称必须全小写，如student；如果涉及多个描述词，可使用"_"连接。如：user_info;  
 2. 数据库表的字段中，必须包含一个自增主键；建议为：AutoID；
-3. 表的名称和表字段名称，不能是python的关键字。如：def，False都是不正确的  
+3. 表的名称和表字段名称，不能是python的关键字。如：def，False, class都是不正确的  
 4. 建议表的字段名称使用"大驼峰"命名法。如：UserName；  
 5. 建议设计一个timestamp类型的"CreateTime"字段，默认为当前时间戳(用来记录数据创建的时间)；
 6. 建议设计一个tinyint类型的"IsDelete"字段(用来实现记录的逻辑删除，0--有效，1--已删除)，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段必须存在）
@@ -76,8 +77,8 @@
 1. 先从仓库clone代码到本地;  
    git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen
 2. 用Python开发工具(Pycharm或者vscode)打开项目；
-3. 为代码生成器项目配置好虚拟环境；Pythond的版本>=`3.8.0`
-4. 安装软件运行必须的包：`pip install -r requirement.txt`
+3. 为代码生成器项目配置好虚拟环境；Python的版本>=`3.8.0`
+4. 安装软件运行必须的包：`pip install -r requirements.txt`
 5. 在虚拟环境下，运行根目录下的start.py，在UI界面中进行相关参数的配置;
 6. 程序运行完毕后，会生成dist文件夹，文件夹下即为我们需要的目标项目；
    也可以在配置文件中设置目标项目的位置；
@@ -86,7 +87,7 @@
 
 1. 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
 
-2. 为目标项目配置好虚拟环境；Pythond的版本>=`3.8.0`；  
+2. 为目标项目配置好虚拟环境；Python的版本>=`3.8.0`；  
 
 3. 安装软件运行必须的包：`pip install -r requirements.txt`；  
 

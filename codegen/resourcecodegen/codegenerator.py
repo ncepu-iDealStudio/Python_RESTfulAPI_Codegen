@@ -138,7 +138,7 @@ class CodeGenerator(object):
                                                                        table.get('business_key').get('column'))
             else:
                 primary_key_str = CodeBlockTemplate.primary_key.format(
-                    api_name, str_format_convert(table.get('primaryKey')[0]))
+                    api_name, table.get('primaryKey')[0])
 
             resource_str = CodeBlockTemplate.urls_resource.format(className_str, primary_key_str, api_name)
 

@@ -55,36 +55,18 @@
 
 
             <div class="table-info">
-
-                <div>
-                    <h3 id="tableName">Table</h3>
-                    <label><input type="checkbox" id="isDeleted">是否逻辑删除</label>
-                    <a class="tooltip-test" data-toggle="tooltip" data-html="true"
-                       title="表记录采用逻辑删除方式<br/>注:设计表时必须包含IsDelete字段"><span
-                            class="glyphicon glyphicon-question-sign"></span></a>
-
+                <div style="display: flex">
+                    <h3 id="tableName">Table</h3><h3>表参数设置</h3>
                 </div>
-
                 <div>
-                    <label>字段加密</label>
+                    <label><input type="checkbox" id="isBusinessKey" onclick=businessKey()>请选择是否存在业务主键</label>
                     <a class="tooltip-test" data-toggle="tooltip" data-html="true"
-                       title="请勾选加密的字段<br/>RSA公私钥请在security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密"><span
-                            class="glyphicon glyphicon-question-sign"></span></a>
-                    <div class="navbar navbar-default nav-field" role="navigation">
-                        <ul class="nav nav-pills nav-stacked" id="filed">
-                        </ul>
-                    </div>
-                </div>
-
-                <div>
-                    <label><input type="checkbox" id="isBusinessKey" onclick=businessKey()>是否存在业务主键</label>
-                    <a class="tooltip-test" data-toggle="tooltip" data-html="true"
-                       title="请勾选是否存在业务主键"><span
+                       title="业务主键说明：比如order表中的OrderID一般被称为业务主键；业务主键尽量不采用自增的方式；"><span
                             class="glyphicon glyphicon-question-sign"></span></a>
                 </div>
 
                 <div id="businessKeyRule">
-                    <label>业务主键</label>
+                    <label>业务主键字段选择</label>
                     <select class="form-control" id="selectBusinessKey" onclick="selectBusinessKeyRule()">
                     </select>
                     <label>业务主键生成规则</label>
@@ -94,6 +76,24 @@
 
                     <select class="form-control" id="textRule">
                     </select>
+                </div>
+                <div>
+
+                    <label><input type="checkbox" id="isDeleted">数据记录是否逻辑删除</label>
+                    <a class="tooltip-test" data-toggle="tooltip" data-html="true"
+                       title="逻辑删除方式<br/>注:即表中必须包含IsDelete的标识删除字段"><span
+                            class="glyphicon glyphicon-question-sign"></span></a>
+
+                </div>
+                <div>
+                    <label>请选择需要加密存储的字段</label>
+                    <a class="tooltip-test" data-toggle="tooltip" data-html="true"
+                       title="加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密"><span
+                            class="glyphicon glyphicon-question-sign"></span></a>
+                    <div class="navbar navbar-default nav-field" role="navigation">
+                        <ul class="nav nav-pills nav-stacked" id="filed">
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="btn-save">
