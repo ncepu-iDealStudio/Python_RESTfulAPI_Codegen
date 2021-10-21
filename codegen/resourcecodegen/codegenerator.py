@@ -164,9 +164,9 @@ class CodeGenerator(object):
             imports_str = CodeBlockTemplate.resource_imports.format(api_name, className_str)
 
             if table.get('business_key'):
-                id_str = table.get('business_key').get('column')
+                id_str = str_format_convert(table.get('business_key').get('column'))
             else:
-                id_str = table.get('primaryKey')[0]
+                id_str = str_format_convert(table.get('primaryKey')[0])
 
             # get field list (except primary key)
             parameter_post = ''
@@ -217,9 +217,9 @@ class CodeGenerator(object):
             imports_str = CodeBlockTemplate.other_resource_imports.format(api_name, className_str)
 
             if table.get('business_key'):
-                id_str = table.get('business_key').get('column')
+                id_str = str_format_convert(table.get('business_key').get('column'))
             else:
-                id_str = table.get('primaryKey')[0]
+                id_str = str_format_convert(table.get('primaryKey')[0])
 
             # get field list (except primary key)
             parameter_query = ''
