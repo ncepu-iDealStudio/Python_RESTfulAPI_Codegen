@@ -28,6 +28,11 @@
     float: right;
 }
 
+.glyphicon-ok {
+    color: #0F9D24;
+    float: right;
+}
+
 #businessKeyRule {
     display: none;
 }
