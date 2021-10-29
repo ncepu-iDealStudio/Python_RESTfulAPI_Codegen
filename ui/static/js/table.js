@@ -146,7 +146,7 @@ function saveTableInfo() {
             data[item].issave = 'true';
             let table = document.getElementById(currentTable);
             let tablechilds = table.childNodes;
-            tablechilds[1].style.color = "#0F9D24";
+            tablechilds[1].className= "glyphicon glyphicon-ok";
             if (isDeleted.checked) {
                 data[item].isdeleted = 'true';
             } else {
