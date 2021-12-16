@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <link rel="stylesheet" href="cdn/element-plus.css" />
+    <script src="cdn/vue-3.2.26.js"></script>
+    <script src="cdn/element-ui.js"></script>
+    <script src="cdn/axios-0.24.0.js"></script>
+    <link rel="stylesheet" href="global.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="container_header">Flask_Sqlachemy_RESTfulAPI_Codegen</div>
+        <el-row>
+            <el-col :offset="5" :span="14">
+                <el-card shadow="never">
+                    <el-card shadow="never">
+                        <template #header>数据库配置</template> 请选择要生成接口项目代码的目标数据库，生成器将针对此数据库生成一个分层设计的接口项目
+                    </el-card>
+
+                    <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
+                        <el-form-item label="数据库方言" prop="DatabaseDialects">
+                            <el-input v-model="form.DatabaseDialects"></el-input>
+                        </el-form-item>
+                        <el-form-item label="驱动" prop="Driver">
+                            <el-input v-model="form.Driver"></el-input>
+                        </el-form-item>
+                        <el-form-item label="主机" prop="Host">
+                            <el-input v-model="form.Host"></el-input>
+                        </el-form-item>
+                        <el-form-item label="端口号" prop="Port">
+                            <el-input v-model="form.Port"></el-input>
+                        </el-form-item>
+                        <el-form-item label="数据库" prop="DatebaseName">
+                            <el-input v-model="form.DatebaseName"></el-input>
+                        </el-form-item>
+                        <el-form-item label="登录名" prop="Username">
+                            <el-input v-model="form.Username"></el-input>
+                        </el-form-item>
+                        <el-form-item label="密码" prop="Password">
+                            <el-input v-model="form.Password"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" style="float:left;width: 150px;" :loading="connectTest_loading" @click="connectTest">连接测试</el-button>
+                            <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+</body>
+<script>
+    const {
+        reactive,
+        toRefs,
+        ref
+    } = Vue
+    const {
+        ElMessage
+    } = ElementPlus
+    const composition = {
+        setup() {
+            const state = reactive({
+                form: {
+                    DatabaseDialects: "mysql",
+                    Driver: "pymysql",
+                    Host: "47.94.236.132",
+                    Port: "13306",
+                    DatebaseName: "writer",
+                    Username: "writer",
+                    Password: "writer_ideal",
+                },
+                rules: {
+                    DatabaseDialects: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    Driver: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    Host: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    Port: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    DatebaseName: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    Username: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    Password: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                },
+                connectTest_loading: false,
+                nextStep_loading: false,
+            });
+            const formRef = ref(null);
+            const nextStep = () => {
+                formRef.value.validate((valid) => {
+                    if (valid) {
+                        state.nextStep_loading = true;
+                        axios({
+                                method: 'POST',
+                                url: 'http://127.0.0.1:5000/connect',
+                                data: state.form
+                            })
+                            .then(result => {
+                                const res = result.data
+                                if (res.code === '2000') {
+                                    ElMessage.success(res.message)
+                                    localStorage.setItem("tables", JSON.stringify(res.data));
+                                    location.replace('tables.html')
+                                    state.nextStep_loading = false;
+                                } else {
+                                    ElMessage.error(res.message)
+                                    state.nextStep_loading = false;
+                                }
+                            })
+                    }
+                })
+            }
+            const connectTest = () => {
+                formRef.value.validate((valid) => {
+                    if (valid) {
+                        state.connectTest_loading = true;
+                        axios({
+                                method: 'POST',
+                                url: 'http://127.0.0.1:5000/connect',
+                                data: state.form
+                            })
+                            .then(result => {
+                                const res = result.data
+                                if (res.code === '2000') {
+                                    ElMessage.success(res.message)
+                                    state.connectTest_loading = false;
+                                } else {
+                                    ElMessage.error(res.message)
+                                    state.connectTest_loading = false;
+                                }
+                            })
+                    }
+                })
+            }
+            return {
+                ...toRefs(state),
+                formRef,
+                nextStep,
+                connectTest,
+            };
+        },
+    }
+
+    // 创建vue3的实例
+    const app = Vue.createApp(
+        composition
+    )
+    app.use(ElementPlus)
+        // 挂载Vue的app实例
+    app.mount('#app')
+</script>
+
+</html>

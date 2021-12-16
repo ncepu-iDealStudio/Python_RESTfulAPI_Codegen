@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <link rel="stylesheet" href="cdn/element-plus.css" />
+    <script src="cdn/vue-3.2.26.js"></script>
+    <script src="cdn/element-ui.js"></script>
+    <link rel="stylesheet" href="global.css" />
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="container_header">Flask_Sqlachemy_RESTfulAPI_Codegen</div>
+        <el-row>
+            <el-col :offset="5" :span="14">
+                <el-card shadow="never">
+                    <el-card shadow="never">
+                        <template #header>数据库配置</template> 请选择要生成接口项目代码的目标数据库，生成器将针对此数据库生成一个分层设计的接口项目
+                    </el-card>
+                    <el-card>
+                        <el-row :gutter="10">
+                            <el-col :span="4">
+                                <div>表名</div>
+                            </el-col>
+                            <el-col :span="8">
+                                <div>加密字段</div>
+                            </el-col>
+                            <el-col :span="4">
+                                <div>是否逻辑删除</div>
+                            </el-col>
+
+                            <el-col :span="4">
+                                <div>业务主键</div>
+                            </el-col>
+                            <el-col :span="4">
+                                <div>业务主键生成规则</div>
+                            </el-col>
+                        </el-row>
+                        <el-divider style="margin:0;"></el-divider>
+                        <el-empty v-if="tables.length===0" description="no data"></el-empty>
+                        <div class="container_body" v-for="(item, index) in tables" :key="index" style="padding: 14px 0;">
+                            <el-row>
+                                <el-col :span="4">
+                                    <div style="overflow: hidden; margin:0 10px;">{{item.table}}</div>
+                                </el-col>
+                                <el-col :span="8">
+                                    <span v-if="item.encrypt.length===0">/</span>
+                                    <span v-for="(filedItem, index) in item.encrypt" :key="index"><span><el-divider v-if="index!=0" direction="vertical"></el-divider>{{filedItem}}</span></span>
+                                </el-col>
+                                <el-col :span="4">
+                                    <div v-if="item.isbusinesskey">是</div>
+                                    <div v-else>/</div>
+                                </el-col>
+
+                                <el-col :span="4">
+                                    <div>{{item.businesskeyname || "/"}}</div>
+                                </el-col>
+                                <el-col :span="4">
+                                    <div>{{item.businesskeyrule || "/"}}</div>
+                                </el-col>
+                                <el-divider style="position: relative;bottom: -14px;margin: 0;"></el-divider>
+                            </el-row>
+                        </div>
+                    </el-card>
+                    <el-button type="primary" style="float: right;">下一步</el-button>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+    </div>
+</body>
+<script>
+    const {
+        reactive,
+        toRefs,
+        onMounted,
+    } = Vue
+    const {
+        ElMessage
+    } = ElementPlus
+    const composition = {
+            setup() {
+                const state = reactive({
+                    tables: [],
+                });
+
+                onMounted(() => {
+                    let data = JSON.parse(localStorage.getItem("select_tables"));
+                    state.tables = data;
+                });
+
+                return {
+                    ...toRefs(state),
+
+                };
+            },
+        }
+        // 创建vue3的实例
+    const app = Vue.createApp(
+        composition
+    )
+    app.use(ElementPlus)
+        // 挂载Vue的app实例
+    app.mount('#app')
+</script>
+
+<style>
+    .container_body:nth-child(even) {
+        background: #f5f7fa;
+    }
+</style>
+
+</html>

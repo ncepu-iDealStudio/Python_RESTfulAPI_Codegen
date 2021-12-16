@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <link rel="stylesheet" href="cdn/element-plus.css" />
+    <script src="cdn/vue-3.2.26.js"></script>
+    <script src="cdn/element-ui.js"></script>
+    <script src="cdn/axios-0.24.0.js"></script>
+    <link rel="stylesheet" href="global.css" />
+    <link rel="stylesheet" href="iconfont/iconfont.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="container_header">Flask_Sqlachemy_RESTfulAPI_Codegen</div>
+        <el-row>
+            <el-col :span="4">
+                <el-scrollbar style="height:calc(100vh - 120px);">
+                    <el-menu @select="handleSelect">
+                        <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
+                            <el-icon v-if="item.issave">
+                                <span class="iconfont icon-shezhi" style="color: #67c23a;"></span>
+                            </el-icon>
+                            <el-icon v-else>
+                                <span class="iconfont icon-shezhi"></span>
+                            </el-icon>
+                            <span>{{item.table}}</span>
+                        </el-menu-item>
+                    </el-menu>
+                </el-scrollbar>
+            </el-col>
+            <el-col :offset="2" :span="16">
+                <el-card shadow="never">
+                    <el-card shadow="never" v-if="activeIndex===-1">
+                        <template #header>数据表准备</template>
+                        <p>请选择用于生成代码的数据表，并为每张表进行相应的配置</p>
+                    </el-card>
+                    <el-card shadow="never" v-else>
+                        <template #header>
+                            {{tables[activeIndex].table}}
+                        </template>
+                        <el-row :gutter="10">
+                            <el-col :span="11">
+                                <div style="margin: 10px 0;">
+                                    请选择需要加密存储的字段
+                                    <el-tooltip placement="top">
+                                        <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
+                                        <span class="iconfont icon-31yiwen"></span>
+                                    </el-tooltip>
+                                </div style="margin: 10px 0;">
+                                <el-card>
+                                    <el-scrollbar height="200px">
+                                        <el-checkbox v-model="item.field_encrypt" :label="item.field_name" v-for="(item, index) in tables[activeIndex].filed" :key="index" style="width: 120px;overflow: hidden;"></el-checkbox>
+                                    </el-scrollbar>
+                                </el-card>
+                            </el-col>
+                            <el-col :offset="2" :span="11">
+                                <div style="margin: 10px 0;">
+                                    <el-switch v-model="tables[activeIndex].isdeleted">
+                                    </el-switch>
+                                    数据记录是否逻辑删除
+                                    <el-tooltip placement="top">
+                                        <template #content> 逻辑删除方式<br/>即表中必须包含IsDelete的标识删除字段</template>
+                                        <span class="iconfont icon-31yiwen"></span>
+                                    </el-tooltip>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    <el-switch v-model="tables[activeIndex].isbusinesskey">
+                                    </el-switch>
+                                    请选择是否存在业务主键
+                                    <el-tooltip placement="top">
+                                        <template #content> 业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式</template>
+                                        <span class="iconfont icon-31yiwen"></span>
+                                    </el-tooltip>
+                                </div>
+                                <el-card style="margin: 10px 0;" v-if="tables[activeIndex].isbusinesskey">
+                                    <div style="margin: 10px 0;">业务主键字段选择</div>
+                                    <div style="margin: 10px 0;">
+                                        <el-select v-model="tables[activeIndex].businesskeyname" placeholder="Select" size="small" @blur="blurbusinesskey">
+                                            <el-option v-for="(item, index) in tables[activeIndex].filed" :key="index" :label="item.field_name" :value="item.field_name">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                    <div style="margin: 10px 0;">业务主键生成规则
+                                        <el-tooltip placement="top">
+                                            <template #content>业务主键生成规则使用已定义的规则：<br/>‘create_random_id’,‘create_hashlib_id’,‘create_uid’<br/>以及无生成规则，默认为无生成规则</template>
+                                            <span class="iconfont icon-31yiwen"></span>
+                                        </el-tooltip>
+                                    </div>
+                                    <div style="margin: 10px 0;">
+                                        <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule>
+                                            <el-option label="" value="">
+                                            </el-option>
+                                            <el-option label="create_random_id" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
+                                            </el-option>
+                                            <el-option label="create_hashlib_id" value="create_hashlib_id" v-if="activeFiled.field_type==='str'">
+                                            </el-option>
+                                            <el-option label="create_uid" value="create_uid" v-if="activeFiled.field_type==='str'">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                        </el-row>
+                        <el-button type="primary" @click="handleSave">保存</el-button>
+                        <el-button type="danger" @click="handleClear">清空</el-button>
+                        <el-button type="primary" style="float: right;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
+                    </el-card>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+</body>
+
+<script>
+    const {
+        reactive,
+        toRefs,
+        onMounted
+    } = Vue
+    const {
+        ElMessage,
+    } = ElementPlus
+    const composition = {
+        setup() {
+            const state = reactive({
+                tables: [],
+                activeIndex: -1,
+                activeFiled: {},
+                nextStep_loading: false,
+            });
+            const handleSelect = (key, keyPath) => {
+                state.activeIndex = key;
+            }
+            const nextStep = () => {
+                state.nextStep_loading = true;
+                axios({
+                        method: 'POST',
+                        url: 'http://127.0.0.1:5000/tablesinfo',
+                        data: state.tables
+                    })
+                    .then(result => {
+                        const res = result.data
+                        if (res.code === '2000') {
+                            ElMessage.success(res.message)
+                            localStorage.setItem("tables", JSON.stringify(state.tables));
+
+                            // 找出所有的选中的表
+                            let select_tables = [];
+                            for (let i = 0; i < state.tables.length; i++) {
+                                if (state.tables[i].issave) {
+                                    state.tables[i].encrypt = []
+                                    for (let j = 0; j < state.tables[i].filed.length; j++) {
+                                        if (state.tables[i].filed[j].field_encrypt) {
+                                            state.tables[i].encrypt.push(state.tables[i].filed[j].field_name)
+                                        }
+                                    }
+                                    select_tables.push(state.tables[i])
+                                }
+                            }
+                            localStorage.setItem("select_tables", JSON.stringify(select_tables));
+
+                            location.href = 'tables_info.html';
+                            state.nextStep_loading = false;
+                        } else {
+                            ElMessage.error(res.message)
+                            state.nextStep_loading = false;
+                        }
+                    })
+            }
+
+            const handleSave = () => {
+                state.tables[state.activeIndex].issave = true
+                ElMessage.success('保存成功')
+            }
+            const handleClear = () => {
+                state.tables[state.activeIndex].issave = false;
+                state.tables[state.activeIndex].isdeleted = false;
+                state.tables[state.activeIndex].isbusinesskey = false;
+                state.tables[state.activeIndex].businesskeyname = "";
+                state.tables[state.activeIndex].businesskeyrule = "";
+                // 清空加密字段选择
+                for (let i = 0; i < state.tables[state.activeIndex].filed.length; i++) {
+                    state.tables[state.activeIndex].filed[i].field_encrypt = false;
+                }
+            }
+
+            //获取当前选择的业务主键字段信息
+            const selectbusinesskeyrule = () => {
+                state.activeFiled = {}
+                for (let i = 0; i < state.tables[state.activeIndex].filed.length; i++) {
+                    if (state.tables[state.activeIndex].businesskeyname === state.tables[state.activeIndex].filed[i].field_name) {
+                        state.activeFiled = {...state.tables[state.activeIndex].filed[i]
+                        }
+                    }
+                }
+                if (!state.activeFiled.field_name) {
+                    ElMessage.warning('未选择业务主键字段');
+                }
+            }
+
+            // 清空业务主键生成规则输入框
+            const blurbusinesskey = () => {
+                state.tables[state.activeIndex].businesskeyrule = "";
+            }
+
+            onMounted(() => {
+                let data = JSON.parse(localStorage.getItem("tables"));
+                if (!data) {
+                    ElMessage.warning('请重新连接数据库')
+                    setTimeout(() => {
+                        location.replace('index.html')
+                    }, 1000)
+                }
+                state.tables = data
+            });
+            return {
+                ...toRefs(state),
+                handleSelect,
+                selectbusinesskeyrule,
+                handleSave,
+                handleClear,
+                nextStep,
+                blurbusinesskey,
+            };
+        },
+    }
+
+    // 创建vue3的实例
+    const app = Vue.createApp(
+        composition
+    )
+    app.use(ElementPlus)
+        // 挂载Vue的app实例
+    app.mount('#app')
+</script>
+
+<style>
+
+</style>
+
+</html>

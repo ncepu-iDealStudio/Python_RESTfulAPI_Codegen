@@ -1,6 +1,1 @@
-{
-  "table_record_delete_logic_way": [
-  ],
-  "table_business_key_gen_rule": {
-  }
-}
+{"table_record_delete_logic_way": [], "table_business_key_gen_rule": {}}

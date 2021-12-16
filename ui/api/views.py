@@ -17,7 +17,7 @@ from flask_bootstrap import Bootstrap
 import configparser
 from utils.checkSqlLink import check_sql_link
 
-app = Flask(__name__, template_folder="../templates", static_folder="../static")
+app = Flask(__name__, template_folder="../../vue_ui", static_folder="../static")
 Bootstrap(app)
 
 
@@ -61,7 +61,6 @@ def index():
 
         else:
             return render_template("index.html", message=result_sql['message'])
-
     return render_template("index.html")
 
 

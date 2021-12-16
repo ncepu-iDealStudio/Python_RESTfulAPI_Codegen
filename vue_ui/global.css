@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 14px;
+}
+
+.container_header {
+    background-color: var(--el-color-primary);
+    color: var(--el-text-color-primary);
+    text-align: center;
+    line-height: 60px;
+}
+
+
+/* 覆盖element-plus样式 */
+
+.el-card__header {
+    border-bottom: 0;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 15px 20px 0px 20px;
+}
+
+.el-col .el-card {
+    margin-bottom: 15px;
+    border: none
+}

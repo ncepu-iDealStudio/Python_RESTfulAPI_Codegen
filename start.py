@@ -9,11 +9,11 @@
 """
     project start
 """
-
-
+import os
 import webbrowser
 from ui.api.views import app
 
 if __name__ == '__main__':
     # webbrowser.open('http://127.0.0.1:5000')
+    os.open("vue_ui/index.html")
     app.run()
