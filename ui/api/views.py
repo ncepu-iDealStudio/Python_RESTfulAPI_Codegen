@@ -157,3 +157,112 @@ def showtableinfo():
     if request.method == 'POST':
         return render_template("build.html")
     return render_template("showTableInfo.html", tabledata=tabledata)
+
+
+# 新的vue接口
+
+# 连接数据库接口
+@app.route('/connect', methods=['POST'])
+def connect():
+    # 接收参数
+    kwargs = json.loads(request.data)
+    dialect = kwargs['DatabaseDialects']
+    driver = kwargs['Driver']
+    host = kwargs['Host']
+    port = kwargs['Port']
+    database = kwargs['DatebaseName']
+    username = kwargs['Username']
+    password = kwargs['Password']
+    # tables 置为为空
+    configfile = "config/config.conf"
+    conf = configparser.ConfigParser()
+    conf.read(configfile, encoding='UTF-8')
+    conf.set("MODEL", "TABLES", '')
+    with open(configfile, "w") as f:
+        conf.write(f)
+    # 检查数据库链接
+    result_sql = check_sql_link(dialect, driver, username, password, host, port, database)
+    if result_sql['code']:
+        global tabledata
+        tabledata = result_sql['data']
+        # 填写配置文件
+        configfile = "config/database.conf"
+        conf = configparser.ConfigParser()  # 实例类
+        conf.read(configfile, encoding='UTF-8')  # 读取配置文件
+        conf.set("DEFAULT", "DIALECT", dialect)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
+        conf.set("DEFAULT", "DRIVER", driver)
+        conf.set("DEFAULT", "HOST", host)
+        conf.set("DEFAULT", "PORT", port)
+        conf.set("DEFAULT", "DATABASE", database)
+        conf.set("DEFAULT", "USERNAME", username)
+        conf.set("DEFAULT", "PASSWORD", password)
+        with open(configfile, "w") as f:
+            conf.write(f)
+        return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
+    else:
+        return {'code': '4000', 'data': [], 'message': '数据库连接失败'}
+
+
+# 完成表配置
+@app.route('/tablesinfo', methods=['POST'])
+def tablesinfo():
+    tabledata = json.loads(request.data)
+    security_configfile = "config/security.conf"
+    security_conf = configparser.ConfigParser()  # 实例类
+    security_conf.read(security_configfile, encoding='UTF-8')  # 读取配置文件
+    security_conf.remove_section("RSA_TABLE_COLUMN")
+    security_conf.add_section("RSA_TABLE_COLUMN")
+
+    config_configfile = "config/config.conf"
+    config_config = configparser.ConfigParser()  # 实例类
+    config_config.read(config_configfile, encoding='UTF-8')  # 读取配置文件
+
+    table_rule = {
+        "table_record_delete_logic_way": [
+        ],
+        "table_business_key_gen_rule": {
+        }
+    }
+
+    tables_str = ""
+    for tableItem in tabledata:
+        if tableItem['issave']:
+            tables_str = tables_str + tableItem['table'] + ","
+            config_config.set("MODEL", 'TABLES', tables_str[:-1])
+            with open(config_configfile, "w") as f:
+                config_config.write(f)
+
+            if tableItem['isdeleted']:
+                table_rule['table_record_delete_logic_way'].append(tableItem['table'])
+
+            if tableItem['isbusinesskey'] != '':
+                table_rule['table_business_key_gen_rule'][tableItem['table']] = {
+                    tableItem['isbusinesskey']: tableItem['businesskeyrule']}
+
+            for i in tableItem['filed']:
+                encrypt_str = ""
+                encrypt_str = encrypt_str + i['field_name'] + ","
+                security_conf.set("RSA_TABLE_COLUMN", tableItem['table'], encrypt_str[:-1])
+                with open(security_configfile, "w") as f:
+                    security_conf.write(f)
+
+    table_rule_json = json.dumps(table_rule)
+    with open("config/table_rule.json", "w") as f:
+        f.write(table_rule_json)
+
+    return {'code': '2000', 'data': [], 'message': '写入配置成功'}
+
+
+@app.after_request
+def process_response(response):
+    allow_cors = ['OPTIONS', 'PUT', 'DELETE', 'GET', 'POST']
+    if request.method in allow_cors:
+        response.headers["Access-Control-Allow-Origin"] = '*'
+        if request.headers.get('Origin') and request.headers['Origin'] == 'http://admin.writer..quwancode.com':
+            response.headers["Access-Control-Allow-Origin"] = 'http://admin.writer.quwancode.com'
+
+        response.headers["Access-Control-Allow-Credentials"] = 'true'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,GET,POST,PUT,DELETE'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type,Token'
+        response.headers['Access-Control-Expose-Headers'] = 'VerifyCodeID,ext'
+    return response

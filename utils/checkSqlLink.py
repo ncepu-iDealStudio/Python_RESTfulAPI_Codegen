@@ -10,7 +10,6 @@
     检验数据库连接是否成功并返回所有表、字段信息（前端用）
 """
 
-
 from sqlalchemy import create_engine, MetaData
 from utils.checkTable import CheckTable
 
@@ -48,15 +47,16 @@ def check_sql_link(dialect, driver, username, password, host, port, database):
                 continue
             filed.append({
                 'field_name': column['name'],
-                'field_type': column['type']
+                'field_type': column['type'],
+                'field_encrypt': False
             })
         data.append({
             'table': str(table['table_name']),
-            'issave': '',
-            'isdeleted': '',
+            'issave': False,
+            'isdeleted': False,
             'filed': filed,
-            'encrypt': [],
-            'isbusinesskey': '',
+            'isbusinesskey': False,
+            'businesskeyname': '',
             'businesskeyrule': ''
         })
     return {'code': True, 'message': '数据库连接成功', 'data': data}
