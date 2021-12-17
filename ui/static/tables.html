@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
-    <link rel="stylesheet" href="cdn/element-plus.css" />
-    <script src="cdn/vue-3.2.26.js"></script>
-    <script src="cdn/element-ui.js"></script>
-    <script src="cdn/axios-0.24.0.js"></script>
-    <link rel="stylesheet" href="global.css" />
-    <link rel="stylesheet" href="iconfont/iconfont.css" />
+    <link rel="stylesheet" href="static/cdn/element-plus.css" />
+    <script src="static/cdn/vue-3.2.26.js"></script>
+    <script src="static/cdn/element-ui.js"></script>
+    <script src="static/cdn/axios-0.24.0.js"></script>
+    <link rel="stylesheet" href="static/global.css" />
+    <link rel="stylesheet" href="static/iconfont/iconfont.css" />
 </head>
 
 <body>
@@ -140,7 +140,7 @@
                 state.nextStep_loading = true;
                 axios({
                         method: 'POST',
-                        url: 'http://127.0.0.1:5000/tablesinfo',
+                        url: 'http://127.0.0.1:5000/settables',
                         data: state.tables
                     })
                     .then(result => {
@@ -148,23 +148,7 @@
                         if (res.code === '2000') {
                             ElMessage.success(res.message)
                             localStorage.setItem("tables", JSON.stringify(state.tables));
-
-                            // 找出所有的选中的表
-                            let select_tables = [];
-                            for (let i = 0; i < state.tables.length; i++) {
-                                if (state.tables[i].issave) {
-                                    state.tables[i].encrypt = []
-                                    for (let j = 0; j < state.tables[i].filed.length; j++) {
-                                        if (state.tables[i].filed[j].field_encrypt) {
-                                            state.tables[i].encrypt.push(state.tables[i].filed[j].field_name)
-                                        }
-                                    }
-                                    select_tables.push(state.tables[i])
-                                }
-                            }
-                            localStorage.setItem("select_tables", JSON.stringify(select_tables));
-
-                            location.href = 'tables_info.html';
+                            location.href = 'tables_info';
                             state.nextStep_loading = false;
                         } else {
                             ElMessage.error(res.message)

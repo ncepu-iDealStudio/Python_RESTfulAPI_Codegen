@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <link rel="stylesheet" href="static/cdn/element-plus.css" />
+    <script src="static/cdn/vue-3.2.26.js"></script>
+    <script src="static/cdn/element-ui.js"></script>
+    <script src="static/cdn/axios-0.24.0.js"></script>
+    <link rel="stylesheet" href="static/global.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="container_header">Flask_Sqlachemy_RESTfulAPI_Codegen</div>
+        <el-row>
+            <el-col :offset="5" :span="14">
+                <el-card shadow="never">
+                    <el-card shadow="never">
+                        <template #header>要生成的目标接口项目基本配置</template>
+                    </el-card>
+                    <el-form ref="ruleForm" :model="Form" :rules="rules" label-width="120px">
+                        <el-form-item label="项目路径" prop="projectPath">
+                            <el-input v-model="Form.projectPath"></el-input>
+                        </el-form-item>
+                        <el-form-item label="项目名称" prop="projectName">
+                            <el-input v-model="Form.projectName" placeholder="api.project.com"></el-input>
+                        </el-form-item>
+                        <el-form-item label="接口版本" prop="projectVersion">
+                            <el-input v-model="Form.projectVersion" placeholder="1.0"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+</body>
+
+<script>
+    const {
+        reactive,
+        toRefs,
+        ref,
+        onMounted,
+    } = Vue
+    const {
+        ElMessage
+    } = ElementPlus
+    const composition = {
+            setup() {
+                const state = reactive({
+                    Form: {
+                        projectPath: "dist",
+                        projectName: "",
+                        projectVersion: "",
+                    },
+                    rules: {
+                        projectPath: [{
+                            required: true,
+                            message: '请填写完整信息',
+                            trigger: 'blur',
+                        }],
+                        projectName: [{
+                            required: true,
+                            message: '请填写完整信息',
+                            trigger: 'blur',
+                        }],
+                        projectVersion: [{
+                            required: true,
+                            message: '请填写完整信息',
+                            trigger: 'blur',
+                        }],
+                    },
+                    nextStep_loading: false,
+                });
+
+                const ruleForm = ref(null);
+
+                const nextStep = () => {
+                    ruleForm.value.validate((valid) => {
+                        if (valid) {
+                            state.nextStep_loading = true;
+                            axios({
+                                method: 'POST',
+                                url: 'http://127.0.0.1:5000/setproject',
+                                data: state.Form
+                            }).then(result => {
+                                const res = result.data
+                                if (res.code === '2000') {
+                                    ElMessage.success(res.message)
+                                    localStorage.setItem("project_info", JSON.stringify(state.Form));
+                                    location.href = 'build';
+                                    state.nextStep_loading = false;
+                                } else {
+                                    ElMessage.error(res.message)
+                                    state.nextStep_loading = false;
+                                }
+                            })
+                        }
+                    })
+                }
+
+                onMounted(() => {
+                    let data = JSON.parse(localStorage.getItem("project_info"));
+                    if (data) {
+                        state.Form = data
+                    }
+                });
+
+                return {
+                    ...toRefs(state),
+                    nextStep,
+                    ruleForm,
+                };
+            },
+        }
+        // 创建vue3的实例
+    const app = Vue.createApp(
+        composition
+    )
+    app.use(ElementPlus)
+        // 挂载Vue的app实例
+    app.mount('#app')
+</script>
+
+</html>

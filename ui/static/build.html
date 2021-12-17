@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <link rel="stylesheet" href="static/cdn/element-plus.css" />
+    <script src="static/cdn/vue-3.2.26.js"></script>
+    <script src="static/cdn/element-ui.js"></script>
+    <script src="static/cdn/axios-0.24.0.js"></script>
+    <link rel="stylesheet" href="static/global.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="container_header">Flask_Sqlachemy_RESTfulAPI_Codegen</div>
+        <el-row>
+            <el-col :offset="5" :span="14">
+                <el-card shadow="never">
+                    <el-card shadow="never">
+                        <template #header>
+                            <div v-if="loading">生成中...</div>
+                            <div v-else>已完成</div>
+                        </template>
+                        <el-progress :percentage="100" :indeterminate="loading" :duration="3" :show-text="false" />
+                    </el-card>
+                    <el-card>
+                        <pre>{{log_info}}</pre>
+                    </el-card>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+</body>
+
+<script>
+    const {
+        reactive,
+        toRefs,
+        onMounted,
+    } = Vue
+    const composition = {
+            setup() {
+                const state = reactive({
+                    loading: true,
+                    log_info: "",
+                });
+                onMounted(() => {
+                    axios({
+                        method: 'POST',
+                        url: 'http://127.0.0.1:5000/startbuild',
+                    }).then(result => {
+                        const res = result.data
+                        if (res.code === '2000') {
+                            state.log_info = res.data;
+                            state.loading = false;
+                        } else {
+                            ElMessage.error(res.message)
+                        }
+                    })
+                });
+
+                return {
+                    ...toRefs(state),
+                };
+            },
+        }
+        // 创建vue3的实例
+    const app = Vue.createApp(
+        composition
+    )
+    app.use(ElementPlus)
+        // 挂载Vue的app实例
+    app.mount('#app')
+</script>
+
+</html>
