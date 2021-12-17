@@ -210,6 +210,8 @@ class Settings(object):
                 if key in ['database', 'model']:
                     for neo_key, neo_value in value.items():
                         setattr(cls, neo_key.upper(), neo_value)
+                elif key in ['table_business_key_gen_rule', 'table_record_delete_logic_way']:
+                    pass
                 else:
                     setattr(cls, key.upper(), value)
 
@@ -229,6 +231,11 @@ class Settings(object):
             cls.PORT,
             cls.DATABASE
         )
+        cls.TABLE_RULE = {
+            'table_record_delete_logic_way': settings['table_record_delete_logic_way'],
+            'table_business_key_gen_rule': settings['table_business_key_gen_rule']
+        }
+        cls.DATABASE_TYPE = cls.DIALECT.upper()
 
     @classmethod
     def save(cls, setting_name: str) -> None:
@@ -244,7 +251,9 @@ class Settings(object):
         attr_list = dir(cls)
         remove_list = []
         for attr in attr_list:
-            if attr.islower() or attr in ['BASE_DIR', 'PROJECT_DIR', 'MODEL_URL', 'TYPE_MAPPING']:
+            if attr.islower() or attr in [
+                'BASE_DIR', 'PROJECT_DIR', 'MODEL_URL', 'TYPE_MAPPING', 'TABLE_RULE', 'DATABASE_TYPE'
+            ]:
                 remove_list.append(attr)
         for remove_attr in remove_list:
             attr_list.remove(remove_attr)
