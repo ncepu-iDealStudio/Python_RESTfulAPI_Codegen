@@ -16,17 +16,31 @@
 
 <body>
     <div id="app">
-        <div class="container_header">Flask_Sqlachemy_RESTfulAPI_Codegen</div>
+        <div class="container_header">
+            <el-row>
+                <el-col :offset="5" :span="14">
+                    Flask_Sqlachemy_RESTfulAPI_Codegen
+                    <el-tooltip placement="top">
+                        <template #content>如果喜欢就点个星星支持一下</template>
+                        <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;">
+                            <el-button type="warning" circle>
+                                <div class="iconfont icon-shoucang"></div>
+                            </el-button>
+                        </a>
+                    </el-tooltip>
+                </el-col>
+            </el-row>
+        </div>
         <el-row>
             <el-col :span="4">
                 <el-scrollbar style="height:calc(100vh - 120px);">
                     <el-menu @select="handleSelect">
                         <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
                             <el-icon v-if="item.issave">
-                                <span class="iconfont icon-shezhi" style="color: #67c23a;"></span>
+                                <span class="iconfont icon-shezhi1" style="color: #67c23a;"></span>
                             </el-icon>
                             <el-icon v-else>
-                                <span class="iconfont icon-shezhi"></span>
+                                <span class="iconfont icon-shezhi1"></span>
                             </el-icon>
                             <span>{{item.table}}</span>
                         </el-menu-item>
@@ -49,7 +63,7 @@
                                     请选择需要加密存储的字段
                                     <el-tooltip placement="top">
                                         <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
-                                        <span class="iconfont icon-31yiwen"></span>
+                                        <span class="iconfont icon-yiwen"></span>
                                     </el-tooltip>
                                 </div style="margin: 10px 0;">
                                 <el-card>
@@ -65,7 +79,7 @@
                                     数据记录是否逻辑删除
                                     <el-tooltip placement="top">
                                         <template #content> 逻辑删除方式<br/>即表中必须包含IsDelete的标识删除字段</template>
-                                        <span class="iconfont icon-31yiwen"></span>
+                                        <span class="iconfont icon-yiwen"></span>
                                     </el-tooltip>
                                 </div>
                                 <div style="margin: 10px 0;">
@@ -74,7 +88,7 @@
                                     请选择是否存在业务主键
                                     <el-tooltip placement="top">
                                         <template #content> 业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式</template>
-                                        <span class="iconfont icon-31yiwen"></span>
+                                        <span class="iconfont icon-yiwen"></span>
                                     </el-tooltip>
                                 </div>
                                 <el-card style="margin: 10px 0;" v-if="tables[activeIndex].isbusinesskey">
@@ -88,7 +102,7 @@
                                     <div style="margin: 10px 0;">业务主键生成规则
                                         <el-tooltip placement="top">
                                             <template #content>业务主键生成规则使用已定义的规则：<br/>‘create_random_id’,‘create_hashlib_id’,‘create_uid’<br/>以及无生成规则，默认为无生成规则</template>
-                                            <span class="iconfont icon-31yiwen"></span>
+                                            <span class="iconfont icon-yiwen"></span>
                                         </el-tooltip>
                                     </div>
                                     <div style="margin: 10px 0;">

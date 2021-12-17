@@ -12,6 +12,11 @@ body {
     color: var(--el-text-color-primary);
     text-align: center;
     line-height: 60px;
+    font-weight: bold;
+}
+
+:root {
+    --el-color-primary: #ccc;
 }
 
 
