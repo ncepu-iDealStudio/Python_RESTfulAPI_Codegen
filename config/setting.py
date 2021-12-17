@@ -210,8 +210,6 @@ class Settings(object):
                 if key in ['database', 'model']:
                     for neo_key, neo_value in value.items():
                         setattr(cls, neo_key.upper(), neo_value)
-                elif key in ['table_business_key_gen_rule', 'table_record_delete_logic_way']:
-                    pass
                 else:
                     setattr(cls, key.upper(), value)
 
@@ -235,7 +233,13 @@ class Settings(object):
             'table_record_delete_logic_way': settings['table_record_delete_logic_way'],
             'table_business_key_gen_rule': settings['table_business_key_gen_rule']
         }
-        cls.DATABASE_TYPE = cls.DIALECT.upper()
+        database_type = {
+            'mysql': 'DEFAULT',
+            'postgresql': 'PostgreSQL',
+            'mssql': 'SQL Server',
+            'oracle': 'Oracle'
+        }
+        cls.DATABASE_TYPE = database_type.get(cls.DIALECT, 'DEFAULT')
 
     @classmethod
     def save(cls, setting_name: str) -> None:
@@ -279,6 +283,8 @@ class Settings(object):
                 'MODEL_NOCOMMENTS', 'MODEL_NOREFLECT'
             ]:
                 save_dict['model'][attr.lower()] = getattr(cls, attr)
+            elif attr == 'TARGET_DIR':
+                save_dict[attr.lower()] = getattr(cls, attr).split('Python_RESTfulAPI_Codegen\\')[-1]
             else:
                 save_dict[attr.lower()] = getattr(cls, attr)
 

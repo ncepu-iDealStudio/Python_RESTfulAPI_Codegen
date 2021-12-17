@@ -25,17 +25,12 @@ url = Settings.MODEL_URL
 engine = create_engine(url)
 metadata = MetaData(engine)
 
-if Settings.CODEGEN_MODE == 'database':
-    # database mode
-    metadata.reflect(engine)
-else:
-    # table mode
-    metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(',') if Settings.MODEL_TABLES else None)
+metadata.reflect(engine, only=Settings.MODEL_TABLES if Settings.MODEL_TABLES else None)
 
 # 代码生成的层次
-codegen_layer = Settings.CODEGEN_LAYER
+codegen_layer = 'default'
 
-# 数据库魔术
+# 数据库模式
 schema = Settings.MODEL_SCHEMA
 
 # 无视图

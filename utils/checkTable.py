@@ -12,6 +12,7 @@
 
 import keyword
 
+from config.setting import Settings
 from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
 
@@ -179,16 +180,17 @@ class CheckTable(object):
 
         return available_table, invalid_table
 
-    # 检查要逻辑删除的表中是否存在IsDelete字段
+    # 检查要逻辑删除的表中是否存在用户定义的删除标识位字段
     @classmethod
     def check_logic_delete(cls, table_dict):
         """
-        检验要逻辑删除的表中是否存在IsDelete字段且数据类型为int，剔除不符合规范的表
+        检验要逻辑删除的表中是否存在用户定义的删除标识位字段且数据类型为int，剔除不符合规范的表
         :return:
         """
 
         available_table = []
         invalid_table = []
+        logical_delete_mark = Settings.LOGICAL_DELETE_MARK
 
         for table in table_dict.values():
             if not table['is_logic_delete']:
@@ -197,16 +199,16 @@ class CheckTable(object):
 
             else:
                 # 采取逻辑删除的表
-                if 'IsDelete' not in [x['name'] for x in table['columns'].values()]:
+                if logical_delete_mark not in [x['name'] for x in table['columns'].values()]:
                     invalid_table.append(str(table['table_name']))
-                    loggings.warning(1, 'The table {} for logical deletion does not have an IsDelete field'.
-                                     format(str(table['table_name'])))
+                    loggings.warning(1, 'The table {} for logical deletion does not have an {} field'.
+                                     format(str(table['table_name']), logical_delete_mark))
 
-                elif table['columns']['IsDelete']['type'] != 'int':
-                    # IsDelete字段不为int型
+                elif table['columns'][logical_delete_mark]['type'] != 'int':
+                    # 用户定义的删除标识位字段不为int型
                     invalid_table.append(str(table['table_name']))
-                    loggings.warning(1, 'The column IsDelete of table {} is not an int type'.
-                                     format(str(table['table_name'])))
+                    loggings.warning(1, 'The column {} of table {} is not an int type'.
+                                     format(logical_delete_mark, str(table['table_name'])))
 
                 else:
                     available_table.append(str(table['table_name']))
@@ -217,7 +219,6 @@ class CheckTable(object):
     @classmethod
     def main(cls, metadata):
 
-        # reload settings
         table_dict = TableMetadata.get_tables_metadata(metadata)
 
         # check table primary key
@@ -225,11 +226,11 @@ class CheckTable(object):
         for invalid in invalid_tables:
             table_dict.pop(invalid)
 
-        # check the foreign key
-        available_table, invalid_table = cls.check_foreign_key(table_dict)
-        invalid_tables += invalid_table
-        for invalid in invalid_table:
-            table_dict.pop(invalid)
+        # # check the foreign key
+        # available_table, invalid_table = cls.check_foreign_key(table_dict)
+        # invalid_tables += invalid_table
+        # for invalid in invalid_table:
+        #     table_dict.pop(invalid)
 
         # check the keyword
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
@@ -243,11 +244,11 @@ class CheckTable(object):
         for invalid in invalid_table:
             table_dict.pop(invalid)
 
-        # check the business key
-        available_table, invalid_table = cls.check_business_key(table_dict)
-        invalid_tables += invalid_table
-        for invalid in invalid_table:
-            table_dict.pop(invalid)
+        # # check the business key
+        # available_table, invalid_table = cls.check_business_key(table_dict)
+        # invalid_tables += invalid_table
+        # for invalid in invalid_table:
+        #     table_dict.pop(invalid)
 
         # Check whether the IsDelete field exists in the table to be logically deleted
         available_table, invalid_table = cls.check_logic_delete(table_dict)
