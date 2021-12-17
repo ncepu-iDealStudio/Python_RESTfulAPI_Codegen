@@ -273,9 +273,8 @@ class Settings(object):
         setting_dir = config_file_dir + '/' + setting_name + '.json'
         with open(setting_dir, 'w', encoding='utf-8') as fw:
             fw.write(json.dumps(save_dict))
-        print()
 
 
 Settings.load()
 print()
-Settings.save('test1')
+# Settings.save('test1')
