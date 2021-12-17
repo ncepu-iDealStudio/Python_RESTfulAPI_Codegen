@@ -249,14 +249,18 @@ class Settings(object):
 
         # 获取应存储的属性名
         attr_list = dir(cls)
-        remove_list = []
-        for attr in attr_list:
-            if attr.islower() or attr in [
+        # remove_list = []
+        # for attr in attr_list:
+        #     if attr.islower() or attr in [
+        #         'BASE_DIR', 'PROJECT_DIR', 'MODEL_URL', 'TYPE_MAPPING', 'TABLE_RULE', 'DATABASE_TYPE'
+        #     ]:
+        #         remove_list.append(attr)
+        # for remove_attr in remove_list:
+        #     attr_list.remove(remove_attr)
+
+        attr_list = [attr for attr in attr_list if attr.isupper() and attr not in [
                 'BASE_DIR', 'PROJECT_DIR', 'MODEL_URL', 'TYPE_MAPPING', 'TABLE_RULE', 'DATABASE_TYPE'
-            ]:
-                remove_list.append(attr)
-        for remove_attr in remove_list:
-            attr_list.remove(remove_attr)
+            ]]
 
         # 将要保存的配置属性存储到字典中
         save_dict = {
@@ -286,4 +290,4 @@ class Settings(object):
 
 Settings.load()
 print()
-# Settings.save('test1')
+Settings.save('test1')
