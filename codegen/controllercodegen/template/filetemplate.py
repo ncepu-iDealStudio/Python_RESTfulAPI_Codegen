@@ -116,7 +116,7 @@ class {class_name}({parent_model}):
     @classmethod
     def delete(cls, **kwargs):
         try:
-            filter_list = [cls.IsDelete == 0]
+            filter_list = [cls.{logical_delete_mark} == 0]
             if kwargs.get('{primary_key}'):
                 primary_key_list = []
                 for primary_key in str(kwargs.get('{primary_key}')).replace(' ', '').split(','):
@@ -125,7 +125,7 @@ class {class_name}({parent_model}):
                 
             else:
                 {delete_filter_list}
-            res = db.session.query(cls).filter(*filter_list).with_for_update().update({{'IsDelete': 1}})
+            res = db.session.query(cls).filter(*filter_list).with_for_update().update({{'{logical_delete_mark}': 1}})
             if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'error': 'No data to delete'}}
                 
@@ -172,7 +172,7 @@ class {class_name}({parent_model}):
             {rsa_update}
             res = db.session.query(cls).filter(
                 cls.{primary_key} == kwargs.get('{primary_key}'),
-                cls.IsDelete == 0
+                cls.{logical_delete_mark} == 0
             ).with_for_update().update(kwargs)
             
             if res < 1:

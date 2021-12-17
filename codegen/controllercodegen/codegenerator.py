@@ -28,7 +28,7 @@ class CodeGenerator(object):
         super().__init__()
         self.table_dict = table_dict
 
-    def controller_codegen(self, controller_dir):
+    def controller_codegen(self, controller_dir, logical_delete_mark):
         codes = {}
         # get table dict
         table_dict = self.table_dict
@@ -42,11 +42,17 @@ class CodeGenerator(object):
             primary_key = table['primaryKey'][0]
 
             # combine imports
-            imports = CodeBlockTemplate.imports.format(model_name=model_name, parent_model=parent_model)
+            imports = CodeBlockTemplate.imports.format(
+                model_name=model_name,
+                parent_model=parent_model
+            )
             if table['rsa_columns']:
                 imports += '\nfrom utils.rsa_encryption_decryption import RSAEncryptionDecryption'
-            basic = FileTemplate.basic_template.format(imports=imports, class_name=class_name,
-                                                       parent_model=parent_model)
+            basic = FileTemplate.basic_template.format(
+                imports=imports,
+                class_name=class_name,
+                parent_model=parent_model
+            )
 
             # combine column_init
             column_init = ''
@@ -120,7 +126,9 @@ class CodeGenerator(object):
                 primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
                 get_filter_list=get_filter_list if get_filter_list else 'pass',
                 model_lower=table['table_name'],
-                get_filter_list_logic=CodeBlockTemplate.get_filer_list_logic if table['is_logic_delete'] else ''
+                get_filter_list_logic=CodeBlockTemplate.get_filer_list_logic.format(
+                    logical_delete_mark=logical_delete_mark
+                ) if table['is_logic_delete'] else ''
             )
 
             # combine delete
@@ -128,7 +136,8 @@ class CodeGenerator(object):
                 # logic delete
                 delete = FileTemplate.delete_template_logic.format(
                     primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
-                    delete_filter_list=get_filter_list if get_filter_list else 'pass'
+                    delete_filter_list=get_filter_list if get_filter_list else 'pass',
+                    logical_delete_mark=logical_delete_mark
                 )
             else:
                 # physical delete
@@ -154,7 +163,8 @@ class CodeGenerator(object):
             else:
                 update = FileTemplate.update_template_logic.format(
                     primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
-                    rsa_update=rsa_update
+                    rsa_update=rsa_update,
+                    logical_delete_mark=logical_delete_mark
                 )
 
             # combine add_list
