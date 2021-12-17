@@ -289,5 +289,3 @@ class Settings(object):
 
 
 Settings.load()
-print()
-Settings.save('test1')

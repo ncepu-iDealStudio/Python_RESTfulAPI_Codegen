@@ -17,7 +17,6 @@ from utils.checkTable import CheckTable
 from utils.tablesMetadata import TableMetadata
 
 # reload settings
-Settings.reload()
 TableMetadata.reload()
 
 # Initialize the parameters for this code generator.

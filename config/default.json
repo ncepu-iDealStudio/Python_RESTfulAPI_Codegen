@@ -12,13 +12,13 @@
     "sqlalchemy_max_overflow": -1
   },
   "target_dir": "dist",
-  "project_name": "api.sqlcodegen.com",
+  "project_name": "api.project.com",
   "api_version": "1.0",
   "static_resource_dir": "static",
   "model": {
     "model_version": null,
     "model_schema": null,
-    "model_tables": "",
+    "model_tables": [],
     "model_noviews": null,
     "model_noindexes": false,
     "model_noconstraints": false,
@@ -28,13 +28,10 @@
     "model_nocomments": false
   },
   "logical_delete_mark": "",
-  "rsa_table_column": [
-
-  ],
+  "rsa_table_column": {
+  },
   "table_record_delete_logic_way": [
-
   ],
   "table_business_key_gen_rule": {
-
   }
 }

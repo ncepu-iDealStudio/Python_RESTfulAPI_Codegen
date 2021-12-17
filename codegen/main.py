@@ -33,9 +33,9 @@ def start():
     """
 
     # 第零步
-    if not check_config():
-        loggings.error(1, "Incorrect Configuration File")
-        return
+    # if not check_config():
+    #     loggings.error(1, "Incorrect Configuration File")
+    #     return
 
     # 第一步
     loggings.info(1, "Start to build the Model layer code, please wait...")

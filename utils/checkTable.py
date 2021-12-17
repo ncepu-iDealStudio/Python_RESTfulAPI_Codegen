@@ -12,7 +12,6 @@
 
 import keyword
 
-from config.setting import Settings
 from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
 
@@ -84,73 +83,73 @@ class CheckTable(object):
 
         return available_table, invalid_table
 
-    # check the foreign key
-    # 检查表的外键约束
-    @classmethod
-    def check_foreign_key(cls, table_dict):
-        """
-        check whether the target table of the foreign key exists
-        :return: True while the target table of the foreign key exists else False
-        """
-
-        available_table = []
-        invalid_table = []
-        for table in table_dict.values():
-            flag = True
-
-            # 检查是否该表是否存在外键
-            if not table.get('foreign_keys'):
-                available_table.append(table['table_name'])
-                continue
-            for foreign_key in table.get('foreign_keys'):
-                # 如果目标数据表不存在
-                if not table_dict.get(foreign_key['target_table']):
-                    loggings.warning(1, 'the target table or column "{target_table}.{target_key}" of "{source_table}.'
-                                        '{source_key}" does not exist'.format(
-                                         target_table=foreign_key['target_table'],
-                                         target_key=foreign_key['target_key'],
-                                         source_table=table['table_name'],
-                                         source_key=foreign_key['key'])
-                                     )
-                    flag = False
-
-            if flag:
-                available_table.append(table['table_name'])
-            else:
-                invalid_table.append(table['table_name'])
-
-        return available_table, invalid_table
-
-    # 检查业务主键是否存在
-    @classmethod
-    def check_business_key(cls, table_dict):
-        """
-        检查业务主键是否存在以及是否与自增主键重复
-        :return: 符合生成规则的表列表available_table和不符合生成规则的表列表invalid_table
-        """
-
-        available_table = [x['table_name'] for x in table_dict.values()]
-        invalid_table = []
-
-        # 检验业务主键字段是否存在
-        for table in table_dict.values():
-            if not table['business_key']:
-                continue
-
-            # 检查该业务主键是否为对应表的字段
-            if table['business_key']['column'] not in table['columns'].keys():
-                loggings.warning(1, 'The business key {1} of table {0} does not exist'.
-                                 format(table['table_name'], table['business_key']['column']))
-                invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
-                continue
-
-            # 检查业务主键是否与自增主键重复
-            if table['business_key']['column'] == table['primaryKey']:
-                loggings.warning(1, 'The business key {1} of table {0} duplicates its auto increment primary key'.
-                                 format(table['table_name'], table['business_key']['column']))
-                invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
-
-        return available_table, invalid_table
+    # # check the foreign key
+    # # 检查表的外键约束
+    # @classmethod
+    # def check_foreign_key(cls, table_dict):
+    #     """
+    #     check whether the target table of the foreign key exists
+    #     :return: True while the target table of the foreign key exists else False
+    #     """
+    #
+    #     available_table = []
+    #     invalid_table = []
+    #     for table in table_dict.values():
+    #         flag = True
+    #
+    #         # 检查是否该表是否存在外键
+    #         if not table.get('foreign_keys'):
+    #             available_table.append(table['table_name'])
+    #             continue
+    #         for foreign_key in table.get('foreign_keys'):
+    #             # 如果目标数据表不存在
+    #             if not table_dict.get(foreign_key['target_table']):
+    #                 loggings.warning(1, 'the target table or column "{target_table}.{target_key}" of "{source_table}.'
+    #                                     '{source_key}" does not exist'.format(
+    #                                      target_table=foreign_key['target_table'],
+    #                                      target_key=foreign_key['target_key'],
+    #                                      source_table=table['table_name'],
+    #                                      source_key=foreign_key['key'])
+    #                                  )
+    #                 flag = False
+    #
+    #         if flag:
+    #             available_table.append(table['table_name'])
+    #         else:
+    #             invalid_table.append(table['table_name'])
+    #
+    #     return available_table, invalid_table
+    #
+    # # 检查业务主键是否存在
+    # @classmethod
+    # def check_business_key(cls, table_dict):
+    #     """
+    #     检查业务主键是否存在以及是否与自增主键重复
+    #     :return: 符合生成规则的表列表available_table和不符合生成规则的表列表invalid_table
+    #     """
+    #
+    #     available_table = [x['table_name'] for x in table_dict.values()]
+    #     invalid_table = []
+    #
+    #     # 检验业务主键字段是否存在
+    #     for table in table_dict.values():
+    #         if not table['business_key']:
+    #             continue
+    #
+    #         # 检查该业务主键是否为对应表的字段
+    #         if table['business_key']['column'] not in table['columns'].keys():
+    #             loggings.warning(1, 'The business key {1} of table {0} does not exist'.
+    #                              format(table['table_name'], table['business_key']['column']))
+    #             invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
+    #             continue
+    #
+    #         # 检查业务主键是否与自增主键重复
+    #         if table['business_key']['column'] == table['primaryKey']:
+    #             loggings.warning(1, 'The business key {1} of table {0} duplicates its auto increment primary key'.
+    #                              format(table['table_name'], table['business_key']['column']))
+    #             invalid_table.append(available_table.pop(available_table.index(table['table_name'])))
+    #
+    #     return available_table, invalid_table
 
     # 检验业务主键生成模板是否存在
     @classmethod
@@ -219,8 +218,6 @@ class CheckTable(object):
     def main(cls, metadata):
 
         # reload settings
-        Settings.reload()
-
         table_dict = TableMetadata.get_tables_metadata(metadata)
 
         # check table primary key
