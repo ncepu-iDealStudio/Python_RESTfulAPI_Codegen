@@ -41,6 +41,9 @@
         toRefs,
         onMounted,
     } = Vue
+    const {
+        ElMessage,
+    } = ElementPlus
     const composition = {
             setup() {
                 const state = reactive({
@@ -56,6 +59,17 @@
                         if (res.code === '2000') {
                             state.log_info = res.data;
                             state.loading = false;
+                            axios({
+                                method: 'POST',
+                                url: 'http://127.0.0.1:5000/seriouslykill',
+                            }).then(result => {
+                                const res = result.data
+                                if (res.code === '2000') {
+                                    ElMessage.warning(res.message)
+                                } else {
+                                    ElMessage.error(res.message)
+                                }
+                            })
                         } else {
                             ElMessage.error(res.message)
                         }
