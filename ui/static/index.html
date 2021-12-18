@@ -46,10 +46,10 @@
                             <el-input v-model="form.Driver"></el-input>
                         </el-form-item>
                         <el-form-item label="主机" prop="Host">
-                            <el-input v-model="form.Host"></el-input>
+                            <el-input v-model="form.Host" placeholder="请输入IP地址"></el-input>
                         </el-form-item>
                         <el-form-item label="端口号" prop="Port">
-                            <el-input v-model="form.Port"></el-input>
+                            <el-input v-model="form.Port" placeholder="请输入数据库端口号"></el-input>
                         </el-form-item>
                         <el-form-item label="数据库" prop="DatebaseName">
                             <el-input v-model="form.DatebaseName"></el-input>
@@ -83,8 +83,8 @@
         setup() {
             const state = reactive({
                 form: {
-                    DatabaseDialects: "",
-                    Driver: "",
+                    DatabaseDialects: "mysql",
+                    Driver: "pymysql",
                     Host: "",
                     Port: "",
                     DatebaseName: "",

@@ -19,6 +19,7 @@ from utils.checkSqlLink import check_sql_link
 
 app = Flask(__name__, static_folder="../static")
 
+
 # 新的vue接口
 
 @app.route('/', methods=['GET'])
@@ -156,17 +157,19 @@ def setproject():
         conf.write(f)
     return {'code': '2000', 'data': [], 'message': '写入配置成功'}
 
+
 # 开始生成代码
 @app.route('/startbuild', methods=['POST'])
 def startbuild():
-    # from codegen.main import start
+    from codegen.main import start
     try:
-        # start()
-        # with open('logs/codegen_log.log', "r", encoding="utf-8") as f:
-        #     log_data = f.read()
-        return {'code': '2000', 'data':'', 'message': '写入配置成功'}
+        start()
+        with open('logs/codegen_log.log', "r", encoding="utf-8") as f:
+            log_data = f.read()
+        return {'code': '2000', 'data': log_data, 'message': '写入配置成功'}
     except Exception as e:
         return {'code': '5000', 'data': [], 'message': '生成失败'}
+
 
 # 关闭服务
 @app.route('/seriouslykill', methods=['POST'])
@@ -176,6 +179,7 @@ def seriouslykill():
         raise RuntimeError('Not running with the Werkzeug Server')
     func()
     return {'code': '2000', 'data': [], 'message': 'http://127.0.0.1:5000/ is shutdown!'}
+
 
 # 解决跨域
 @app.after_request

@@ -39,7 +39,7 @@
                     <el-tooltip placement="top">
                         <template #content>导出配置文件</template>
                         <div style="float: right;margin-right: 20px;">
-                            <div class="iconfont icon-shangchuandaochu"></div>
+                            <div @click="exportfile" class="iconfont icon-shangchuandaochu"></div>
                         </div>
                     </el-tooltip>
                     <el-tooltip placement="top">
@@ -148,6 +148,7 @@
                 </el-card>
             </el-col>
         </el-row>
+        <input type="file" id="fileInput">
     </div>
 </body>
 
@@ -237,6 +238,17 @@
                 state.tables[state.activeIndex].businesskeyrule = "";
             }
 
+            // 导出文件
+            const exportfile = () => {
+                let aTag = document.createElement('a');
+                const content = JSON.stringify(state.tables);
+                let blob = new Blob([content]);
+                aTag.download = "json.txt";
+                aTag.href = URL.createObjectURL(blob);
+                aTag.click();
+                URL.revokeObjectURL(blob);
+            }
+
             onMounted(() => {
                 let data = JSON.parse(localStorage.getItem("tables"));
                 if (!data) {
@@ -256,6 +268,7 @@
                 blurbusinesskey,
                 handleCheckAllChange,
                 handleCheckChange,
+                exportfile,
             };
         },
     }
