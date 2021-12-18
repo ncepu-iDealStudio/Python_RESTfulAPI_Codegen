@@ -14,7 +14,7 @@ from sqlalchemy import create_engine, MetaData
 from utils.checkTable import CheckTable
 
 
-def check_sql_link(dialect, driver, username, password, host, port, database):
+def check_sql_link(dialect, driver, username, password, host, port, database) -> dict:
     """
     检验数据库连接是否成功并返回所有表、字段信息（前端用）
     :param dialect: 数据库种类
@@ -28,6 +28,7 @@ def check_sql_link(dialect, driver, username, password, host, port, database):
     :return message: 返回信息
     :return error: 错误信息
     :return data: 所有表的信息及字段
+    :return invalid: 检查不通过的表，以列表返还表名
     """
     try:
         url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver, username, password, host, port, database)
@@ -37,7 +38,7 @@ def check_sql_link(dialect, driver, username, password, host, port, database):
     except Exception as e:
         return {'code': False, 'message': '数据库连接失败', 'error': str(e)}
 
-    table_dict = CheckTable.main(metadata)
+    table_dict, invalid_tables = CheckTable.check_sql_link(metadata)
 
     data = []
     for table in table_dict.values():
@@ -52,11 +53,12 @@ def check_sql_link(dialect, driver, username, password, host, port, database):
             })
         data.append({
             'table': str(table['table_name']),
-            'issave': False,
-            'isdeleted': False,
+            'businesskeyname': '',
+            'businesskeyrule': '',
+            'logicaldeletemark': '',
             'filed': filed,
             'isbusinesskey': False,
-            'businesskeyname': '',
-            'businesskeyrule': ''
+            'isdeleted': False,
+            'issave': False
         })
-    return {'code': True, 'message': '数据库连接成功', 'data': data}
+    return {'code': True, 'message': '数据库连接成功', 'data': data, 'invalid': invalid_tables}
