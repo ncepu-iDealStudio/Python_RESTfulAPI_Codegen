@@ -18,15 +18,35 @@
     <div id="app">
         <div class="container_header">
             <el-row>
-                <el-col :offset="5" :span="14">
+                <el-col :span="5">
+                    <el-tooltip placement="top">
+                        <template #content>重新连接数据库</template>
+                        <a href="http://127.0.0.1:5000/" style="float: left;margin-left: 20px;color: #fff;text-decoration: auto;">
+                            <div class="iconfont icon-shangyibu2"></div>
+                        </a>
+                    </el-tooltip>
+                </el-col>
+                <el-col :span="14">
                     Flask_Sqlachemy_RESTfulAPI_Codegen
+                </el-col>
+                <el-col :span="5">
                     <el-tooltip placement="top">
                         <template #content>如果喜欢就点个星星支持一下</template>
-                        <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;">
-                            <el-button type="warning" circle>
-                                <div class="iconfont icon-shoucang"></div>
-                            </el-button>
+                        <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
+                            <div class="iconfont icon-shoucang1"></div>
                         </a>
+                    </el-tooltip>
+                    <el-tooltip placement="top">
+                        <template #content>导出配置文件</template>
+                        <div style="float: right;margin-right: 20px;">
+                            <div class="iconfont icon-shangchuandaochu"></div>
+                        </div>
+                    </el-tooltip>
+                    <el-tooltip placement="top">
+                        <template #content>导入配置文件</template>
+                        <div style="float: right;margin-right: 20px;">
+                            <div class="iconfont icon-xiazaidaoru"></div>
+                        </div>
                     </el-tooltip>
                 </el-col>
             </el-row>
@@ -35,14 +55,11 @@
             <el-col :span="4">
                 <el-scrollbar style="height:calc(100vh - 120px);">
                     <el-menu @select="handleSelect">
+                        <div style="padding-left: 20px;">
+                            <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
+                        </div>
                         <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
-                            <el-icon v-if="item.issave">
-                                <span class="iconfont icon-shezhi1" style="color: #67c23a;"></span>
-                            </el-icon>
-                            <el-icon v-else>
-                                <span class="iconfont icon-shezhi1"></span>
-                            </el-icon>
-                            <span>{{item.table}}</span>
+                            <el-checkbox v-model="item.issave" @change="handleCheckChange">{{item.table}}</el-checkbox>
                         </el-menu-item>
                     </el-menu>
                 </el-scrollbar>
@@ -52,6 +69,9 @@
                     <el-card shadow="never" v-if="activeIndex===-1">
                         <template #header>数据表准备</template>
                         <p>请选择用于生成代码的数据表，并为每张表进行相应的配置</p>
+                        <el-button type="primary" style="float:right;" :loading="nextStep_loading" @click="nextStep">
+                            <div class="iconfont icon-xiayibu"></div>
+                        </el-button>
                     </el-card>
                     <el-card shadow="never" v-else>
                         <template #header>
@@ -120,9 +140,10 @@
                                 </el-card>
                             </el-col>
                         </el-row>
-                        <el-button type="primary" @click="handleSave">保存</el-button>
                         <el-button type="danger" @click="handleClear">清空</el-button>
-                        <el-button type="primary" style="float: right;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
+                        <el-button type="primary" style="float:right;" :loading="nextStep_loading" @click="nextStep">
+                            <div class="iconfont icon-xiayibu"></div>
+                        </el-button>
                     </el-card>
                 </el-card>
             </el-col>
@@ -146,10 +167,25 @@
                 activeIndex: -1,
                 activeFiled: {},
                 nextStep_loading: false,
+                checkAll: false,
+                isIndeterminate: false,
             });
             const handleSelect = (key, keyPath) => {
                 state.activeIndex = key;
             }
+
+            // 全选
+            const handleCheckAllChange = (val) => {
+                for (let i = 0; i < state.tables.length; i++) {
+                    state.tables[i].issave = val;
+                }
+                state.isIndeterminate = false;
+            }
+
+            const handleCheckChange = () => {
+                state.isIndeterminate = true;
+            }
+
             const nextStep = () => {
                 state.nextStep_loading = true;
                 axios({
@@ -171,12 +207,7 @@
                     })
             }
 
-            const handleSave = () => {
-                state.tables[state.activeIndex].issave = true
-                ElMessage.success('保存成功')
-            }
             const handleClear = () => {
-                state.tables[state.activeIndex].issave = false;
                 state.tables[state.activeIndex].isdeleted = false;
                 state.tables[state.activeIndex].isbusinesskey = false;
                 state.tables[state.activeIndex].businesskeyname = "";
@@ -220,10 +251,11 @@
                 ...toRefs(state),
                 handleSelect,
                 selectbusinesskeyrule,
-                handleSave,
                 handleClear,
                 nextStep,
                 blurbusinesskey,
+                handleCheckAllChange,
+                handleCheckChange,
             };
         },
     }
