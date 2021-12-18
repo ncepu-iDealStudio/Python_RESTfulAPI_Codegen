@@ -1,7 +1,7 @@
 @font-face {
     font-family: "iconfont";
     /* Project id 2835282 */
-    src: url('iconfont.woff2?t=1639747444466') format('woff2'), url('iconfont.woff?t=1639747444466') format('woff'), url('iconfont.ttf?t=1639747444466') format('truetype');
+    src: url('iconfont.woff2?t=1639822844891') format('woff2'), url('iconfont.woff?t=1639822844891') format('woff'), url('iconfont.ttf?t=1639822844891') format('truetype');
 }
 
 .iconfont {
@@ -12,26 +12,35 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-shoucang:before {
-    content: "\e648";
+.icon-shangyibu:before {
+    content: "\e620";
+}
+
+.icon-xiayibu:before {
+    content: "\e604";
+}
+
+.icon-shangyibu2:before {
+    content: "\e621";
     font-size: 20px;
 }
 
-.icon-daochu:before {
-    content: "\eabf";
+.icon-shangchuandaochu:before {
+    content: "\e8c6";
     font-size: 20px;
 }
 
-.icon-daoru:before {
-    content: "\eac0";
+.icon-xiazaidaoru:before {
+    content: "\e8c7";
+    font-size: 20px;
+}
+
+.icon-shoucang1:before {
+    content: "\e71b";
     font-size: 20px;
 }
 
 .icon-yiwen:before {
     content: "\e600";
     color: #c0c0c0;
-}
-
-.icon-shezhi1:before {
-    content: "\e628";
 }
