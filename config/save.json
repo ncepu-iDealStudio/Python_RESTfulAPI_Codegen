@@ -1,0 +1,23 @@
+[
+  {
+    "table": "book_info",
+    "businesskeyname": "",
+    "businesskeyrule": "",
+    "logicaldeletemark": "name3",
+    "field": [
+      {
+        "field_name": "name1",
+        "field_type": "str",
+        "field_encrypt": true
+      },
+      {
+        "field_name": "name2",
+        "field_type": "str",
+        "field_encrypt": true
+      }
+    ],
+    "isbusinesskey": false,
+    "isdeleted": true,
+    "issave": true
+  }
+]
