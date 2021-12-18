@@ -12,7 +12,7 @@
 
 import keyword
 
-from config.setting import Settings
+# from config.setting import Settings
 from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
 
@@ -180,40 +180,40 @@ class CheckTable(object):
 
         return available_table, invalid_table
 
-    # 检查要逻辑删除的表中是否存在用户定义的删除标识位字段
-    @classmethod
-    def check_logic_delete(cls, table_dict):
-        """
-        检验要逻辑删除的表中是否存在用户定义的删除标识位字段且数据类型为int，剔除不符合规范的表
-        :return:
-        """
-
-        available_table = []
-        invalid_table = []
-        logical_delete_mark = Settings.LOGICAL_DELETE_MARK
-
-        for table in table_dict.values():
-            if not table['is_logic_delete']:
-                # 采取物理删除的表
-                available_table.append(str(table['table_name']))
-
-            else:
-                # 采取逻辑删除的表
-                if logical_delete_mark not in [x['name'] for x in table['columns'].values()]:
-                    invalid_table.append(str(table['table_name']))
-                    loggings.warning(1, 'The table {} for logical deletion does not have an {} field'.
-                                     format(str(table['table_name']), logical_delete_mark))
-
-                elif table['columns'][logical_delete_mark]['type'] != 'int':
-                    # 用户定义的删除标识位字段不为int型
-                    invalid_table.append(str(table['table_name']))
-                    loggings.warning(1, 'The column {} of table {} is not an int type'.
-                                     format(logical_delete_mark, str(table['table_name'])))
-
-                else:
-                    available_table.append(str(table['table_name']))
-
-        return available_table, invalid_table
+    # # 检查要逻辑删除的表中是否存在用户定义的删除标识位字段
+    # @classmethod
+    # def check_logic_delete(cls, table_dict):
+    #     """
+    #     检验要逻辑删除的表中是否存在用户定义的删除标识位字段且数据类型为int，剔除不符合规范的表
+    #     :return:
+    #     """
+    #
+    #     available_table = []
+    #     invalid_table = []
+    #     logical_delete_mark = Settings.LOGICAL_DELETE_MARK
+    #
+    #     for table in table_dict.values():
+    #         if not table['is_logic_delete']:
+    #             # 采取物理删除的表
+    #             available_table.append(str(table['table_name']))
+    #
+    #         else:
+    #             # 采取逻辑删除的表
+    #             if logical_delete_mark not in [x['name'] for x in table['columns'].values()]:
+    #                 invalid_table.append(str(table['table_name']))
+    #                 loggings.warning(1, 'The table {} for logical deletion does not have an {} field'.
+    #                                  format(str(table['table_name']), logical_delete_mark))
+    #
+    #             elif table['columns'][logical_delete_mark]['type'] != 'int':
+    #                 # 用户定义的删除标识位字段不为int型
+    #                 invalid_table.append(str(table['table_name']))
+    #                 loggings.warning(1, 'The column {} of table {} is not an int type'.
+    #                                  format(logical_delete_mark, str(table['table_name'])))
+    #
+    #             else:
+    #                 available_table.append(str(table['table_name']))
+    #
+    #     return available_table, invalid_table
 
     # 入口函数定义
     @classmethod
@@ -240,6 +240,7 @@ class CheckTable(object):
 
         # Check whether the business key generation template exists
         available_table, invalid_table = cls.check_business_key_template(table_dict)
+        available_tables = available_table
         invalid_tables += invalid_table
         for invalid in invalid_table:
             table_dict.pop(invalid)
@@ -250,8 +251,47 @@ class CheckTable(object):
         # for invalid in invalid_table:
         #     table_dict.pop(invalid)
 
-        # Check whether the IsDelete field exists in the table to be logically deleted
-        available_table, invalid_table = cls.check_logic_delete(table_dict)
+        # # Check whether the IsDelete field exists in the table to be logically deleted
+        # available_table, invalid_table = cls.check_logic_delete(table_dict)
+        # available_tables = available_table
+        # invalid_tables += invalid_table
+        # for invalid in invalid_table:
+        #     table_dict.pop(invalid)
+
+        if len(invalid_tables) > 0:
+            loggings.warning(
+                1,
+                "A total of {0} tables check passed.\n"
+                "The following {1} tables do not meet the specifications and cannot be generated: {2}."
+                    .format(
+                        len(available_tables),
+                        len(invalid_tables),
+                        ",".join(invalid_tables)
+                    )
+            )
+
+            return table_dict
+
+        loggings.info(1, "All table checks passed, a total of {0} tables.".format(len(available_tables)))
+
+        return table_dict
+
+    @classmethod
+    def check_sql_link(cls, metadata):
+        """
+            建立数据库连接时对表进行检查，筛去没有唯一自增主键、表名/字段名与Python关键字有冲突的表
+            :param metadata: 数据库元数据
+        """
+
+        table_dict = TableMetadata.get_tables_metadata(metadata)
+
+        # check table primary key
+        available_table, invalid_tables = cls.check_primary_key(table_dict)
+        for invalid in invalid_tables:
+            table_dict.pop(invalid)
+
+        # check the keyword
+        available_table, invalid_table = cls.check_keyword_conflict(table_dict)
         available_tables = available_table
         invalid_tables += invalid_table
         for invalid in invalid_table:
@@ -273,4 +313,4 @@ class CheckTable(object):
 
         loggings.info(1, "All table checks passed, a total of {0} tables.".format(len(available_tables)))
 
-        return table_dict
+        return table_dict, invalid_tables
