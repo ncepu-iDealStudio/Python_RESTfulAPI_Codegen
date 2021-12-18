@@ -10,30 +10,15 @@
     Get metadata of all tables
 """
 import json
-from configparser import ConfigParser
 
 
 class TableMetadata(object):
-    # type_mapping = Settings.TYPE_MAPPING
-    # table_rule = Settings.TABLE_RULE
-    # database_type = Settings.DATABASE_TYPE
-    #
-    # @classmethod
-    # def reload(cls):
-    #     cls.type_mapping = Settings.TYPE_MAPPING
-    #     cls.table_rule = Settings.TABLE_RULE
-    #     cls.database_type = Settings.DATABASE_TYPE
 
     with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
         TYPE_MAPPING = json.load(f)
 
     @classmethod
     def get_tables_metadata(cls, metadata, config_file='save.json'):
-        """
-            步骤：
-                一、读取指定配置文件
-                二、
-        """
         with open('config/' + config_file, 'r', encoding='utf-8') as f:
             table_config = json.load(f)
 

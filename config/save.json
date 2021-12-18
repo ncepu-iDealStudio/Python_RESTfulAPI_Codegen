@@ -1,19 +1,14 @@
 [
   {
-    "table": "book_info",
+    "table": "",
     "businesskeyname": "",
     "businesskeyrule": "",
-    "logicaldeletemark": "name3",
+    "logicaldeletemark": "",
     "field": [
       {
-        "field_name": "name1",
-        "field_type": "str",
-        "field_encrypt": true
-      },
-      {
-        "field_name": "name2",
-        "field_type": "str",
-        "field_encrypt": true
+        "field_name": "",
+        "field_type": "",
+        "field_encrypt": false
       }
     ],
     "isbusinesskey": false,
