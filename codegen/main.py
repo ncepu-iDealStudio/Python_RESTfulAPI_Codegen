@@ -17,25 +17,18 @@ import codegen.resourcecodegen.main
 import codegen.modelcodegen.main
 import codegen.testcodegen.main
 
-from utils.checkConfig import check_config
 from utils.loggings import loggings
 
 
 def start():
     """
         步骤：
-            零、 配置文件参数检查
             一、 生成Model层代码
             二、 生成Controller层代码
             三、 生成Service层代码
             四、 生成Resource层代码
             五、 打包静态文件
     """
-
-    # 第零步
-    # if not check_config():
-    #     loggings.error(1, "Incorrect Configuration File")
-    #     return
 
     # 第一步
     loggings.info(1, "Start to build the Model layer code, please wait...")

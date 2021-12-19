@@ -14,13 +14,15 @@ import json
 
 class TableMetadata(object):
 
+    with open('config/default_table_config.json', 'r', encoding='utf-8') as f:
+        DEFAULT_CONFIG = json.load(f)
+
     with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
         TYPE_MAPPING = json.load(f)
 
     @classmethod
-    def get_tables_metadata(cls, metadata, config_file='save.json'):
-        with open('config/' + config_file, 'r', encoding='utf-8') as f:
-            table_config = json.load(f)
+    def get_tables_metadata(cls, metadata, table_config=DEFAULT_CONFIG):
+        table_config = json.loads(table_config)
 
         # Get all tables object
         table_objs = metadata.tables.values()
