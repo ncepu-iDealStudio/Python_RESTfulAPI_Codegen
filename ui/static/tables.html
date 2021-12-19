@@ -16,139 +16,137 @@
 
 <body>
     <div id="app">
-        <div class="container_header">
+        <div class="container_warp">
+            <div class="container_header">
+                <el-row>
+                    <el-col :offset="5" :span="14">
+                        Flask_Sqlachemy_RESTfulAPI_Codegen
+                    </el-col>
+                    <el-col :span="5">
+                        <el-tooltip placement="top">
+                            <template #content>如果喜欢就点个星星支持一下</template>
+                            <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
+                                <div class="iconfont icon-shoucang1"></div>
+                            </a>
+                        </el-tooltip>
+                        <el-tooltip placement="top">
+                            <template #content>导出配置文件</template>
+                            <div style="float: right;margin-right: 20px;">
+                                <div @click="exportfile" class="iconfont icon-shangchuandaochu"></div>
+                            </div>
+                        </el-tooltip>
+                        <el-tooltip placement="top">
+                            <template #content>导入配置文件</template>
+                            <div style="float: right;margin-right: 20px;">
+                                <div class="iconfont icon-xiazaidaoru"></div>
+                            </div>
+                        </el-tooltip>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="container_body">
+                <el-row>
+                    <el-col :offset="4" :span="4">
+                        <el-scrollbar style="height:calc(100vh - 120px);">
+                            <el-menu @select="handleSelect">
+                                <div style="padding-left: 20px;">
+                                    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
+                                </div>
+                                <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
+                                    <el-checkbox v-model="item.issave" @change="handleCheckChange">{{item.table}}</el-checkbox>
+                                </el-menu-item>
+                            </el-menu>
+                        </el-scrollbar>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-card shadow="never">
+                            <el-card shadow="never" v-if="activeIndex===-1">
+                                <template #header>数据表准备</template>
+                                <p>请选择用于生成代码的数据表，并为每张表进行相应的配置</p>
+                            </el-card>
+                            <el-card shadow="never" v-else>
+                                <template #header>
+                            {{tables[activeIndex].table}}
+                        </template>
+                                <el-row :gutter="10">
+                                    <el-col :span="11">
+                                        <div style="margin: 10px 0;">
+                                            请选择需要加密存储的字段
+                                            <el-tooltip placement="top">
+                                                <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
+                                                <span class="iconfont icon-yiwen"></span>
+                                            </el-tooltip>
+                                        </div style="margin: 10px 0;">
+                                        <el-card>
+                                            <el-scrollbar height="200px">
+                                                <el-checkbox v-model="item.field_encrypt" :label="item.field_name" v-for="(item, index) in tables[activeIndex].filed" :key="index" style="width: 120px;overflow: hidden;"></el-checkbox>
+                                            </el-scrollbar>
+                                        </el-card>
+                                    </el-col>
+                                    <el-col :offset="2" :span="11">
+                                        <div style="margin: 10px 0;">
+                                            <el-switch v-model="tables[activeIndex].isdeleted">
+                                            </el-switch>
+                                            数据记录是否逻辑删除
+                                            <el-tooltip placement="top">
+                                                <template #content> 逻辑删除方式<br/>即表中必须包含IsDelete的标识删除字段</template>
+                                                <span class="iconfont icon-yiwen"></span>
+                                            </el-tooltip>
+                                        </div>
+                                        <div style="margin: 10px 0;">
+                                            <el-switch v-model="tables[activeIndex].isbusinesskey">
+                                            </el-switch>
+                                            请选择是否存在业务主键
+                                            <el-tooltip placement="top">
+                                                <template #content> 业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式</template>
+                                                <span class="iconfont icon-yiwen"></span>
+                                            </el-tooltip>
+                                        </div>
+                                        <el-card style="margin: 10px 0;" v-if="tables[activeIndex].isbusinesskey">
+                                            <div style="margin: 10px 0;">业务主键字段选择</div>
+                                            <div style="margin: 10px 0;">
+                                                <el-select v-model="tables[activeIndex].businesskeyname" placeholder="Select" size="small" @blur="blurbusinesskey">
+                                                    <el-option v-for="(item, index) in tables[activeIndex].filed" :key="index" :label="item.field_name" :value="item.field_name">
+                                                    </el-option>
+                                                </el-select>
+                                            </div>
+                                            <div style="margin: 10px 0;">业务主键生成规则
+                                                <el-tooltip placement="top">
+                                                    <template #content>业务主键生成规则使用已定义的规则：<br/>‘create_random_id’,‘create_hashlib_id’,‘create_uid’<br/>以及无生成规则，默认为无生成规则</template>
+                                                    <span class="iconfont icon-yiwen"></span>
+                                                </el-tooltip>
+                                            </div>
+                                            <div style="margin: 10px 0;">
+                                                <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule>
+                                                    <el-option label="" value="">
+                                                    </el-option>
+                                                    <el-option label="create_random_id" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
+                                                    </el-option>
+                                                    <el-option label="create_hashlib_id" value="create_hashlib_id" v-if="activeFiled.field_type==='str'">
+                                                    </el-option>
+                                                    <el-option label="create_uid" value="create_uid" v-if="activeFiled.field_type==='str'">
+                                                    </el-option>
+                                                </el-select>
+                                            </div>
+                                        </el-card>
+                                    </el-col>
+                                </el-row>
+                                <el-button type="danger" @click="handleClear">清空</el-button>
+                            </el-card>
+                        </el-card>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="container_footer">
             <el-row>
-                <el-col :span="5">
-                    <el-tooltip placement="top">
-                        <template #content>重新连接数据库</template>
-                        <a href="http://127.0.0.1:5000/" style="float: left;margin-left: 20px;color: #fff;text-decoration: auto;">
-                            <div class="iconfont icon-shangyibu2"></div>
-                        </a>
-                    </el-tooltip>
-                </el-col>
-                <el-col :span="14">
-                    Flask_Sqlachemy_RESTfulAPI_Codegen
-                </el-col>
-                <el-col :span="5">
-                    <el-tooltip placement="top">
-                        <template #content>如果喜欢就点个星星支持一下</template>
-                        <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
-                            <div class="iconfont icon-shoucang1"></div>
-                        </a>
-                    </el-tooltip>
-                    <el-tooltip placement="top">
-                        <template #content>导出配置文件</template>
-                        <div style="float: right;margin-right: 20px;">
-                            <div @click="exportfile" class="iconfont icon-shangchuandaochu"></div>
-                        </div>
-                    </el-tooltip>
-                    <el-tooltip placement="top">
-                        <template #content>导入配置文件</template>
-                        <div style="float: right;margin-right: 20px;">
-                            <div class="iconfont icon-xiazaidaoru"></div>
-                        </div>
-                    </el-tooltip>
+                <el-col :offset="4" :span="16">
+                    <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
+                    <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
                 </el-col>
             </el-row>
         </div>
-        <el-row>
-            <el-col :span="4">
-                <el-scrollbar style="height:calc(100vh - 120px);">
-                    <el-menu @select="handleSelect">
-                        <div style="padding-left: 20px;">
-                            <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
-                        </div>
-                        <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
-                            <el-checkbox v-model="item.issave" @change="handleCheckChange">{{item.table}}</el-checkbox>
-                        </el-menu-item>
-                    </el-menu>
-                </el-scrollbar>
-            </el-col>
-            <el-col :offset="2" :span="16">
-                <el-card shadow="never">
-                    <el-card shadow="never" v-if="activeIndex===-1">
-                        <template #header>数据表准备</template>
-                        <p>请选择用于生成代码的数据表，并为每张表进行相应的配置</p>
-                        <el-button type="primary" style="float:right;" :loading="nextStep_loading" @click="nextStep">
-                            <div class="iconfont icon-xiayibu"></div>
-                        </el-button>
-                    </el-card>
-                    <el-card shadow="never" v-else>
-                        <template #header>
-                            {{tables[activeIndex].table}}
-                        </template>
-                        <el-row :gutter="10">
-                            <el-col :span="11">
-                                <div style="margin: 10px 0;">
-                                    请选择需要加密存储的字段
-                                    <el-tooltip placement="top">
-                                        <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
-                                        <span class="iconfont icon-yiwen"></span>
-                                    </el-tooltip>
-                                </div style="margin: 10px 0;">
-                                <el-card>
-                                    <el-scrollbar height="200px">
-                                        <el-checkbox v-model="item.field_encrypt" :label="item.field_name" v-for="(item, index) in tables[activeIndex].filed" :key="index" style="width: 120px;overflow: hidden;"></el-checkbox>
-                                    </el-scrollbar>
-                                </el-card>
-                            </el-col>
-                            <el-col :offset="2" :span="11">
-                                <div style="margin: 10px 0;">
-                                    <el-switch v-model="tables[activeIndex].isdeleted">
-                                    </el-switch>
-                                    数据记录是否逻辑删除
-                                    <el-tooltip placement="top">
-                                        <template #content> 逻辑删除方式<br/>即表中必须包含IsDelete的标识删除字段</template>
-                                        <span class="iconfont icon-yiwen"></span>
-                                    </el-tooltip>
-                                </div>
-                                <div style="margin: 10px 0;">
-                                    <el-switch v-model="tables[activeIndex].isbusinesskey">
-                                    </el-switch>
-                                    请选择是否存在业务主键
-                                    <el-tooltip placement="top">
-                                        <template #content> 业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式</template>
-                                        <span class="iconfont icon-yiwen"></span>
-                                    </el-tooltip>
-                                </div>
-                                <el-card style="margin: 10px 0;" v-if="tables[activeIndex].isbusinesskey">
-                                    <div style="margin: 10px 0;">业务主键字段选择</div>
-                                    <div style="margin: 10px 0;">
-                                        <el-select v-model="tables[activeIndex].businesskeyname" placeholder="Select" size="small" @blur="blurbusinesskey">
-                                            <el-option v-for="(item, index) in tables[activeIndex].filed" :key="index" :label="item.field_name" :value="item.field_name">
-                                            </el-option>
-                                        </el-select>
-                                    </div>
-                                    <div style="margin: 10px 0;">业务主键生成规则
-                                        <el-tooltip placement="top">
-                                            <template #content>业务主键生成规则使用已定义的规则：<br/>‘create_random_id’,‘create_hashlib_id’,‘create_uid’<br/>以及无生成规则，默认为无生成规则</template>
-                                            <span class="iconfont icon-yiwen"></span>
-                                        </el-tooltip>
-                                    </div>
-                                    <div style="margin: 10px 0;">
-                                        <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule>
-                                            <el-option label="" value="">
-                                            </el-option>
-                                            <el-option label="create_random_id" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
-                                            </el-option>
-                                            <el-option label="create_hashlib_id" value="create_hashlib_id" v-if="activeFiled.field_type==='str'">
-                                            </el-option>
-                                            <el-option label="create_uid" value="create_uid" v-if="activeFiled.field_type==='str'">
-                                            </el-option>
-                                        </el-select>
-                                    </div>
-                                </el-card>
-                            </el-col>
-                        </el-row>
-                        <el-button type="danger" @click="handleClear">清空</el-button>
-                        <el-button type="primary" style="float:right;" :loading="nextStep_loading" @click="nextStep">
-                            <div class="iconfont icon-xiayibu"></div>
-                        </el-button>
-                    </el-card>
-                </el-card>
-            </el-col>
-        </el-row>
-        <input type="file" id="fileInput">
+        <!-- <input type="file" id="fileInput"> -->
     </div>
 </body>
 
@@ -185,6 +183,10 @@
 
             const handleCheckChange = () => {
                 state.isIndeterminate = true;
+            }
+
+            const back = () => {
+                location.replace('/');
             }
 
             const nextStep = () => {
@@ -269,6 +271,7 @@
                 handleCheckAllChange,
                 handleCheckChange,
                 exportfile,
+                back,
             };
         },
     }

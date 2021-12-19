@@ -16,45 +16,53 @@
 
 <body>
     <div id="app">
-        <div class="container_header">
+        <div class="container_warp">
+            <div class="container_header">
+                <el-row>
+                    <el-col :offset="5" :span="14">
+                        Flask_Sqlachemy_RESTfulAPI_Codegen
+                    </el-col>
+                    <el-col :span="5">
+                        <el-tooltip placement="top">
+                            <template #content>如果喜欢就点个星星支持一下</template>
+                            <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
+                                <div class="iconfont icon-shoucang1"></div>
+                            </a>
+                        </el-tooltip>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="container_body">
+                <el-row>
+                    <el-col :offset="4" :span="16">
+                        <el-card shadow="never">
+                            <el-card shadow="never">
+                                <template #header>要生成的目标接口项目基本配置</template>
+                            </el-card>
+                            <el-form ref="ruleForm" :model="Form" :rules="rules" label-width="120px">
+                                <el-form-item label="项目路径" prop="projectPath">
+                                    <el-input v-model="Form.projectPath"></el-input>
+                                </el-form-item>
+                                <el-form-item label="项目名称" prop="projectName">
+                                    <el-input v-model="Form.projectName" placeholder="api.project.com"></el-input>
+                                </el-form-item>
+                                <el-form-item label="接口版本" prop="projectVersion">
+                                    <el-input v-model="Form.projectVersion" placeholder="1.0"></el-input>
+                                </el-form-item>
+                            </el-form>
+                        </el-card>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="container_footer">
             <el-row>
-                <el-col :offset="5" :span="14">
-                    Flask_Sqlachemy_RESTfulAPI_Codegen
-                </el-col>
-                <el-col :span="5">
-                    <el-tooltip placement="top">
-                        <template #content>如果喜欢就点个星星支持一下</template>
-                        <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
-                            <div class="iconfont icon-shoucang1"></div>
-                        </a>
-                    </el-tooltip>
+                <el-col :offset="4" :span="16">
+                    <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
+                    <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">开始生成</el-button>
                 </el-col>
             </el-row>
         </div>
-        <el-row>
-            <el-col :offset="5" :span="14">
-                <el-card shadow="never">
-                    <el-card shadow="never">
-                        <template #header>要生成的目标接口项目基本配置</template>
-                    </el-card>
-                    <el-form ref="ruleForm" :model="Form" :rules="rules" label-width="120px">
-                        <el-form-item label="项目路径" prop="projectPath">
-                            <el-input v-model="Form.projectPath"></el-input>
-                        </el-form-item>
-                        <el-form-item label="项目名称" prop="projectName">
-                            <el-input v-model="Form.projectName" placeholder="api.project.com"></el-input>
-                        </el-form-item>
-                        <el-form-item label="接口版本" prop="projectVersion">
-                            <el-input v-model="Form.projectVersion" placeholder="1.0"></el-input>
-                        </el-form-item>
-                    </el-form>
-                    <el-button type="primary" style="float: left;" :loading="nextStep_loading" @click="back">
-                        <div class="iconfont icon-shangyibu"></div>
-                    </el-button>
-                    <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">开始生成</el-button>
-                </el-card>
-            </el-col>
-        </el-row>
     </div>
 </body>
 
