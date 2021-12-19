@@ -14,11 +14,10 @@ from sqlalchemy import create_engine, MetaData
 from utils.checkTable import CheckTable
 
 
-def check_sql_link(dialect, driver, username, password, host, port, database) -> dict:
+def check_sql_link(dialect, username, password, host, port, database) -> dict:
     """
     检验数据库连接是否成功并返回所有表、字段信息（前端用）
     :param dialect: 数据库种类
-    :param driver: 数据库驱动
     :param username: 用户名
     :param password: 密码
     :param host: 数据库IP
@@ -31,14 +30,20 @@ def check_sql_link(dialect, driver, username, password, host, port, database) ->
     :return invalid: 检查不通过的表，以列表返还表名
     """
     try:
-        url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver, username, password, host, port, database)
+        driver_dict = {
+            'mysql': 'pymysql',
+            'mssql': 'pymssql',
+            'oracle': 'cx_oracle',
+            'postgresql': 'psycopg2'
+        }
+        url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host, port, database)
         engine = create_engine(url)
         metadata = MetaData(engine)
         metadata.reflect(engine)
     except Exception as e:
         return {'code': False, 'message': '数据库连接失败', 'error': str(e)}
 
-    table_dict, invalid_tables = CheckTable.check_sql_link(metadata)
+    table_dict, invalid_tables = CheckTable.main(metadata)
 
     data = []
     for table in table_dict.values():

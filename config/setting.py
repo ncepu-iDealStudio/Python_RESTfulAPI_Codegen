@@ -10,144 +10,93 @@
   应用的配置加载项
 """
 
-import json
 import os
 from configparser import ConfigParser
 
+os.chdir(os.path.dirname(os.path.dirname(__file__)))
+
+# 配置文件目录
+CONFIG_DIR = "config/config.conf"
+CONFIG = ConfigParser()
+
+
+class Settings(object):
+    # 读取配置文件
+    CONFIG.read(CONFIG_DIR, encoding='utf-8')
+
+    # 生成项目的名称
+    PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
+    # 项目生成的目标路径
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # 目标目录
+    TARGET_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR'])
+    # 项目目录
+    PROJECT_DIR = os.path.join(TARGET_DIR, PROJECT_NAME)
+    # 生成项目API的版本
+    API_VERSION = CONFIG['PARAMETER']['API_VERSION'].replace('.', '_')
+    # 定义静态资源文件路径
+    STATIC_RESOURCE_DIR = os.path.join(BASE_DIR, 'static')
+
+    # 数据库dialect到driver的映射
+    driver_dict = {
+        'mysql': 'pymysql',
+        'mssql': 'pymssql',
+        'oracle': 'cx_oracle',
+        'postgresql': 'psycopg2'
+    }
+
+    # 读取数据库配置
+    DIALECT = CONFIG['DATABASE']['DIALECT']
+    DRIVER = driver_dict[DIALECT]
+    USERNAME = CONFIG['DATABASE']['USERNAME']
+    PASSWORD = CONFIG['DATABASE']['PASSWORD']
+    HOST = CONFIG['DATABASE']['HOST']
+    PORT = CONFIG['DATABASE']['PORT']
+    DATABASE = CONFIG['DATABASE']['DATABASE']
+
+    # model层配置
+    MODEL_URL = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(DIALECT, DRIVER, USERNAME, PASSWORD, HOST,
+                                                             PORT, DATABASE)
+
 # os.chdir(os.path.dirname(os.path.dirname(__file__)))
 #
-# # 配置文件目录
-# CONFIG_DIR = "config/config.conf"
-# CONFIG = ConfigParser()
-# DATABASE_CONFIG_DIR = "config/database.conf"
-# DATABASE_CONFIG = ConfigParser()
-# SECURITY_CONFIG_DIR = "config/security.conf"
-# SECURITY_CONFIG = ConfigParser()
+# config_file_dir = 'config'
 #
 #
 # class Settings(object):
-#     # 读取配置文件
-#     CONFIG.read(CONFIG_DIR, encoding='utf-8')
-#     DATABASE_CONFIG.read(DATABASE_CONFIG_DIR, encoding='utf-8')
-#     SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
-#
-#     # 读取json文件
-#     with open('config/table_rule.json', 'r', encoding='utf-8') as f:
-#         TABLE_RULE = json.load(f)
-#
-#     with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
-#         TYPE_MAPPING = json.load(f)
-#
-#     # 生成项目的名称
-#     PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
-#     # 项目生成的目标路径
-#     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#     # 目标目录
-#     TARGET_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR'])
-#     # 项目目录
-#     PROJECT_DIR = os.path.join(TARGET_DIR, PROJECT_NAME)
-#     # 生成项目API的版本
-#     API_VERSION = CONFIG['PARAMETER']['API_VERSION'].replace('.', '_')
-#     # 代码生成模式-database|table-整库模式|多表模式
-#     CODEGEN_MODE = CONFIG['PARAMETER']['CODEGEN_MODE']
-#     # 代码生成层级- default|model|controller|resource|static - 全部|模型层|控制器层|接口层|静态资源层
-#     CODEGEN_LAYER = CONFIG['PARAMETER']['CODEGEN_LAYER']
-#     # 定义静态资源文件路径
-#     STATIC_RESOURCE_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['STATIC_RESOURCE_DIR'])
-#
-#     # 读取用户使用的数据库类型
-#     DATABASE_TYPE = CONFIG['DATABASE']['DATABASE']
-#     try:
-#         # 读取数据库配置
-#         DIALECT = DATABASE_CONFIG[DATABASE_TYPE]['DIALECT']
-#         DRIVER = DATABASE_CONFIG[DATABASE_TYPE]['DRIVER']
-#         USERNAME = DATABASE_CONFIG[DATABASE_TYPE]['USERNAME']
-#         PASSWORD = DATABASE_CONFIG[DATABASE_TYPE]['PASSWORD']
-#         HOST = DATABASE_CONFIG[DATABASE_TYPE]['HOST']
-#         PORT = DATABASE_CONFIG[DATABASE_TYPE]['PORT']
-#         DATABASE = DATABASE_CONFIG[DATABASE_TYPE]['DATABASE']
-#         SQLALCHEMY_TRACK_MODIFICATIONS = DATABASE_CONFIG['DEFAULT']['SQLALCHEMY_TRACK_MODIFICATIONS']
-#         SQLALCHEMY_POOL_SIZE = DATABASE_CONFIG['DEFAULT']['SQLALCHEMY_POOL_SIZE']
-#         SQLALCHEMY_MAX_OVERFLOW = DATABASE_CONFIG['DEFAULT']['SQLALCHEMY_MAX_OVERFLOW']
-#     except Exception as e:
-#         raise Exception('数据库类型名{}出错'.format(DATABASE_TYPE))
-#
-#     # model层配置
-#     MODEL_URL = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(DIALECT, DRIVER, USERNAME, PASSWORD, HOST,
-#                                                              PORT, DATABASE)
-#     MODEL_VERSION = None if CONFIG['MODEL']['VERSION'] == 'None' else CONFIG['MODEL']['VERSION']
-#     MODEL_SCHEMA = None if CONFIG['MODEL']['SCHEMA'] == 'None' else CONFIG['MODEL']['SCHEMA']
-#     MODEL_TABLES = CONFIG['MODEL']['TABLES']
-#     MODEL_NOVIEWS = None if CONFIG['MODEL']['NOVIEWS'] == 'None' else CONFIG['MODEL']['SCHEMA']
-#     try:
-#         for i in ['NOINDEXES', 'NOCONSTRAINTS', 'NOJOINED', 'NOINFLECT', 'NOCLASSES', 'NOCOMMENTS']:
-#             MODEL_NOINDEXES = CONFIG.getboolean('MODEL', i)
-#             MODEL_NOCONSTRAINTS = CONFIG.getboolean('MODEL', i)
-#             MODEL_NOJOINED = CONFIG.getboolean('MODEL', i)
-#             MODEL_NOINFLECT = CONFIG.getboolean('MODEL', i)
-#             MODEL_NOCLASSES = CONFIG.getboolean('MODEL', i)
-#             MODEL_NOCOMMENTS = CONFIG.getboolean('MODEL', i)
-#     except Exception as e:
-#         raise Exception('{}参数不是一个合法的布尔型'.format(i))
-#
-#     RSA_TABLE_COLUMN = {}
-#     # security层配置
-#     if SECURITY_CONFIG['RSA_TABLE_COLUMN']:
-#         try:
-#             for table, columns in SECURITY_CONFIG['RSA_TABLE_COLUMN'].items():
-#                 RSA_TABLE_COLUMN[table] = columns.replace(' ', '').split(',')
-#         except Exception as e:
-#             raise Exception('RSA_TABLE_COLUMN参数读取失败')
+#     """
+#         加载读取json格式的配置文件
+#     """
 #
 #     @classmethod
-#     def reload(cls):
-#         # 读取配置文件
-#         CONFIG.read(CONFIG_DIR, encoding='utf-8')
-#         DATABASE_CONFIG.read(DATABASE_CONFIG_DIR, encoding='utf-8')
-#         SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
+#     def load(cls, setting_name=None) -> None:
+#         """
+#             加载指定配置文件
+#             加载完后配置存储为类属性
+#             :param setting_name: 配置文件名(无后缀)
+#         """
 #
-#         # 读取json文件
-#         with open('config/table_rule.json', 'r', encoding='utf-8') as f:
-#             cls.TABLE_RULE = json.load(f)
+#         if setting_name is None:
+#             config_dir = config_file_dir + '/default.json'
+#         else:
+#             config_dir = config_file_dir + '/' + setting_name + '.json'
+#
+#         with open(config_dir, 'r', encoding='utf-8') as fr:
+#             settings = json.load(fr)
+#             for key, value in settings.items():
+#                 if key in ['database', 'model']:
+#                     for neo_key, neo_value in value.items():
+#                         setattr(cls, neo_key.upper(), neo_value)
+#                 else:
+#                     setattr(cls, key.upper(), value)
 #
 #         with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
 #             cls.TYPE_MAPPING = json.load(f)
 #
-#         # 生成项目的名称
-#         cls.PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
-#         # 项目生成的目标路径
-#         cls.BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#         # 目标目录
-#         cls.TARGET_DIR = os.path.join(cls.BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR'])
-#         # 项目目录
+#         cls.BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+#         cls.TARGET_DIR = os.path.join(cls.BASE_DIR, cls.TARGET_DIR)
 #         cls.PROJECT_DIR = os.path.join(cls.TARGET_DIR, cls.PROJECT_NAME)
-#         # 生成项目API的版本
-#         cls.API_VERSION = CONFIG['PARAMETER']['API_VERSION'].replace('.', '_')
-#         # 代码生成模式-database|table-整库模式|多表模式
-#         cls.CODEGEN_MODE = CONFIG['PARAMETER']['CODEGEN_MODE']
-#         # 代码生成层级- default|model|controller|resource|static - 全部|模型层|控制器层|接口层|静态资源层
-#         cls.CODEGEN_LAYER = CONFIG['PARAMETER']['CODEGEN_LAYER']
-#         # 定义静态资源文件路径
-#         cls.STATIC_RESOURCE_DIR = os.path.join(cls.BASE_DIR, CONFIG['PARAMETER']['STATIC_RESOURCE_DIR'])
-#
-#         # 读取用户使用的数据库类型
-#         cls.DATABASE_TYPE = CONFIG['DATABASE']['DATABASE']
-#         try:
-#             # 读取数据库配置
-#             cls.DIALECT = DATABASE_CONFIG[cls.DATABASE_TYPE]['DIALECT']
-#             cls.DRIVER = DATABASE_CONFIG[cls.DATABASE_TYPE]['DRIVER']
-#             cls.USERNAME = DATABASE_CONFIG[cls.DATABASE_TYPE]['USERNAME']
-#             cls.PASSWORD = DATABASE_CONFIG[cls.DATABASE_TYPE]['PASSWORD']
-#             cls.HOST = DATABASE_CONFIG[cls.DATABASE_TYPE]['HOST']
-#             cls.PORT = DATABASE_CONFIG[cls.DATABASE_TYPE]['PORT']
-#             cls.DATABASE = DATABASE_CONFIG[cls.DATABASE_TYPE]['DATABASE']
-#             cls.SQLALCHEMY_TRACK_MODIFICATIONS = DATABASE_CONFIG['DEFAULT']['SQLALCHEMY_TRACK_MODIFICATIONS']
-#             cls.SQLALCHEMY_POOL_SIZE = DATABASE_CONFIG['DEFAULT']['SQLALCHEMY_POOL_SIZE']
-#             cls.SQLALCHEMY_MAX_OVERFLOW = DATABASE_CONFIG['DEFAULT']['SQLALCHEMY_MAX_OVERFLOW']
-#         except Exception as e:
-#             raise Exception('数据库类型名{}出错'.format(cls.DATABASE_TYPE))
-#
-#         # model层配置
+#         cls.API_VERSION = cls.API_VERSION.replace('.', '_')
 #         cls.MODEL_URL = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
 #             cls.DIALECT,
 #             cls.DRIVER,
@@ -157,141 +106,57 @@ from configparser import ConfigParser
 #             cls.PORT,
 #             cls.DATABASE
 #         )
-#         cls.MODEL_VERSION = None if CONFIG['MODEL']['VERSION'] == 'None' else CONFIG['MODEL']['VERSION']
-#         cls.MODEL_SCHEMA = None if CONFIG['MODEL']['SCHEMA'] == 'None' else CONFIG['MODEL']['SCHEMA']
-#         cls.MODEL_TABLES = CONFIG['MODEL']['TABLES']
-#         cls.MODEL_NOVIEWS = None if CONFIG['MODEL']['NOVIEWS'] == 'None' else CONFIG['MODEL']['SCHEMA']
-#         try:
-#             for i in ['NOINDEXES', 'NOCONSTRAINTS', 'NOJOINED', 'NOINFLECT', 'NOCLASSES', 'NOCOMMENTS']:
-#                 cls.MODEL_NOINDEXES = CONFIG.getboolean('MODEL', i)
-#                 cls.MODEL_NOCONSTRAINTS = CONFIG.getboolean('MODEL', i)
-#                 cls.MODEL_NOJOINED = CONFIG.getboolean('MODEL', i)
-#                 cls.MODEL_NOINFLECT = CONFIG.getboolean('MODEL', i)
-#                 cls.MODEL_NOCLASSES = CONFIG.getboolean('MODEL', i)
-#                 cls.MODEL_NOCOMMENTS = CONFIG.getboolean('MODEL', i)
-#         except Exception as e:
-#             raise Exception('{}参数不是一个合法的布尔型'.format(i))
+#         cls.TABLE_RULE = {
+#             'table_record_delete_logic_way': settings['table_record_delete_logic_way'],
+#             'table_business_key_gen_rule': settings['table_business_key_gen_rule']
+#         }
+#         database_type = {
+#             'mysql': 'DEFAULT',
+#             'postgresql': 'PostgreSQL',
+#             'mssql': 'SQL Server',
+#             'oracle': 'Oracle'
+#         }
+#         cls.DATABASE_TYPE = database_type.get(cls.DIALECT, 'DEFAULT')
 #
-#         cls.RSA_TABLE_COLUMN = {}
-#         # security层配置
-#         if SECURITY_CONFIG['RSA_TABLE_COLUMN']:
-#             try:
-#                 for table, columns in SECURITY_CONFIG['RSA_TABLE_COLUMN'].items():
-#                     cls.RSA_TABLE_COLUMN[table] = columns.replace(' ', '').split(',')
-#             except Exception as e:
-#                 raise Exception('RSA_TABLE_COLUMN参数读取失败')
-
-os.chdir(os.path.dirname(os.path.dirname(__file__)))
-
-config_file_dir = 'config'
-
-
-class Settings(object):
-    """
-        加载读取json格式的配置文件
-    """
-
-    @classmethod
-    def load(cls, setting_name=None) -> None:
-        """
-            加载指定配置文件
-            加载完后配置存储为类属性
-            :param setting_name: 配置文件名(无后缀)
-        """
-
-        if setting_name is None:
-            config_dir = config_file_dir + '/default.json'
-        else:
-            config_dir = config_file_dir + '/' + setting_name + '.json'
-
-        with open(config_dir, 'r', encoding='utf-8') as fr:
-            settings = json.load(fr)
-            for key, value in settings.items():
-                if key in ['database', 'model']:
-                    for neo_key, neo_value in value.items():
-                        setattr(cls, neo_key.upper(), neo_value)
-                else:
-                    setattr(cls, key.upper(), value)
-
-        with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
-            cls.TYPE_MAPPING = json.load(f)
-
-        cls.BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-        cls.TARGET_DIR = os.path.join(cls.BASE_DIR, cls.TARGET_DIR)
-        cls.PROJECT_DIR = os.path.join(cls.TARGET_DIR, cls.PROJECT_NAME)
-        cls.API_VERSION = cls.API_VERSION.replace('.', '_')
-        cls.MODEL_URL = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
-            cls.DIALECT,
-            cls.DRIVER,
-            cls.USERNAME,
-            cls.PASSWORD,
-            cls.HOST,
-            cls.PORT,
-            cls.DATABASE
-        )
-        cls.TABLE_RULE = {
-            'table_record_delete_logic_way': settings['table_record_delete_logic_way'],
-            'table_business_key_gen_rule': settings['table_business_key_gen_rule']
-        }
-        database_type = {
-            'mysql': 'DEFAULT',
-            'postgresql': 'PostgreSQL',
-            'mssql': 'SQL Server',
-            'oracle': 'Oracle'
-        }
-        cls.DATABASE_TYPE = database_type.get(cls.DIALECT, 'DEFAULT')
-
-    @classmethod
-    def save(cls, setting_name: str) -> None:
-        """
-            将配置存储至指定文件
-            :param setting_name: 指定文件名(无后缀)
-        """
-
-        if setting_name == 'default':
-            raise Exception('存储目标文件与默认配置同名！！！')
-
-        # 获取应存储的属性名
-        attr_list = dir(cls)
-        # remove_list = []
-        # for attr in attr_list:
-        #     if attr.islower() or attr in [
-        #         'BASE_DIR', 'PROJECT_DIR', 'MODEL_URL', 'TYPE_MAPPING', 'TABLE_RULE', 'DATABASE_TYPE'
-        #     ]:
-        #         remove_list.append(attr)
-        # for remove_attr in remove_list:
-        #     attr_list.remove(remove_attr)
-
-        attr_list = [attr for attr in attr_list if attr.isupper() and attr not in [
-                'BASE_DIR', 'PROJECT_DIR', 'MODEL_URL', 'TYPE_MAPPING', 'TABLE_RULE', 'DATABASE_TYPE'
-            ]]
-
-        # 将要保存的配置属性存储到字典中
-        save_dict = {
-            'database': {},
-            'model': {}
-        }
-        for attr in attr_list:
-            if attr in [
-                'DIALECT', 'DRIVER', 'USERNAME', 'PASSWORD', 'HOST', 'PORT', 'DATABASE',
-                'SQLALCHEMY_TRACK_MODIFICATIONS', 'SQLALCHEMY_POOL_SIZE', 'SQLALCHEMY_MAX_OVERFLOW'
-            ]:
-                save_dict['database'][attr.lower()] = getattr(cls, attr)
-            elif attr in [
-                'MODEL_VERSION', 'MODEL_SCHEMA', 'MODEL_TABLES', 'MODEL_NOVIEWS', 'MODEL_NOINDEXES',
-                'MODEL_NOCONSTRAINTS', 'MODEL_NOJOINED', 'MODEL_NOINFLECT', 'MODEL_NOCLASSES',
-                'MODEL_NOCOMMENTS', 'MODEL_NOREFLECT'
-            ]:
-                save_dict['model'][attr.lower()] = getattr(cls, attr)
-            elif attr == 'TARGET_DIR':
-                save_dict[attr.lower()] = getattr(cls, attr).split('Python_RESTfulAPI_Codegen\\')[-1]
-            else:
-                save_dict[attr.lower()] = getattr(cls, attr)
-
-        # 写入文件中
-        setting_dir = config_file_dir + '/' + setting_name + '.json'
-        with open(setting_dir, 'w', encoding='utf-8') as fw:
-            fw.write(json.dumps(save_dict))
-
-
-Settings.load()
+#     @classmethod
+#     def save(cls, setting_name: str) -> None:
+#         """
+#             将配置存储至指定文件
+#             :param setting_name: 指定文件名(无后缀)
+#         """
+#
+#         if setting_name == 'default':
+#             raise Exception('存储目标文件与默认配置同名！！！')
+#
+#         # 获取应存储的属性名
+#         attr_list = dir(cls)
+#         attr_list = [attr for attr in attr_list if attr.isupper() and attr not in [
+#                 'BASE_DIR', 'PROJECT_DIR', 'MODEL_URL', 'TYPE_MAPPING', 'TABLE_RULE', 'DATABASE_TYPE'
+#             ]]
+#
+#         # 将要保存的配置属性存储到字典中
+#         save_dict = {
+#             'database': {},
+#             'model': {}
+#         }
+#         for attr in attr_list:
+#             if attr in [
+#                 'DIALECT', 'DRIVER', 'USERNAME', 'PASSWORD', 'HOST', 'PORT', 'DATABASE',
+#                 'SQLALCHEMY_TRACK_MODIFICATIONS', 'SQLALCHEMY_POOL_SIZE', 'SQLALCHEMY_MAX_OVERFLOW'
+#             ]:
+#                 save_dict['database'][attr.lower()] = getattr(cls, attr)
+#             elif attr in [
+#                 'MODEL_VERSION', 'MODEL_SCHEMA', 'MODEL_TABLES', 'MODEL_NOVIEWS', 'MODEL_NOINDEXES',
+#                 'MODEL_NOCONSTRAINTS', 'MODEL_NOJOINED', 'MODEL_NOINFLECT', 'MODEL_NOCLASSES',
+#                 'MODEL_NOCOMMENTS', 'MODEL_NOREFLECT'
+#             ]:
+#                 save_dict['model'][attr.lower()] = getattr(cls, attr)
+#             elif attr == 'TARGET_DIR':
+#                 save_dict[attr.lower()] = getattr(cls, attr).split('Python_RESTfulAPI_Codegen\\')[-1]
+#             else:
+#                 save_dict[attr.lower()] = getattr(cls, attr)
+#
+#         # 写入文件中
+#         setting_dir = config_file_dir + '/' + setting_name + '.json'
+#         with open(setting_dir, 'w', encoding='utf-8') as fw:
+#             fw.write(json.dumps(save_dict))
