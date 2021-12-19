@@ -53,10 +53,11 @@ def getdbname():
             host=kwargs['Host'],
             user=kwargs['Username'],
             passwd=kwargs['Password'],
+            port=kwargs['Port'],
         )
         cur = conn.cursor()
         cur.execute('SHOW DATABASES')
-    except MySQLdb.Error as e:
+    except Exception as e:
         return {'code': '4000', 'data': [], 'message': e}
     return {'code': '2000', 'data': cur.fetchall(), 'message': '数据库连接成功'}
 
