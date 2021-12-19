@@ -44,7 +44,8 @@ class CheckTable(object):
                 # 仅有一个主键，检验是否自增
                 if not table['columns'][table['primaryKey'][0]]['is_autoincrement']:
                     invalid_tables.append(table['table_name'])
-                    loggings.warning(1, 'table {0} do not have an autoincrement primary key'.format(table['table_name']))
+                    loggings.warning(1,
+                                     'table {0} do not have an autoincrement primary key'.format(table['table_name']))
                 else:
                     available_tables.append(table['table_name'])
 
@@ -218,82 +219,24 @@ class CheckTable(object):
     # 入口函数定义
     @classmethod
     def main(cls, metadata):
-
-        table_dict = TableMetadata.get_tables_metadata(metadata)
-
-        # check table primary key
-        available_table, invalid_tables = cls.check_primary_key(table_dict)
-        for invalid in invalid_tables:
-            table_dict.pop(invalid)
-
-        # # check the foreign key
-        # available_table, invalid_table = cls.check_foreign_key(table_dict)
-        # invalid_tables += invalid_table
-        # for invalid in invalid_table:
-        #     table_dict.pop(invalid)
-
-        # check the keyword
-        available_table, invalid_table = cls.check_keyword_conflict(table_dict)
-        invalid_tables += invalid_table
-        for invalid in invalid_table:
-            table_dict.pop(invalid)
-
-        # Check whether the business key generation template exists
-        available_table, invalid_table = cls.check_business_key_template(table_dict)
-        available_tables = available_table
-        invalid_tables += invalid_table
-        for invalid in invalid_table:
-            table_dict.pop(invalid)
-
-        # # check the business key
-        # available_table, invalid_table = cls.check_business_key(table_dict)
-        # invalid_tables += invalid_table
-        # for invalid in invalid_table:
-        #     table_dict.pop(invalid)
-
-        # # Check whether the IsDelete field exists in the table to be logically deleted
-        # available_table, invalid_table = cls.check_logic_delete(table_dict)
-        # available_tables = available_table
-        # invalid_tables += invalid_table
-        # for invalid in invalid_table:
-        #     table_dict.pop(invalid)
-
-        if len(invalid_tables) > 0:
-            loggings.warning(
-                1,
-                "A total of {0} tables check passed.\n"
-                "The following {1} tables do not meet the specifications and cannot be generated: {2}."
-                    .format(
-                        len(available_tables),
-                        len(invalid_tables),
-                        ",".join(invalid_tables)
-                    )
-            )
-
-            return table_dict
-
-        loggings.info(1, "All table checks passed, a total of {0} tables.".format(len(available_tables)))
-
-        return table_dict
-
-    @classmethod
-    def check_sql_link(cls, metadata):
         """
             建立数据库连接时对表进行检查，筛去没有唯一自增主键、表名/字段名与Python关键字有冲突的表
             :param metadata: 数据库元数据
         """
 
         table_dict = TableMetadata.get_tables_metadata(metadata)
+        invalid_tables = {}
 
         # check table primary key
-        available_table, invalid_tables = cls.check_primary_key(table_dict)
-        for invalid in invalid_tables:
+        available_table, invalid_table = cls.check_primary_key(table_dict)
+        invalid_tables['primary_key'] = invalid_table
+        for invalid in invalid_table:
             table_dict.pop(invalid)
 
         # check the keyword
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
         available_tables = available_table
-        invalid_tables += invalid_table
+        invalid_tables['keyword'] = invalid_table
         for invalid in invalid_table:
             table_dict.pop(invalid)
 
@@ -302,14 +245,14 @@ class CheckTable(object):
                 1,
                 "A total of {0} tables check passed.\n"
                 "The following {1} tables do not meet the specifications and cannot be generated: {2}."
-                    .format(
-                        len(available_tables),
-                        len(invalid_tables),
-                        ",".join(invalid_tables)
-                    )
+                .format(
+                    len(available_tables),
+                    len(invalid_tables['primary_key'] + invalid_tables['keyword']),
+                    ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])
+                )
             )
 
-            return table_dict
+            return table_dict, invalid_tables
 
         loggings.info(1, "All table checks passed, a total of {0} tables.".format(len(available_tables)))
 

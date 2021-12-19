@@ -13,9 +13,8 @@ import json
 
 
 class TableMetadata(object):
-
     with open('config/default_table_config.json', 'r', encoding='utf-8') as f:
-        DEFAULT_CONFIG = json.load(f)
+        DEFAULT_CONFIG = f.read()
 
     with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
         TYPE_MAPPING = json.load(f)
