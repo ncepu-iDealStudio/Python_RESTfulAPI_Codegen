@@ -40,13 +40,13 @@ class TableMetadata(object):
 
             # Check record deletion method
             for each_table in table_config:
-                if each_table['table'] == table_name and each_table['isdeleted'] and each_table['logicaldeletemark']:
+                if each_table['table'] == table_name and each_table['isdeleted'] and each_table['logicaldeletemark'] == '':
                     table_dict[table_name]['is_logic_delete'] = True
                     table_dict[table_name]['logical_delete_mark'] = each_table['logicaldeletemark']
 
             # Check if the business key exists
             for config in table_config:
-                if config['table'] == table_name and config['businesskeyname']:
+                if config['table'] == table_name and config['businesskeyname'] == '':
                     business_key = table_dict[table_name]['business_key']
                     business_key['column'] = config['businesskeyname']
                     business_key['rule'] = config['businesskeyrule']

@@ -16,7 +16,7 @@ from utils.checkTable import CheckTable
 
 def check_sql_link(dialect, username, password, host, port, database) -> dict:
     """
-    检验数据库连接是否成功并返回所有表、字段信息（前端用）
+    返回所有表、字段信息（前端用）
     :param dialect: 数据库种类
     :param username: 用户名
     :param password: 密码
@@ -36,12 +36,13 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             'oracle': 'cx_oracle',
             'postgresql': 'psycopg2'
         }
-        url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host, port, database)
+        url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
+                                                           port, database)
         engine = create_engine(url)
         metadata = MetaData(engine)
         metadata.reflect(engine)
     except Exception as e:
-        return {'code': False, 'message': '数据库连接失败', 'error': str(e)}
+        return {'code': False, 'message': str(e), 'error': str(e)}
 
     table_dict, invalid_tables = CheckTable.main(metadata)
 
@@ -66,4 +67,33 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             'isdeleted': False,
             'issave': False
         })
-    return {'code': True, 'message': '数据库连接成功', 'data': data, 'invalid': invalid_tables}
+    return {'code': True, 'message': '成功', 'data': data, 'invalid': invalid_tables}
+
+
+def connection_check(dialect, username, password, host, port, database) -> dict:
+    """
+    检验数据库连接是否成功
+    :param dialect: 数据库种类
+    :param username: 用户名
+    :param password: 密码
+    :param host: 数据库IP
+    :param port: 数据库端口号
+    :param database: 要连接的数据库
+    :return code: 布尔型，True表示连接成功，False表示连接失败
+    :return message: 返回信息
+    :return error: 错误信息
+    """
+    try:
+        driver_dict = {
+            'mysql': 'pymysql',
+            'mssql': 'pymssql',
+            'oracle': 'cx_oracle',
+            'postgresql': 'psycopg2'
+        }
+        url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
+                                                           port, database)
+        engine = create_engine(url)
+        metadata = MetaData(engine)
+        return {'code': True, 'message': '数据库连接成功', 'data':''}
+    except Exception as e:
+        return {'code': False, 'message': '数据库连接失败', 'error': str(e)}
