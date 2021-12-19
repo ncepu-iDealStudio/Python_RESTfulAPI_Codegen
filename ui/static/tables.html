@@ -191,23 +191,10 @@
 
             const nextStep = () => {
                 state.nextStep_loading = true;
-                axios({
-                        method: 'POST',
-                        url: 'http://127.0.0.1:5000/settables',
-                        data: state.tables
-                    })
-                    .then(result => {
-                        const res = result.data
-                        if (res.code === '2000') {
-                            ElMessage.success(res.message)
-                            localStorage.setItem("tables", JSON.stringify(state.tables));
-                            location.href = 'tables_info';
-                            state.nextStep_loading = false;
-                        } else {
-                            ElMessage.error(res.message)
-                            state.nextStep_loading = false;
-                        }
-                    })
+                ElMessage.success(res.message)
+                localStorage.setItem("tables", JSON.stringify(state.tables));
+                location.href = 'tables_info';
+                state.nextStep_loading = false;
             }
 
             const handleClear = () => {
@@ -280,8 +267,9 @@
                     try {
                         let tables_data = JSON.parse(fileString);
 
-                        //将导入的表与现有的表整合
+                        //提示信息
                         let message = "";
+
                         for (let i = 0; i < tables_data.length; i++) {
                             for (let j = 0; j < state.tables.length; j++) {
                                 // 判断表名是否存在
@@ -290,32 +278,37 @@
                                     state.tables[j].isdeleted = tables_data[i].isdeleted;
                                     state.tables[j].issave = tables_data[i].issave;
                                     state.tables[j].logicaldeletemark = tables_data[i].logicaldeletemark;
-                                    //校验加密字段
+                                    //校验字段
                                     for (let k = 0; k < tables_data[i].field.length; k++) {
                                         for (let l = 0; l < state.tables[j].field.length; l++) {
-                                            // 判断加密字段是否存在
+                                            // 判断字段是否存在
                                             if (tables_data[i].field[k].field_name === state.tables[j].field[l].field_name) {
-                                                state.tables[j].field[l].field_encrypt = tables_data[i].field[k].field_encrypt;
-                                                // 如果字段为业务主键，且类型改变
-                                                if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name && tables_data[i].field[k].field_type != state.tables[j].field[l].field_type) {
-                                                    message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "类型已经更改，请自己配置业务主键" + "</div>";
+                                                // 如果字段类型改变
+                                                if (tables_data[i].field[k].field_type != state.tables[j].field[l].field_type) {
+                                                    message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段类型与配置文件不匹配" + "</div>";
+                                                    // 如果字段为业务主键，且类型改变
+                                                    if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
+                                                        message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "业务主键字段类型与配置文件不匹配，请自己配置业务主键" + "</div>";
+                                                    } else {
+                                                        state.tables[j].businesskeyname = tables_data[i].businesskeyname;
+                                                        state.tables[j].businesskeyrule = tables_data[i].businesskeyrule;
+                                                    }
                                                 } else {
-                                                    state.tables[j].businesskeyname = tables_data[i].businesskeyname;
-                                                    state.tables[j].businesskeyrule = tables_data[i].businesskeyrule;
+                                                    state.tables[j].field[l].field_encrypt = tables_data[i].field[k].field_encrypt;
                                                 }
                                                 break;
-                                            }
-                                            // 如果加密字段不存在
-                                            if (l === state.tables[j].field.length - 1) {
-                                                message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "不存在" + "</div>";
+                                                // 如果加密字段不存在
+                                                if (l === state.tables[j].field.length - 1) {
+                                                    message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "不存在" + "</div>";
+                                                }
                                             }
                                         }
                                     }
                                     break;
-                                }
-                                // 如果表名不存在
-                                if (j === state.tables.length - 1) {
-                                    message = message + "<div>" + tables_data[i].table + "导入失败" + "</div>";
+                                    // 如果表名不存在
+                                    if (j === state.tables.length - 1) {
+                                        message = message + "<div>" + tables_data[i].table + "导入失败" + "</div>";
+                                    }
                                 }
                             }
                         }
