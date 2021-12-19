@@ -53,7 +53,7 @@
                                     <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
                                 </div>
                                 <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
-                                    <el-checkbox v-model="item.issave" @change="handleCheckChange">{{item.table}}</el-checkbox>
+                                    <el-checkbox v-model="item.issave" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
                                 </el-menu-item>
                             </el-menu>
                         </el-scrollbar>
@@ -92,6 +92,12 @@
                                                 <template #content> 逻辑删除方式<br/>即表中必须包含IsDelete的标识删除字段</template>
                                                 <span class="iconfont icon-yiwen"></span>
                                             </el-tooltip>
+                                            <div style="margin: 10px 0;" v-if="tables[activeIndex].isdeleted">
+                                                <el-select v-model="tables[activeIndex].logicaldeletemark" placeholder="Select" size="small" @blur="">
+                                                    <el-option v-for="(item, index) in tables[activeIndex].field" :key="index" :label="item.field_name" :value="item.field_name">
+                                                    </el-option>
+                                                </el-select>
+                                            </div>
                                         </div>
                                         <div style="margin: 10px 0;">
                                             <el-switch v-model="tables[activeIndex].isbusinesskey">
@@ -266,7 +272,6 @@
                     //目前是这样的
                     try {
                         let tables_data = JSON.parse(fileString);
-                        console.log(tables_data)
 
                         //提示信息
                         let message = "";
@@ -350,7 +355,7 @@
                     ElMessage({
                         showClose: true,
                         dangerouslyUseHTMLString: true,
-                        message: "<div style='line-height: 18px;'>" + primary_key + "<br/>" + "没有主键或主键没有自增已被过滤" + "<br/>" + keyword + "<br/>" + "存在字段名与python关键字冲突已被过滤" + "</div>",
+                        message: "<div style='line-height: 18px;'>" + primary_key + "<br/>" + "缺少自增主键" + "<br/>" + keyword + "<br/>" + "存在表名或字段名与python关键字冲突已被过滤" + "</div>",
                         type: 'warning',
                         duration: 0,
                     })
