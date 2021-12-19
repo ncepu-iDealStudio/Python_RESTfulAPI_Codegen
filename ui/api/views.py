@@ -10,17 +10,13 @@
     this is function description
 """
 
-import ast
 import json
-from flask import Flask, render_template, request
-from flask_bootstrap import Bootstrap
+from flask import Flask, request
 import configparser
 from utils.checkSqlLink import check_sql_link
+import MySQLdb
 
 app = Flask(__name__, static_folder="../static")
-
-
-# 新的vue接口
 
 @app.route('/', methods=['GET'])
 def index():
@@ -46,6 +42,23 @@ def project():
 def build():
     return app.send_static_file('build.html')
 
+# 获取数据库名
+@app.route('/getdbname', methods=['POST'])
+def connecttest():
+    try:
+        kwargs = json.loads(request.data)
+        conn = MySQLdb.connect(
+            host=kwargs['Host'],
+            user=kwargs['Username'],
+            passwd=kwargs['Password'],
+        )
+        cur = conn.cursor()
+        cur.execute('SHOW DATABASES')
+    except MySQLdb.Error as e:
+        return {'code': '4000', 'data': [], 'message': e}
+    return {'code': '2000', 'data': cur.fetchall(), 'message': '数据库连接成功'}
+
+
 
 # 连接数据库接口
 @app.route('/connect', methods=['POST'])
@@ -53,7 +66,7 @@ def connect():
     # 接收参数
     kwargs = json.loads(request.data)
     dialect = kwargs['DatabaseDialects']
-    driver = kwargs['Driver']
+    driver = 'pymysql'
     host = kwargs['Host']
     port = kwargs['Port']
     database = kwargs['DatebaseName']
@@ -180,18 +193,3 @@ def seriouslykill():
     func()
     return {'code': '2000', 'data': [], 'message': 'http://127.0.0.1:5000/ is shutdown!'}
 
-
-# 解决跨域
-@app.after_request
-def process_response(response):
-    allow_cors = ['OPTIONS', 'PUT', 'DELETE', 'GET', 'POST']
-    if request.method in allow_cors:
-        response.headers["Access-Control-Allow-Origin"] = '*'
-        if request.headers.get('Origin') and request.headers['Origin'] == 'http://admin.writer..quwancode.com':
-            response.headers["Access-Control-Allow-Origin"] = 'http://admin.writer.quwancode.com'
-
-        response.headers["Access-Control-Allow-Credentials"] = 'true'
-        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,GET,POST,PUT,DELETE'
-        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type,Token'
-        response.headers['Access-Control-Expose-Headers'] = 'VerifyCodeID,ext'
-    return response
