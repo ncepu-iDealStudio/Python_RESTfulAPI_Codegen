@@ -9,7 +9,7 @@
 """
     project start
 """
-import os
+
 import webbrowser
 from ui.api.views import app
 

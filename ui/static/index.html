@@ -39,26 +39,27 @@
                     </el-card>
 
                     <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
-                        <el-form-item label="数据库方言" prop="DatabaseDialects">
-                            <el-input v-model="form.DatabaseDialects"></el-input>
-                        </el-form-item>
-                        <el-form-item label="驱动" prop="Driver">
-                            <el-input v-model="form.Driver"></el-input>
+                        <el-form-item label="数据库类型" prop="DatabaseDialects">
+                           <el-select v-model="value" placeholder="请选择数据库类型">
+                            <el-option  :label="mysql" :value="mysql">mysql</el-option>
+                          </el-select>
                         </el-form-item>
                         <el-form-item label="主机" prop="Host">
-                            <el-input v-model="form.Host" placeholder="请输入IP地址"></el-input>
+                            <el-input v-model="form.Host" placeholder="请输入数据库服务器IP地址"></el-input>
                         </el-form-item>
-                        <el-form-item label="端口号" prop="Port">
-                            <el-input v-model="form.Port" placeholder="请输入数据库端口号"></el-input>
+                        <el-form-item label="数据库端口" prop="Port">
+                            <el-input v-model="form.Port" placeholder="请输入数据库服务器端口号"></el-input>
                         </el-form-item>
-                        <el-form-item label="数据库" prop="DatebaseName">
-                            <el-input v-model="form.DatebaseName"></el-input>
-                        </el-form-item>
-                        <el-form-item label="登录名" prop="Username">
-                            <el-input v-model="form.Username"></el-input>
+                        <el-form-item label="账号" prop="Username">
+                            <el-input v-model="form.Username" placeholder="请输入数据库服务器登录账号,建议是rot账号"></el-input>
                         </el-form-item>
                         <el-form-item label="密码" prop="Password">
                             <el-input v-model="form.Password" show-password></el-input>
+                        </el-form-item>
+                        <el-form-item label="数据库" prop="DatebaseName">
+                             <el-select v-model="form.DatebaseName" placeholder="请选择目标数据库">
+                             <el-option  :label="mysql" :value="mysql">myDatabaseName</el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" style="float:left;width: 150px;" :loading="connectTest_loading" @click="connectTest">连接测试</el-button>
