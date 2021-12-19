@@ -13,7 +13,7 @@
 import json
 from flask import Flask, request
 import configparser
-from utils.checkSqlLink import check_sql_link
+from utils.checkSqlLink import check_sql_link, connection_check
 import MySQLdb
 
 app = Flask(__name__, static_folder="../static")
@@ -73,7 +73,7 @@ def connecttest():
     username = kwargs['Username']
     password = kwargs['Password']
     # 检查数据库链接
-    result_sql = check_sql_link(dialect, username, password, host, port, database)
+    result_sql = connection_check(dialect, username, password, host, port, database)
     if result_sql['code']:
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
     else:
@@ -109,12 +109,6 @@ def connect():
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功', 'invalid': result_sql['invalid']}
     else:
         return {'code': '4000', 'data': [], 'message': '数据库连接失败'}
-
-
-# 完成表配置
-@app.route('/settables', methods=['POST'])
-def settables():
-    return {'code': '2000', 'data': [], 'message': '写入配置成功'}
 
 
 # 完成项目配置
