@@ -53,7 +53,7 @@ def getdbname():
             host=kwargs['Host'],
             user=kwargs['Username'],
             passwd=kwargs['Password'],
-            port=kwargs['Port'],
+            port=int(kwargs['Port']),
         )
         cur = conn.cursor()
         cur.execute('SHOW DATABASES')
