@@ -266,6 +266,7 @@
                     //目前是这样的
                     try {
                         let tables_data = JSON.parse(fileString);
+                        console.log(tables_data)
 
                         //提示信息
                         let message = "";
@@ -297,18 +298,18 @@
                                                     state.tables[j].field[l].field_encrypt = tables_data[i].field[k].field_encrypt;
                                                 }
                                                 break;
-                                                // 如果加密字段不存在
-                                                if (l === state.tables[j].field.length - 1) {
-                                                    message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "不存在" + "</div>";
-                                                }
+                                            }
+                                            // 如果加密字段不存在
+                                            if (l === state.tables[j].field.length - 1) {
+                                                message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "不存在" + "</div>";
                                             }
                                         }
                                     }
                                     break;
-                                    // 如果表名不存在
-                                    if (j === state.tables.length - 1) {
-                                        message = message + "<div>" + tables_data[i].table + "导入失败" + "</div>";
-                                    }
+                                }
+                                // 如果表名不存在
+                                if (j === state.tables.length - 1) {
+                                    message = message + "<div>" + tables_data[i].table + "导入失败" + "</div>";
                                 }
                             }
                         }
