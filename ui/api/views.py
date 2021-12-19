@@ -44,7 +44,7 @@ def build():
 
 # 获取数据库名
 @app.route('/getdbname', methods=['POST'])
-def connecttest():
+def getdbname():
     try:
         kwargs = json.loads(request.data)
         conn = MySQLdb.connect(
@@ -57,6 +57,24 @@ def connecttest():
     except MySQLdb.Error as e:
         return {'code': '4000', 'data': [], 'message': e}
     return {'code': '2000', 'data': cur.fetchall(), 'message': '数据库连接成功'}
+
+# 连接数据库接口
+@app.route('/connecttest', methods=['POST'])
+def connecttest():
+    # 接收参数
+    kwargs = json.loads(request.data)
+    dialect = kwargs['DatabaseDialects']
+    host = kwargs['Host']
+    port = kwargs['Port']
+    database = kwargs['DatebaseName']
+    username = kwargs['Username']
+    password = kwargs['Password']
+    # 检查数据库链接
+    result_sql = check_sql_link(dialect, username, password, host, port, database)
+    if result_sql['code']:
+        return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
+    else:
+        return {'code': '4000', 'data': [], 'message': '数据库连接失败'}
 
 
 
@@ -74,8 +92,6 @@ def connect():
     # 检查数据库链接
     result_sql = check_sql_link(dialect, username, password, host, port, database)
     if result_sql['code']:
-        global tabledata
-        tabledata = result_sql['data']
         # 填写配置文件
         configfile = "config/config.conf"
         conf = configparser.ConfigParser()  # 实例类
