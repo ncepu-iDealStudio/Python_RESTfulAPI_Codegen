@@ -62,7 +62,7 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             'businesskeyname': '',
             'businesskeyrule': '',
             'logicaldeletemark': '',
-            'filed': filed,
+            'field': filed,
             'isbusinesskey': False,
             'isdeleted': False,
             'issave': False
