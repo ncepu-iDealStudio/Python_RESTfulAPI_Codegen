@@ -66,35 +66,26 @@ def connect():
     # 接收参数
     kwargs = json.loads(request.data)
     dialect = kwargs['DatabaseDialects']
-    driver = 'pymysql'
     host = kwargs['Host']
     port = kwargs['Port']
     database = kwargs['DatebaseName']
     username = kwargs['Username']
     password = kwargs['Password']
-    # tables 置为为空
-    configfile = "config/config.conf"
-    conf = configparser.ConfigParser()
-    conf.read(configfile, encoding='UTF-8')
-    conf.set("MODEL", "TABLES", '')
-    with open(configfile, "w") as f:
-        conf.write(f)
     # 检查数据库链接
-    result_sql = check_sql_link(dialect, driver, username, password, host, port, database)
+    result_sql = check_sql_link(dialect, username, password, host, port, database)
     if result_sql['code']:
         global tabledata
         tabledata = result_sql['data']
         # 填写配置文件
-        configfile = "config/database.conf"
+        configfile = "config/config.conf"
         conf = configparser.ConfigParser()  # 实例类
         conf.read(configfile, encoding='UTF-8')  # 读取配置文件
-        conf.set("DEFAULT", "DIALECT", dialect)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
-        conf.set("DEFAULT", "DRIVER", driver)
-        conf.set("DEFAULT", "HOST", host)
-        conf.set("DEFAULT", "PORT", port)
-        conf.set("DEFAULT", "DATABASE", database)
-        conf.set("DEFAULT", "USERNAME", username)
-        conf.set("DEFAULT", "PASSWORD", password)
+        conf.set("DATABASE", "dialect", dialect)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
+        conf.set("DATABASE", "host", host)
+        conf.set("DATABASE", "port", port)
+        conf.set("DATABASE", "database", database)
+        conf.set("DATABASE", "username", username)
+        conf.set("DATABASE", "password", password)
         with open(configfile, "w") as f:
             conf.write(f)
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
