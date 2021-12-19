@@ -30,7 +30,7 @@
                             </a>
                         </el-tooltip>
                         <el-tooltip placement="top">
-                            <template #content>导出配置文件</template>
+                            <template #content>导出已经勾选表的配置文件</template>
                             <div style="float: right;margin-right: 20px;">
                                 <div @click="exportfile" class="iconfont icon-shangchuandaochu"></div>
                             </div>
@@ -47,7 +47,7 @@
             <div class="container_body">
                 <el-row>
                     <el-col :offset="4" :span="4">
-                        <el-scrollbar style="height:calc(100vh - 120px);">
+                        <el-scrollbar style="height:calc(100vh - 150px);">
                             <el-menu @select="handleSelect">
                                 <div style="padding-left: 20px;">
                                     <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
@@ -79,7 +79,7 @@
                                         </div style="margin: 10px 0;">
                                         <el-card>
                                             <el-scrollbar height="200px">
-                                                <el-checkbox v-model="item.field_encrypt" :label="item.field_name" v-for="(item, index) in tables[activeIndex].filed" :key="index" style="width: 120px;overflow: hidden;"></el-checkbox>
+                                                <el-checkbox v-model="item.field_encrypt" :label="item.field_name" v-for="(item, index) in tables[activeIndex].filed" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;"></el-checkbox>
                                             </el-scrollbar>
                                         </el-card>
                                     </el-col>
@@ -242,14 +242,24 @@
 
             // 导出文件
             const exportfile = () => {
-                let aTag = document.createElement('a');
-                const content = JSON.stringify(state.tables);
-                let blob = new Blob([content]);
-                let timestamp = new Date().getTime();
-                aTag.download = "default_table_config_" + timestamp + ".json ";
-                aTag.href = URL.createObjectURL(blob);
-                aTag.click();
-                URL.revokeObjectURL(blob);
+                let tables_data = [];
+                for (let i = 0; i < state.tables.length; i++) {
+                    if (state.tables[i].issave) {
+                        tables_data.push(state.tables[i])
+                    }
+                }
+                if (tables_data.length === 0) {
+                    ElMessage.warning('请至少勾选一张表');
+                } else {
+                    let aTag = document.createElement('a');
+                    const content = JSON.stringify(tables_data);
+                    let blob = new Blob([content]);
+                    let timestamp = new Date().getTime();
+                    aTag.download = "table_config_" + timestamp + ".json ";
+                    aTag.href = URL.createObjectURL(blob);
+                    aTag.click();
+                    URL.revokeObjectURL(blob);
+                }
             }
 
             // // 导入文件
@@ -285,6 +295,23 @@
                     }, 1000)
                 }
                 state.tables = data
+
+                // 显示不符合规范的表
+                let invalid = JSON.parse(localStorage.getItem("invalid"));
+                if (!invalid) return
+                const primary_key = invalid.primary_key.toString();
+                const keyword = invalid.keyword.toString();
+
+                if (primary_key && keyword) {
+                    ElMessage({
+                        showClose: true,
+                        dangerouslyUseHTMLString: true,
+                        message: "<div style='line-height: 18px;'>" + primary_key + "<br/>" + "没有主键或主键没有自增已被过滤" + "<br/>" + keyword + "<br/>" + "存在字段名与python关键字冲突已被过滤" + "</div>",
+                        type: 'warning',
+                        duration: 0,
+                    })
+                }
+                localStorage.removeItem("invalid")
             });
             return {
                 ...toRefs(state),

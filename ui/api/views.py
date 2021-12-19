@@ -114,49 +114,49 @@ def connect():
 # 完成表配置
 @app.route('/settables', methods=['POST'])
 def settables():
-    tabledata = json.loads(request.data)
-    security_configfile = "config/security.conf"
-    security_conf = configparser.ConfigParser()  # 实例类
-    security_conf.read(security_configfile, encoding='UTF-8')  # 读取配置文件
-    security_conf.remove_section("RSA_TABLE_COLUMN")
-    security_conf.add_section("RSA_TABLE_COLUMN")
-
-    config_configfile = "config/config.conf"
-    config_config = configparser.ConfigParser()  # 实例类
-    config_config.read(config_configfile, encoding='UTF-8')  # 读取配置文件
-
-    table_rule = {
-        "table_record_delete_logic_way": [
-        ],
-        "table_business_key_gen_rule": {
-        }
-    }
-
-    tables_str = ""
-    for tableItem in tabledata:
-        if tableItem['issave']:
-            tables_str = tables_str + tableItem['table'] + ","
-            config_config.set("MODEL", 'TABLES', tables_str[:-1])
-            with open(config_configfile, "w") as f:
-                config_config.write(f)
-
-            if tableItem['isdeleted']:
-                table_rule['table_record_delete_logic_way'].append(tableItem['table'])
-
-            if tableItem['isbusinesskey'] != '':
-                table_rule['table_business_key_gen_rule'][tableItem['table']] = {
-                    tableItem['isbusinesskey']: tableItem['businesskeyrule']}
-
-            for i in tableItem['filed']:
-                encrypt_str = ""
-                encrypt_str = encrypt_str + i['field_name'] + ","
-                security_conf.set("RSA_TABLE_COLUMN", tableItem['table'], encrypt_str[:-1])
-                with open(security_configfile, "w") as f:
-                    security_conf.write(f)
-
-    table_rule_json = json.dumps(table_rule)
-    with open("config/table_rule.json", "w") as f:
-        f.write(table_rule_json)
+    # tabledata = json.loads(request.data)
+    # security_configfile = "config/security.conf"
+    # security_conf = configparser.ConfigParser()  # 实例类
+    # security_conf.read(security_configfile, encoding='UTF-8')  # 读取配置文件
+    # security_conf.remove_section("RSA_TABLE_COLUMN")
+    # security_conf.add_section("RSA_TABLE_COLUMN")
+    #
+    # config_configfile = "config/config.conf"
+    # config_config = configparser.ConfigParser()  # 实例类
+    # config_config.read(config_configfile, encoding='UTF-8')  # 读取配置文件
+    #
+    # table_rule = {
+    #     "table_record_delete_logic_way": [
+    #     ],
+    #     "table_business_key_gen_rule": {
+    #     }
+    # }
+    #
+    # tables_str = ""
+    # for tableItem in tabledata:
+    #     if tableItem['issave']:
+    #         tables_str = tables_str + tableItem['table'] + ","
+    #         config_config.set("MODEL", 'TABLES', tables_str[:-1])
+    #         with open(config_configfile, "w") as f:
+    #             config_config.write(f)
+    #
+    #         if tableItem['isdeleted']:
+    #             table_rule['table_record_delete_logic_way'].append(tableItem['table'])
+    #
+    #         if tableItem['isbusinesskey'] != '':
+    #             table_rule['table_business_key_gen_rule'][tableItem['table']] = {
+    #                 tableItem['isbusinesskey']: tableItem['businesskeyrule']}
+    #
+    #         for i in tableItem['filed']:
+    #             encrypt_str = ""
+    #             encrypt_str = encrypt_str + i['field_name'] + ","
+    #             security_conf.set("RSA_TABLE_COLUMN", tableItem['table'], encrypt_str[:-1])
+    #             with open(security_configfile, "w") as f:
+    #                 security_conf.write(f)
+    #
+    # table_rule_json = json.dumps(table_rule)
+    # with open("config/table_rule.json", "w") as f:
+    #     f.write(table_rule_json)
     return {'code': '2000', 'data': [], 'message': '写入配置成功'}
 
 
