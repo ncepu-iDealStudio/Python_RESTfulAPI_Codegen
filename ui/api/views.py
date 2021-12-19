@@ -18,6 +18,7 @@ import MySQLdb
 
 app = Flask(__name__, static_folder="../static")
 
+
 @app.route('/', methods=['GET'])
 def index():
     return app.send_static_file('index.html')
@@ -42,6 +43,7 @@ def project():
 def build():
     return app.send_static_file('build.html')
 
+
 # 获取数据库名
 @app.route('/getdbname', methods=['POST'])
 def getdbname():
@@ -57,6 +59,7 @@ def getdbname():
     except MySQLdb.Error as e:
         return {'code': '4000', 'data': [], 'message': e}
     return {'code': '2000', 'data': cur.fetchall(), 'message': '数据库连接成功'}
+
 
 # 连接数据库接口
 @app.route('/connecttest', methods=['POST'])
@@ -75,7 +78,6 @@ def connecttest():
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
     else:
         return {'code': '4000', 'data': [], 'message': '数据库连接失败'}
-
 
 
 # 连接数据库接口
@@ -104,7 +106,7 @@ def connect():
         conf.set("DATABASE", "password", password)
         with open(configfile, "w") as f:
             conf.write(f)
-        return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
+        return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功', 'invalid': result_sql['invalid']}
     else:
         return {'code': '4000', 'data': [], 'message': '数据库连接失败'}
 
@@ -199,4 +201,3 @@ def seriouslykill():
         raise RuntimeError('Not running with the Werkzeug Server')
     func()
     return {'code': '2000', 'data': [], 'message': 'http://127.0.0.1:5000/ is shutdown!'}
-

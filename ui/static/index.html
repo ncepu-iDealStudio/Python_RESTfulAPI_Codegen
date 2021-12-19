@@ -148,6 +148,7 @@
                             if (res.code === '2000') {
                                 ElMessage.success(res.message)
                                 localStorage.setItem("tables", JSON.stringify(res.data));
+                                localStorage.setItem("invalid", JSON.stringify(res.invalid));
                                 location.replace('tables')
                                 state.nextStep_loading = false;
                             } else {
