@@ -79,7 +79,7 @@
                                         </div style="margin: 10px 0;">
                                         <el-card>
                                             <el-scrollbar height="200px">
-                                                <el-checkbox v-model="item.field_encrypt" :label="item.field_name" v-for="(item, index) in tables[activeIndex].filed" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;"></el-checkbox>
+                                                <el-checkbox v-model="item.field_encrypt" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;"></el-checkbox>
                                             </el-scrollbar>
                                         </el-card>
                                     </el-col>
@@ -106,7 +106,7 @@
                                             <div style="margin: 10px 0;">业务主键字段选择</div>
                                             <div style="margin: 10px 0;">
                                                 <el-select v-model="tables[activeIndex].businesskeyname" placeholder="Select" size="small" @blur="blurbusinesskey">
-                                                    <el-option v-for="(item, index) in tables[activeIndex].filed" :key="index" :label="item.field_name" :value="item.field_name">
+                                                    <el-option v-for="(item, index) in tables[activeIndex].field" :key="index" :label="item.field_name" :value="item.field_name">
                                                     </el-option>
                                                 </el-select>
                                             </div>
@@ -216,17 +216,17 @@
                 state.tables[state.activeIndex].businesskeyname = "";
                 state.tables[state.activeIndex].businesskeyrule = "";
                 // 清空加密字段选择
-                for (let i = 0; i < state.tables[state.activeIndex].filed.length; i++) {
-                    state.tables[state.activeIndex].filed[i].field_encrypt = false;
+                for (let i = 0; i < state.tables[state.activeIndex].field.length; i++) {
+                    state.tables[state.activeIndex].field[i].field_encrypt = false;
                 }
             }
 
             //获取当前选择的业务主键字段信息
             const selectbusinesskeyrule = () => {
                 state.activeFiled = {}
-                for (let i = 0; i < state.tables[state.activeIndex].filed.length; i++) {
-                    if (state.tables[state.activeIndex].businesskeyname === state.tables[state.activeIndex].filed[i].field_name) {
-                        state.activeFiled = {...state.tables[state.activeIndex].filed[i]
+                for (let i = 0; i < state.tables[state.activeIndex].field.length; i++) {
+                    if (state.tables[state.activeIndex].businesskeyname === state.tables[state.activeIndex].field[i].field_name) {
+                        state.activeFiled = {...state.tables[state.activeIndex].field[i]
                         }
                     }
                 }
@@ -278,8 +278,58 @@
                     let fileString = evt.target.result; // 读取文件内容
                     //目前是这样的
                     try {
-                        state.tables = JSON.parse(fileString);
-                        ElMessage.success('导入成功')
+                        let tables_data = JSON.parse(fileString);
+
+                        //将导入的表与现有的表整合
+                        let message = "";
+                        for (let i = 0; i < tables_data.length; i++) {
+                            for (let j = 0; j < state.tables.length; j++) {
+                                // 判断表名是否存在
+                                if (tables_data[i].table === state.tables[j].table) {
+                                    state.tables[j].isbusinesskey = tables_data[i].isbusinesskey;
+                                    state.tables[j].isdeleted = tables_data[i].isdeleted;
+                                    state.tables[j].issave = tables_data[i].issave;
+                                    state.tables[j].logicaldeletemark = tables_data[i].logicaldeletemark;
+                                    //校验加密字段
+                                    for (let k = 0; k < tables_data[i].field.length; k++) {
+                                        for (let l = 0; l < state.tables[j].field.length; l++) {
+                                            // 判断加密字段是否存在
+                                            if (tables_data[i].field[k].field_name === state.tables[j].field[l].field_name) {
+                                                state.tables[j].field[l].field_encrypt = tables_data[i].field[k].field_encrypt;
+                                                // 如果字段为业务主键，且类型改变
+                                                if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name && tables_data[i].field[k].field_type != state.tables[j].field[l].field_type) {
+                                                    message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "类型已经更改，请重新配置业务主键" + "</div>";
+                                                } else {
+                                                    state.tables[j].businesskeyname = tables_data[i].businesskeyname;
+                                                    state.tables[j].businesskeyrule = tables_data[i].businesskeyrule;
+                                                }
+                                                break;
+                                            }
+                                            // 如果加密字段不存在
+                                            if (l === state.tables[j].field.length - 1) {
+                                                message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "不存在" + "</div>";
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                                // 如果表名不存在
+                                if (j === state.tables.length - 1) {
+                                    message = message + "<div>" + tables_data[i].table + "导入失败" + "</div>";
+                                }
+                            }
+                        }
+                        if (message == "") {
+                            ElMessage.success('导入成功')
+                        } else {
+                            ElMessage({
+                                showClose: true,
+                                dangerouslyUseHTMLString: true,
+                                message: message,
+                                type: 'warning',
+                                duration: 0,
+                            })
+                        }
                     } catch (err) {
                         ElMessage.error('导入失败')
                     }
