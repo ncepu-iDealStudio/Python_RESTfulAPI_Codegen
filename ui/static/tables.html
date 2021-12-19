@@ -79,7 +79,7 @@
                                         </div style="margin: 10px 0;">
                                         <el-card>
                                             <el-scrollbar height="200px">
-                                                <el-checkbox v-model="item.field_encrypt" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;"></el-checkbox>
+                                                <el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;"></el-checkbox>
                                             </el-scrollbar>
                                         </el-card>
                                     </el-col>
@@ -298,7 +298,7 @@
                                                 state.tables[j].field[l].field_encrypt = tables_data[i].field[k].field_encrypt;
                                                 // 如果字段为业务主键，且类型改变
                                                 if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name && tables_data[i].field[k].field_type != state.tables[j].field[l].field_type) {
-                                                    message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "类型已经更改，请重新配置业务主键" + "</div>";
+                                                    message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "类型已经更改，请自己配置业务主键" + "</div>";
                                                 } else {
                                                     state.tables[j].businesskeyname = tables_data[i].businesskeyname;
                                                     state.tables[j].businesskeyrule = tables_data[i].businesskeyrule;
