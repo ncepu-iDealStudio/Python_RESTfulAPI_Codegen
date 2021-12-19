@@ -205,6 +205,7 @@
 
             const handleClear = () => {
                 state.tables[state.activeIndex].isdeleted = false;
+                state.tables[state.activeIndex].logicaldeletemark = "";
                 state.tables[state.activeIndex].isbusinesskey = false;
                 state.tables[state.activeIndex].businesskeyname = "";
                 state.tables[state.activeIndex].businesskeyrule = "";
@@ -283,7 +284,6 @@
                                     state.tables[j].isbusinesskey = tables_data[i].isbusinesskey;
                                     state.tables[j].isdeleted = tables_data[i].isdeleted;
                                     state.tables[j].issave = tables_data[i].issave;
-                                    state.tables[j].logicaldeletemark = tables_data[i].logicaldeletemark;
                                     //校验字段
                                     for (let k = 0; k < tables_data[i].field.length; k++) {
                                         for (let l = 0; l < state.tables[j].field.length; l++) {
@@ -295,12 +295,18 @@
                                                     // 如果字段为业务主键，且类型改变
                                                     if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
                                                         message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "业务主键字段类型与配置文件不匹配，请自己配置业务主键" + "</div>";
-                                                    } else {
-                                                        state.tables[j].businesskeyname = tables_data[i].businesskeyname;
-                                                        state.tables[j].businesskeyrule = tables_data[i].businesskeyrule;
                                                     }
                                                 } else {
                                                     state.tables[j].field[l].field_encrypt = tables_data[i].field[k].field_encrypt;
+                                                    // 如果字段为业务主键
+                                                    if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
+                                                        state.tables[j].businesskeyname = tables_data[i].businesskeyname;
+                                                        state.tables[j].businesskeyrule = tables_data[i].businesskeyrule;
+                                                    }
+                                                    // 如果字段为逻辑删除
+                                                    if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
+                                                        state.tables[j].logicaldeletemark = tables_data[i].logicaldeletemark;
+                                                    }
                                                 }
                                                 break;
                                             }
