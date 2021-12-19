@@ -38,7 +38,7 @@
                         <el-tooltip placement="top">
                             <template #content>导入配置文件</template>
                             <div style="float: right;margin-right: 20px;">
-                                <div class="iconfont icon-xiazaidaoru"></div>
+                                <div @click="importfile" class="iconfont icon-xiazaidaoru"></div>
                             </div>
                         </el-tooltip>
                     </el-col>
@@ -146,7 +146,7 @@
                 </el-col>
             </el-row>
         </div>
-        <!-- <input type="file" id="fileInput"> -->
+        <input type="file" id="inputfile" @change="selectfile" style="display: none;" />
     </div>
 </body>
 
@@ -245,10 +245,35 @@
                 let aTag = document.createElement('a');
                 const content = JSON.stringify(state.tables);
                 let blob = new Blob([content]);
-                aTag.download = "json.txt";
+                let timestamp = new Date().getTime();
+                aTag.download = "default_table_config_" + timestamp + ".json ";
                 aTag.href = URL.createObjectURL(blob);
                 aTag.click();
                 URL.revokeObjectURL(blob);
+            }
+
+            // // 导入文件
+            const importfile = () => {
+                let input = document.getElementById('inputfile');
+                input.click()
+
+            }
+
+            // // 选中文件
+            const selectfile = (val) => {
+                let input = document.getElementById('inputfile');
+                let reader = new FileReader(); //新建一个FileReader
+                reader.readAsText(input.files[0], "UTF-8"); //读取文件 
+                reader.onload = function(evt) { //读取完文件之后会回来这里
+                    let fileString = evt.target.result; // 读取文件内容
+                    //目前是这样的
+                    try {
+                        state.tables = JSON.parse(fileString);
+                        ElMessage.success('导入成功')
+                    } catch (err) {
+                        ElMessage.error('导入失败')
+                    }
+                }
             }
 
             onMounted(() => {
@@ -271,6 +296,8 @@
                 handleCheckAllChange,
                 handleCheckChange,
                 exportfile,
+                importfile,
+                selectfile,
                 back,
             };
         },

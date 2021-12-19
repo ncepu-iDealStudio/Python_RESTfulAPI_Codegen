@@ -20,6 +20,7 @@ body,
     text-align: center;
     line-height: 60px;
     font-weight: bold;
+    height: 60px;
 }
 
 .container_body {
