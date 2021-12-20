@@ -137,9 +137,10 @@ def setproject():
 # 开始生成代码
 @app.route('/startbuild', methods=['POST'])
 def startbuild():
+    kwargs = json.loads(request.data)
     from codegen.main import start
     try:
-        start()
+        start(kwargs)
         with open('logs/codegen_log.log', "r", encoding="utf-8") as f:
             log_data = f.read()
         return {'code': '2000', 'data': log_data, 'message': '写入配置成功'}
