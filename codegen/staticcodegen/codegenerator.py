@@ -14,7 +14,7 @@ import os
 import shutil
 from configparser import ConfigParser
 
-from config.setting import Settings
+from codegen import dialect, driver, username, password, host, port, database
 from utils.loggings import loggings
 
 
@@ -26,32 +26,26 @@ class CodeGenerator(object):
     @classmethod
     def generate_configuration_file(cls, configuration_file_path):
         """
-        :param configuration_file_path: The path where the configuration file is stored
+        :param configuration_file_path: 配置文件存储路径
         :return: None
         """
         try:
-            # reload settings
-            Settings.reload()
-
             target_config = ConfigParser()
 
             # write configueration about databse
             target_config.add_section("DATABASE")
-            target_config.set("DATABASE", "DIALECT", Settings.DIALECT)
-            target_config.set("DATABASE", "DRIVER", Settings.DRIVER)
-            target_config.set("DATABASE", "USERNAME", Settings.USERNAME)
-            target_config.set("DATABASE", "PASSWORD", Settings.PASSWORD)
-            target_config.set("DATABASE", "HOST", Settings.HOST)
-            target_config.set("DATABASE", "PORT", Settings.PORT)
-            target_config.set("DATABASE", "DATABASE", Settings.DATABASE)
-            target_config.set("DATABASE", "SQLALCHEMY_TRACK_MODIFICATIONS", Settings.SQLALCHEMY_TRACK_MODIFICATIONS)
-            target_config.set("DATABASE", "SQLALCHEMY_POOL_SIZE", Settings.SQLALCHEMY_POOL_SIZE)
-            target_config.set("DATABASE", "SQLALCHEMY_MAX_OVERFLOW", Settings.SQLALCHEMY_MAX_OVERFLOW)
+            target_config.set("DATABASE", "DIALECT", dialect)
+            target_config.set("DATABASE", "DRIVER", driver)
+            target_config.set("DATABASE", "USERNAME", username)
+            target_config.set("DATABASE", "PASSWORD", password)
+            target_config.set("DATABASE", "HOST", host)
+            target_config.set("DATABASE", "PORT", port)
+            target_config.set("DATABASE", "DATABASE", database)
+            target_config.set("DATABASE", "SQLALCHEMY_TRACK_MODIFICATIONS", "True")
+            target_config.set("DATABASE", "SQLALCHEMY_POOL_SIZE", '50')
+            target_config.set("DATABASE", "SQLALCHEMY_MAX_OVERFLOW", '-1')
 
             for section in cls.SECURITY_CONFIG.sections():
-                # 'RSA_TABLE_COLUMN' section is not required
-                if section == 'RSA_TABLE_COLUMN':
-                    continue
                 target_config.add_section(section)
                 for option_key, option_value in cls.SECURITY_CONFIG.items(section):
                     target_config.set(section, option_key, option_value)

@@ -28,7 +28,7 @@ class CodeGenerator(object):
         super().__init__()
         self.table_dict = table_dict
 
-    def controller_codegen(self, controller_dir, logical_delete_mark):
+    def controller_codegen(self, controller_dir):
         codes = {}
         # get table dict
         table_dict = self.table_dict
@@ -60,7 +60,7 @@ class CodeGenerator(object):
             for column in table['columns'].values():
                 if column['name'] == primary_key:
                     continue
-                if column['name'] == 'IsDelete':
+                if column['name'] == table['logical_delete_mark']:
                     continue
 
                 # the column do not encrypt
@@ -100,7 +100,7 @@ class CodeGenerator(object):
                 elif column['name'] == table['business_key'].get('column'):
                     # 当前字段是业务主键，跳过
                     continue
-                elif column['name'] == 'IsDelete':
+                elif column['name'] == table['logical_delete_mark']:
                     # 当前字段是删除标识位，跳过
                     continue
                 else:
@@ -127,7 +127,7 @@ class CodeGenerator(object):
                 get_filter_list=get_filter_list if get_filter_list else 'pass',
                 model_lower=table['table_name'],
                 get_filter_list_logic=CodeBlockTemplate.get_filer_list_logic.format(
-                    logical_delete_mark=logical_delete_mark
+                    logical_delete_mark=table['logical_delete_mark']
                 ) if table['is_logic_delete'] else ''
             )
 
@@ -137,7 +137,7 @@ class CodeGenerator(object):
                 delete = FileTemplate.delete_template_logic.format(
                     primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
                     delete_filter_list=get_filter_list if get_filter_list else 'pass',
-                    logical_delete_mark=logical_delete_mark
+                    logical_delete_mark=table['logical_delete_mark']
                 )
             else:
                 # physical delete
@@ -164,7 +164,7 @@ class CodeGenerator(object):
                 update = FileTemplate.update_template_logic.format(
                     primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
                     rsa_update=rsa_update,
-                    logical_delete_mark=logical_delete_mark
+                    logical_delete_mark=table['logical_delete_mark']
                 )
 
             # combine add_list
@@ -173,7 +173,7 @@ class CodeGenerator(object):
             for column in table['columns'].values():
                 if column['name'] == primary_key:
                     continue
-                if column['name'] == 'IsDelete':
+                if column['name'] == table['logical_delete_mark']:
                     continue
 
                 # the column do not encrypt

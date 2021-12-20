@@ -14,7 +14,7 @@
 
 import os
 
-from codegen import project_dir, table_dict
+from codegen import project_dir, api_version
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
 from config.setting import Settings
@@ -29,12 +29,12 @@ class CodeGenerator(object):
         self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object', 'float': 'float'}
 
     # resource layer generation
-    def resource_generator(self, api_dir, app_dir):
+    def resource_generator(self, api_dir, app_dir, table_dict):
 
         try:
             self.manage_codegen(table_dict)
             # api_init generation
-            with open(api_init := os.path.join(api_dir, '__init__.py'), 'w', encoding='utf8') as f:
+            with open(os.path.join(api_dir, '__init__.py'), 'w', encoding='utf8') as f:
                 f.write('#!/usr/bin/env python \n# -*- coding:utf-8 -*-')
 
             # app generation
@@ -47,10 +47,10 @@ class CodeGenerator(object):
             with open(os.path.join(apiVersion_dir, '__init__.py'), 'w', encoding='utf8') as f:
                 f.write(FileTemplate.api_version_init)
             with open(os.path.join(apiVersion_dir, 'urls.py'), 'w', encoding='utf8') as f:
-                f.write(FileTemplate.api_version_urls.format(apiversion=Settings.API_VERSION))
+                f.write(FileTemplate.api_version_urls.format(apiversion=api_version))
             with open(os.path.join(apiVersion_dir, 'apiVersionResource.py'), 'w', encoding='utf8') as f:
                 f.write(FileTemplate.api_version_resource.format(
-                    apiversion=Settings.API_VERSION.replace('_', '.')))
+                    apiversion=api_version.replace('_', '.')))
             os.makedirs(apiVersion_ymls_dir := os.path.join(apiVersion_dir, 'ymls'), exist_ok=True)
             with open(os.path.join(apiVersion_ymls_dir, 'apiversion_get.yml'), 'w', encoding='utf8') as f:
                 f.write(FileTemplate.yml_get_template.format('apiversion', ''))
@@ -125,7 +125,7 @@ class CodeGenerator(object):
             className_str = api_name[0].upper() + api_name[1:]
 
             # template  generation
-            import_str = CodeBlockTemplate.urls_imports.format(api_name.lower(), Settings.API_VERSION, api_name,
+            import_str = CodeBlockTemplate.urls_imports.format(api_name.lower(), api_version, api_name,
                                                                className_str)
 
             api_str = CodeBlockTemplate.urls_api.format(api_name.lower())
@@ -141,10 +141,8 @@ class CodeGenerator(object):
 
             # other_resource_str = CodeBlockTemplate.urls_other_resource.format(className_str, api_name)
 
-            service_resource_str = CodeBlockTemplate.urls_service_resource.format(api_name.lower(), api_name,
-                                                                                  className_str)
             return FileTemplate.urls.format(
-                imports=import_str, api=api_str, resource=resource_str, serviceResource=service_resource_str)
+                imports=import_str, api=api_str, resource=resource_str)
 
         except Exception as e:
             loggings.exception(1, e)
@@ -175,10 +173,6 @@ class CodeGenerator(object):
                     continue
                 elif column.get('name') == table.get('business_key').get('column'):
                     continue
-                    # parameter_put += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
-                    #                                                               column.get('type'))
-                    # parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
-                    #                                                                          column.get('type'))
                 else:
                     parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
                                                                                    column.get('type'))
@@ -246,13 +240,13 @@ class CodeGenerator(object):
         try:
             # app_init
             blueprint_register_str = '''from api_{0}.apiVersionResource import apiversion_blueprint
-    app.register_blueprint(apiversion_blueprint, url_prefix="/api_{0}")\n'''.format(Settings.API_VERSION)
+    app.register_blueprint(apiversion_blueprint, url_prefix="/api_{0}")\n'''.format(api_version)
 
             for table in tables:
                 table_name = str_format_convert(tables[str(table)].get('table_name'))
                 blueprint_name = table_name.lower()
                 blueprint_register_str += CodeBlockTemplate.app_init_blueprint.format(
-                    table_name, Settings.API_VERSION, blueprint_name,
+                    table_name, api_version, blueprint_name,
                 )
 
             # print(blueprint_register_str)
@@ -279,10 +273,8 @@ class CodeGenerator(object):
         permission.append('flasgger.apispec_1')
         permission.append('flasgger.<lambda>')
 
-        # new_file_or_dir(2, project_dir)
         os.makedirs(project_dir, exist_ok=True)
-        manage_file = os.path.join(project_dir, 'manage.py')
-        with open(manage_file, 'w', encoding='utf8') as f:
+        with open(os.path.join(project_dir, 'manage.py'), 'w', encoding='utf8') as f:
             f.write(FileTemplate.manage.format(permission=permission))
 
     # yml generation

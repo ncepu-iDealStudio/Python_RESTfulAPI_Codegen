@@ -23,3 +23,24 @@ target_dir = Settings.TARGET_DIR
 
 # 代码版本
 api_version = Settings.API_VERSION
+
+# 数据库方言
+dialect = Settings.DIALECT
+
+# 数据库驱动
+driver = Settings.DRIVER
+
+# 数据库登录用户名
+username = Settings.USERNAME
+
+# 数据库登录密码
+password = Settings.PASSWORD
+
+# 数据库ip地址
+host = Settings.HOST
+
+# 数据库端口
+port = Settings.PORT
+
+# 数据库
+database = Settings.DATABASE

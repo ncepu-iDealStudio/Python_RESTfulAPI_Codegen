@@ -33,6 +33,7 @@ def start(table_config):
             三、 生成Service层代码
             四、 生成Resource层代码
             五、 打包静态文件
+            六、 生成test层代码
     """
     # 参数初始化
     url = model_url
@@ -69,9 +70,9 @@ def start(table_config):
     codegen.staticcodegen.main.main()
     loggings.info(1, "Static resource packaging is complete")
 
-    loggings.info(1, "Api project code generation completed")
-
     # 第六步
     loggings.info(1, "Start to build the Test layer code, please wait...")
     codegen.testcodegen.main.main(table_dict)
     loggings.info(1, "Test layer code build completed")
+
+    loggings.info(1, "Api project code generation completed")
