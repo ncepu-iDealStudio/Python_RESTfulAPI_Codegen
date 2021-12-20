@@ -73,5 +73,5 @@ def start(table_config):
 
     # 第六步
     loggings.info(1, "Start to build the Test layer code, please wait...")
-    codegen.testcodegen.main.main()
+    codegen.testcodegen.main.main(table_dict)
     loggings.info(1, "Test layer code build completed")
