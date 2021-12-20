@@ -269,8 +269,7 @@
                     let aTag = document.createElement('a');
                     const content = JSON.stringify(tables_data);
                     let blob = new Blob([content]);
-                    let timestamp = new Date().getTime();
-                    aTag.download = "table_config_" + timestamp + ".json ";
+                    aTag.download = "table_config_" + timestamp + ".json";
                     aTag.href = URL.createObjectURL(blob);
                     aTag.click();
                     URL.revokeObjectURL(blob);
