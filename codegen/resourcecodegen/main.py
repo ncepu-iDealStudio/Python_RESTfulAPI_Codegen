@@ -13,8 +13,8 @@
 # file write
 import os
 
+from codegen import project_dir, api_version
 from codegen.resourcecodegen.codegenerator import CodeGenerator
-from config.setting import Settings
 from utils.loggings import loggings
 
 
@@ -29,11 +29,12 @@ def main(table_dict):
             return
 
         # Get target directory
-        os.makedirs(api_dir := os.path.join(Settings.PROJECT_DIR, 'api_' + Settings.API_VERSION), exist_ok=True)
-        os.makedirs(app_dir := os.path.join(Settings.PROJECT_DIR, 'app'), exist_ok=True)
+        os.makedirs(api_dir := os.path.join(project_dir, 'api_' + api_version), exist_ok=True)
+        os.makedirs(app_dir := os.path.join(project_dir, 'app'), exist_ok=True)
 
         generator = CodeGenerator()
-        generator.resource_generator(api_dir, app_dir)
+        generator.resource_generator(api_dir, app_dir, table_dict)
+        print(1)
 
     except Exception as e:
         loggings.error(1, str(e))
