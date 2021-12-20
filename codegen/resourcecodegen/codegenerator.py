@@ -31,9 +31,6 @@ class CodeGenerator(object):
     # resource layer generation
     def resource_generator(self, api_dir, app_dir):
 
-        # reload settings
-        Settings.reload()
-
         try:
             self.manage_codegen(table_dict)
             # api_init generation

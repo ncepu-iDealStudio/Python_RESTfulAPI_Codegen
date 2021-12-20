@@ -8,7 +8,6 @@
 
 import os
 
-from codegen import codegen_layer, table_dict
 from codegen.testcodegen.codegenerator import CodeGenerator
 from .template.filetemplate import FileTemplate
 from config.setting import Settings
@@ -16,17 +15,13 @@ from utils.common import new_file_or_dir, file_write
 from utils.loggings import loggings
 
 
-def main():
+def main(table_dict):
     """
     Generate resource layer code
     :return: None
     """
 
     try:
-        #  It returns directly if the code generation level is not the 'default' or 'resource'
-        if codegen_layer not in ['default', 'resource']:
-            return
-
         if not list(table_dict.keys()):
             return
 
