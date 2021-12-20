@@ -151,22 +151,7 @@ class {className}Resource(Resource):
 
 
 class {className}OtherResource(Resource):
-
-    # join table query
-    @classmethod
-    def joint_query(cls):
-        parser = reqparse.RequestParser()
-        {queryParameter}
-        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
-        parser.add_argument('Size', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
-        
-        try:
-            kwargs = parser.parse_args()
-            kwargs = commons.put_remove_none(**kwargs)
-        except Exception as e:
-            loggings.exception(1, e)
-            return jsonify(code=RET.PARAMERR, message="参数类型不正确或缺失", error="参数类型不正确或缺失")
-        {getServiceInvoke}
+    pass
 """
 
     app_init = """#!/usr/bin/env python
