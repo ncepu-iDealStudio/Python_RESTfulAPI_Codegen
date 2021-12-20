@@ -10,9 +10,9 @@ import os
 
 from codegen.testcodegen.codegenerator import CodeGenerator
 from .template.filetemplate import FileTemplate
-from config.setting import Settings
-from utils.common import new_file_or_dir, file_write
+from utils.common import file_write
 from utils.loggings import loggings
+from codegen import project_dir, target_dir
 
 
 def main(table_dict):
@@ -26,10 +26,11 @@ def main(table_dict):
             return
 
         # Get target directory
-        new_file_or_dir(2, Settings.TARGET_DIR)
-        new_file_or_dir(2, Settings.PROJECT_DIR)
-        test_dir = os.path.join(Settings.PROJECT_DIR, 'test')
-        new_file_or_dir(2, test_dir)
+        os.makedirs(target_dir)
+        os.makedirs(project_dir)
+
+        test_dir = os.path.join(project_dir, 'test')
+        os.makedirs(test_dir)
 
         # test init file generation
         test_init_dir = os.path.join(test_dir, '__init__.py')
@@ -44,10 +45,11 @@ def main(table_dict):
 
         # report dir generation
         report_dir = os.path.join(test_dir, 'report')
-        new_file_or_dir(2, report_dir)
+        os.makedirs(report_dir)
 
         generator = CodeGenerator()
-        generator.test_generator(test_dir)
+        generator.test_generator(test_dir, table_dict)
+
 
     except Exception as e:
         loggings.error(1, str(e))
