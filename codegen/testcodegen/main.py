@@ -26,11 +26,11 @@ def main(table_dict):
             return
 
         # Get target directory
-        os.makedirs(target_dir)
-        os.makedirs(project_dir)
+        os.makedirs(target_dir, exist_ok=True)
+        os.makedirs(project_dir, exist_ok=True)
 
         test_dir = os.path.join(project_dir, 'test')
-        os.makedirs(test_dir)
+        os.makedirs(test_dir, exist_ok=True)
 
         # test init file generation
         test_init_dir = os.path.join(test_dir, '__init__.py')
@@ -45,7 +45,7 @@ def main(table_dict):
 
         # report dir generation
         report_dir = os.path.join(test_dir, 'report')
-        os.makedirs(report_dir)
+        os.makedirs(report_dir, exist_ok=True)
 
         generator = CodeGenerator()
         generator.test_generator(test_dir, table_dict)
