@@ -52,10 +52,10 @@ class RSAEncryptionDecryption(object):
         try:
             # 将密文解密成明文，返回的是一个bytes类型数据，需要自己转换成str
             text = cipher.decrypt(base64.b64decode(cipher_text), "ERROR").decode("utf-8")
-        except Exception as e:
-            loggings.error(e)
-            return None
+            return text
 
-        return text
+        except Exception as e:
+            loggings.exception(1, e)
+            return None
 
 
