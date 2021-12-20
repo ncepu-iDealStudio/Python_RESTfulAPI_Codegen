@@ -12,7 +12,6 @@
 import os
 
 from codegen import project_dir
-from config.setting import Settings
 from .codegenerator import CodeGenerator
 
 
@@ -30,7 +29,6 @@ def main(table_dict):
 
     generator = CodeGenerator(table_dict)
     generator.controller_codegen(
-        controller_dir=controller_dir,
-        logical_delete_mark=Settings.LOGICAL_DELETE_MARK
+        controller_dir=controller_dir
     )
     return
