@@ -167,8 +167,10 @@
         <div class="container_footer">
             <el-row>
                 <el-col :offset="4" :span="16">
-                    <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
-                    <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
+                    <div style="margin:0 20px;">
+                        <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
+                        <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
+                    </div>
                 </el-col>
             </el-row>
         </div>

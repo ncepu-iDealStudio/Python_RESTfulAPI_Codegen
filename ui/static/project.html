@@ -58,11 +58,22 @@
         <div class="container_footer">
             <el-row>
                 <el-col :offset="4" :span="16">
-                    <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
-                    <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">开始生成</el-button>
+                    <div style="margin:0 20px;">
+                        <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
+                        <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="showtips">开始生成</el-button>
+                    </div>
                 </el-col>
             </el-row>
         </div>
+        <el-dialog v-model="dialogVisible" title="是否将配置文件导出" width="30%" :before-close="nextStep">
+            导出的配置文件可以。。。。。
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="nextStep">取消</el-button>
+                    <el-button type="primary" @click="">导出</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </body>
 
@@ -102,6 +113,7 @@
                         }],
                     },
                     nextStep_loading: false,
+                    dialogVisible: false,
                 });
 
                 const back = () => {
@@ -109,6 +121,14 @@
                 }
 
                 const ruleForm = ref(null);
+
+                const showtips = () => {
+                    ruleForm.value.validate((valid) => {
+                        if (valid) {
+                            state.dialogVisible = true;
+                        }
+                    })
+                }
 
                 const nextStep = () => {
                     ruleForm.value.validate((valid) => {
@@ -146,6 +166,7 @@
                     nextStep,
                     ruleForm,
                     back,
+                    showtips,
                 };
             },
         }
