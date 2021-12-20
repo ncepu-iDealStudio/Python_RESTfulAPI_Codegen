@@ -65,12 +65,12 @@
                 </el-col>
             </el-row>
         </div>
-        <el-dialog v-model="dialogVisible" title="是否将配置文件导出" width="30%" :before-close="nextStep">
-            导出的配置文件可以。。。。。
+        <el-dialog v-model="dialogVisible" title="是否将配置文件导出?" width="30%">
+            导出的配置文件可以在数据表准备阶段导入
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="nextStep">取消</el-button>
-                    <el-button type="primary" @click="">导出</el-button>
+                    <el-button @click="nextStep">直接生成</el-button>
+                    <el-button type="primary" @click="exportfile">导出配置</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -114,6 +114,7 @@
                     },
                     nextStep_loading: false,
                     dialogVisible: false,
+                    tables: [],
                 });
 
                 const back = () => {
@@ -125,7 +126,18 @@
                 const showtips = () => {
                     ruleForm.value.validate((valid) => {
                         if (valid) {
-                            state.dialogVisible = true;
+                            // 判断是否有勾选表
+                            let tables_data = [];
+                            for (let i = 0; i < state.tables.length; i++) {
+                                if (state.tables[i].issave) {
+                                    tables_data.push(state.tables[i])
+                                }
+                            }
+                            if (tables_data.length != 0) {
+                                state.dialogVisible = true;
+                            } else {
+                                nextStep();
+                            }
                         }
                     })
                 }
@@ -154,7 +166,34 @@
                     })
                 }
 
+                // 导出文件
+                const exportfile = () => {
+                    let tables_data = [];
+                    for (let i = 0; i < state.tables.length; i++) {
+                        if (state.tables[i].issave) {
+                            tables_data.push(state.tables[i])
+                        }
+                    }
+                    let aTag = document.createElement('a');
+                    const content = JSON.stringify(tables_data);
+                    let blob = new Blob([content]);
+                    aTag.download = "table_config" + ".json";
+                    aTag.href = URL.createObjectURL(blob);
+                    aTag.click();
+                    URL.revokeObjectURL(blob);
+                    nextStep();
+                }
+
                 onMounted(() => {
+                    let data_tables = JSON.parse(localStorage.getItem("tables"));
+                    if (!data_tables) {
+                        ElMessage.warning('请重新连接数据库')
+                        setTimeout(() => {
+                            location.replace('/')
+                        }, 1000)
+                    }
+                    state.tables = data_tables;
+
                     let data = JSON.parse(localStorage.getItem("project_info"));
                     if (data) {
                         state.Form = data
@@ -167,6 +206,7 @@
                     ruleForm,
                     back,
                     showtips,
+                    exportfile,
                 };
             },
         }

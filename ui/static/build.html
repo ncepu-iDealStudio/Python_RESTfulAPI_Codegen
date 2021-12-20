@@ -39,10 +39,14 @@
                             <div v-if="loading">生成中...</div>
                             <div v-else>已完成</div>
                         </template>
+                        <div v-if="!loading" style="margin-bottom: 10px;">目标代码请在。。。查看</div>
                         <el-progress :percentage="100" :indeterminate="loading" :duration="3" :show-text="false" />
                     </el-card>
+
                     <el-card>
-                        <pre>{{log_info}}</pre>
+                        <el-scrollbar style="height: calc(100vh - 300px);">
+                            <pre>{{log_info}}</pre>
+                        </el-scrollbar>
                     </el-card>
                 </el-card>
             </el-col>

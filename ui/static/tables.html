@@ -271,7 +271,7 @@
                     let aTag = document.createElement('a');
                     const content = JSON.stringify(tables_data);
                     let blob = new Blob([content]);
-                    aTag.download = "table_config_" + timestamp + ".json";
+                    aTag.download = "table_config" + ".json";
                     aTag.href = URL.createObjectURL(blob);
                     aTag.click();
                     URL.revokeObjectURL(blob);
@@ -371,6 +371,8 @@
                                 duration: 0,
                             })
                         }
+                        // 清空导入的文件，使其可以反复导入同一文件
+                        input.value = '';
                     } catch (err) {
                         ElMessage.error('导入失败')
                     }
