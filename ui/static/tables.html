@@ -30,7 +30,7 @@
                             </a>
                         </el-tooltip>
                         <el-tooltip placement="top">
-                            <template #content>导出已经勾选表的配置文件</template>
+                            <template #content>导出配置文件</template>
                             <div style="float: right;margin-right: 20px;">
                                 <div @click="exportfile" class="iconfont icon-shangchuandaochu"></div>
                             </div>
@@ -60,10 +60,23 @@
                     </el-col>
                     <el-col :span="12">
                         <el-card shadow="never">
-                            <el-card shadow="never" v-if="activeIndex===-1">
-                                <template #header>数据表准备</template>
-                                <p>请选择用于生成代码的数据表，并为每张表进行相应的配置</p>
-                            </el-card>
+                            <div v-if="activeIndex===-1">
+                                <el-card shadow="never">
+                                    <template #header>数据表准备</template>
+                                    <p>请选择用于生成代码的数据表，并为每张表进行相应的配置</p>
+                                </el-card>
+                                <div v-if="invalid_primary_key!='' && invalid_keyword!=''">
+                                    <el-divider style="margin-top: 0;"></el-divider>
+                                    <el-card style="color: orange;">
+                                        <div>Warning!</div>
+                                        <div>以下表不符合规范，已被过滤</div>
+                                        <div>缺少自增主键：</div>
+                                        <div>{{invalid_primary_key}}</div>
+                                        <div>存在表名或字段名与python关键字冲突：</div>
+                                        <div>{{invalid_keyword}}</div>
+                                    </el-card>
+                                </div>
+                            </div>
                             <el-card shadow="never" v-else>
                                 <template #header>
                             {{tables[activeIndex].table}}
@@ -174,6 +187,8 @@
                 nextStep_loading: false,
                 checkAll: false,
                 isIndeterminate: false,
+                invalid_primary_key: "",
+                invalid_keyword: "",
             });
             const handleSelect = (key, keyPath) => {
                 state.activeIndex = key;
@@ -197,7 +212,6 @@
 
             const nextStep = () => {
                 state.nextStep_loading = true;
-                ElMessage.success(res.message)
                 localStorage.setItem("tables", JSON.stringify(state.tables));
                 location.href = 'tables_info';
                 state.nextStep_loading = false;
@@ -368,18 +382,8 @@
                 // 显示不符合规范的表
                 let invalid = JSON.parse(localStorage.getItem("invalid"));
                 if (!invalid) return
-                const primary_key = invalid.primary_key.toString();
-                const keyword = invalid.keyword.toString();
-
-                if (primary_key && keyword) {
-                    ElMessage({
-                        showClose: true,
-                        dangerouslyUseHTMLString: true,
-                        message: "<div style='line-height: 18px;'>" + primary_key + "<br/>" + "缺少自增主键" + "<br/>" + keyword + "<br/>" + "存在表名或字段名与python关键字冲突已被过滤" + "</div>",
-                        type: 'warning',
-                        duration: 0,
-                    })
-                }
+                state.invalid_primary_key = invalid.primary_key.toString();
+                state.invalid_keyword = invalid.keyword.toString();
                 localStorage.removeItem("invalid")
             });
             return {

@@ -123,9 +123,9 @@ def setproject():
     conf = configparser.ConfigParser()  # 实例类
     conf.read(configfile, encoding='UTF-8')  # 读取配置文件
 
-    conf.set("PARAMETER", "TARGET_DIR", projectPath)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
-    conf.set("PARAMETER", "PROJECT_NAME", projectName)
-    conf.set("PARAMETER", "API_VERSION", interfaceVersion)
+    conf.set("PARAMETER", "target_dir", projectPath)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
+    conf.set("PARAMETER", "project_name", projectName)
+    conf.set("PARAMETER", "api_version", interfaceVersion)
     with open(configfile, "w") as f:
         conf.write(f)
     return {'code': '2000', 'data': [], 'message': '写入配置成功'}
