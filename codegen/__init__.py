@@ -12,8 +12,14 @@
 
 from config.setting import Settings
 
+# 数据库url
+model_url = Settings.MODEL_URL
+
 # 项目路径
 project_dir = Settings.PROJECT_DIR
 
 # 目标项目路径
 target_dir = Settings.TARGET_DIR
+
+# 代码版本
+api_version = Settings.API_VERSION
