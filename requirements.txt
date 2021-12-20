@@ -1,7 +1,6 @@
 Flask==2.0.1
 SQLAlchemy==1.4.23
 loguru==0.5.3
-mysqlclient==2.1.0
 PyMySQL==1.0.2
 SQLAlchemy==1.4.23
 sqlacodegen==3.0.0b2
