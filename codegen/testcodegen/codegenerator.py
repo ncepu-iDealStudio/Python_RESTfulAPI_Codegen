@@ -10,10 +10,9 @@
 
 import os
 
-# from codegen import table_dict
+
 from codegen.testcodegen.template.filetemplate import FileTemplate
-# from config.setting import Settings
-from utils.common import str_format_convert, new_file_or_dir, file_write
+from utils.common import str_format_convert
 from utils.loggings import loggings
 
 
