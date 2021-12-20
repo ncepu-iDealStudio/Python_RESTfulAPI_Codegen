@@ -39,6 +39,7 @@ def start(table_config):
     engine = create_engine(url)
     metadata = MetaData(engine)
     table_config = json.loads(table_config)
+    # table_config = json.loads(table_config)
 
     metadata.reflect(engine, only=[table['table'] for table in table_config])
 
