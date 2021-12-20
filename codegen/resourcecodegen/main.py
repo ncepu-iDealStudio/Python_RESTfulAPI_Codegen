@@ -13,23 +13,18 @@
 # file write
 import os
 
-from codegen import codegen_layer, table_dict
 from codegen.resourcecodegen.codegenerator import CodeGenerator
 from config.setting import Settings
 from utils.loggings import loggings
 
 
-def main():
+def main(table_dict):
     """
     Generate resource layer code
     :return: None
     """
 
     try:
-        #  It returns directly if the code generation level is not the 'default' or 'resource'
-        if codegen_layer not in ['default', 'resource']:
-            return
-
         if not list(table_dict.keys()):
             return
 

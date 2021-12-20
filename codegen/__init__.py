@@ -10,25 +10,10 @@
     load public settings and Initialize the parameters
 """
 
-from sqlalchemy import create_engine, MetaData
-
 from config.setting import Settings
-from utils.checkTable import CheckTable
 
-url = Settings.MODEL_URL
-engine = create_engine(url)
-metadata = MetaData(engine)
-
-metadata.reflect(engine, only=Settings.MODEL_TABLES if Settings.MODEL_TABLES else None)
-
-# 代码生成的层次
-codegen_layer = 'default'
-
-# 数据库模式
-schema = Settings.MODEL_SCHEMA
-
-# 无视图
-noviews = Settings.MODEL_NOVIEWS
+# 数据库url
+model_url = Settings.MODEL_URL
 
 # 项目路径
 project_dir = Settings.PROJECT_DIR
@@ -36,6 +21,5 @@ project_dir = Settings.PROJECT_DIR
 # 目标项目路径
 target_dir = Settings.TARGET_DIR
 
-# 数据表信息字典
-table_dict = CheckTable.main(metadata)
-
+# 代码版本
+api_version = Settings.API_VERSION

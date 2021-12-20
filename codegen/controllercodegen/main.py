@@ -11,12 +11,12 @@
 """
 import os
 
-from codegen import table_dict, project_dir
+from codegen import project_dir
 from config.setting import Settings
 from .codegenerator import CodeGenerator
 
 
-def main():
+def main(table_dict):
     """
     Generate Controller code
     :return: None

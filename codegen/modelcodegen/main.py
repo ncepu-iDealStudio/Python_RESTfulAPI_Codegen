@@ -12,21 +12,18 @@
 
 import os
 
-from codegen import project_dir, table_dict
+from codegen import project_dir
 from config.setting import Settings
 from utils.common import str_format_convert
 from utils.loggings import loggings
 from . import cmd
 
 
-def main():
+def main(table_dict):
     """
     model层代码的生成
     :return: None
     """
-
-    # 配置重载
-    Settings.reload()
 
     try:
 

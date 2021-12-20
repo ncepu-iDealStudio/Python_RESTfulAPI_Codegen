@@ -10,11 +10,13 @@
     this is function description
 """
 
-import json
-from flask import Flask, request
 import configparser
+import json
+
+import pymysql
+from flask import Flask, request
+
 from utils.checkSqlLink import check_sql_link, connection_check
-import MySQLdb
 
 app = Flask(__name__, static_folder="../static")
 
@@ -49,7 +51,7 @@ def build():
 def getdbname():
     try:
         kwargs = json.loads(request.data)
-        conn = MySQLdb.connect(
+        conn = pymysql.connect(
             host=kwargs['Host'],
             user=kwargs['Username'],
             passwd=kwargs['Password'],
