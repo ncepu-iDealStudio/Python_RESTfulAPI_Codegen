@@ -66,9 +66,18 @@
                     log_info: "",
                 });
                 onMounted(() => {
+                    let data = JSON.parse(localStorage.getItem("tables"));
+                    if (!data) {
+                        ElMessage.warning('请重新连接数据库')
+                        setTimeout(() => {
+                            location.replace('/')
+                        }, 1000)
+                    }
+
                     axios({
                         method: 'POST',
                         url: 'http://127.0.0.1:5000/startbuild',
+                        data: data
                     }).then(result => {
                         const res = result.data
                         if (res.code === '2000') {
