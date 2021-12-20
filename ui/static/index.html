@@ -191,6 +191,13 @@
                     const res = result.data;
                     if (res.code === '2000') {
                         state.dbname_list = res.data;
+                    } else {
+                        ElMessage({
+                            showClose: true,
+                            message: res.message,
+                            type: 'error',
+                            duration: 0,
+                        })
                     }
                 })
             }

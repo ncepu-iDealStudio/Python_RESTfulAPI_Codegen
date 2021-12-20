@@ -105,7 +105,7 @@
                 });
 
                 const back = () => {
-                    history.back();
+                    location.replace('tables_info')
                 }
 
                 const ruleForm = ref(null);
@@ -123,7 +123,7 @@
                                 if (res.code === '2000') {
                                     ElMessage.success(res.message)
                                     localStorage.setItem("project_info", JSON.stringify(state.Form));
-                                    location.href = 'build';
+                                    location.replace('build')
                                     state.nextStep_loading = false;
                                 } else {
                                     ElMessage.error(res.message)

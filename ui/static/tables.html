@@ -67,13 +67,20 @@
                                 </el-card>
                                 <div v-if="invalid_primary_key!='' && invalid_keyword!=''">
                                     <el-divider style="margin-top: 0;"></el-divider>
-                                    <el-card style="color: orange;">
-                                        <div>Warning!</div>
-                                        <div>以下表不符合规范，已被过滤</div>
-                                        <div>缺少自增主键：</div>
-                                        <div>{{invalid_primary_key}}</div>
-                                        <div>存在表名或字段名与python关键字冲突：</div>
-                                        <div>{{invalid_keyword}}</div>
+                                    <el-card shadow="never" style="color: #e6a23c;background-color: #fdf6ec;border: 1px solid #faecd8;">
+                                        <el-row>
+                                            <el-col :span="1">
+                                                <span class="iconfont icon-jinggao"></span>
+                                            </el-col>
+                                            <el-col :span="23">
+                                                <div>以下表不符合规范，已被过滤</div>
+                                                <div> 缺少自增主键：</div>
+                                                <div> {{invalid_primary_key}}</div>
+                                                <div>存在表名或字段名与python关键字冲突：</div>
+                                                <div>{{invalid_keyword}}</div>
+                                            </el-col>
+                                        </el-row>
+
                                     </el-card>
                                 </div>
                             </div>
@@ -213,7 +220,7 @@
             const nextStep = () => {
                 state.nextStep_loading = true;
                 localStorage.setItem("tables", JSON.stringify(state.tables));
-                location.href = 'tables_info';
+                location.replace('tables_info')
                 state.nextStep_loading = false;
             }
 
@@ -384,7 +391,6 @@
                 if (!invalid) return
                 state.invalid_primary_key = invalid.primary_key.toString();
                 state.invalid_keyword = invalid.keyword.toString();
-                localStorage.removeItem("invalid")
             });
             return {
                 ...toRefs(state),

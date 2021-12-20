@@ -58,7 +58,7 @@ def getdbname():
         cur = conn.cursor()
         cur.execute('SHOW DATABASES')
     except Exception as e:
-        return {'code': '4000', 'data': [], 'message': e}
+        return {'code': '4000', 'data': [], 'message': str(e)}
     return {'code': '2000', 'data': cur.fetchall(), 'message': '数据库连接成功'}
 
 

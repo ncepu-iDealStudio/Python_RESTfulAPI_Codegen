@@ -1,7 +1,7 @@
 @font-face {
     font-family: "iconfont";
     /* Project id 2835282 */
-    src: url('iconfont.woff2?t=1639822844891') format('woff2'), url('iconfont.woff?t=1639822844891') format('woff'), url('iconfont.ttf?t=1639822844891') format('truetype');
+    src: url('iconfont.woff2?t=1639965688864') format('woff2'), url('iconfont.woff?t=1639965688864') format('woff'), url('iconfont.ttf?t=1639965688864') format('truetype');
 }
 
 .iconfont {
@@ -12,17 +12,8 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-shangyibu:before {
-    content: "\e620";
-}
-
-.icon-xiayibu:before {
-    content: "\e604";
-}
-
-.icon-shangyibu2:before {
-    content: "\e621";
-    font-size: 20px;
+.icon-jinggao:before {
+    content: "\e64f";
 }
 
 .icon-shangchuandaochu:before {
