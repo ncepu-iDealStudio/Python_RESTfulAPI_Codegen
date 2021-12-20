@@ -9,35 +9,40 @@
 """
     this is function description
 """
+import json
+
 from sqlalchemy import create_engine, MetaData
 
+import codegen.controllercodegen.main
+import codegen.modelcodegen.main
+import codegen.resourcecodegen.main
 import codegen.servicecodegen.main
 import codegen.staticcodegen.main
-import codegen.controllercodegen.main
-import codegen.resourcecodegen.main
-import codegen.modelcodegen.main
 import codegen.testcodegen.main
-from config.setting import Settings
-
+from codegen import model_url
 from utils.loggings import loggings
 from utils.tablesMetadata import TableMetadata
 
 
-def start(a):
+def start(table_config):
     """
         步骤：
+            零、 获取新的table_dict的值
             一、 生成Model层代码
             二、 生成Controller层代码
             三、 生成Service层代码
             四、 生成Resource层代码
             五、 打包静态文件
     """
-    url = Settings.MODEL_URL
+    # 参数初始化
+    url = model_url
     engine = create_engine(url)
     metadata = MetaData(engine)
-    metadata.reflect(engine, only=Settings.MODEL_TABLES if Settings.MODEL_TABLES else None)
+    table_config = json.loads(table_config)
 
-    table_dict = TableMetadata.get_tables_metadata(metadata, a)
+    metadata.reflect(engine, only=[table['table'] for table in table_config])
+
+    table_dict = TableMetadata.get_tables_metadata(metadata, table_config)
 
     # 第一步
     loggings.info(1, "Start to build the Model layer code, please wait...")

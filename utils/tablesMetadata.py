@@ -21,7 +21,7 @@ class TableMetadata(object):
 
     @classmethod
     def get_tables_metadata(cls, metadata, table_config=DEFAULT_CONFIG):
-        table_config = json.loads(table_config)
+        table_config = table_config if isinstance(table_config, list) else json.loads(table_config)
 
         # Get all tables object
         table_objs = metadata.tables.values()
