@@ -13,38 +13,44 @@
 
 # 连字符转驼峰
 def str_format_convert(string):
-    neo_string = ''
-    for i in string.split('_'):
-        if neo_string:
-            neo_string += i.lower().capitalize()
+    new_string = ''
+    for word in string.split('_'):
+        if new_string:
+            new_string += word.lower().capitalize()
         else:
-            neo_string = i
-    return neo_string
+            new_string = word
+    return new_string
 
 
-# 转全小写
+# 字符串转全小写
 def str_to_all_small(string):
-    neo_string = string.replace('_', '').lower()
+    new_string = string.replace('_', '').lower()
 
-    return neo_string
+    return new_string
 
 
-# 转小驼峰
-def str_to_small_hump(string):
-    neo_string = ''
-    for i in string.split('_'):
-        if neo_string:
-            neo_string += i.capitalize()
+# 字符串转小驼峰
+def str_to_little_camel_case(string):
+    new_string = ''
+    for word in string.split('_'):
+        if new_string:
+            new_string += word[0].upper() + word[1:]
         else:
-            neo_string = i
+            new_string = word
 
-    return neo_string
+    return new_string
 
 
-# 转大驼峰
-def str_to_big_hump(string):
-    neo_string = ''
-    for i in string.split('_'):
-        neo_string += i.capitalize()
+# 字符串转大驼峰
+def str_to_big_camel_case(string):
+    new_string = ''
+    for word in string.split('_'):
+        new_string += word[0].upper() + word[1:]
 
-    return neo_string
+    return new_string
+
+
+if __name__ == '__main__':
+    ll = ['user_info', 'userInfo', 'userinfo']
+    for l in ll:
+        print(l, '->', str_to_little_camel_case(l))

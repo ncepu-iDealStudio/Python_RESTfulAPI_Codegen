@@ -17,7 +17,7 @@ import os
 from codegen import project_dir, api_version
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
-from utils.common import str_to_all_small, str_to_small_hump, str_to_big_hump
+from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
 from utils.loggings import loggings
 
 
@@ -58,7 +58,7 @@ class CodeGenerator(object):
 
             # file generation
             for table in table_dict.keys():
-                table_name_small_hump = str_to_small_hump(table_dict[table].get('table_name'))
+                table_name_small_hump = str_to_little_camel_case(table_dict[table].get('table_name'))
                 os.makedirs(resource_dir := os.path.join(api_dir, '{0}Resource'.format(table_name_small_hump)), exist_ok=True)
 
                 # init generation
@@ -98,7 +98,7 @@ class CodeGenerator(object):
     def init_codegen(self, table):
         try:
             # remove underline
-            table_name_small_hump = str_to_small_hump(table.get('table_name'))
+            table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
             blueprint_name = table_name_small_hump
 
             # template generation
@@ -114,8 +114,8 @@ class CodeGenerator(object):
         try:
             # remove underline
             table_name_all_small = str_to_all_small(table.get('table_name'))
-            table_name_small_hump = str_to_small_hump(table.get('table_name'))
-            table_name_big_hump = str_to_big_hump(table.get('table_name'))
+            table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
+            table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
             # api_name = table_name_small_hump
             # className_str = api_name[0].upper() + api_name[1:]
 
@@ -147,8 +147,8 @@ class CodeGenerator(object):
     def resource_codegen(self, table):
         try:
             table_name_all_small = str_to_all_small(table.get('table_name'))
-            table_name_small_hump = str_to_small_hump(table.get('table_name'))
-            table_name_big_hump = str_to_big_hump(table.get('table_name'))
+            table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
+            table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
 
             # remove underline
             # api_name = table_name_small_hump
@@ -205,8 +205,8 @@ class CodeGenerator(object):
     def other_resource_codegen(self, table):
         try:
             table_name_all_small = str_to_all_small(table.get('table_name'))
-            table_name_small_hump = str_to_small_hump(table.get('table_name'))
-            table_name_big_hump = str_to_big_hump(table.get('table_name'))
+            table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
+            table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
 
             # remove underline
             # api_name = table_name_small_hump
@@ -233,8 +233,8 @@ class CodeGenerator(object):
 
             for table in tables:
                 table_name_all_small = str_to_all_small(table.get('table_name'))
-                table_name_small_hump = str_to_small_hump(table.get('table_name'))
-                table_name_big_hump = str_to_big_hump(table.get('table_name'))
+                table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
+                table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
 
                 # table_name = str_format_convert(tables[str(table)].get('table_name'))
                 # table_name = table_name_small_hump
@@ -257,8 +257,8 @@ class CodeGenerator(object):
         permission = ["apiversion.apiversion"]
         for table in tables.values():
             table_name_all_small = str_to_all_small(table.get('table_name'))
-            table_name_small_hump = str_to_small_hump(table.get('table_name'))
-            table_name_big_hump = str_to_big_hump(table.get('table_name'))
+            table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
+            table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
 
             # blueprint_name = table_name_small_hump
             permission.append(table_name_small_hump + '.' + table_name_small_hump)
