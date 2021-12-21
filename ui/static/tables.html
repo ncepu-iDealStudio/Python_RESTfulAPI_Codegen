@@ -91,27 +91,27 @@
                                 <div style="margin: 10px 0;">
                                     数据记录是否逻辑删除
                                     <el-tooltip placement="top">
-                                        <template #content> 逻辑删除方式<br/>注：逻辑删除字段必须为int类型</template>
+                                        <template #content> 逻辑删除方式<br/>注：逻辑删除标识字段必须为int类型</template>
                                         <span class="iconfont icon-yiwen"></span>
                                     </el-tooltip>
-                                    <div style="margin: 10px 0;">
-                                        <el-select v-model="tables[activeIndex].logicaldeletemark" clearable placeholder=" " size="small" @blur="">
+                                    <el-card style="margin: 10px 0;">
+                                        <el-select v-model="tables[activeIndex].logicaldeletemark" clearable placeholder="请选择逻辑删除标识字段" size="small" @blur="checkCurrentTables">
                                             <div v-for="(item, index) in tables[activeIndex].field" :key="index">
                                                 <el-option v-if="item.field_type==='int'" :label="item.field_name" :value="item.field_name">
                                                 </el-option>
                                             </div>
                                         </el-select>
-                                    </div>
+                                    </el-card>
                                 </div>
                                 <div style="margin: 10px 0;">
-                                    请选择是否存在业务主键
+                                    业务主键设置
                                     <el-tooltip placement="top">
                                         <template #content> 业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式</template>
                                         <span class="iconfont icon-yiwen"></span>
                                     </el-tooltip>
                                 </div>
                                 <el-card style="margin: 10px 0;">
-                                    <div style="margin: 10px 0;">业务主键字段选择</div>
+                                    <div>业务主键字段选择</div>
                                     <div style="margin: 10px 0;">
                                         <el-select v-model="tables[activeIndex].businesskeyname" clearable placeholder=" " size="small" @blur="blurbusinesskey">
                                             <el-option v-for="(item, index) in tables[activeIndex].field" :key="index" :label="item.field_name" :value="item.field_name">
@@ -125,7 +125,7 @@
                                         </el-tooltip>
                                     </div>
                                     <div style="margin: 10px 0;">
-                                        <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule>
+                                        <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule @blur="checkCurrentTables">
                                             <el-option label="" value="">
                                             </el-option>
                                             <el-option label="create_random_id" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
@@ -146,7 +146,7 @@
                                 </div style="margin: 10px 0;">
                                 <el-card>
                                     <el-scrollbar height="200px">
-                                        <el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;"></el-checkbox>
+                                        <el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;" @change="checkCurrentTables"></el-checkbox>
                                     </el-scrollbar>
                                 </el-card>
                                 <el-button type="danger" @click="handleClear">清空</el-button>
@@ -231,7 +231,9 @@
                 state.nextStep_loading = false;
             }
 
+            //清空
             const handleClear = () => {
+                state.tables[state.activeIndex].issave = false;
                 state.tables[state.activeIndex].logicaldeletemark = "";
                 state.tables[state.activeIndex].businesskeyname = "";
                 state.tables[state.activeIndex].businesskeyrule = "";
@@ -255,8 +257,15 @@
                 }
             }
 
+            //勾选左边表
+            const checkCurrentTables = () => {
+                state.tables[state.activeIndex].issave = true;
+
+            }
+
             // 清空业务主键生成规则输入框
             const blurbusinesskey = () => {
+                checkCurrentTables();
                 state.tables[state.activeIndex].businesskeyrule = "";
             }
 
@@ -281,14 +290,14 @@
                 }
             }
 
-            // // 导入文件
+            // 导入文件
             const importfile = () => {
                 let input = document.getElementById('inputfile');
                 input.click()
 
             }
 
-            // // 选中文件
+            // 选中文件
             const selectfile = (val) => {
                 let input = document.getElementById('inputfile');
                 let reader = new FileReader(); //新建一个FileReader
@@ -411,6 +420,7 @@
                 importfile,
                 selectfile,
                 back,
+                checkCurrentTables,
             };
         },
     }
