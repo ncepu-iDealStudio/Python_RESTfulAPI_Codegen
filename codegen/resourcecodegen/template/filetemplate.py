@@ -105,7 +105,7 @@ class {className}Resource(Resource):
     # put
     @classmethod
     @swag_from("ymls/{apiName}_put.yml")
-    def put(self, {id}):
+    def put(cls, {id}):
         if not {id}:
             return jsonify(code=RET.NODATA, message='primary key missed', error='primary key missed')
             
@@ -124,7 +124,7 @@ class {className}Resource(Resource):
     # add
     @classmethod
     @swag_from("ymls/{apiName}_post.yml")
-    def post(self):
+    def post(cls):
         parser = reqparse.RequestParser()
         parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')
         
