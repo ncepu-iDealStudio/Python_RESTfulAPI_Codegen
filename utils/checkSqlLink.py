@@ -63,6 +63,7 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             'businesskeyrule': '',
             'logicaldeletemark': '',
             'field': filed,
+            'businesskeyuneditable': True if table['business_key'] else False,
             'issave': False
         })
     return {'code': True, 'message': '成功', 'data': data, 'invalid': invalid_tables}
@@ -93,6 +94,6 @@ def connection_check(dialect, username, password, host, port, database) -> dict:
         engine = create_engine(url)
         metadata = MetaData(engine)
         metadata.reflect(engine)
-        return {'code': True, 'message': '数据库连接成功', 'data':''}
+        return {'code': True, 'message': '数据库连接成功', 'data': ''}
     except Exception as e:
         return {'code': False, 'message': '数据库连接失败', 'error': str(e)}
