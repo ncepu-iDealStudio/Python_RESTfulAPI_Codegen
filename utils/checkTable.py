@@ -111,7 +111,7 @@ class CheckTable(object):
         if len(invalid_tables) > 0:
             loggings.warning(
                 1,
-                "A total of {0} tables check passed.\n"
+                "A total of {0} tables check passed."
                 "The following {1} tables do not meet the specifications and cannot be generated: {2}."
                 .format(
                     len(available_tables),
