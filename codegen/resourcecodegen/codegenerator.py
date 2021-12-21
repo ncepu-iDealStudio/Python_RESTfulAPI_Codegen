@@ -163,15 +163,20 @@ class CodeGenerator(object):
             else:
                 id_str = table.get('primaryKey')[0]
 
+            if table.get('logical_delete_mark'):
+                delete_column = table.get('logical_delete_mark')
+            else:
+                delete_column = ''
+
             # get field list (except primary key)
             parameter_post = ''
             parameter_get = ''
             parameter_put = ''
             parameter_delete = ''
             for column in table.get('columns').values():
-                if column.get('name') == table.get('primaryKey')[0]:
+                if column.get('name') == id_str:
                     continue
-                elif column.get('name') == table.get('business_key').get('column'):
+                elif column.get('name') == delete_column:
                     continue
                 else:
                     parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
