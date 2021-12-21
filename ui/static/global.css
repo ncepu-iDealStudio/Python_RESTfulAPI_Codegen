@@ -53,3 +53,7 @@ body,
     margin-bottom: 15px;
     border: none
 }
+
+.el-menu-item.is-active {
+    background-color: #ecf5ff;
+}
