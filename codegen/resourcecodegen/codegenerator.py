@@ -172,14 +172,20 @@ class CodeGenerator(object):
             parameter_get = ''
             parameter_put = ''
             parameter_delete = ''
+            rsa_columns = table.get('rsa_columns')
+
             for column in table.get('columns').values():
                 if column.get('name') == id_str:
                     continue
                 elif column.get('name') == delete_column:
                     continue
                 else:
-                    parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
-                                                                                   column.get('type'))
+                    if column.get('name') not in rsa_columns and column.get('is_exist_default'):
+                        parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
+                                                                                        column.get('type'))
+                    else:
+                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                       column.get('type'))
                     parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
                                                                                              column.get('type'))
                     parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
@@ -232,9 +238,10 @@ class CodeGenerator(object):
     app.register_blueprint(apiversion_blueprint, url_prefix="/api_{0}")\n'''.format(api_version)
 
             for table in tables:
-                table_name_all_small = str_to_all_small(table.get('table_name'))
-                table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
-                table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
+                table_name = str(table)
+                table_name_all_small = str_to_all_small(table_name)
+                table_name_small_hump = str_to_little_camel_case(table_name)
+                table_name_big_hump = str_to_big_camel_case(table_name)
 
                 # table_name = str_format_convert(tables[str(table)].get('table_name'))
                 # table_name = table_name_small_hump
