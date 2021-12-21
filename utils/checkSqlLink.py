@@ -49,9 +49,10 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
     data = []
     for table in table_dict.values():
         filed = []
+        business_key_type = ''
         for column in table['columns'].values():
             if str(column['name']) == table['primaryKey'][0]:
-                continue
+                business_key_type = column['type']
             filed.append({
                 'field_name': column['name'],
                 'field_type': column['type'],
@@ -64,6 +65,7 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             'logicaldeletemark': '',
             'field': filed,
             'businesskeyuneditable': True if table['business_key'].get('column') else False,
+            "businesskeytype": business_key_type,
             'issave': False
         })
     return {'code': True, 'message': '成功', 'data': data, 'invalid': invalid_tables}

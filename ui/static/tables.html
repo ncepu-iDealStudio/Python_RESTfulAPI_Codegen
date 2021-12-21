@@ -252,16 +252,20 @@
 
             //获取当前选择的业务主键字段信息
             const selectbusinesskeyrule = () => {
-                state.activeFiled = {}
-                for (let i = 0; i < state.tables[state.activeIndex].field.length; i++) {
-                    if (state.tables[state.activeIndex].businesskeyname === state.tables[state.activeIndex].field[i].field_name) {
-                        state.activeFiled = {...state.tables[state.activeIndex].field[i]
+                state.activeFiled = {};
+                if (state.tables[state.activeIndex].businesskeyuneditable) {
+                    state.activeFiled.field_type = state.tables[state.activeIndex].businesskeytype;
+                } else {
+                    for (let i = 0; i < state.tables[state.activeIndex].field.length; i++) {
+                        if (state.tables[state.activeIndex].businesskeyname === state.tables[state.activeIndex].field[i].field_name) {
+                            state.activeFiled.field_type = state.tables[state.activeIndex].field[i].field_type;
                         }
                     }
+                    if (!state.activeFiled.field_type) {
+                        ElMessage.warning('未选择业务主键字段');
+                    }
                 }
-                if (!state.activeFiled.field_name) {
-                    ElMessage.warning('未选择业务主键字段');
-                }
+
             }
 
             //勾选左边表
@@ -335,6 +339,8 @@
                                 // 判断表名是否存在
                                 if (tables_data[i].table === state.tables[j].table) {
                                     state.tables[j].issave = tables_data[i].issave;
+
+                                    //校验主键是否可修改
                                     //校验字段
                                     for (let k = 0; k < tables_data[i].field.length; k++) {
                                         for (let l = 0; l < state.tables[j].field.length; l++) {
