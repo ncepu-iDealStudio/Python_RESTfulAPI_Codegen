@@ -109,13 +109,15 @@
                                             </el-switch>
                                             数据记录是否逻辑删除
                                             <el-tooltip placement="top">
-                                                <template #content> 逻辑删除方式<br/>即表中必须包含IsDelete的标识删除字段</template>
+                                                <template #content> 逻辑删除方式<br/>注：逻辑删除字段必须为int类型</template>
                                                 <span class="iconfont icon-yiwen"></span>
                                             </el-tooltip>
                                             <div style="margin: 10px 0;" v-if="tables[activeIndex].isdeleted">
                                                 <el-select v-model="tables[activeIndex].logicaldeletemark" placeholder="Select" size="small" @blur="">
-                                                    <el-option v-for="(item, index) in tables[activeIndex].field" :key="index" :label="item.field_name" :value="item.field_name">
-                                                    </el-option>
+                                                    <div v-for="(item, index) in tables[activeIndex].field" :key="index">
+                                                        <el-option v-if="item.field_type==='int'" :label="item.field_name" :value="item.field_name">
+                                                        </el-option>
+                                                    </div>
                                                 </el-select>
                                             </div>
                                         </div>
@@ -330,7 +332,11 @@
                                                     message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段类型与配置文件不匹配" + "</div>";
                                                     // 如果字段为业务主键，且类型改变
                                                     if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
-                                                        message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "业务主键字段类型与配置文件不匹配，请自己配置业务主键" + "</div>";
+                                                        message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "业务主键字段类型与配置文件不匹配，请重新配置业务主键" + "</div>";
+                                                    }
+                                                    // 如果字段为逻辑删除，且类型改变
+                                                    if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
+                                                        message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "逻辑删除字段类型与配置文件不匹配，请重新配置逻辑删除" + "</div>";
                                                     }
                                                 } else {
                                                     state.tables[j].field[l].field_encrypt = tables_data[i].field[k].field_encrypt;
