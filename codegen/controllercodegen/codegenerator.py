@@ -128,11 +128,11 @@ class CodeGenerator(object):
                 model_lower=table['table_name'],
                 get_filter_list_logic=CodeBlockTemplate.get_filer_list_logic.format(
                     logical_delete_mark=table['logical_delete_mark']
-                ) if table['is_logic_delete'] else ''
+                ) if table['logical_delete_mark'] else ''
             )
 
             # combine delete
-            if table['is_logic_delete']:
+            if table['logical_delete_mark']:
                 # logic delete
                 delete = FileTemplate.delete_template_logic.format(
                     primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
@@ -154,7 +154,7 @@ class CodeGenerator(object):
                     text = CodeBlockTemplate.rsa_update.format(column=sra_column)
                     rsa_update += text
 
-            if not table['is_logic_delete']:
+            if not table['logical_delete_mark']:
                 update = FileTemplate.update_template_physical.format(
                     primary_key=table['business_key']['column'] if table['business_key'].get('column') else primary_key,
                     rsa_update=rsa_update
