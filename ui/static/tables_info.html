@@ -69,16 +69,13 @@
                                             <span v-for="(fieldItem, index) in item.encrypt" :key="index"><span><el-divider v-if="index!=0" direction="vertical"></el-divider>{{fieldItem}}</span></span>
                                         </el-col>
                                         <el-col :span="4">
-                                            <div v-if="item.isdeleted">{{item.logicaldeletemark || '/'}}</div>
-                                            <div v-else>/</div>
+                                            <div>{{item.logicaldeletemark || '/'}}</div>
                                         </el-col>
                                         <el-col :span="4">
-                                            <div v-if="item.isbusinesskey">{{item.businesskeyname || '/'}}</div>
-                                            <div v-else>/</div>
+                                            <div>{{item.businesskeyname || '/'}}</div>
                                         </el-col>
                                         <el-col :span="4">
-                                            <div v-if="item.isbusinesskey">{{item.businesskeyrule || '/'}}</div>
-                                            <div v-else>/</div>
+                                            <div>{{item.businesskeyrule || '/'}}</div>
                                         </el-col>
                                         <el-divider style="position: relative;bottom: -14px;margin: 0;"></el-divider>
                                     </el-row>

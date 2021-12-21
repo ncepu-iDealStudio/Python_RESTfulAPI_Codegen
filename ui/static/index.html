@@ -149,6 +149,7 @@
                             const res = result.data
                             if (res.code === '2000') {
                                 ElMessage.success(res.message)
+                                console.log(res.data)
                                 localStorage.setItem("tables", JSON.stringify(res.data));
                                 localStorage.setItem("invalid", JSON.stringify(res.invalid));
                                 location.replace('tables')
