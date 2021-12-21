@@ -59,11 +59,11 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             })
         data.append({
             'table': str(table['table_name']),
-            'businesskeyname': '',
+            'businesskeyname': table['business_key'].get('column'),
             'businesskeyrule': '',
             'logicaldeletemark': '',
             'field': filed,
-            'businesskeyuneditable': True if table['business_key'] else False,
+            'businesskeyuneditable': True if table['business_key'].get('column') else False,
             'issave': False
         })
     return {'code': True, 'message': '成功', 'data': data, 'invalid': invalid_tables}
