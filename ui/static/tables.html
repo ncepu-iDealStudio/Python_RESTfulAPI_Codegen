@@ -340,7 +340,16 @@
                                 if (tables_data[i].table === state.tables[j].table) {
                                     state.tables[j].issave = tables_data[i].issave;
 
-                                    //校验主键是否可修改
+                                    //校验主键是否修改
+                                    if (tables_data[i].table.businesskeyuneditable != state.tables[j].table.businesskeyuneditable) {
+                                        ElMessage.error('导入失败,主键被修改')
+                                        return
+                                    } else {
+                                        if (tables_data[i].table.businesskeyname != state.tables[j].table.businesskeyname) {
+                                            ElMessage.error('导入失败,主键被修改')
+                                            return
+                                        }
+                                    }
                                     //校验字段
                                     for (let k = 0; k < tables_data[i].field.length; k++) {
                                         for (let l = 0; l < state.tables[j].field.length; l++) {
@@ -399,7 +408,7 @@
                         // 清空导入的文件，使其可以反复导入同一文件
                         input.value = '';
                     } catch (err) {
-                        ElMessage.error('导入失败')
+                        ElMessage.error('导入失败,配置文件错误')
                     }
                 }
             }
