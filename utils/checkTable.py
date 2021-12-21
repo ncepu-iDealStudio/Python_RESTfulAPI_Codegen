@@ -24,7 +24,7 @@ class CheckTable(object):
     def check_primary_key(cls, table_dict):
         """
         根据代码生成模式，自动读取所有表或所需表，检验主键后返回合规的表列表
-        :return: 符合规范的表名列表，即有且仅有一个自增主键，没有符合规范的情况下返回None
+        :return: 符合规范的表名列表，即有且仅有一个主键，没有符合规范的情况下返回None
         """
 
         available_tables = []
@@ -40,13 +40,15 @@ class CheckTable(object):
                 invalid_tables.append(table['table_name'])
                 loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
             else:
-                # 仅有一个主键，检验是否自增
-                if not table['columns'][table['primaryKey'][0]]['is_autoincrement']:
-                    invalid_tables.append(table['table_name'])
-                    loggings.warning(1,
-                                     'table {0} do not have an autoincrement primary key'.format(table['table_name']))
-                else:
-                    available_tables.append(table['table_name'])
+                available_tables.append(table['table_name'])
+            # else:
+            #     # 仅有一个主键，检验是否自增
+            #     if not table['columns'][table['primaryKey'][0]]['is_autoincrement']:
+            #         invalid_tables.append(table['table_name'])
+            #         loggings.warning(1,
+            #                          'table {0} do not have an autoincrement primary key'.format(table['table_name']))
+            #     else:
+            #         available_tables.append(table['table_name'])
 
         return available_tables, invalid_tables
 
