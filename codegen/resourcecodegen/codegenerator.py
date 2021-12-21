@@ -172,14 +172,20 @@ class CodeGenerator(object):
             parameter_get = ''
             parameter_put = ''
             parameter_delete = ''
+            rsa_columns = table.get('rsa_columns')
+
             for column in table.get('columns').values():
                 if column.get('name') == id_str:
                     continue
                 elif column.get('name') == delete_column:
                     continue
                 else:
-                    parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
-                                                                                   column.get('type'))
+                    if column.get('name') not in rsa_columns and column.get('is_exist_default'):
+                        parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
+                                                                                        column.get('type'))
+                    else:
+                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                       column.get('type'))
                     parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
                                                                                              column.get('type'))
                     parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
