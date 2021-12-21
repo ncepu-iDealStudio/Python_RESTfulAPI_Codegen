@@ -12,6 +12,7 @@
 
 import configparser
 import json
+import os
 
 import pymysql
 from flask import Flask, request
@@ -44,6 +45,14 @@ def project():
 @app.route('/build', methods=['GET'])
 def build():
     return app.send_static_file('build.html')
+
+
+# 获取项目路径
+@app.route('/getpath', methods=['POST'])
+def getpath():
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    path = BASE_DIR + "\dist"
+    return {'code': '2000', 'data': path, 'message': '获取路径成功'}
 
 
 # 获取数据库名
@@ -118,7 +127,7 @@ def connect():
 @app.route('/setproject', methods=['POST'])
 def setproject():
     kwargs = json.loads(request.data)
-    projectPath = kwargs["projectPath"]
+    projectPath = 'dist'
     projectName = kwargs["projectName"]
     interfaceVersion = kwargs["projectVersion"]
 

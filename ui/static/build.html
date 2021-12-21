@@ -39,7 +39,7 @@
                             <div v-if="loading">生成中...</div>
                             <div v-else>已完成</div>
                         </template>
-                        <div v-if="!loading" style="margin-bottom: 10px;">目标代码请在。。。查看</div>
+                        <div v-if="!loading" style="margin-bottom: 10px;">目标代码请在{{path}}查看</div>
                         <el-progress :percentage="100" :indeterminate="loading" :duration="3" :show-text="false" />
                     </el-card>
 
@@ -68,6 +68,7 @@
                 const state = reactive({
                     loading: true,
                     log_info: "",
+                    path: "",
                 });
                 onMounted(() => {
                     let data = JSON.parse(localStorage.getItem("tables"));
@@ -77,11 +78,29 @@
                             location.replace('/')
                         }, 1000)
                     }
+                    // 获取勾选的表信息
+                    let tables_data = [];
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i].issave) {
+                            tables_data.push(data[i])
+                        }
+                    }
+
+                    // 获取目标代码路径
+                    axios({
+                        method: 'POST',
+                        url: 'http://127.0.0.1:5000/getpath',
+                    }).then(result => {
+                        const res = result.data
+                        if (res.code === '2000') {
+                            state.path = res.data;
+                        }
+                    })
 
                     axios({
                         method: 'POST',
                         url: 'http://127.0.0.1:5000/startbuild',
-                        data: data
+                        data: tables_data
                     }).then(result => {
                         const res = result.data
                         if (res.code === '2000') {

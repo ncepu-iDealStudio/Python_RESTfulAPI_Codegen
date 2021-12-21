@@ -40,8 +40,8 @@
                                 <template #header>要生成的目标接口项目基本配置</template>
                             </el-card>
                             <el-form ref="ruleForm" :model="Form" :rules="rules" label-width="120px">
-                                <el-form-item label="项目路径" prop="projectPath">
-                                    <el-input v-model="Form.projectPath"></el-input>
+                                <el-form-item label="目标代码路径" prop="projectPath">
+                                    <el-input v-model="path" readonly></el-input>
                                 </el-form-item>
                                 <el-form-item label="项目名称" prop="projectName">
                                     <el-input v-model="Form.projectName" placeholder="api.project.com"></el-input>
@@ -91,16 +91,10 @@
             setup() {
                 const state = reactive({
                     Form: {
-                        projectPath: "dist",
                         projectName: "",
                         projectVersion: "",
                     },
                     rules: {
-                        projectPath: [{
-                            required: true,
-                            message: '请填写完整信息',
-                            trigger: 'blur',
-                        }],
                         projectName: [{
                             required: true,
                             message: '请填写完整信息',
@@ -115,6 +109,7 @@
                     nextStep_loading: false,
                     dialogVisible: false,
                     tables: [],
+                    path: "",
                 });
 
                 const back = () => {
@@ -198,6 +193,18 @@
                     if (data) {
                         state.Form = data
                     }
+
+                    // 获取目标代码路径
+                    axios({
+                        method: 'POST',
+                        url: 'http://127.0.0.1:5000/getpath',
+                    }).then(result => {
+                        const res = result.data
+                        if (res.code === '2000') {
+                            state.path = res.data;
+                        }
+                    })
+
                 });
 
                 return {
