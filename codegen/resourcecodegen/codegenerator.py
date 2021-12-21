@@ -232,9 +232,10 @@ class CodeGenerator(object):
     app.register_blueprint(apiversion_blueprint, url_prefix="/api_{0}")\n'''.format(api_version)
 
             for table in tables:
-                table_name_all_small = str_to_all_small(table.get('table_name'))
-                table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
-                table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
+                table_name = str(table)
+                table_name_all_small = str_to_all_small(table_name)
+                table_name_small_hump = str_to_little_camel_case(table_name)
+                table_name_big_hump = str_to_big_camel_case(table_name)
 
                 # table_name = str_format_convert(tables[str(table)].get('table_name'))
                 # table_name = table_name_small_hump
