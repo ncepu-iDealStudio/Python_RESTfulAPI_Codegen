@@ -215,6 +215,19 @@
 
             const handleCheckChange = () => {
                 state.isIndeterminate = true;
+                let index_checked = 0;
+                for (let i = 0; i < state.tables.length; i++) {
+                    if (state.tables[i].issave) {
+                        index_checked++;
+                    }
+                }
+                if (index_checked === 0) {
+                    state.isIndeterminate = false;
+                    state.checkAll = false;
+                } else if (index_checked === state.tables.length) {
+                    state.isIndeterminate = false;
+                    state.checkAll = true;
+                }
             }
 
             const back = () => {

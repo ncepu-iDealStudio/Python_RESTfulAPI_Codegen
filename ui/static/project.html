@@ -41,7 +41,7 @@
                             </el-card>
                             <el-form ref="ruleForm" :model="Form" :rules="rules" label-width="120px">
                                 <el-form-item label="目标代码路径" prop="projectPath">
-                                    <el-input v-model="path" readonly></el-input>
+                                    <el-input v-model="path" disabled></el-input>
                                 </el-form-item>
                                 <el-form-item label="项目名称" prop="projectName">
                                     <el-input v-model="Form.projectName" placeholder="api.project.com"></el-input>
