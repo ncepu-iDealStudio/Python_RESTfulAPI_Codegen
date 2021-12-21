@@ -163,15 +163,20 @@ class CodeGenerator(object):
             else:
                 id_str = table.get('primaryKey')[0]
 
+            if table.get('logical_delete_mark'):
+                delete_column = table.get('logical_delete_mark')
+            else:
+                delete_column = ''
+
             # get field list (except primary key)
             parameter_post = ''
             parameter_get = ''
             parameter_put = ''
             parameter_delete = ''
             for column in table.get('columns').values():
-                if column.get('name') == table.get('primaryKey')[0]:
+                if column.get('name') == id_str:
                     continue
-                elif column.get('name') == table.get('business_key').get('column'):
+                elif column.get('name') == delete_column:
                     continue
                 else:
                     parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
@@ -205,30 +210,11 @@ class CodeGenerator(object):
             className_str = api_name[0].upper() + api_name[1:]
 
             # template generation
-            imports_str = CodeBlockTemplate.other_resource_imports.format(api_name, className_str)
-
-            if table.get('business_key'):
-                id_str = table.get('business_key').get('column')
-            else:
-                id_str = table.get('primaryKey')[0]
-
-            # get field list (except primary key)
-            parameter_query = ''
-            for column in table.get('columns').values():
-                if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
-                        'business_key').get('column'):
-                    parameter_query += CodeBlockTemplate.parameter_args_joint.format(column.get('name'),
-                                                                                     column.get('type'))
-
-            getServiceInvoke_str = CodeBlockTemplate.other_resource_get_service_invoke.format(className_str)
+            imports_str = CodeBlockTemplate.other_resource_imports
 
             return FileTemplate.other_resource.format(
                 imports=imports_str,
-                apiName=api_name,
-                className=className_str,
-                id=id_str,
-                queryParameter=parameter_query,
-                getServiceInvoke=getServiceInvoke_str
+                className=className_str
             )
 
         except Exception as e:
