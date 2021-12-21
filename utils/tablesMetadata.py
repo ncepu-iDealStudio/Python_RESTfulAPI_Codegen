@@ -33,23 +33,18 @@ class TableMetadata(object):
             table_name = str(table)
             table_dict[table_name] = {}
             table_dict[table_name]['table_name'] = table_name
-            table_dict[table_name]['is_logic_delete'] = False
             table_dict[table_name]['logical_delete_mark'] = ""
             table_dict[table_name]['columns'] = {}
             table_dict[table_name]['business_key'] = {}
 
-            # Check record deletion method
-            for each_table in table_config:
-                if each_table['table'] == table_name and each_table['isdeleted'] and each_table['logicaldeletemark'] != '':
-                    table_dict[table_name]['is_logic_delete'] = True
-                    table_dict[table_name]['logical_delete_mark'] = each_table['logicaldeletemark']
-
-            # Check if the business key exists
+            # Check if the business key exists and check record deletion method
             for config in table_config:
+                if config['table'] == table_name and config['logicaldeletemark'] != '':
+                    table_dict[table_name]['logical_delete_mark'] = config['logicaldeletemark']
+
                 if config['table'] == table_name and config['businesskeyname'] != '':
-                    business_key = table_dict[table_name]['business_key']
-                    business_key['column'] = config['businesskeyname']
-                    business_key['rule'] = config['businesskeyrule']
+                    table_dict[table_name]['business_key']['column'] = config['businesskeyname']
+                    table_dict[table_name]['business_key']['rule'] = config['businesskeyrule']
 
             # 需要RSA加密的字段
             table_dict[table_name]['rsa_columns'] = []
@@ -82,5 +77,17 @@ class TableMetadata(object):
                 # 是否自动递增
                 table_dict[table_name]['columns'][str(column.name)][
                     'is_autoincrement'] = True if column.autoincrement is True else False
+
+                # 如果主键不是自增的，则将业务主键设置为主键
+                if str(column.name) in table_dict[table_name]['primaryKey'] and not \
+                        table_dict[table_name]['columns'][str(column.name)]['is_autoincrement']:
+                    table_dict[table_name]['business_key']['column'] = str(column.name)
+
+                # 是否可以为空
+                table_dict[table_name]['columns'][str(column.name)]['nullable'] = column.nullable
+
+                # 是否存在默认值
+                table_dict[table_name]['columns'][str(column.name)][
+                    'is_exist_default'] = True if column.server_default is not None else False
 
         return table_dict

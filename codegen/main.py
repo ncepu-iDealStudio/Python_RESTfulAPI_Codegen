@@ -9,7 +9,6 @@
 """
     this is function description
 """
-import json
 
 from sqlalchemy import create_engine, MetaData
 
@@ -39,7 +38,6 @@ def start(table_config):
     url = model_url
     engine = create_engine(url)
     metadata = MetaData(engine)
-    # table_config = json.loads(table_config)
 
     metadata.reflect(engine, only=[table['table'] for table in table_config])
 
