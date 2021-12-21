@@ -88,77 +88,67 @@
                                 <template #header>
                             {{tables[activeIndex].table}}
                         </template>
-                                <el-row :gutter="10">
-                                    <el-col :span="11">
-                                        <div style="margin: 10px 0;">
-                                            请选择需要加密存储的字段
-                                            <el-tooltip placement="top">
-                                                <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
-                                                <span class="iconfont icon-yiwen"></span>
-                                            </el-tooltip>
-                                        </div style="margin: 10px 0;">
-                                        <el-card>
-                                            <el-scrollbar height="200px">
-                                                <el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;"></el-checkbox>
-                                            </el-scrollbar>
-                                        </el-card>
-                                    </el-col>
-                                    <el-col :offset="2" :span="11">
-                                        <div style="margin: 10px 0;">
-                                            <el-switch v-model="tables[activeIndex].isdeleted">
-                                            </el-switch>
-                                            数据记录是否逻辑删除
-                                            <el-tooltip placement="top">
-                                                <template #content> 逻辑删除方式<br/>注：逻辑删除字段必须为int类型</template>
-                                                <span class="iconfont icon-yiwen"></span>
-                                            </el-tooltip>
-                                            <div style="margin: 10px 0;" v-if="tables[activeIndex].isdeleted">
-                                                <el-select v-model="tables[activeIndex].logicaldeletemark" placeholder="Select" size="small" @blur="">
-                                                    <div v-for="(item, index) in tables[activeIndex].field" :key="index">
-                                                        <el-option v-if="item.field_type==='int'" :label="item.field_name" :value="item.field_name">
-                                                        </el-option>
-                                                    </div>
-                                                </el-select>
+                                <div style="margin: 10px 0;">
+                                    数据记录是否逻辑删除
+                                    <el-tooltip placement="top">
+                                        <template #content> 逻辑删除方式<br/>注：逻辑删除字段必须为int类型</template>
+                                        <span class="iconfont icon-yiwen"></span>
+                                    </el-tooltip>
+                                    <div style="margin: 10px 0;">
+                                        <el-select v-model="tables[activeIndex].logicaldeletemark" clearable placeholder=" " size="small" @blur="">
+                                            <div v-for="(item, index) in tables[activeIndex].field" :key="index">
+                                                <el-option v-if="item.field_type==='int'" :label="item.field_name" :value="item.field_name">
+                                                </el-option>
                                             </div>
-                                        </div>
-                                        <div style="margin: 10px 0;">
-                                            <el-switch v-model="tables[activeIndex].isbusinesskey">
-                                            </el-switch>
-                                            请选择是否存在业务主键
-                                            <el-tooltip placement="top">
-                                                <template #content> 业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式</template>
-                                                <span class="iconfont icon-yiwen"></span>
-                                            </el-tooltip>
-                                        </div>
-                                        <el-card style="margin: 10px 0;" v-if="tables[activeIndex].isbusinesskey">
-                                            <div style="margin: 10px 0;">业务主键字段选择</div>
-                                            <div style="margin: 10px 0;">
-                                                <el-select v-model="tables[activeIndex].businesskeyname" placeholder="Select" size="small" @blur="blurbusinesskey">
-                                                    <el-option v-for="(item, index) in tables[activeIndex].field" :key="index" :label="item.field_name" :value="item.field_name">
-                                                    </el-option>
-                                                </el-select>
-                                            </div>
-                                            <div style="margin: 10px 0;">业务主键生成规则
-                                                <el-tooltip placement="top">
-                                                    <template #content>业务主键生成规则使用已定义的规则：<br/>‘create_random_id’,‘create_hashlib_id’,‘create_uid’<br/>以及无生成规则，默认为无生成规则</template>
-                                                    <span class="iconfont icon-yiwen"></span>
-                                                </el-tooltip>
-                                            </div>
-                                            <div style="margin: 10px 0;">
-                                                <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule>
-                                                    <el-option label="" value="">
-                                                    </el-option>
-                                                    <el-option label="create_random_id" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
-                                                    </el-option>
-                                                    <el-option label="create_hashlib_id" value="create_hashlib_id" v-if="activeFiled.field_type==='str'">
-                                                    </el-option>
-                                                    <el-option label="create_uid" value="create_uid" v-if="activeFiled.field_type==='str'">
-                                                    </el-option>
-                                                </el-select>
-                                            </div>
-                                        </el-card>
-                                    </el-col>
-                                </el-row>
+                                        </el-select>
+                                    </div>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    请选择是否存在业务主键
+                                    <el-tooltip placement="top">
+                                        <template #content> 业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式</template>
+                                        <span class="iconfont icon-yiwen"></span>
+                                    </el-tooltip>
+                                </div>
+                                <el-card style="margin: 10px 0;">
+                                    <div style="margin: 10px 0;">业务主键字段选择</div>
+                                    <div style="margin: 10px 0;">
+                                        <el-select v-model="tables[activeIndex].businesskeyname" clearable placeholder=" " size="small" @blur="blurbusinesskey">
+                                            <el-option v-for="(item, index) in tables[activeIndex].field" :key="index" :label="item.field_name" :value="item.field_name">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                    <div style="margin: 10px 0;">业务主键生成规则
+                                        <el-tooltip placement="top">
+                                            <template #content>业务主键生成规则使用已定义的规则：<br/>‘create_random_id’,‘create_hashlib_id’,‘create_uid’<br/>以及无生成规则，默认为无生成规则</template>
+                                            <span class="iconfont icon-yiwen"></span>
+                                        </el-tooltip>
+                                    </div>
+                                    <div style="margin: 10px 0;">
+                                        <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule>
+                                            <el-option label="" value="">
+                                            </el-option>
+                                            <el-option label="create_random_id" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
+                                            </el-option>
+                                            <el-option label="create_hashlib_id" value="create_hashlib_id" v-if="activeFiled.field_type==='str'">
+                                            </el-option>
+                                            <el-option label="create_uid" value="create_uid" v-if="activeFiled.field_type==='str'">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                </el-card>
+                                <div style="margin: 10px 0;">
+                                    请选择需要加密存储的字段
+                                    <el-tooltip placement="top">
+                                        <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
+                                        <span class="iconfont icon-yiwen"></span>
+                                    </el-tooltip>
+                                </div style="margin: 10px 0;">
+                                <el-card>
+                                    <el-scrollbar height="200px">
+                                        <el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;"></el-checkbox>
+                                    </el-scrollbar>
+                                </el-card>
                                 <el-button type="danger" @click="handleClear">清空</el-button>
                             </el-card>
                         </el-card>
@@ -242,9 +232,7 @@
             }
 
             const handleClear = () => {
-                state.tables[state.activeIndex].isdeleted = false;
                 state.tables[state.activeIndex].logicaldeletemark = "";
-                state.tables[state.activeIndex].isbusinesskey = false;
                 state.tables[state.activeIndex].businesskeyname = "";
                 state.tables[state.activeIndex].businesskeyrule = "";
                 // 清空加密字段选择
@@ -314,9 +302,7 @@
                         // 清空所有配置信息
                         for (let i = 0; i < state.tables.length; i++) {
                             state.tables[i].issave = false;
-                            state.tables[i].isdeleted = false;
                             state.tables[i].logicaldeletemark = "";
-                            state.tables[i].isbusinesskey = false;
                             state.tables[i].businesskeyname = "";
                             state.tables[i].businesskeyrule = "";
                             // 清空加密字段选择
@@ -332,8 +318,6 @@
                             for (let j = 0; j < state.tables.length; j++) {
                                 // 判断表名是否存在
                                 if (tables_data[i].table === state.tables[j].table) {
-                                    state.tables[j].isbusinesskey = tables_data[i].isbusinesskey;
-                                    state.tables[j].isdeleted = tables_data[i].isdeleted;
                                     state.tables[j].issave = tables_data[i].issave;
                                     //校验字段
                                     for (let k = 0; k < tables_data[i].field.length; k++) {

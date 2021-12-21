@@ -11,8 +11,7 @@
         "field_encrypt": false
       }
     ],
-    "isbusinesskey": false,
-    "isdeleted": false,
+    "businesskeyuneditable": false,
     "issave": false
   }
 ]
