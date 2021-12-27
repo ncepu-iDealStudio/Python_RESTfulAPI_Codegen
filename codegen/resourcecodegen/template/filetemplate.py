@@ -63,7 +63,7 @@ class {className}Resource(Resource):
             if res['code'] == RET.OK:
                 return jsonify(code=res['code'], message=res['message'], data=res['data'])
             else:
-                return jsonify(code=res['code'], message=res['message'], error=res['error'])
+                return jsonify(code=res['code'], message=res['message'], data=res['data'])
                 
         parser = reqparse.RequestParser()
         {getParameter}
@@ -77,7 +77,7 @@ class {className}Resource(Resource):
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'], totalPage=res['totalPage'], totalCount=res['totalCount'])
         else:
-            return jsonify(code=res['code'], message=res['message'], error=res['error']) 
+            return jsonify(code=res['code'], message=res['message'], data=res['data']) 
             
     # delete
     @classmethod
@@ -97,10 +97,8 @@ class {className}Resource(Resource):
             kwargs = commons.put_remove_none(**kwargs)
             
         res = {className}Controller.delete(**kwargs)
-        if res['code'] == RET.OK:
-            return jsonify(code=res['code'], message=res['message'])
-        else:
-            return jsonify(code=res['code'], message=res['message'], error=res['error'])
+
+        return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # put
     @classmethod
@@ -116,10 +114,8 @@ class {className}Resource(Resource):
         kwargs['{id}'] = {id}
             
         res = {className}Controller.update(**kwargs)
-        if res['code'] == RET.OK:
-            return jsonify(code=res['code'], message=res['message'])
-        else:
-            return jsonify(code=res['code'], message=res['message'], error=res['error'])
+        
+        return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # add
     @classmethod
@@ -141,10 +137,7 @@ class {className}Resource(Resource):
             
             res = {className}Controller.add(**kwargs)
             
-        if res['code'] == RET.OK:
-            return jsonify(code=res['code'], message=res['message'], data=res['data'])
-        else:
-            return jsonify(code=res['code'], message=res['message'], error=res['error'])
+        return jsonify(code=res['code'], message=res['message'], data=res['data'])
 """
 
     other_resource = """#!/usr/bin/env python
