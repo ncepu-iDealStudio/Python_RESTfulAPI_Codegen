@@ -29,13 +29,13 @@
                                 <div class="iconfont icon-shoucang1"></div>
                             </a>
                         </el-tooltip>
-                        <el-tooltip placement="top">
+                        <el-tooltip placement="bottom">
                             <template #content>导出配置文件</template>
                             <div style="float: right;margin-right: 20px;">
                                 <div @click="exportfile" class="iconfont icon-shangchuandaochu"></div>
                             </div>
                         </el-tooltip>
-                        <el-tooltip placement="top">
+                        <el-tooltip placement="bottom">
                             <template #content>导入配置文件</template>
                             <div style="float: right;margin-right: 20px;">
                                 <div @click="importfile" class="iconfont icon-xiazaidaoru"></div>
@@ -317,7 +317,7 @@
                 reader.readAsText(input.files[0], "UTF-8"); //读取文件 
                 reader.onload = function(evt) { //读取完文件之后会回来这里
                     let fileString = evt.target.result; // 读取文件内容
-                    //目前是这样的
+
                     try {
                         let tables_data = JSON.parse(fileString);
 
