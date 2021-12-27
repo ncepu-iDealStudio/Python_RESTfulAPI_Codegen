@@ -176,6 +176,9 @@ class CodeGenerator(object):
 
             for column in table.get('columns').values():
                 if column.get('name') == id_str:
+                    if not table.get('business_key').get('rule'):
+                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                       column.get('type'))
                     continue
                 elif column.get('name') == delete_column:
                     continue
