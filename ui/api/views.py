@@ -148,13 +148,11 @@ def setproject():
 def startbuild():
     kwargs = json.loads(request.data)
     from codegen.main import start
-    try:
-        start(kwargs)
-        with open('logs/codegen_log.log', "r", encoding="utf-8") as f:
-            log_data = f.read()
-        return {'code': '2000', 'data': log_data, 'message': '写入配置成功'}
-    except Exception as e:
-        return {'code': '5000', 'data': [], 'message': '生成失败'}
+    res = start(kwargs)
+    if res['code'] == '2000':
+        return {'code': '2000', 'data': res['data'], 'message': '写入配置成功'}
+    else:
+        return {'code': '5000', 'data': [], 'message': res['error']}
 
 
 # 关闭服务
