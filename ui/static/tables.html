@@ -242,7 +242,9 @@
             const handleClear = () => {
                 state.tables[state.activeIndex].issave = false;
                 state.tables[state.activeIndex].logicaldeletemark = "";
-                state.tables[state.activeIndex].businesskeyname = "";
+                if (!state.tables.businesskeyuneditable) {
+                    state.tables.businesskeyname = "";
+                }
                 state.tables[state.activeIndex].businesskeyrule = "";
                 // 清空加密字段选择
                 for (let i = 0; i < state.tables[state.activeIndex].field.length; i++) {
@@ -323,7 +325,9 @@
                         for (let i = 0; i < state.tables.length; i++) {
                             state.tables[i].issave = false;
                             state.tables[i].logicaldeletemark = "";
-                            state.tables[i].businesskeyname = "";
+                            if (!state.tables[i].businesskeyuneditable) {
+                                state.tables[i].businesskeyname = "";
+                            }
                             state.tables[i].businesskeyrule = "";
                             // 清空加密字段选择
                             for (let i = 0; i < state.tables[i].field.length; i++) {
@@ -374,7 +378,7 @@
                                                         state.tables[j].businesskeyrule = tables_data[i].businesskeyrule;
                                                     }
                                                     // 如果字段为逻辑删除
-                                                    if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
+                                                    if (tables_data[i].logicaldeletemark === tables_data[i].field[k].field_name) {
                                                         state.tables[j].logicaldeletemark = tables_data[i].logicaldeletemark;
                                                     }
                                                 }
