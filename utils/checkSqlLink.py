@@ -51,13 +51,17 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
         filed = []
         business_key_type = ''
         for column in table['columns'].values():
-            if str(column['name']) == table['primaryKey'][0]:
+            if column['name'] == table['primaryKey'][0]:
                 business_key_type = column['type']
-            filed.append({
-                'field_name': column['name'],
-                'field_type': column['type'],
-                'field_encrypt': False
-            })
+            if column['name'] in table['primaryKey']:
+                # 剔除出主键
+                continue
+            else:
+                filed.append({
+                    'field_name': column['name'],
+                    'field_type': column['type'],
+                    'field_encrypt': False
+                })
         data.append({
             'table': str(table['table_name']),
             'businesskeyname': table['business_key'].get('column'),
