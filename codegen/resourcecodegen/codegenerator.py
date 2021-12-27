@@ -191,12 +191,16 @@ class CodeGenerator(object):
                     parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
                     parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column.get('name'),
                                                                                        column.get('type'))
+            if business_key:
+                id_str = business_key
+            else:
+                id_str = primaryKey
 
             return FileTemplate.resource.format(
                 imports=imports_str,
                 apiName=table_name_small_hump,
                 className=table_name_big_hump,
-                id=business_key,
+                id=id_str,
                 putParameter=parameter_put,
                 getParameter=parameter_get,
                 postParameter=parameter_post,
