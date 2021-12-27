@@ -61,7 +61,7 @@ class CodeGenerator(object):
                 column_init = ''
                 business_key_init = ''
                 for column in table['columns'].values():
-                    if column['name'] == primary_key:
+                    if column['name'] == primary_key and business_key != primary_key:
                         continue
                     if column['name'] == table['logical_delete_mark']:
                         continue
@@ -174,7 +174,7 @@ class CodeGenerator(object):
                 add_list_column_init = ''
                 add_list_business_key_init = ''
                 for column in table['columns'].values():
-                    if column['name'] == primary_key:
+                    if column['name'] == primary_key and business_key != primary_key:
                         continue
                     if column['name'] == table['logical_delete_mark']:
                         continue
