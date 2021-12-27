@@ -157,10 +157,8 @@ class CodeGenerator(object):
             # template  generation
             imports_str = CodeBlockTemplate.resource_imports.format(table_name_small_hump, table_name_big_hump)
 
-            if table.get('business_key'):
-                id_str = table.get('business_key').get('column')
-            else:
-                id_str = table.get('primaryKey')[0]
+            business_key = table.get('business_key').get('column')
+            primaryKey = table.get('primaryKey')[0]
 
             if table.get('logical_delete_mark'):
                 delete_column = table.get('logical_delete_mark')
@@ -175,10 +173,9 @@ class CodeGenerator(object):
             rsa_columns = table.get('rsa_columns')
 
             for column in table.get('columns').values():
-                if column.get('name') == id_str:
-                    if not table.get('business_key').get('rule'):
-                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
-                                                                                       column.get('type'))
+                if column.get('name') == business_key and table.get('business_key').get('rule'):
+                    continue
+                elif column.get('name') == primaryKey and primaryKey != business_key:
                     continue
                 elif column.get('name') == delete_column:
                     continue
@@ -199,7 +196,7 @@ class CodeGenerator(object):
                 imports=imports_str,
                 apiName=table_name_small_hump,
                 className=table_name_big_hump,
-                id=id_str,
+                id=business_key,
                 putParameter=parameter_put,
                 getParameter=parameter_get,
                 postParameter=parameter_post,
