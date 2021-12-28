@@ -14,7 +14,7 @@ import os
 
 from codegen import project_dir
 from config.setting import Settings
-from utils.common import str_format_convert
+from utils.common import str_to_little_camel_case
 from utils.loggings import loggings
 from . import cmd
 
@@ -50,7 +50,7 @@ def main(table_dict):
                 noinflect="",
                 noclasses="",
                 notables="",
-                outfile=" --outfile {0}\{1}".format(models_path, str_format_convert(table) + "Model.py"),
+                outfile=" --outfile {0}\{1}".format(models_path, str_to_little_camel_case(table) + "Model.py"),
                 nobackrefs="",
                 nocomments="",
                 ignore_cols=""
