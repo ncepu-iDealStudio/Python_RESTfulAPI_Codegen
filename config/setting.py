@@ -50,7 +50,7 @@ class Settings(object):
     DIALECT = CONFIG['DATABASE']['DIALECT']
     DRIVER = driver_dict[DIALECT]
     USERNAME = CONFIG['DATABASE']['USERNAME']
-    PASSWORD = parse.quote_plus(CONFIG['DATABASE']['PASSWORD'])
+    PASSWORD = CONFIG['DATABASE']['PASSWORD']
     HOST = CONFIG['DATABASE']['HOST']
     PORT = CONFIG['DATABASE']['PORT']
     DATABASE = CONFIG['DATABASE']['DATABASE']
@@ -60,7 +60,7 @@ class Settings(object):
         DIALECT,
         DRIVER,
         USERNAME,
-        PASSWORD,
+        parse.quote_plus(PASSWORD),
         HOST,
         PORT,
         DATABASE
