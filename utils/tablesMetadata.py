@@ -9,25 +9,20 @@
 """
     Get metadata of all tables
 """
-
-
-from config.setting import Settings
+import json
 
 
 class TableMetadata(object):
+    with open('config/default_table_config.json', 'r', encoding='utf-8') as f:
+        DEFAULT_CONFIG = f.read()
 
-    type_mapping = Settings.TYPE_MAPPING
-    table_rule = Settings.TABLE_RULE
-    database_type = Settings.DATABASE_TYPE
-
-    @classmethod
-    def reload(cls):
-        cls.type_mapping = Settings.TYPE_MAPPING
-        cls.table_rule = Settings.TABLE_RULE
-        cls.database_type = Settings.DATABASE_TYPE
+    with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
+        TYPE_MAPPING = json.load(f)
 
     @classmethod
-    def get_tables_metadata(cls, metadata):
+    def get_tables_metadata(cls, metadata, table_config=DEFAULT_CONFIG):
+        table_config = table_config if isinstance(table_config, list) else json.loads(table_config)
+
         # Get all tables object
         table_objs = metadata.tables.values()
         table_dict = {}
@@ -38,28 +33,26 @@ class TableMetadata(object):
             table_name = str(table)
             table_dict[table_name] = {}
             table_dict[table_name]['table_name'] = table_name
-            table_dict[table_name]['is_logic_delete'] = False
+            table_dict[table_name]['logical_delete_mark'] = ""
             table_dict[table_name]['columns'] = {}
-            table_dict[table_name]['foreign_keys'] = []
             table_dict[table_name]['business_key'] = {}
 
-            # Check record deletion method
-            if table_name in cls.table_rule['table_record_delete_logic_way']:
-                table_dict[table_name]['is_logic_delete'] = True
+            # Check if the business key exists and check record deletion method
+            for config in table_config:
+                if config['table'] == table_name and config['logicaldeletemark'] != '':
+                    table_dict[table_name]['logical_delete_mark'] = config['logicaldeletemark']
 
-            # Check if the business key exists
-            if table_name in cls.table_rule['table_business_key_gen_rule']:
-                business_key = table_dict[table_name]['business_key']
-                business_key['column'], business_key['rule'] = tuple(cls.table_rule['table_business_key_gen_rule'][
-                                                                         table_name].items())[0]
+                if config['table'] == table_name and config['businesskeyname'] != '':
+                    table_dict[table_name]['business_key']['column'] = config['businesskeyname']
+                    table_dict[table_name]['business_key']['rule'] = config['businesskeyrule']
 
             # 需要RSA加密的字段
             table_dict[table_name]['rsa_columns'] = []
-            for key, value in Settings.RSA_TABLE_COLUMN.items():
-                # 如果表名不匹配则进入下一轮循环
-                if table_name != key:
-                    continue
-                table_dict[table_name]['rsa_columns'] = value
+            for rsa_table in table_config:
+                if rsa_table['table'] == table_name:
+                    for rsa_colume in rsa_table['field']:
+                        if rsa_colume['field_encrypt']:
+                            table_dict[table_name]['rsa_columns'].append(rsa_colume['field_name'])
 
             # 初始化为空列表
             table_dict[table_name]['primaryKey'] = []
@@ -69,8 +62,8 @@ class TableMetadata(object):
                 table_dict[table_name]['columns'][str(column.name)] = {}
                 table_dict[table_name]['columns'][str(column.name)]['name'] = str(column.name)
 
-                for type_ in cls.type_mapping:
-                    if cls.database_type != type_['database']:
+                for type_ in cls.TYPE_MAPPING:
+                    if str(metadata.bind.url).split('+')[0] != type_['database']:
                         continue
                     for python_type, sql_type_list in type_['data_map'].items():
                         if str(column.type).lower() in sql_type_list:
@@ -85,13 +78,16 @@ class TableMetadata(object):
                 table_dict[table_name]['columns'][str(column.name)][
                     'is_autoincrement'] = True if column.autoincrement is True else False
 
-                if column.foreign_keys:
-                    # Traverse each foreign_key to get corresponding attributes
-                    for foreign_key in column.foreign_keys:
-                        table_dict[table_name]['foreign_keys'].append({
-                            'key': str(column.name),
-                            'target_table': str(foreign_key.column).split('.')[0],
-                            'target_key': str(foreign_key.column).split('.')[1]
-                        })
+                # 如果主键不是自增的，则将业务主键设置为主键
+                if str(column.name) in table_dict[table_name]['primaryKey'] and not \
+                        table_dict[table_name]['columns'][str(column.name)]['is_autoincrement']:
+                    table_dict[table_name]['business_key']['column'] = str(column.name)
+
+                # 是否可以为空
+                table_dict[table_name]['columns'][str(column.name)]['nullable'] = column.nullable
+
+                # 是否存在默认值
+                table_dict[table_name]['columns'][str(column.name)][
+                    'is_exist_default'] = True if column.server_default is not None else False
 
         return table_dict

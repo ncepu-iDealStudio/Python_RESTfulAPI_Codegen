@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <link rel="stylesheet" href="static/cdn/element-plus.css" />
+    <script src="static/cdn/vue-3.2.26.js"></script>
+    <script src="static/cdn/element-ui.js"></script>
+    <script src="static/cdn/axios-0.24.0.js"></script>
+    <link rel="stylesheet" href="static/global.css" />
+    <link rel="stylesheet" href="static/iconfont/iconfont.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="container_warp">
+            <div class="container_header">
+                <el-row>
+                    <el-col :offset="5" :span="14">
+                        Flask_Sqlachemy_RESTfulAPI_Codegen
+                    </el-col>
+                    <el-col :span="5">
+                        <el-tooltip placement="top">
+                            <template #content>如果喜欢就点个星星支持一下</template>
+                            <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
+                                <div class="iconfont icon-shoucang1"></div>
+                            </a>
+                        </el-tooltip>
+                        <el-tooltip placement="bottom">
+                            <template #content>导出配置文件</template>
+                            <div style="float: right;margin-right: 20px;">
+                                <div @click="exportfile" class="iconfont icon-xiazaidaoru"></div>
+                            </div>
+                        </el-tooltip>
+                        <el-tooltip placement="bottom">
+                            <template #content>导入配置文件</template>
+                            <div style="float: right;margin-right: 20px;">
+                                <div @click="importfile" class="iconfont icon-shangchuandaochu"></div>
+                            </div>
+                        </el-tooltip>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="container_body">
+                <el-row>
+                    <el-col :offset="4" :span="4">
+                        <el-scrollbar style="height:calc(100vh - 130px);">
+                            <el-menu @select="handleSelect">
+                                <div style="padding-left: 20px;">
+                                    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
+                                </div>
+                                <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
+                                    <el-checkbox v-model="item.issave" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
+                                </el-menu-item>
+                            </el-menu>
+                        </el-scrollbar>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-scrollbar style="height:calc(100vh - 130px);">
+                            <div v-if="activeIndex===-1">
+                                <el-card shadow="never">
+                                    <el-card shadow="never">
+                                        <template #header>数据表准备</template>
+                                        <p>请选择用于生成代码的数据表，并为每张表进行相应的配置</p>
+                                    </el-card>
+                                    <div v-if="invalid_primary_key!='' || invalid_keyword!=''">
+                                        <el-divider style="margin-top: 0;"></el-divider>
+                                        <el-card shadow="never" style="color: #e6a23c;background-color: #fdf6ec;border: 1px solid #faecd8;">
+                                            <el-row>
+                                                <el-col :span="1">
+                                                    <span class="iconfont icon-jinggao"></span>
+                                                </el-col>
+                                                <el-col :span="23">
+                                                    <div>以下表不符合规范，已被过滤</div>
+                                                    <div v-if="invalid_primary_key!=''">
+                                                        <div> 缺少主键或存在符合主键：</div>
+                                                        <div> {{invalid_primary_key}}</div>
+                                                    </div>
+                                                    <div v-if="invalid_keyword!=''">
+                                                        <div>存在表名或字段名与python关键字冲突：</div>
+                                                        <div>{{invalid_keyword}}</div>
+                                                    </div>
+                                                </el-col>
+                                            </el-row>
+                                        </el-card>
+                                    </div>
+                                </el-card>
+                            </div>
+                            <el-card shadow="never" v-else>
+                                <el-card shadow="never">
+                                    <template #header>
+                                        {{tables[activeIndex].table}}
+                                    </template>
+                                    <div style="margin: 10px 0;">
+                                        数据记录是否逻辑删除
+                                        <el-tooltip placement="top">
+                                            <template #content> 逻辑删除方式<br/>注：逻辑删除标识字段必须为int类型</template>
+                                            <span class="iconfont icon-yiwen"></span>
+                                        </el-tooltip>
+                                        <el-card style="margin: 10px 0;">
+                                            <el-select v-model="tables[activeIndex].logicaldeletemark" clearable placeholder="请选择逻辑删除标识字段" size="small" @blur="checkCurrentTables">
+                                                <div v-for="(item, index) in tables[activeIndex].field" :key="index">
+                                                    <el-option v-if="item.field_type==='int'" :label="item.field_name" :value="item.field_name">
+                                                    </el-option>
+                                                </div>
+                                            </el-select>
+                                        </el-card>
+                                    </div>
+                                    <div style="margin: 10px 0;">
+                                        业务主键设置
+                                        <el-tooltip placement="top">
+                                            <template #content> 业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式</template>
+                                            <span class="iconfont icon-yiwen"></span>
+                                        </el-tooltip>
+                                    </div>
+                                    <el-card style="margin: 10px 0;">
+                                        <div>业务主键字段选择</div>
+                                        <div style="margin: 10px 0;">
+                                            <el-select v-model="tables[activeIndex].businesskeyname" clearable :disabled="tables[activeIndex].businesskeyuneditable" placeholder=" " size="small" @blur="blurbusinesskey">
+                                                <el-option v-for="(item, index) in tables[activeIndex].field" :key="index" :label="item.field_name" :value="item.field_name">
+                                                </el-option>
+                                            </el-select>
+                                        </div>
+                                        <div style="margin: 10px 0;">业务主键生成规则
+                                            <el-tooltip placement="top">
+                                                <template #content>业务主键生成规则使用已定义的规则：<br/>‘create_random_id’,‘create_hashlib_id’,‘create_uid’<br/>以及无生成规则，默认为无生成规则</template>
+                                                <span class="iconfont icon-yiwen"></span>
+                                            </el-tooltip>
+                                        </div>
+                                        <div style="margin: 10px 0;">
+                                            <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule @blur="checkCurrentTables">
+                                                <el-option label="" value="">
+                                                </el-option>
+                                                <el-option label="create_random_id" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
+                                                </el-option>
+                                                <el-option label="create_hashlib_id" value="create_hashlib_id" v-if="activeFiled.field_type==='str'">
+                                                </el-option>
+                                                <el-option label="create_uid" value="create_uid" v-if="activeFiled.field_type==='str'">
+                                                </el-option>
+                                            </el-select>
+                                        </div>
+                                    </el-card>
+                                    <div style="margin: 10px 0;">
+                                        请选择需要加密存储的字段
+                                        <el-tooltip placement="top">
+                                            <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
+                                            <span class="iconfont icon-yiwen"></span>
+                                        </el-tooltip>
+                                    </div style="margin: 10px 0;">
+                                    <el-card>
+                                        <el-scrollbar height="200px">
+                                            <el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;" @change="checkCurrentTables"></el-checkbox>
+                                        </el-scrollbar>
+                                    </el-card>
+                                    <el-button type="danger" @click="handleClear" style="float: right;">清空</el-button>
+                                </el-card>
+                            </el-card>
+                        </el-scrollbar>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="container_footer">
+            <el-row>
+                <el-col :offset="4" :span="16">
+                    <div style="margin:0 20px;">
+                        <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
+                        <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+        <input type="file" id="inputfile" @change="selectfile" style="display: none;" />
+    </div>
+</body>
+
+<script>
+    const {
+        reactive,
+        toRefs,
+        onMounted
+    } = Vue
+    const {
+        ElMessage,
+    } = ElementPlus
+    const composition = {
+        setup() {
+            const state = reactive({
+                tables: [],
+                activeIndex: -1,
+                activeFiled: {},
+                nextStep_loading: false,
+                checkAll: false,
+                isIndeterminate: false,
+                invalid_primary_key: "",
+                invalid_keyword: "",
+            });
+            const handleSelect = (key, keyPath) => {
+                state.activeIndex = key;
+            }
+
+            // 全选
+            const handleCheckAllChange = (val) => {
+                for (let i = 0; i < state.tables.length; i++) {
+                    state.tables[i].issave = val;
+                }
+                state.isIndeterminate = false;
+            }
+
+            const handleCheckChange = () => {
+                state.isIndeterminate = true;
+                let index_checked = 0;
+                for (let i = 0; i < state.tables.length; i++) {
+                    if (state.tables[i].issave) {
+                        index_checked++;
+                    }
+                }
+                if (index_checked === 0) {
+                    state.isIndeterminate = false;
+                    state.checkAll = false;
+                } else if (index_checked === state.tables.length) {
+                    state.isIndeterminate = false;
+                    state.checkAll = true;
+                }
+            }
+
+            const back = () => {
+                location.replace('/');
+            }
+
+            const nextStep = () => {
+                state.nextStep_loading = true;
+                localStorage.setItem("tables", JSON.stringify(state.tables));
+                location.replace('tables_info')
+                state.nextStep_loading = false;
+            }
+
+            //清空
+            const handleClear = () => {
+                state.tables[state.activeIndex].issave = false;
+                state.tables[state.activeIndex].logicaldeletemark = "";
+                if (!state.tables.businesskeyuneditable) {
+                    state.tables.businesskeyname = "";
+                }
+                state.tables[state.activeIndex].businesskeyrule = "";
+                // 清空加密字段选择
+                for (let i = 0; i < state.tables[state.activeIndex].field.length; i++) {
+                    state.tables[state.activeIndex].field[i].field_encrypt = false;
+                }
+            }
+
+            //获取当前选择的业务主键字段信息
+            const selectbusinesskeyrule = () => {
+                state.activeFiled = {};
+                if (state.tables[state.activeIndex].businesskeyuneditable) {
+                    state.activeFiled.field_type = state.tables[state.activeIndex].businesskeytype;
+                } else {
+                    for (let i = 0; i < state.tables[state.activeIndex].field.length; i++) {
+                        if (state.tables[state.activeIndex].businesskeyname === state.tables[state.activeIndex].field[i].field_name) {
+                            state.activeFiled.field_type = state.tables[state.activeIndex].field[i].field_type;
+                        }
+                    }
+                    if (!state.activeFiled.field_type) {
+                        ElMessage.warning('未选择业务主键字段');
+                    }
+                }
+
+            }
+
+            //勾选左边表
+            const checkCurrentTables = () => {
+                state.tables[state.activeIndex].issave = true;
+
+            }
+
+            // 清空业务主键生成规则输入框
+            const blurbusinesskey = () => {
+                checkCurrentTables();
+                state.tables[state.activeIndex].businesskeyrule = "";
+            }
+
+            // 导出文件
+            const exportfile = () => {
+                let tables_data = [];
+                for (let i = 0; i < state.tables.length; i++) {
+                    if (state.tables[i].issave) {
+                        tables_data.push(state.tables[i])
+                    }
+                }
+                if (tables_data.length === 0) {
+                    ElMessage.warning('请至少勾选一张表');
+                } else {
+                    let aTag = document.createElement('a');
+                    const content = JSON.stringify(tables_data);
+                    let blob = new Blob([content]);
+                    aTag.download = "table_config" + ".json";
+                    aTag.href = URL.createObjectURL(blob);
+                    aTag.click();
+                    URL.revokeObjectURL(blob);
+                }
+            }
+
+            // 导入文件
+            const importfile = () => {
+                let input = document.getElementById('inputfile');
+                input.click()
+
+            }
+
+            // 选中文件
+            const selectfile = (val) => {
+                let input = document.getElementById('inputfile');
+                let reader = new FileReader(); //新建一个FileReader
+                reader.readAsText(input.files[0], "UTF-8"); //读取文件 
+                reader.onload = function(evt) { //读取完文件之后会回来这里
+                    let fileString = evt.target.result; // 读取文件内容
+
+                    try {
+                        let tables_data = JSON.parse(fileString);
+
+                        // 清空所有配置信息
+                        for (let i = 0; i < state.tables.length; i++) {
+                            state.tables[i].issave = false;
+                            state.tables[i].logicaldeletemark = "";
+                            if (!state.tables[i].businesskeyuneditable) {
+                                state.tables[i].businesskeyname = "";
+                            }
+                            state.tables[i].businesskeyrule = "";
+                            // 清空加密字段选择
+                            for (let i = 0; i < state.tables[i].field.length; i++) {
+                                state.tables[i].field[i].field_encrypt = false;
+                            }
+                        }
+
+                        //提示信息
+                        let message = "";
+
+                        for (let i = 0; i < tables_data.length; i++) {
+                            for (let j = 0; j < state.tables.length; j++) {
+                                // 判断表名是否存在
+                                if (tables_data[i].table === state.tables[j].table) {
+                                    state.tables[j].issave = tables_data[i].issave;
+
+                                    //校验主键是否修改
+                                    if (tables_data[i].table.businesskeyuneditable != state.tables[j].table.businesskeyuneditable) {
+                                        ElMessage.error('导入失败,主键被修改')
+                                        return
+                                    } else {
+                                        if (tables_data[i].table.businesskeyname != state.tables[j].table.businesskeyname) {
+                                            ElMessage.error('导入失败,主键被修改')
+                                            return
+                                        }
+                                    }
+                                    //校验字段
+                                    for (let k = 0; k < tables_data[i].field.length; k++) {
+                                        for (let l = 0; l < state.tables[j].field.length; l++) {
+                                            // 判断字段是否存在
+                                            if (tables_data[i].field[k].field_name === state.tables[j].field[l].field_name) {
+                                                // 如果字段类型改变
+                                                if (tables_data[i].field[k].field_type != state.tables[j].field[l].field_type) {
+                                                    message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段类型与配置文件不匹配" + "</div>";
+                                                    // 如果字段为业务主键，且类型改变
+                                                    if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
+                                                        message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "业务主键字段类型与配置文件不匹配，请重新配置业务主键" + "</div>";
+                                                    }
+                                                    // 如果字段为逻辑删除，且类型改变
+                                                    if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
+                                                        message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "逻辑删除字段类型与配置文件不匹配，请重新配置逻辑删除" + "</div>";
+                                                    }
+                                                } else {
+                                                    state.tables[j].field[l].field_encrypt = tables_data[i].field[k].field_encrypt;
+                                                    // 如果字段为业务主键
+                                                    if (tables_data[i].businesskeyname === tables_data[i].field[k].field_name) {
+                                                        state.tables[j].businesskeyname = tables_data[i].businesskeyname;
+                                                        state.tables[j].businesskeyrule = tables_data[i].businesskeyrule;
+                                                    }
+                                                    // 如果字段为逻辑删除
+                                                    if (tables_data[i].logicaldeletemark === tables_data[i].field[k].field_name) {
+                                                        state.tables[j].logicaldeletemark = tables_data[i].logicaldeletemark;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                            // 如果加密字段不存在
+                                            if (l === state.tables[j].field.length - 1) {
+                                                message = message + "<div>" + tables_data[i].table + "表中" + tables_data[i].field[k].field_name + "字段" + "不存在" + "</div>";
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                                // 如果表名不存在
+                                if (j === state.tables.length - 1) {
+                                    message = message + "<div>" + tables_data[i].table + "导入失败" + "</div>";
+                                }
+                            }
+                        }
+                        if (message == "") {
+                            ElMessage.success('导入成功')
+                        } else {
+                            ElMessage({
+                                showClose: true,
+                                dangerouslyUseHTMLString: true,
+                                message: message,
+                                type: 'warning',
+                                duration: 0,
+                            })
+                        }
+                        // 清空导入的文件，使其可以反复导入同一文件
+                        input.value = '';
+                    } catch (err) {
+                        ElMessage.error('导入失败,配置文件错误')
+                    }
+                }
+            }
+
+            onMounted(() => {
+                let data = JSON.parse(localStorage.getItem("tables"));
+                if (!data) {
+                    ElMessage.warning('请重新连接数据库')
+                    setTimeout(() => {
+                        location.replace('/')
+                    }, 1000)
+                }
+                state.tables = data;
+
+                // 显示不符合规范的表
+                let invalid = JSON.parse(localStorage.getItem("invalid"));
+                if (!invalid) return
+                state.invalid_primary_key = invalid.primary_key.toString();
+                state.invalid_keyword = invalid.keyword.toString();
+            });
+            return {
+                ...toRefs(state),
+                handleSelect,
+                selectbusinesskeyrule,
+                handleClear,
+                nextStep,
+                blurbusinesskey,
+                handleCheckAllChange,
+                handleCheckChange,
+                exportfile,
+                importfile,
+                selectfile,
+                back,
+                checkCurrentTables,
+            };
+        },
+    }
+
+    // 创建vue3的实例
+    const app = Vue.createApp(
+        composition
+    )
+    app.use(ElementPlus)
+        // 挂载Vue的app实例
+    app.mount('#app')
+</script>
+
+<style>
+
+</style>
+
+</html>

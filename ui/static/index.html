@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <link rel="stylesheet" href="static/cdn/element-plus.css" />
+    <script src="static/cdn/vue-3.2.26.js"></script>
+    <script src="static/cdn/element-ui.js"></script>
+    <script src="static/cdn/axios-0.24.0.js"></script>
+    <link rel="stylesheet" href="static/global.css" />
+    <link rel="stylesheet" href="static/iconfont/iconfont.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="container_warp">
+            <div class="container_header">
+                <el-row>
+                    <el-col :offset="5" :span="14">
+                        Flask_Sqlachemy_RESTfulAPI_Codegen
+                    </el-col>
+                    <el-col :span="5">
+                        <el-tooltip placement="top">
+                            <template #content>如果喜欢就点个星星支持一下</template>
+                            <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
+                                <div class="iconfont icon-shoucang1"></div>
+                            </a>
+                        </el-tooltip>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="container_body">
+                <el-row>
+                    <el-col :offset="4" :span="16">
+                        <el-card shadow="never">
+                            <el-card shadow="never">
+                                <template #header>数据库配置</template> 请选择要生成接口项目代码的目标数据库，生成器将针对此数据库生成一个分层设计的接口项目
+                            </el-card>
+                            <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
+                                <el-form-item label="数据库类型" prop="DatabaseDialects">
+                                    <el-select v-model="form.DatabaseDialects" placeholder="请选择数据库类型" style="width: 100%;">
+                                        <el-option label="mysql" value="mysql"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="主机" prop="Host">
+                                    <el-input v-model="form.Host" placeholder="请输入数据库服务器IP地址"></el-input>
+                                </el-form-item>
+                                <el-form-item label="数据库端口" prop="Port">
+                                    <el-input v-model="form.Port" placeholder="请输入数据库服务器端口号"></el-input>
+                                </el-form-item>
+                                <el-form-item label="账号" prop="Username">
+                                    <el-input v-model="form.Username" placeholder="请输入数据库服务器登录账号,建议是root账号"></el-input>
+                                </el-form-item>
+                                <el-form-item label="密码" prop="Password">
+                                    <el-input v-model="form.Password" show-password></el-input>
+                                </el-form-item>
+                                <el-form-item label="数据库" prop="DatebaseName">
+                                    <el-select v-model="form.DatebaseName" placeholder="请选择目标数据库" @focus="getdbname">
+                                        <el-option :label="item[0]" :value="item[0]" v-for="(item, index) in dbname_list" :key="index"></el-option>
+                                    </el-select>
+                                    <el-button type="primary" style="margin-left: 10px;" :loading="connectTest_loading" @click="connectTest">连接测试</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </el-card>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="container_footer">
+            <el-row>
+                <el-col :offset="4" :span="16">
+                    <div style="margin:0 20px;">
+                        <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
+</body>
+<script>
+    const {
+        reactive,
+        toRefs,
+        ref
+    } = Vue
+    const {
+        ElMessage
+    } = ElementPlus
+    const composition = {
+        setup() {
+            const state = reactive({
+                form: {
+                    DatabaseDialects: "",
+                    Host: "",
+                    Port: "",
+                    Username: "",
+                    Password: "",
+                    DatebaseName: "",
+                },
+                rules: {
+                    DatabaseDialects: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    Host: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    Port: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    DatebaseName: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    Username: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                    Password: [{
+                        required: true,
+                        message: '请填写完整信息',
+                        trigger: 'blur',
+                    }],
+                },
+                connectTest_loading: false,
+                nextStep_loading: false,
+                dbname_list: []
+            });
+            const formRef = ref(null);
+            const nextStep = () => {
+                formRef.value.validate((valid) => {
+                    if (valid) {
+                        state.nextStep_loading = true;
+                        axios({
+                            method: 'POST',
+                            url: 'http://127.0.0.1:5000/next',
+                            data: state.form
+                        }).then(result => {
+                            const res = result.data
+                            if (res.code === '2000') {
+                                ElMessage.success(res.message)
+                                console.log(res.data)
+                                localStorage.setItem("tables", JSON.stringify(res.data));
+                                localStorage.setItem("invalid", JSON.stringify(res.invalid));
+                                location.replace('tables')
+                                state.nextStep_loading = false;
+                            } else {
+                                ElMessage.error(res.message)
+                                state.nextStep_loading = false;
+                            }
+                        })
+                    }
+                })
+            }
+            const connectTest = () => {
+                formRef.value.validate((valid) => {
+                    if (valid) {
+                        state.connectTest_loading = true;
+                        axios({
+                                method: 'POST',
+                                url: 'http://127.0.0.1:5000/connecttest',
+                                data: state.form
+                            })
+                            .then(result => {
+                                const res = result.data
+                                if (res.code === '2000') {
+                                    ElMessage.success(res.message)
+                                    state.connectTest_loading = false;
+                                } else {
+                                    ElMessage.error(res.message)
+                                    state.connectTest_loading = false;
+                                }
+                            })
+                    }
+                })
+            }
+
+            const getdbname = () => {
+                state.form.DatebaseName = "";
+                state.dbname_list = [];
+                axios({
+                    method: 'POST',
+                    url: 'http://127.0.0.1:5000/getdbname',
+                    data: state.form
+                }).then(result => {
+                    const res = result.data;
+                    if (res.code === '2000') {
+                        state.dbname_list = res.data;
+                    } else {
+                        console.log(res.message)
+                    }
+                })
+            }
+
+            return {
+                ...toRefs(state),
+                formRef,
+                nextStep,
+                connectTest,
+                getdbname,
+            };
+        },
+    }
+
+    // 创建vue3的实例
+    const app = Vue.createApp(
+        composition
+    )
+    app.use(ElementPlus)
+        // 挂载Vue的app实例
+    app.mount('#app')
+</script>
+
+</html>

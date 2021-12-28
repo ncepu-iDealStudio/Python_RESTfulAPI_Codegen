@@ -22,7 +22,7 @@ def main():
     """
     步骤：
         一、 按照当前项目的config/security.conf 文件 生成 static/config/security.conf
-        二、 生成static/app
+        二、 生成static/app 的setting.py文件
         三、 拷贝static 到 dist文件夹
     :return:
     """

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <link rel="stylesheet" href="static/cdn/element-plus.css" />
+    <script src="static/cdn/vue-3.2.26.js"></script>
+    <script src="static/cdn/element-ui.js"></script>
+    <script src="static/cdn/axios-0.24.0.js"></script>
+    <link rel="stylesheet" href="static/global.css" />
+    <link rel="stylesheet" href="static/iconfont/iconfont.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="container_warp">
+            <div class="container_header">
+                <el-row>
+                    <el-col :offset="5" :span="14">
+                        Flask_Sqlachemy_RESTfulAPI_Codegen
+                    </el-col>
+                    <el-col :span="5">
+                        <el-tooltip placement="top">
+                            <template #content>如果喜欢就点个星星支持一下</template>
+                            <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
+                                <div class="iconfont icon-shoucang1"></div>
+                            </a>
+                        </el-tooltip>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="container_body">
+                <el-row>
+                    <el-col :offset="4" :span="16">
+                        <el-card shadow="never">
+                            <el-card shadow="never">
+                                <template #header>要生成的目标接口项目基本配置</template>
+                            </el-card>
+                            <el-form ref="ruleForm" :model="Form" :rules="rules" label-width="120px">
+                                <el-form-item label="目标代码路径" prop="projectPath">
+                                    <el-input v-model="path" disabled></el-input>
+                                </el-form-item>
+                                <el-form-item label="项目名称" prop="projectName">
+                                    <el-input v-model="Form.projectName" placeholder="api.project.com"></el-input>
+                                </el-form-item>
+                                <el-form-item label="接口版本" prop="projectVersion">
+                                    <el-input v-model="Form.projectVersion" placeholder="1.0"></el-input>
+                                </el-form-item>
+                            </el-form>
+                        </el-card>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="container_footer">
+            <el-row>
+                <el-col :offset="4" :span="16">
+                    <div style="margin:0 20px;">
+                        <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
+                        <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="showtips">开始生成</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+        <el-dialog v-model="dialogVisible" title="是否将配置文件导出?" width="30%">
+            导出的配置文件可以在数据表准备阶段导入
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="nextStep">直接生成</el-button>
+                    <el-button type="primary" @click="exportfile">导出配置</el-button>
+                </span>
+            </template>
+        </el-dialog>
+    </div>
+</body>
+
+<script>
+    const {
+        reactive,
+        toRefs,
+        ref,
+        onMounted,
+    } = Vue
+    const {
+        ElMessage
+    } = ElementPlus
+    const composition = {
+            setup() {
+                const state = reactive({
+                    Form: {
+                        projectName: "",
+                        projectVersion: "",
+                    },
+                    rules: {
+                        projectName: [{
+                            required: true,
+                            message: '请填写完整信息',
+                            trigger: 'blur',
+                        }],
+                        projectVersion: [{
+                            required: true,
+                            message: '请填写完整信息',
+                            trigger: 'blur',
+                        }],
+                    },
+                    nextStep_loading: false,
+                    dialogVisible: false,
+                    tables: [],
+                    path: "",
+                });
+
+                const back = () => {
+                    location.replace('tables_info')
+                }
+
+                const ruleForm = ref(null);
+
+                const showtips = () => {
+                    ruleForm.value.validate((valid) => {
+                        if (valid) {
+                            // 判断是否有勾选表
+                            let tables_data = [];
+                            for (let i = 0; i < state.tables.length; i++) {
+                                if (state.tables[i].issave) {
+                                    tables_data.push(state.tables[i])
+                                }
+                            }
+                            if (tables_data.length != 0) {
+                                state.dialogVisible = true;
+                            } else {
+                                nextStep();
+                            }
+                        }
+                    })
+                }
+
+                const nextStep = () => {
+                    ruleForm.value.validate((valid) => {
+                        if (valid) {
+                            state.nextStep_loading = true;
+                            axios({
+                                method: 'POST',
+                                url: 'http://127.0.0.1:5000/setproject',
+                                data: state.Form
+                            }).then(result => {
+                                const res = result.data
+                                if (res.code === '2000') {
+                                    ElMessage.success(res.message)
+                                    localStorage.setItem("project_info", JSON.stringify(state.Form));
+                                    location.replace('build')
+                                    state.nextStep_loading = false;
+                                } else {
+                                    ElMessage.error(res.message)
+                                    state.nextStep_loading = false;
+                                }
+                            })
+                        }
+                    })
+                }
+
+                // 导出文件
+                const exportfile = () => {
+                    let tables_data = [];
+                    for (let i = 0; i < state.tables.length; i++) {
+                        if (state.tables[i].issave) {
+                            tables_data.push(state.tables[i])
+                        }
+                    }
+                    let aTag = document.createElement('a');
+                    const content = JSON.stringify(tables_data);
+                    let blob = new Blob([content]);
+                    aTag.download = "table_config" + ".json";
+                    aTag.href = URL.createObjectURL(blob);
+                    aTag.click();
+                    URL.revokeObjectURL(blob);
+                    nextStep();
+                }
+
+                onMounted(() => {
+                    let data_tables = JSON.parse(localStorage.getItem("tables"));
+                    if (!data_tables) {
+                        ElMessage.warning('请重新连接数据库')
+                        setTimeout(() => {
+                            location.replace('/')
+                        }, 1000)
+                    }
+                    state.tables = data_tables;
+
+                    let data = JSON.parse(localStorage.getItem("project_info"));
+                    if (data) {
+                        state.Form = data
+                    }
+
+                    // 获取目标代码路径
+                    axios({
+                        method: 'POST',
+                        url: 'http://127.0.0.1:5000/getpath',
+                    }).then(result => {
+                        const res = result.data
+                        if (res.code === '2000') {
+                            state.path = res.data;
+                        }
+                    })
+
+                });
+
+                return {
+                    ...toRefs(state),
+                    nextStep,
+                    ruleForm,
+                    back,
+                    showtips,
+                    exportfile,
+                };
+            },
+        }
+        // 创建vue3的实例
+    const app = Vue.createApp(
+        composition
+    )
+    app.use(ElementPlus)
+        // 挂载Vue的app实例
+    app.mount('#app')
+</script>
+
+</html>

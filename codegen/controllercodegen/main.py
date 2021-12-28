@@ -11,22 +11,15 @@
 """
 import os
 
-from codegen import codegen_layer, table_dict, project_dir
-from config.setting import Settings
+from codegen import project_dir
 from .codegenerator import CodeGenerator
 
 
-def main():
+def main(table_dict):
     """
     Generate Controller code
     :return: None
     """
-    # reload settings
-    Settings.reload()
-
-    # return, while codegen_layer is not 'default' or 'controller'
-    if codegen_layer not in ['default', 'controller']:
-        return
 
     if not table_dict:
         return
