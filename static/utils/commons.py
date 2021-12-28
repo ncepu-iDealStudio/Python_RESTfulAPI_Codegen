@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-'''
+"""
  some common tools or fuctions your api project maybe need!
-'''
+"""
 
 from werkzeug.routing import BaseConverter
 from datetime import datetime as cdatetime

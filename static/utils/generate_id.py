@@ -26,8 +26,6 @@ class GenerateID(object):
     def create_hashlib_id():
         import time, hashlib
         m = hashlib.md5(str(time.clock()).encode('utf-8'))
-        # m = hashlib.md5()
-        # m.update(bytes(str(time.clock()), encoding='utf-8'))
         return m.hexdigest()
 
     # 根据时间戳+N位随机数生成自定义唯一健
@@ -36,4 +34,4 @@ class GenerateID(object):
         import datetime
         import random
         random_number = random.sample('0123456789', N)
-        return datetime.datetime.now().strftime('%Y%m%d%H%M%S') + ''.join(random_number)
+        return datetime.datetime.now().strftime('%Y%m%d%H%M') + ''.join(random_number)

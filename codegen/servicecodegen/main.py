@@ -17,7 +17,7 @@ from codegen.servicecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
 
-def main():
+def main(table_dict):
     """
     Generate service layer code
     :return: None
@@ -29,7 +29,7 @@ def main():
         with open(os.path.join(service_path, '__init__.py'), 'w', encoding='utf-8') as f:
             f.write("#!/usr/bin/env python\n# -*- coding:utf-8 -*-\n")
 
-        generator = CodeGenerator()
+        generator = CodeGenerator(table_dict)
         generator.service_generator(service_path)
     except Exception as e:
         loggings.exception(1, e)

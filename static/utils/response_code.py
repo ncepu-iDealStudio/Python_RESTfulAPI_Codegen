@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-'''
+"""
  User defined Error code.
-'''
+"""
+
 
 class RET:
     OK = "2000"

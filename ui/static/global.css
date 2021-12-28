@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#app {
+    height: 100%;
+    font-size: 14px;
+}
+
+.container_warp {
+    min-height: 100%;
+}
+
+.container_header {
+    background-color: var(--el-color-primary);
+    color: #fff;
+    text-align: center;
+    line-height: 60px;
+    font-weight: bold;
+    height: 60px;
+}
+
+.container_body {
+    padding-bottom: 60px;
+    background-color: #fff;
+}
+
+.container_footer {
+    margin-top: -60px;
+    height: 60px;
+    background-color: #fff;
+    z-index: 9999;
+}
+
+:root {
+    --el-color-primary: #1a73e8;
+}
+
+
+/* 覆盖element-plus样式 */
+
+.el-card__header {
+    border-bottom: 0;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 15px 20px 0px 20px;
+}
+
+.el-col .el-card {
+    margin-bottom: 15px;
+    border: none
+}
+
+.el-menu-item.is-active {
+    background-color: #ecf5ff;
+}

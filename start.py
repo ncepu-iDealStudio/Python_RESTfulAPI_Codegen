@@ -10,7 +10,6 @@
     project start
 """
 
-
 import webbrowser
 from ui.api.views import app
 

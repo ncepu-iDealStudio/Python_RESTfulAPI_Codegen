@@ -10,38 +10,47 @@
     General method
 """
 
-import os
-from utils.loggings import loggings
-
 
 # 连字符转驼峰
 def str_format_convert(string):
-    neo_string = ''
-    for i in string.split('_'):
-        if neo_string:
-            neo_string += i.lower().capitalize()
+    new_string = ''
+    for word in string.split('_'):
+        if new_string:
+            new_string += word.lower().capitalize()
         else:
-            neo_string = i
-    return neo_string
+            new_string = word
+    return new_string
 
 
-# 创建文件或文件夹
-def new_file_or_dir(mode, url):
-    try:
-        if not os.path.exists(url):
-            # new file
-            if mode == 1:
-                file = open(url, 'w')
-                file.close()
-            # new dir
-            elif mode == 2:
-                os.mkdir(url)
-    except Exception as e:
-        loggings.error(1, str(e))
+# 字符串转全小写
+def str_to_all_small(string):
+    new_string = string.replace('_', '').lower()
+
+    return new_string
 
 
-# 文件写入
-def file_write(path, content):
-    new_file_or_dir(1, path)
-    with open(path, 'w', encoding='utf8') as f:
-        f.write(content)
+# 字符串转小驼峰
+def str_to_little_camel_case(string):
+    new_string = ''
+    for word in string.split('_'):
+        if new_string:
+            new_string += word[0].upper() + word[1:]
+        else:
+            new_string = word
+
+    return new_string
+
+
+# 字符串转大驼峰
+def str_to_big_camel_case(string):
+    new_string = ''
+    for word in string.split('_'):
+        new_string += word[0].upper() + word[1:]
+
+    return new_string
+
+
+if __name__ == '__main__':
+    ll = ['user_info', 'userInfo', 'userinfo']
+    for l in ll:
+        print(l, '->', str_to_little_camel_case(l))

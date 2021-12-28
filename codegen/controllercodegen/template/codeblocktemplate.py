@@ -14,11 +14,13 @@
 class CodeBlockTemplate(object):
 
     imports = '''
-from app import db
+import datetime
 import math
 import json
+
 from sqlalchemy import or_
 
+from app import db
 from models.{model_name} import {parent_model}
 from utils import commons
 from utils.response_code import RET, error_map_EN
@@ -41,7 +43,7 @@ from utils.loggings import loggings'''
                     filter_list.append(cls.{column} == kwargs.get('{column}'))
                 '''
 
-    get_filer_list_logic = 'cls.IsDelete == 0'
+    get_filer_list_logic = 'cls.{logical_delete_mark} == 0'
 
     rsa_get_filter_num = '''if kwargs.get('{column}') is not None:
                     filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
