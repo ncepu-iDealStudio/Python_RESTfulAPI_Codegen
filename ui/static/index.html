@@ -186,6 +186,8 @@
             }
 
             const getdbname = () => {
+                state.form.DatebaseName = "";
+                state.dbname_list = [];
                 axios({
                     method: 'POST',
                     url: 'http://127.0.0.1:5000/getdbname',
@@ -195,12 +197,7 @@
                     if (res.code === '2000') {
                         state.dbname_list = res.data;
                     } else {
-                        ElMessage({
-                            showClose: true,
-                            message: res.message,
-                            type: 'error',
-                            duration: 0,
-                        })
+                        console.log(res.message)
                     }
                 })
             }
