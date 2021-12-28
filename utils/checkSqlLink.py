@@ -12,6 +12,7 @@
 
 from sqlalchemy import create_engine, MetaData
 from utils.checkTable import CheckTable
+from urllib import parse
 
 
 def check_sql_link(dialect, username, password, host, port, database) -> dict:
@@ -36,6 +37,7 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             'oracle': 'cx_oracle',
             'postgresql': 'psycopg2'
         }
+        password=parse.quote_plus(password)
         url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
                                                            port, database)
         engine = create_engine(url)

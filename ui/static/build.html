@@ -44,7 +44,8 @@
                     </el-card>
 
                     <el-card>
-                        <el-scrollbar style="height: calc(100vh - 300px);">
+                        程序运行日志
+                        <el-scrollbar style="height: calc(100vh - 320px);">
                             <pre>{{log_info}}</pre>
                         </el-scrollbar>
                     </el-card>
@@ -118,7 +119,13 @@
                                 }
                             })
                         } else {
-                            ElMessage.error(res.message)
+                            ElMessage({
+                                showClose: true,
+                                dangerouslyUseHTMLString: true,
+                                message: res.message,
+                                type: 'error',
+                                duration: 0,
+                            })
                         }
                     })
                 });
