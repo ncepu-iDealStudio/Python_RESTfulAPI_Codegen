@@ -12,6 +12,7 @@
 
 import os
 from configparser import ConfigParser
+from urllib import parse
 
 os.chdir(os.path.dirname(os.path.dirname(__file__)))
 
@@ -49,7 +50,7 @@ class Settings(object):
     DIALECT = CONFIG['DATABASE']['DIALECT']
     DRIVER = driver_dict[DIALECT]
     USERNAME = CONFIG['DATABASE']['USERNAME']
-    PASSWORD = CONFIG['DATABASE']['PASSWORD']
+    PASSWORD = parse.quote_plus(CONFIG['DATABASE']['PASSWORD'])
     HOST = CONFIG['DATABASE']['HOST']
     PORT = CONFIG['DATABASE']['PORT']
     DATABASE = CONFIG['DATABASE']['DATABASE']
