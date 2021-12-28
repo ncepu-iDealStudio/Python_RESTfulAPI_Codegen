@@ -16,6 +16,7 @@ import os
 
 import pymysql
 from flask import Flask, request
+from urllib import parse
 
 from utils.checkSqlLink import check_sql_link, connection_check
 
@@ -83,7 +84,8 @@ def connecttest():
     port = kwargs['Port']
     database = kwargs['DatebaseName']
     username = kwargs['Username']
-    password = kwargs['Password']
+    password = parse.quote_plus(kwargs['Password'])
+
     # 检查数据库链接
     result_sql = connection_check(dialect, username, password, host, port, database)
     if result_sql['code']:
@@ -93,8 +95,8 @@ def connecttest():
 
 
 # 连接数据库接口
-@app.route('/connect', methods=['POST'])
-def connect():
+@app.route('/next', methods=['POST'])
+def next():
     # 接收参数
     kwargs = json.loads(request.data)
     dialect = kwargs['DatabaseDialects']
