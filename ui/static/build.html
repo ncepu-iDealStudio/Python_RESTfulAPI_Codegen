@@ -118,7 +118,13 @@
                                 }
                             })
                         } else {
-                            ElMessage.error(res.message)
+                            ElMessage({
+                                showClose: true,
+                                dangerouslyUseHTMLString: true,
+                                message: res.message,
+                                type: 'error',
+                                duration: 0,
+                            })
                         }
                     })
                 });
