@@ -10,37 +10,10 @@
     load public settings and Initialize the parameters
 """
 
-from sqlalchemy import create_engine, MetaData
-
 from config.setting import Settings
-from utils.checkTable import CheckTable
-from utils.tablesMetadata import TableMetadata
 
-# reload settings
-Settings.reload()
-TableMetadata.reload()
-
-# Initialize the parameters for this code generator.
-# 为代码生成器初始化参数
-url = Settings.MODEL_URL
-engine = create_engine(url)
-metadata = MetaData(engine)
-
-if Settings.CODEGEN_MODE == 'database':
-    # database mode
-    metadata.reflect(engine)
-else:
-    # table mode
-    metadata.reflect(engine, only=Settings.MODEL_TABLES.replace(' ', '').split(',') if Settings.MODEL_TABLES else None)
-
-# 代码生成的层次
-codegen_layer = Settings.CODEGEN_LAYER
-
-# 数据库魔术
-schema = Settings.MODEL_SCHEMA
-
-# 无视图
-noviews = Settings.MODEL_NOVIEWS
+# 数据库url
+model_url = Settings.MODEL_URL
 
 # 项目路径
 project_dir = Settings.PROJECT_DIR
@@ -48,6 +21,26 @@ project_dir = Settings.PROJECT_DIR
 # 目标项目路径
 target_dir = Settings.TARGET_DIR
 
-# 数据表信息字典
-table_dict = CheckTable.main(metadata)
+# 代码版本
+api_version = Settings.API_VERSION
 
+# 数据库方言
+dialect = Settings.DIALECT
+
+# 数据库驱动
+driver = Settings.DRIVER
+
+# 数据库登录用户名
+username = Settings.USERNAME
+
+# 数据库登录密码
+password = Settings.PASSWORD
+
+# 数据库ip地址
+host = Settings.HOST
+
+# 数据库端口
+port = Settings.PORT
+
+# 数据库
+database = Settings.DATABASE

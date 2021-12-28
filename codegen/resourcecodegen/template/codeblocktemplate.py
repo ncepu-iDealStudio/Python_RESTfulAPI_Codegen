@@ -28,6 +28,9 @@ class CodeBlockTemplate():
     parameter_args_joint = '''parser.add_argument("{0}", type={1}, location="args", required=False, help="{0}参数类型不正确或缺失")
         '''
 
+    parameter_form_false = '''parser.add_argument("{0}", type={1}, location="form", required=False, help="{0}参数类型不正确或缺失")
+            '''
+
     parameter_form_true = '''parser.add_argument("{0}", type={1}, location="form", required=True, help="{0}参数类型不正确或缺失")
             '''
 
@@ -43,8 +46,7 @@ class CodeBlockTemplate():
     init_blueprint = '{0}_blueprint = Blueprint("{1}", __name__)'
 
     urls_imports = """from . import {0}_blueprint
-from api_{1}.{2}Resource.{2}Resource import {3}Resource
-from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
+from api_{1}.{2}Resource.{2}Resource import {3}Resource"""
 
     urls_api = 'api = Api({0}_blueprint)'
 
@@ -107,12 +109,7 @@ from utils.response_code import RET"""
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
     other_resource_imports = """
-from flask_restful import Resource, reqparse
-from flask import jsonify
-from service.{0}Service import {1}Service
-from utils import commons
-from utils.loggings import loggings
-from utils.response_code import RET"""
+from flask_restful import Resource"""
 
     other_resource_get_service_invoke = """
         res = {0}Service.joint_query(**kwargs)

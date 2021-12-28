@@ -10,10 +10,9 @@
 
 import os
 
-from codegen import table_dict
+
 from codegen.testcodegen.template.filetemplate import FileTemplate
-from config.setting import Settings
-from utils.common import str_format_convert, new_file_or_dir, file_write
+from utils.common import str_format_convert
 from utils.loggings import loggings
 
 
@@ -23,9 +22,9 @@ class CodeGenerator(object):
         super(CodeGenerator, self).__init__()
 
     # testcode generator
-    def test_generator(self, test_dir):
+    def test_generator(self, test_dir, table_dict):
         # reload settings
-        Settings.reload()
+        # Settings.reload()
 
         try:
 
@@ -63,7 +62,6 @@ class CodeGenerator(object):
 
                 # file write
                 loggings.info(1, 'Generating {0}'.format('Test_{0}Controller'.format(tableName)))
-
 
             loggings.info(1, 'Generating TestController layer complete')
 
@@ -104,7 +102,6 @@ class CodeGenerator(object):
                 # file write
                 loggings.info(1, 'Generating {0}'.format('Test_{0}Resource'.format(tableName)))
 
-
             loggings.info(1, 'Generating TestResource layer complete')
 
             loggings.info(1, 'Generating Test layer complete')
@@ -112,7 +109,6 @@ class CodeGenerator(object):
         except Exception as e:
             loggings.exception(1, e)
             return
-
 
     # init generation
     def init_codegen(self):
