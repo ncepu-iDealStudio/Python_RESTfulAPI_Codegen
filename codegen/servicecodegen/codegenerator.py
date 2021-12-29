@@ -14,7 +14,7 @@ import os
 
 from codegen.servicecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.servicecodegen.template.fileTemplate import FileTemplate
-from utils.common import str_format_convert
+from utils.common import str_format_convert, str_to_little_camel_case
 from utils.loggings import loggings
 
 
@@ -33,7 +33,7 @@ class CodeGenerator(object):
                     table_name=self.table_dict[table]['table_name']))
 
                 # The name of the table whose code needs to be generated
-                table_name = str_format_convert(self.table_dict[table]['table_name'])
+                table_name = str_to_little_camel_case(self.table_dict[table]['table_name'])
                 table_name_initials_upper = table_name[0].upper() + table_name[1:]
 
                 # Format the code block template
