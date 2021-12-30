@@ -125,7 +125,7 @@ class CodeGenerator(object):
 
             api_str = CodeBlockTemplate.urls_api.format(table_name_all_small)
 
-            if table.get('business_key'):
+            if table.get('business_key').get('column'):
                 primary_key_str = CodeBlockTemplate.primary_key.format(table_name_small_hump,
                                                                        table.get('business_key').get('column'))
             else:
