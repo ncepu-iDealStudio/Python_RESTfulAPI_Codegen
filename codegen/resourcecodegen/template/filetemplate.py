@@ -174,11 +174,11 @@ def create_app(config_name):
     :return:
     \"\"\"
     
-    config_mode = ｛
+    config_mode = {
         'develop': 'DevelopSettings',
         'product': 'ProductSettings',
         'test': 'TestSettings'
-    ｝
+    }
     
     app = Flask(__name__)
 
@@ -249,7 +249,7 @@ class ApiVersionResource(Resource):
 \"\"\"
 
 from app import create_app
-from flask_script import Manager
+from flask_script import Manager, Server
 from flask import request, jsonify
 from flasgger import Swagger
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -266,6 +266,7 @@ manager.add_command("runserver", Server(use_debugger=True))
 
 # 将swagger包引入Flask应用
 swagger = Swagger(app)
+
 
 # 创建全站拦截器,每个请求之前做处理
 @app.before_request
