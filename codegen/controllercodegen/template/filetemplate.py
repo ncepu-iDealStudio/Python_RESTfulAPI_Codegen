@@ -70,11 +70,7 @@ class {class_name}({parent_model}):
             count = {model_lower}_info.count()
             pages = math.ceil(count / size)
             {model_lower}_info = {model_lower}_info.limit(size).offset((page - 1) * size).all()
-
-            # judge whether the data is None
-            if not {model_lower}_info:
-                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No query results'}}}}
-                
+   
             results = commons.query_to_dict({model_lower}_info)
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'totalCount': count, 'totalPage': pages, 'data': results}}
             
@@ -109,8 +105,6 @@ class {class_name}({parent_model}):
                 results['{primary_key}'].append(query_model.{primary_key})
             
             res = res.delete()
-            if res < 1:
-                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No data to delete'}}}}
             db.session.commit()
             
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
@@ -147,8 +141,6 @@ class {class_name}({parent_model}):
                 results['{primary_key}'].append(query_model.{primary_key})
             
             res = res.update({{'{logical_delete_mark}': 1}})
-            if res < 1:
-                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No data to delete'}}}}
             db.session.commit()
             
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
@@ -171,7 +163,6 @@ class {class_name}({parent_model}):
                 cls.{primary_key} == kwargs.get('{primary_key}')
             ).with_for_update().update(kwargs)
             
-            if res < 1:
                 return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No data to update'}}}}
             db.session.commit()
             
@@ -201,8 +192,6 @@ class {class_name}({parent_model}):
                 cls.{logical_delete_mark} == 0
             ).with_for_update().update(kwargs)
             
-            if res < 1:
-                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No data to update'}}}}
             db.session.commit()
             
             results = {{
