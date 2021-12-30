@@ -132,7 +132,7 @@ def setproject():
     projectPath = 'dist'
     projectName = kwargs["projectName"]
     interfaceVersion = kwargs["projectVersion"]
-    flasgger_mode = kwargs["flasgger_mode"]
+    flasgger_mode = kwargs["flasggerMode"]
 
     configfile = "config/config.conf"
     conf = configparser.ConfigParser()  # 实例类

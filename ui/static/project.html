@@ -50,7 +50,7 @@
                                     <el-input v-model="Form.projectVersion" placeholder="1.0"></el-input>
                                 </el-form-item>
                                 <el-form-item label="flasgger文档生成">
-                                    <el-switch v-model="flasgger_mode" />
+                                    <el-switch v-model="Form.flasggerMode" />
                                 </el-form-item>
                             </el-form>
                         </el-card>
@@ -96,7 +96,7 @@
                     Form: {
                         projectName: "",
                         projectVersion: "",
-                        flasgger_mode: true,
+                        flasggerMode: true,
                     },
                     rules: {
                         projectName: [{
