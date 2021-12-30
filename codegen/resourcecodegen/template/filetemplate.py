@@ -251,9 +251,14 @@ from utils.response_code import RET
 # 创建flask的app对象
 app = create_app("develop")
 
+# 通过Flask-Script的Manager,Server接管Flask运行
 manager = Manager(app)
-swagger = Swagger(app)
 
+# 开启Debug模式
+manager.add_command("runserver", Server(use_debugger=True))
+
+# 将swagger包引入Flask应用
+swagger = Swagger(app)
 
 # 创建全站拦截器,每个请求之前做处理
 @app.before_request
