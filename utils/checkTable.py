@@ -97,11 +97,11 @@ class CheckTable(object):
         table_dict = TableMetadata.get_tables_metadata(metadata)
         invalid_tables = {}
 
-        # # check table primary key
-        # available_table, invalid_table = cls.check_primary_key(table_dict)
-        # invalid_tables['primary_key'] = invalid_table
-        # for invalid in invalid_table:
-        #     table_dict.pop(invalid)
+        # check table primary key
+        available_table, invalid_table = cls.check_primary_key(table_dict)
+        invalid_tables['primary_key'] = invalid_table
+        for invalid in invalid_table:
+            table_dict.pop(invalid)
 
         # check the keyword
         available_table, invalid_table = cls.check_keyword_conflict(table_dict)
