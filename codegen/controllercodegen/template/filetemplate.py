@@ -40,7 +40,7 @@ class {class_name}({parent_model}):
             db.session.commit()
             results = {{
                 '{primary_key}': model.{primary_key},
-                'add_time': datetime.datetime.now()
+                'add_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }}
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
             
@@ -103,7 +103,7 @@ class {class_name}({parent_model}):
             
             results = {{
                 '{primary_key}': [],
-                'delete_time': datetime.datetime.now()
+                'delete_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }}
             for query_model in res.all():
                 results['{primary_key}'].append(query_model.{primary_key})
@@ -141,7 +141,7 @@ class {class_name}({parent_model}):
             
             results = {{
                 '{primary_key}': [],
-                'delete_time': datetime.datetime.now()
+                'delete_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }}
             for query_model in res.all():
                 results['{primary_key}'].append(query_model.{primary_key})
@@ -177,7 +177,7 @@ class {class_name}({parent_model}):
             
             results = {{
                 '{primary_key}': kwargs.get('{primary_key}'),
-                'update_time': datetime.datetime.now()
+                'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }}
             
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
@@ -207,7 +207,7 @@ class {class_name}({parent_model}):
             
             results = {{
                 '{primary_key}': kwargs.get('{primary_key}'),
-                'update_time': datetime.datetime.now()
+                'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }}
             
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
@@ -238,7 +238,7 @@ class {class_name}({parent_model}):
             db.session.commit()
             results = {{
                 '{primary_key}': [],
-                'add_time': datetime.datetime.now()
+                'add_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }}
             for model in model_list:
                 results['{primary_key}'].append(model.{primary_key})
