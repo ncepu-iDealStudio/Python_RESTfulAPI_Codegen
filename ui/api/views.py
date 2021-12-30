@@ -141,7 +141,7 @@ def setproject():
     conf.set("PARAMETER", "target_dir", projectPath)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
     conf.set("PARAMETER", "project_name", projectName)
     conf.set("PARAMETER", "api_version", interfaceVersion)
-    conf.set("PARAMETER", "flasgger_mode", flasgger_mode)
+    conf.set("PARAMETER", "flasgger_mode", str(flasgger_mode))
     with open(configfile, "w") as f:
         conf.write(f)
     return {'code': '2000', 'data': [], 'message': '写入配置成功'}

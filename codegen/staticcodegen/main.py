@@ -30,7 +30,9 @@ def main():
     try:
         # 第一步
         os.makedirs(os.path.join(project_dir, "config"), exist_ok=True)
-        CodeGenerator.generate_configuration_file(os.path.join(project_dir, "config", "config.conf"))
+        CodeGenerator.generate_develop_configuration_file(os.path.join(project_dir, "config", "develop_config.conf"))
+        CodeGenerator.generate_blank_configuration_file(os.path.join(project_dir, "config", "test_config.conf"))
+        CodeGenerator.generate_blank_configuration_file(os.path.join(project_dir, "config", "product_config.conf"))
 
         # 第二步
         # app_setting
