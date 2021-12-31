@@ -19,7 +19,6 @@ from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
 from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
 from utils.loggings import loggings
-flasgger_mode = True
 
 class CodeGenerator(object):
 
@@ -52,9 +51,10 @@ class CodeGenerator(object):
                 f.write(FileTemplate.api_version_resource.format(apiversion=api_version.replace('_', '.')))
 
             # apiversion ymls file generation
-            os.makedirs(apiVersion_ymls_dir := os.path.join(apiVersion_dir, 'ymls'), exist_ok=True)
-            with open(os.path.join(apiVersion_ymls_dir, 'apiversion_get.yml'), 'w', encoding='utf8') as f:
-                f.write(FileTemplate.yml_get_template.format('apiversion', ''))
+            if flasgger_mode:
+                os.makedirs(apiVersion_ymls_dir := os.path.join(apiVersion_dir, 'ymls'), exist_ok=True)
+                with open(os.path.join(apiVersion_ymls_dir, 'apiversion_get.yml'), 'w', encoding='utf8') as f:
+                    f.write(FileTemplate.yml_get_template.format('apiversion', ''))
 
             # file generation
             for table in table_dict.keys():
