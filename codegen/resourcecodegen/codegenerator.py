@@ -180,7 +180,7 @@ class CodeGenerator(object):
                 elif column.get('name') == delete_column:
                     continue
                 else:
-                    if column.get('name') not in rsa_columns and column.get('is_exist_default'):
+                    if column.get('nullable'):
                         parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
                                                                                         column.get('type'))
                     else:
