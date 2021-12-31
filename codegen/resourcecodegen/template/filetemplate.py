@@ -174,11 +174,11 @@ def create_app(config_name):
     :return:
     \"\"\"
     
-    config_mode = {
+    config_mode = {{
         'develop': 'DevelopSettings',
         'product': 'ProductSettings',
         'test': 'TestSettings'
-    }
+    }}
     
     app = Flask(__name__)
 
