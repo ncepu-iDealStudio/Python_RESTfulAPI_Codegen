@@ -46,13 +46,13 @@ from flask_restful import Api
     resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
 {imports}
+{flasgger_import}
 
 
 class {className}Resource(Resource):
 
     # get
-    @classmethod
-    @swag_from("ymls/{apiName}_get.yml")
+    @classmethod{swag_get}
     def get(cls, {id}=None):
         if {id}:
             kwargs = {{
@@ -80,8 +80,7 @@ class {className}Resource(Resource):
             return jsonify(code=res['code'], message=res['message'], data=res['data']) 
 
     # delete
-    @classmethod
-    @swag_from("ymls/{apiName}_delete.yml")
+    @classmethod{swag_delete}
     def delete(cls, {id}=None):
         if {id}:
             kwargs = {{
@@ -101,8 +100,7 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # put
-    @classmethod
-    @swag_from("ymls/{apiName}_put.yml")
+    @classmethod{swag_put}
     def put(cls, {id}):
         if not {id}:
             return jsonify(code=RET.NODATA, message='primary key missed', error='primary key missed')
@@ -118,8 +116,7 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # add
-    @classmethod
-    @swag_from("ymls/{apiName}_post.yml")
+    @classmethod{swag_post}
     def post(cls):
         parser = reqparse.RequestParser()
         parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')

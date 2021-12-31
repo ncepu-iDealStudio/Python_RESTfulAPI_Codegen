@@ -14,12 +14,12 @@
 
 import os
 
-from codegen import project_dir, api_version
+from codegen import project_dir, api_version, flasgger_mode
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
 from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
 from utils.loggings import loggings
-
+flasgger_mode = True
 
 class CodeGenerator(object):
 
@@ -78,17 +78,18 @@ class CodeGenerator(object):
                     f.write(self.other_resource_codegen(table_dict[table]).replace('\"', '\''))
 
                 # ymls generation
-                os.makedirs(ymls_dir := os.path.join(resource_dir, 'ymls'), exist_ok=True)
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_get.yml'), 'w', encoding='utf8') as f:
-                    f.write(self.yml_get_codegen(table_dict[table]).replace('\"', '\''))
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_gets.yml'), 'w', encoding='utf8') as f:
-                    f.write(self.yml_gets_codegen(table_dict[table]).replace('\"', '\''))
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_post.yml'), 'w', encoding='utf8') as f:
-                    f.write(self.yml_post_codegen(table_dict[table]).replace('\"', '\''))
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_put.yml'), 'w', encoding='utf8') as f:
-                    f.write(self.yml_put_codegen(table_dict[table]).replace('\"', '\''))
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_delete.yml'), 'w', encoding='utf8') as f:
-                    f.write(FileTemplate.yml_delete_template.format(table_dict[table].get('table_name')))
+                if flasgger_mode:
+                    os.makedirs(ymls_dir := os.path.join(resource_dir, 'ymls'), exist_ok=True)
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_get.yml'), 'w', encoding='utf8') as f:
+                        f.write(self.yml_get_codegen(table_dict[table]).replace('\"', '\''))
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_gets.yml'), 'w', encoding='utf8') as f:
+                        f.write(self.yml_gets_codegen(table_dict[table]).replace('\"', '\''))
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_post.yml'), 'w', encoding='utf8') as f:
+                        f.write(self.yml_post_codegen(table_dict[table]).replace('\"', '\''))
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_put.yml'), 'w', encoding='utf8') as f:
+                        f.write(self.yml_put_codegen(table_dict[table]).replace('\"', '\''))
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_delete.yml'), 'w', encoding='utf8') as f:
+                        f.write(FileTemplate.yml_delete_template.format(table_dict[table].get('table_name')))
 
         except Exception as e:
             loggings.exception(1, e)
@@ -116,8 +117,6 @@ class CodeGenerator(object):
             table_name_all_small = str_to_all_small(table.get('table_name'))
             table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
             table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
-            # api_name = table_name_small_hump
-            # className_str = api_name[0].upper() + api_name[1:]
 
             # template  generation
             import_str = CodeBlockTemplate.urls_imports.format(table_name_all_small, api_version, table_name_small_hump,
@@ -133,8 +132,6 @@ class CodeGenerator(object):
                     table_name_small_hump, table.get('primaryKey')[0])
 
             resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_hump, primary_key_str, table_name_small_hump)
-
-            # other_resource_str = CodeBlockTemplate.urls_other_resource.format(table_name_big_hump, table_name_small_hump)
 
             return FileTemplate.urls.format(
                 imports=import_str, api=api_str, resource=resource_str)
@@ -196,8 +193,30 @@ class CodeGenerator(object):
             else:
                 id_str = primaryKey
 
+            # swag generation
+            if flasgger_mode:
+                swag_get = CodeBlockTemplate.resource_swag_get.format(table_name_small_hump)
+                swag_put = CodeBlockTemplate.resource_swag_put.format(table_name_small_hump)
+                swag_post = CodeBlockTemplate.resource_swag_post.format(table_name_small_hump)
+                swag_delete = CodeBlockTemplate.resource_swag_delete.format(table_name_small_hump)
+
+                import_flasgger = CodeBlockTemplate.resource_import_flasgger
+            else:
+                swag_get = ''
+                swag_put = ''
+                swag_post = ''
+                swag_delete = ''
+
+                import_flasgger = ''
+
+
             return FileTemplate.resource.format(
+                swag_get=swag_get,
+                swag_put=swag_put,
+                swag_post=swag_post,
+                swag_delete=swag_delete,
                 imports=imports_str,
+                flasgger_import=import_flasgger,
                 apiName=table_name_small_hump,
                 className=table_name_big_hump,
                 id=id_str,

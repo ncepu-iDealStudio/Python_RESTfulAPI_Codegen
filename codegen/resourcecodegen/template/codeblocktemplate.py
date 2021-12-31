@@ -64,10 +64,19 @@ def {2}_query():
     resource_imports = """
 from flask_restful import Resource, reqparse
 from flask import jsonify
-from flasgger import swag_from
 from controller.{0}Controller import {1}Controller
 from utils import commons
 from utils.response_code import RET"""
+
+    resource_import_flasgger = "from flasgger import swag_from"
+
+    resource_swag_get = '\n    @swag_from("ymls/{0}_get.yml")'
+
+    resource_swag_put = '\n    @swag_from("ymls/{0}_put.yml")'
+
+    resource_swag_post = '\n    @swag_from("ymls/{0}_post.yml")'
+
+    resource_swag_delete = '\n    @swag_from("ymls/{0}_delete.yml")'
 
     resource_id_check = """
         if {id}:

@@ -44,3 +44,6 @@ port = Settings.PORT
 
 # 数据库
 database = Settings.DATABASE
+
+# Flasgger模式
+flasgger_mode = Settings.FLASGGER_MODE
