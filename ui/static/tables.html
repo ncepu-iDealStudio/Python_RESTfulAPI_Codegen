@@ -76,7 +76,7 @@
                                                 <el-col :span="23">
                                                     <div>以下表不符合规范，已被过滤</div>
                                                     <div v-if="invalid_primary_key!=''">
-                                                        <div> 缺少主键或存在符合主键：</div>
+                                                        <div> 缺少主键或存在复合主键：</div>
                                                         <div> {{invalid_primary_key}}</div>
                                                     </div>
                                                     <div v-if="invalid_keyword!=''">
