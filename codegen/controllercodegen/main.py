@@ -21,9 +21,6 @@ def main(table_dict):
     :return: None
     """
 
-    if not table_dict:
-        return
-
     # create the controller file
     os.makedirs(controller_dir := os.path.join(project_dir, 'controller'), exist_ok=True)
 
