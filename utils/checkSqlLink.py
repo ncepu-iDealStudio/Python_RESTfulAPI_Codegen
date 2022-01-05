@@ -11,6 +11,8 @@
 """
 
 from sqlalchemy import create_engine, MetaData
+from sqlalchemy.engine import reflection
+
 from utils.checkTable import CheckTable
 from urllib import parse
 
@@ -37,16 +39,18 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             'oracle': 'cx_oracle',
             'postgresql': 'psycopg2'
         }
-        password=parse.quote_plus(password)
+        password = parse.quote_plus(password)
         url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
                                                            port, database)
         engine = create_engine(url)
         metadata = MetaData(engine)
-        metadata.reflect(engine)
+        insp = reflection.Inspector.from_engine(engine)
+        metadata.reflect(engine, views=True)
+
     except Exception as e:
         return {'code': False, 'message': str(e), 'error': str(e)}
 
-    table_dict, invalid_tables = CheckTable.main(metadata)
+    table_dict, invalid_tables = CheckTable.main(metadata, insp.get_view_names())
 
     data = []
     for table in table_dict.values():

@@ -88,13 +88,14 @@ class CheckTable(object):
 
     # 入口函数定义
     @classmethod
-    def main(cls, metadata):
+    def main(cls, metadata, reflection_views):
         """
             建立数据库连接时对表进行检查，筛去没有唯一自增主键、表名/字段名与Python关键字有冲突的表
             :param metadata: 数据库元数据
+            :param reflection_views: 需要反射的视图名称列表
         """
 
-        table_dict = TableMetadata.get_tables_metadata(metadata)
+        table_dict = TableMetadata.get_tables_metadata(metadata, reflection_views)
         invalid_tables = {}
 
         # check table primary key
@@ -115,7 +116,7 @@ class CheckTable(object):
                 1,
                 "A total of {0} tables check passed."
                 "The following {1} tables do not meet the specifications and cannot be generated: {2}."
-                .format(
+                    .format(
                     len(available_tables),
                     len(invalid_tables['primary_key'] + invalid_tables['keyword']),
                     ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])

@@ -20,7 +20,14 @@ class TableMetadata(object):
         TYPE_MAPPING = json.load(f)
 
     @classmethod
-    def get_tables_metadata(cls, metadata, table_config=DEFAULT_CONFIG):
+    def get_tables_metadata(cls, metadata, reflection_views, table_config=DEFAULT_CONFIG) -> dict:
+        """
+            获取数据库数据
+            :param metadata: sqlalchemy元数据
+            :param reflection_views: 需要反射的视图名称列表
+            :param table_config: 表配置
+        """
+
         table_config = table_config if isinstance(table_config, list) else json.loads(table_config)
 
         # Get all tables object
@@ -29,16 +36,36 @@ class TableMetadata(object):
 
         # Traverse each table object to get corresponding attributes to form an attribute dictionary
         for table in table_objs:
-            # get the table name
+
             table_name = str(table)
             table_dict[table_name] = {}
             table_dict[table_name]['table_name'] = table_name
+
+            # 如果该表是一个视图
+            if table_name in reflection_views:
+                table_dict[table_name]['is_view'] = True
+                table_dict[table_name]['filter_field'] = []
+
+                # 遍历所有的视图配置
+                for view in table_config['view']:
+                    if table_name == view['view']:
+                        # 遍历配置中的字段
+                        for field in view['filter_field']:
+                            # 如果字段被勾选，则将字段名称和类型添加进字典中
+                            if field['ischecked']:
+                                table_dict[table_name]['filter_field'].append({
+                                    "field_name": field['field_name'],
+                                    "field_type": field['field_type']
+                                })
+                continue
+
+            table_dict[table_name]['is_view'] = False
             table_dict[table_name]['logical_delete_mark'] = ""
             table_dict[table_name]['columns'] = {}
             table_dict[table_name]['business_key'] = {}
 
             # Check if the business key exists and check record deletion method
-            for config in table_config:
+            for config in table_config['table']:
                 if config['table'] == table_name and config['logicaldeletemark'] != '':
                     table_dict[table_name]['logical_delete_mark'] = config['logicaldeletemark']
 
@@ -48,7 +75,7 @@ class TableMetadata(object):
 
             # 需要RSA加密的字段
             table_dict[table_name]['rsa_columns'] = []
-            for rsa_table in table_config:
+            for rsa_table in table_config['table']:
                 if rsa_table['table'] == table_name:
                     for rsa_colume in rsa_table['field']:
                         if rsa_colume['field_encrypt']:
