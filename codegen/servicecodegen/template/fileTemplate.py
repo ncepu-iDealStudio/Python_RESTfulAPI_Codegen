@@ -21,6 +21,7 @@ class FileTemplate(object):
 {imports}
 
 class {table_name_initials_upper}Service({table_name_initials_upper}Controller):
+    
     pass
 """
 
@@ -38,7 +39,6 @@ class {table_name_initials_upper}Service(object):
 
         filter_list = []
     
-{filter_conditions}
         try:
             {table_name_lower_case}_info = db.session.query(t_{original_view_name}).filter(*filter_list)
             
@@ -46,7 +46,7 @@ class {table_name_initials_upper}Service(object):
             pages = math.ceil(count / size)
             {table_name_lower_case}_info = {table_name_lower_case}_info.limit(size).offset((page - 1) * size).all()
             results = commons.query_to_dict({table_name_lower_case}_info)
-    
+
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'totalCount': count, 'totalPage': pages, 'data': results}}
     
         except Exception as e:
