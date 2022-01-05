@@ -114,12 +114,10 @@
                         }
                     })
 
-                    console.log(profile);
-
                     axios({
                         method: 'POST',
                         url: 'http://127.0.0.1:5000/startbuild',
-                        data: JSON.stringify(profile)
+                        data: profile
                     }).then(result => {
                         const res = result.data
                         if (res.code === '2000') {
