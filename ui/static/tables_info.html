@@ -125,7 +125,7 @@
                     let data = JSON.parse(localStorage.getItem("tables"));
                     // 找出所有的选中的表
                     for (let i = 0; i < data.length; i++) {
-                        if (data[i].issave) {
+                        if (data[i].ischecked) {
                             data[i].encrypt = []
                             for (let j = 0; j < data[i].field.length; j++) {
                                 if (data[i].field[j].field_encrypt) {

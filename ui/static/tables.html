@@ -53,7 +53,7 @@
                                     <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
                                 </div>
                                 <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
-                                    <el-checkbox v-model="item.issave" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
+                                    <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
                                 </el-menu-item>
                             </el-menu>
                         </el-scrollbar>
@@ -205,7 +205,7 @@
             // 全选
             const handleCheckAllChange = (val) => {
                 for (let i = 0; i < state.tables.length; i++) {
-                    state.tables[i].issave = val;
+                    state.tables[i].ischecked = val;
                 }
                 state.isIndeterminate = false;
             }
@@ -214,7 +214,7 @@
                 state.isIndeterminate = true;
                 let index_checked = 0;
                 for (let i = 0; i < state.tables.length; i++) {
-                    if (state.tables[i].issave) {
+                    if (state.tables[i].ischecked) {
                         index_checked++;
                     }
                 }
@@ -240,7 +240,7 @@
 
             //清空
             const handleClear = () => {
-                state.tables[state.activeIndex].issave = false;
+                state.tables[state.activeIndex].ischecked = false;
                 state.tables[state.activeIndex].logicaldeletemark = "";
                 if (!state.tables.businesskeyuneditable) {
                     state.tables.businesskeyname = "";
@@ -272,7 +272,7 @@
 
             //勾选左边表
             const checkCurrentTables = () => {
-                state.tables[state.activeIndex].issave = true;
+                state.tables[state.activeIndex].ischecked = true;
 
             }
 
@@ -286,7 +286,7 @@
             const exportfile = () => {
                 let tables_data = [];
                 for (let i = 0; i < state.tables.length; i++) {
-                    if (state.tables[i].issave) {
+                    if (state.tables[i].ischecked) {
                         tables_data.push(state.tables[i])
                     }
                 }
@@ -323,7 +323,7 @@
 
                         // 清空所有配置信息
                         for (let i = 0; i < state.tables.length; i++) {
-                            state.tables[i].issave = false;
+                            state.tables[i].ischecked = false;
                             state.tables[i].logicaldeletemark = "";
                             if (!state.tables[i].businesskeyuneditable) {
                                 state.tables[i].businesskeyname = "";
@@ -342,7 +342,7 @@
                             for (let j = 0; j < state.tables.length; j++) {
                                 // 判断表名是否存在
                                 if (tables_data[i].table === state.tables[j].table) {
-                                    state.tables[j].issave = tables_data[i].issave;
+                                    state.tables[j].ischecked = tables_data[i].ischecked;
 
                                     //校验主键是否修改
                                     if (tables_data[i].table.businesskeyuneditable != state.tables[j].table.businesskeyuneditable) {
