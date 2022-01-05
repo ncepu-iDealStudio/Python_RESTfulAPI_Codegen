@@ -39,6 +39,7 @@ class {table_name_initials_upper}Service(object):
 
         filter_list = []
     
+{filter_conditions}
         try:
             {table_name_lower_case}_info = db.session.query(t_{original_view_name}).filter(*filter_list)
             
