@@ -57,11 +57,28 @@ class TableMetadata(object):
                                     "field_name": field['field_name'],
                                     "field_type": field['field_type']
                                 })
+
+                table_dict[table_name]['columns'] = []
+                for column in table.columns.values():
+                    temp_column_dict = {
+                        "field_name": str(column.name),
+                    }
+
+                    for type_ in cls.TYPE_MAPPING:
+                        if str(metadata.bind.url).split('+')[0] != type_['database']:
+                            continue
+                        for python_type, sql_type_list in type_['data_map'].items():
+                            if str(column.type).lower() in sql_type_list:
+                                temp_column_dict['field_type'] = python_type
+                                break
+
+                    temp_column_dict.setdefault('field_type', 'str')
+                    table_dict[table_name]['columns'].append(temp_column_dict)
+
                 continue
 
             table_dict[table_name]['is_view'] = False
             table_dict[table_name]['logical_delete_mark'] = ""
-            table_dict[table_name]['columns'] = {}
             table_dict[table_name]['business_key'] = {}
 
             # Check if the business key exists and check record deletion method
@@ -83,6 +100,7 @@ class TableMetadata(object):
 
             # 初始化为空列表
             table_dict[table_name]['primaryKey'] = []
+            table_dict[table_name]['columns'] = {}
 
             # Traverse each columns to get corresponding attributes
             for column in table.columns.values():
