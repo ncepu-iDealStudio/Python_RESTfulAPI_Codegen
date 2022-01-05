@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <link rel="stylesheet" href="static/cdn/element-plus.css" />
+    <script src="static/cdn/vue-3.2.26.js"></script>
+    <script src="static/cdn/element-ui.js"></script>
+    <script src="static/cdn/axios-0.24.0.js"></script>
+    <link rel="stylesheet" href="static/global.css" />
+    <link rel="stylesheet" href="static/iconfont/iconfont.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="container_warp">
+            <div class="container_header">
+                <el-row>
+                    <el-col :offset="5" :span="14">
+                        Flask_Sqlachemy_RESTfulAPI_Codegen
+                    </el-col>
+                    <el-col :span="5">
+                        <el-tooltip placement="top">
+                            <template #content>如果喜欢就点个星星支持一下</template>
+                            <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
+                                <div class="iconfont icon-shoucang1"></div>
+                            </a>
+                        </el-tooltip>
+                        <el-tooltip placement="bottom">
+                            <template #content>导入配置文件</template>
+                            <div style="float: right;margin-right: 20px;">
+                                <div @click="importfile" class="iconfont icon-shangchuandaochu"></div>
+                            </div>
+                        </el-tooltip>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="container_body">
+                <el-row>
+                    <el-col :offset="4" :span="4">
+                        <el-scrollbar style="height:calc(100vh - 130px);">
+                            <el-menu @select="handleSelect">
+                                <div style="padding-left: 20px;">
+                                    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
+                                </div>
+                                <el-menu-item :index="index" v-for="(item, index) in views" :key="index">
+                                    <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.view}}
+                                </el-menu-item>
+                            </el-menu>
+                        </el-scrollbar>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-scrollbar style="height:calc(100vh - 130px);">
+                            <div v-if="activeIndex===-1">
+                                <el-card shadow="never">
+                                    <el-card shadow="never">
+                                        <template #header>视图准备</template>
+                                        <p>请选择用于生成代码的视图，并为每张表进行相应的配置</p>
+                                    </el-card>
+                                </el-card>
+                            </div>
+                            <el-card shadow="never" v-else>
+                                <el-card shadow="never">
+                                    <template #header>
+                                    {{views[activeIndex].view}}
+                                    </template>
+                                    <div style="margin: 10px 0;">
+                                        这里是文案
+                                        <el-tooltip placement="top">
+                                            <template #content>无:<br/>笑死，根本没有文案</template>
+                                            <span class="iconfont icon-yiwen"></span>
+                                        </el-tooltip>
+                                    </div style="margin: 10px 0;">
+                                    <el-card>
+                                        <el-scrollbar height="200px">
+                                            <el-checkbox v-model="item.ischecked" :label="item.field_name" v-for="(item, index) in views[activeIndex].filter_field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;" @change="checkCurrentViews"></el-checkbox>
+                                        </el-scrollbar>
+                                    </el-card>
+                                </el-card>
+                            </el-card>
+                        </el-scrollbar>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+        <div class="container_footer">
+            <el-row>
+                <el-col :offset="4" :span="16">
+                    <div style="margin:0 20px;">
+                        <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
+                        <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+        <input type="file" id="inputfile" @change="selectfile" style="display: none;" />
+    </div>
+</body>
+
+<script>
+    const {
+        reactive,
+        toRefs,
+        onMounted
+    } = Vue
+    const {
+        ElMessage,
+    } = ElementPlus
+    const composition = {
+        setup() {
+            const state = reactive({
+                activeIndex: -1,
+                views: [],
+                nextStep_loading: false,
+                checkAll: false,
+                isIndeterminate: false,
+            });
+
+            const handleSelect = (key, keyPath) => {
+                state.activeIndex = key;
+            }
+
+            // 全选
+            const handleCheckAllChange = (val) => {
+                for (let i = 0; i < state.views.length; i++) {
+                    state.views[i].ischecked = val;
+                }
+                state.isIndeterminate = false;
+            }
+
+            const handleCheckChange = () => {
+                state.isIndeterminate = true;
+                let index_checked = 0;
+                for (let i = 0; i < state.views.length; i++) {
+                    if (state.views[i].ischecked) {
+                        index_checked++;
+                    }
+                }
+                if (index_checked === 0) {
+                    state.isIndeterminate = false;
+                    state.checkAll = false;
+                } else if (index_checked === state.views.length) {
+                    state.isIndeterminate = false;
+                    state.checkAll = true;
+                }
+            }
+
+            //上一步
+            const back = () => {
+                state.nextStep_loading = true;
+                localStorage.setItem("views", JSON.stringify(state.views));
+                location.replace('tables');
+                state.nextStep_loading = false;
+            }
+
+            //下一步
+            const nextStep = () => {
+                state.nextStep_loading = true;
+                localStorage.setItem("views", JSON.stringify(state.views));
+                location.replace('tables_info')
+                state.nextStep_loading = false;
+            }
+
+            //勾选左边表
+            const checkCurrentViews = () => {
+                state.views[state.activeIndex].ischecked = true;
+
+            }
+
+            onMounted(() => {
+                let data = JSON.parse(localStorage.getItem("views"));
+                if (!data) {
+                    ElMessage.warning('请重新连接数据库')
+                    setTimeout(() => {
+                        location.replace('/')
+                    }, 1000)
+                }
+                state.views = data;
+            });
+
+            return {
+                ...toRefs(state),
+                handleSelect,
+                handleCheckAllChange,
+                handleCheckChange,
+                back,
+                nextStep,
+                checkCurrentViews,
+            };
+        },
+
+
+    }
+
+    // 创建vue3的实例
+    const app = Vue.createApp(
+        composition
+    )
+    app.use(ElementPlus)
+        // 挂载Vue的app实例
+    app.mount('#app')
+</script>
+
+<style>
+
+</style>
+
+</html>

@@ -39,47 +39,79 @@
                                 <template #header>数据库配置</template> 请检查要生成接口项目代码的目标数据库，生成器将针对此数据库生成一个分层设计的接口项目
                             </el-card>
                             <el-card>
-                                <el-row :gutter="10" style="padding:0  0 14px 0;">
-                                    <el-col :span="4">
-                                        <div>表名</div>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <div>加密字段</div>
-                                    </el-col>
-                                    <el-col :span="4">
-                                        <div>是否逻辑删除</div>
-                                    </el-col>
-
-                                    <el-col :span="4">
-                                        <div>业务主键</div>
-                                    </el-col>
-                                    <el-col :span="4">
-                                        <div>业务主键生成规则</div>
-                                    </el-col>
-                                </el-row>
-                                <el-divider style="margin:0;"></el-divider>
-                                <el-empty v-if="tables.length===0" description="no data"></el-empty>
-                                <div class="container_tables" v-for="(item, index) in tables" :key="index" style="padding: 14px 0;">
-                                    <el-row>
-                                        <el-col :span="4">
-                                            <div style="overflow: hidden; margin:0 10px;">{{item.table}}</div>
-                                        </el-col>
-                                        <el-col :span="8">
-                                            <span v-if="item.encrypt.length===0">/</span>
-                                            <span v-for="(fieldItem, index) in item.encrypt" :key="index"><span><el-divider v-if="index!=0" direction="vertical"></el-divider>{{fieldItem}}</span></span>
-                                        </el-col>
-                                        <el-col :span="4">
-                                            <div>{{item.logicaldeletemark || '/'}}</div>
-                                        </el-col>
-                                        <el-col :span="4">
-                                            <div>{{item.businesskeyname || '/'}}</div>
-                                        </el-col>
-                                        <el-col :span="4">
-                                            <div>{{item.businesskeyrule || '/'}}</div>
-                                        </el-col>
-                                        <el-divider style="position: relative;bottom: -14px;margin: 0;"></el-divider>
-                                    </el-row>
+                                <div style="margin-bottom: 10px;">
+                                    <el-switch v-model="show_switch" active-text="视图" inactive-text="数据表" :active-value="1" :inactive-value="0" @change="changeShow"></el-switch>
                                 </div>
+                                <el-carousel :autoplay="false" indicator-position="none" arrow="never" ref="carousel">
+                                    <el-carousel-item>
+                                        <el-row :gutter="10" style="padding:0  0 14px 0;">
+                                            <el-col :span="4">
+                                                <div>表名</div>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <div>加密字段</div>
+                                            </el-col>
+                                            <el-col :span="4">
+                                                <div>是否逻辑删除</div>
+                                            </el-col>
+
+                                            <el-col :span="4">
+                                                <div>业务主键</div>
+                                            </el-col>
+                                            <el-col :span="4">
+                                                <div>业务主键生成规则</div>
+                                            </el-col>
+                                        </el-row>
+                                        <el-divider style="margin:0;"></el-divider>
+                                        <el-empty v-if="tables.length===0" description="no data"></el-empty>
+                                        <div class="container_tables" v-for="(item, index) in tables" :key="index" style="padding: 14px 0;">
+                                            <el-row>
+                                                <el-col :span="4">
+                                                    <div style="overflow: hidden; margin:0 10px;">{{item.table}}</div>
+                                                </el-col>
+                                                <el-col :span="8">
+                                                    <span v-if="item.encrypt.length===0">/</span>
+                                                    <span v-for="(fieldItem, index) in item.encrypt" :key="index"><span><el-divider v-if="index!=0" direction="vertical"></el-divider>{{fieldItem}}</span></span>
+                                                </el-col>
+                                                <el-col :span="4">
+                                                    <div>{{item.logicaldeletemark || '/'}}</div>
+                                                </el-col>
+                                                <el-col :span="4">
+                                                    <div>{{item.businesskeyname || '/'}}</div>
+                                                </el-col>
+                                                <el-col :span="4">
+                                                    <div>{{item.businesskeyrule || '/'}}</div>
+                                                </el-col>
+                                                <el-divider style="position: relative;bottom: -14px;margin: 0;"></el-divider>
+                                            </el-row>
+                                        </div>
+                                    </el-carousel-item>
+                                    <el-carousel-item>
+                                        <el-row :gutter="10" style="padding:0  0 14px 0;">
+                                            <el-col :span="8">
+                                                <div>表名</div>
+                                            </el-col>
+                                            <el-col :span="16">
+                                                <div>参数字段</div>
+                                            </el-col>
+                                        </el-row>
+                                        <el-divider style="margin:0;"></el-divider>
+                                        <el-empty v-if="views.length===0" description="no data"></el-empty>
+                                        <div class="container_tables" v-for="(item, index) in views" :key="index" style="padding: 14px 0;">
+                                            <el-row>
+                                                <el-col :span="8">
+                                                    <div style="overflow: hidden; margin:0 10px;">{{item.view}}</div>
+                                                </el-col>
+                                                <el-col :span="16">
+                                                    <span v-if="item.filter.length===0">/</span>
+                                                    <span v-for="(fieldItem, index) in item.filter" :key="index"><span><el-divider v-if="index!=0" direction="vertical"></el-divider>{{fieldItem}}</span></span>
+                                                </el-col>
+                                                <el-divider style="position: relative;bottom: -14px;margin: 0;"></el-divider>
+                                            </el-row>
+                                        </div>
+                                    </el-carousel-item>
+                                </el-carousel>
+
                             </el-card>
                         </el-card>
                     </el-col>
@@ -103,12 +135,15 @@
         reactive,
         toRefs,
         onMounted,
+        ref,
     } = Vue
     const composition = {
             setup() {
                 const state = reactive({
                     tables: [],
+                    views: [],
                     nextStep_loading: false,
+                    show_switch: 0
                 });
 
                 const nextStep = () => {
@@ -118,21 +153,40 @@
                 }
 
                 const back = () => {
-                    location.replace('tables')
+                    location.replace('views')
+                }
+
+                //切换 数据表 视图的展示
+                const carousel = ref(null);
+                const changeShow = (val) => {
+                    carousel.value.setActiveItem(val)
                 }
 
                 onMounted(() => {
-                    let data = JSON.parse(localStorage.getItem("tables"));
-                    // 找出所有的选中的表
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].ischecked) {
-                            data[i].encrypt = []
-                            for (let j = 0; j < data[i].field.length; j++) {
-                                if (data[i].field[j].field_encrypt) {
-                                    data[i].encrypt.push(data[i].field[j].field_name)
+                    let data_tables = JSON.parse(localStorage.getItem("tables"));
+                    // 找出所有的选中的基本表
+                    for (let i = 0; i < data_tables.length; i++) {
+                        if (data_tables[i].ischecked) {
+                            data_tables[i].encrypt = []
+                            for (let j = 0; j < data_tables[i].field.length; j++) {
+                                if (data_tables[i].field[j].field_encrypt) {
+                                    data_tables[i].encrypt.push(data_tables[i].field[j].field_name)
                                 }
                             }
-                            state.tables.push(data[i])
+                            state.tables.push(data_tables[i])
+                        }
+                    }
+                    let data_views = JSON.parse(localStorage.getItem("views"));
+                    // 找出所有的选中的视图
+                    for (let i = 0; i < data_views.length; i++) {
+                        if (data_views[i].ischecked) {
+                            data_views[i].filter = []
+                            for (let j = 0; j < data_views[i].filter_field.length; j++) {
+                                if (data_views[i].filter_field[j].ischecked) {
+                                    data_views[i].filter.push(data_views[i].filter_field[j].field_name)
+                                }
+                            }
+                            state.views.push(data_views[i])
                         }
                     }
                 });
@@ -141,6 +195,8 @@
                     ...toRefs(state),
                     nextStep,
                     back,
+                    changeShow,
+                    carousel,
                 };
             },
         }

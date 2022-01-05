@@ -221,14 +221,16 @@
                 }
             }
 
+            // 上一步
             const back = () => {
                 location.replace('/');
             }
 
+            //下一步
             const nextStep = () => {
                 state.nextStep_loading = true;
                 localStorage.setItem("tables", JSON.stringify(state.tables));
-                location.replace('tables_info')
+                location.replace('views')
                 state.nextStep_loading = false;
             }
 
