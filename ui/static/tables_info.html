@@ -189,6 +189,13 @@
                             state.views.push(data_views[i])
                         }
                     }
+
+                    if (!data_tables || !data_views) {
+                        ElMessage.warning('请重新连接数据库')
+                        setTimeout(() => {
+                            location.replace('/')
+                        }, 1000)
+                    }
                 });
 
                 return {

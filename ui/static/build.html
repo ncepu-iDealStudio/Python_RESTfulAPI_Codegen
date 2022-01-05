@@ -90,18 +90,17 @@
                         }
                     }
 
-                    const profile = {
-                        "table": tables_data,
-                        "view": views_data,
-                    }
-
-                    if (!profile) {
+                    if (!tables || !views) {
                         ElMessage.warning('请重新连接数据库')
                         setTimeout(() => {
                             location.replace('/')
                         }, 1000)
                     }
 
+                    const profile = {
+                        "table": tables_data,
+                        "view": views_data,
+                    }
 
                     // 获取目标代码路径
                     axios({

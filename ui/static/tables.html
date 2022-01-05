@@ -294,7 +294,10 @@
                     let fileString = evt.target.result; // 读取文件内容
 
                     try {
-                        let tables_data = JSON.parse(fileString);
+                        let profile_data = JSON.parse(fileString);
+                        let tables_data = profile_data.table
+                        let views_data = profile_data.view
+                        localStorage.setItem("views", JSON.stringify(views_data));
 
                         // 清空所有配置信息
                         for (let i = 0; i < state.tables.length; i++) {
