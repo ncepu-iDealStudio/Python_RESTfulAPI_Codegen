@@ -46,13 +46,17 @@ class CodeBlockTemplate():
     init_blueprint = '{0}_blueprint = Blueprint("{1}", __name__)'
 
     urls_imports = """from . import {0}_blueprint
-from api_{1}.{2}Resource.{2}Resource import {3}Resource"""
+from api_{1}.{2}Resource.{2}Resource import {3}Resource
+from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
+
+    urls_imports_view = """from . import {0}_blueprint
+from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
     urls_api = 'api = Api({0}_blueprint)'
 
     urls_resource = 'api.add_resource({0}Resource, {1}, endpoint="{2}")'
 
-    # urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{1}_list")'
+    urls_other_resource = 'api.add_resource({0}OtherResource, "/{1}s", endpoint="{1}_list")'
 
     urls_service_resource = """
 # joint query
@@ -118,10 +122,17 @@ from utils.response_code import RET"""
             return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
 
     other_resource_imports = """
-from flask_restful import Resource"""
+from flask_restful import Resource, reqparse
+from flask import jsonify
+from service.{0}Service import {1}Service
+from utils import commons
+from utils.response_code import RET"""
 
-    other_resource_get_service_invoke = """
-        res = {0}Service.joint_query(**kwargs)
+    other_resource_select = """
+    @classmethod
+    def joint_query(cls, kwargs):
+        {0}
+        res = {1}Service.select(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'], totalCount=res['totalCount'], totalPage=res['totalPage'])
         else:

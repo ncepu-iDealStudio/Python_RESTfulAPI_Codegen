@@ -41,6 +41,8 @@ from flask_restful import Api
 {api}
 
 {resource}
+
+{otherResource}
 """
 
     resource = """#!/usr/bin/env python
@@ -144,7 +146,8 @@ class {className}Resource(Resource):
 
 class {className}OtherResource(Resource):
 
-    pass
+{method}
+
 """
 
     app_init = """#!/usr/bin/env python
