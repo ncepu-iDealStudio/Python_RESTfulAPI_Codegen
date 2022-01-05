@@ -28,7 +28,7 @@ class TableMetadata(object):
             :param table_config: 表配置
         """
 
-        table_config = table_config if isinstance(table_config, list) else json.loads(table_config)
+        table_config = table_config if isinstance(table_config, dict) else json.loads(table_config)
 
         # Get all tables object
         table_objs = metadata.tables.values()
