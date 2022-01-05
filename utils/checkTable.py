@@ -31,11 +31,14 @@ class CheckTable(object):
         invalid_tables = []
 
         for table in table_dict.values():
-            # if len(table['primaryKey']) == 0:
-            #     # 表中没有主键
-            #     invalid_tables.append(table['table_name'])
-            #     loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']))
-            if len(table['primaryKey']) > 1:
+            if table['is_view']:
+                # 是一个视图，不进行检查
+                continue
+            elif len(table['primaryKey']) == 0:
+                # 表中没有主键
+                invalid_tables.append(table['table_name'])
+                loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']))
+            elif len(table['primaryKey']) > 1:
                 # 表中有复数个主键
                 invalid_tables.append(table['table_name'])
                 loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
@@ -65,6 +68,11 @@ class CheckTable(object):
         invalid_table = []
 
         for table in table_dict.values():
+
+            if table['is_view']:
+                # 是一个视图，不进行检查
+                continue
+
             flag = True
 
             # 检查表名是否为python关键字
