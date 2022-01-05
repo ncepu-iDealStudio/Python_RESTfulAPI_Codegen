@@ -31,11 +31,11 @@ class CheckTable(object):
         invalid_tables = []
 
         for table in table_dict.values():
-            if len(table['primaryKey']) == 0:
-                # 表中没有主键
-                invalid_tables.append(table['table_name'])
-                loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']))
-            elif len(table['primaryKey']) > 1:
+            # if len(table['primaryKey']) == 0:
+            #     # 表中没有主键
+            #     invalid_tables.append(table['table_name'])
+            #     loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']))
+            if len(table['primaryKey']) > 1:
                 # 表中有复数个主键
                 invalid_tables.append(table['table_name'])
                 loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
@@ -117,10 +117,10 @@ class CheckTable(object):
                 "A total of {0} tables check passed."
                 "The following {1} tables do not meet the specifications and cannot be generated: {2}."
                     .format(
-                    len(available_tables),
-                    len(invalid_tables['primary_key'] + invalid_tables['keyword']),
-                    ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])
-                )
+                        len(available_tables),
+                        len(invalid_tables['primary_key'] + invalid_tables['keyword']),
+                        ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])
+                    )
             )
 
             return table_dict, invalid_tables
