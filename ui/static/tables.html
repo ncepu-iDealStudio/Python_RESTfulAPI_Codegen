@@ -30,12 +30,6 @@
                             </a>
                         </el-tooltip>
                         <el-tooltip placement="bottom">
-                            <template #content>导出配置文件</template>
-                            <div style="float: right;margin-right: 20px;">
-                                <div @click="exportfile" class="iconfont icon-xiazaidaoru"></div>
-                            </div>
-                        </el-tooltip>
-                        <el-tooltip placement="bottom">
                             <template #content>导入配置文件</template>
                             <div style="float: right;margin-right: 20px;">
                                 <div @click="importfile" class="iconfont icon-shangchuandaochu"></div>
@@ -282,27 +276,6 @@
                 state.tables[state.activeIndex].businesskeyrule = "";
             }
 
-            // 导出文件
-            const exportfile = () => {
-                let tables_data = [];
-                for (let i = 0; i < state.tables.length; i++) {
-                    if (state.tables[i].ischecked) {
-                        tables_data.push(state.tables[i])
-                    }
-                }
-                if (tables_data.length === 0) {
-                    ElMessage.warning('请至少勾选一张表');
-                } else {
-                    let aTag = document.createElement('a');
-                    const content = JSON.stringify(tables_data);
-                    let blob = new Blob([content]);
-                    aTag.download = "table_config" + ".json";
-                    aTag.href = URL.createObjectURL(blob);
-                    aTag.click();
-                    URL.revokeObjectURL(blob);
-                }
-            }
-
             // 导入文件
             const importfile = () => {
                 let input = document.getElementById('inputfile');
@@ -442,7 +415,6 @@
                 blurbusinesskey,
                 handleCheckAllChange,
                 handleCheckChange,
-                exportfile,
                 importfile,
                 selectfile,
                 back,
