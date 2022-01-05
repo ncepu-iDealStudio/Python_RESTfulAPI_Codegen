@@ -34,6 +34,6 @@ from utils.response_code import RET, error_map_EN
             filter_list.append(t_{original_view_name}.columns['{column}'] == kwargs.get('{column}'))
 """
 
-    filter_conditions_for_str = """        if kwargs.get('{column}') is not None:
+    filter_conditions_for_str = """        if kwargs.get('{column}'):
             filter_list.append(t_{original_view_name}.columns['{column}'].like("%" + kwargs.get('{column}') + "%"))
 """
