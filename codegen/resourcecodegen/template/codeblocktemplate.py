@@ -128,11 +128,18 @@ from service.{0}Service import {1}Service
 from utils import commons
 from utils.response_code import RET"""
 
-    other_resource_select = """
+    other_resource_query = """
     @classmethod
-    def joint_query(cls, kwargs):
+    def joint_query(cls):
+        parser = reqparse.RequestParser()
         {0}
-        res = {1}Service.select(**kwargs)
+        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
+        parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
+
+        kwargs = parser.parse_args()
+        kwargs = commons.put_remove_none(**kwargs)
+        
+        res = {1}Service.joint_query(**kwargs)
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'], totalCount=res['totalCount'], totalPage=res['totalPage'])
         else:

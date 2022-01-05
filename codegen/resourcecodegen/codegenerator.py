@@ -277,7 +277,7 @@ class CodeGenerator(object):
                 for column in table.get('columns'):
                     parameter += CodeBlockTemplate.parameter_args_joint.format(column.get('field_name'),
                                                                                column.get('field_type'))
-                method = CodeBlockTemplate.other_resource_select.format(parameter, table_name_small_hump)
+                method = CodeBlockTemplate.other_resource_query.format(parameter, table_name_big_hump)
 
             return FileTemplate.other_resource.format(
                 imports=imports_str,

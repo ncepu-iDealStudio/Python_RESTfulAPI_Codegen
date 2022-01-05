@@ -143,9 +143,7 @@ class {className}Resource(Resource):
 # -*- coding:utf-8 -*-
 {imports}
 
-
 class {className}OtherResource(Resource):
-
 {method}
 
 """
