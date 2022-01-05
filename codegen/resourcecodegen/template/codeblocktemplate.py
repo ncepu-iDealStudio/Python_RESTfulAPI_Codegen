@@ -68,6 +68,7 @@ def {2}_query():
     resource_imports = """
 from flask_restful import Resource, reqparse
 from flask import jsonify
+
 from controller.{0}Controller import {1}Controller
 from utils import commons
 from utils.response_code import RET"""
@@ -124,6 +125,7 @@ from utils.response_code import RET"""
     other_resource_imports = """
 from flask_restful import Resource, reqparse
 from flask import jsonify
+
 from service.{0}Service import {1}Service
 from utils import commons
 from utils.response_code import RET"""
@@ -143,7 +145,7 @@ from utils.response_code import RET"""
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'], totalCount=res['totalCount'], totalPage=res['totalPage'])
         else:
-            return jsonify(code=res['code'], message=res['message'], error=res['error'])"""
+            return jsonify(code=res['code'], message=res['message'], data=res['error'])"""
 
     app_init_blueprint = """
     # {0} blueprint register

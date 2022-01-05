@@ -41,10 +41,15 @@ from flask_restful import Api
 {api}
 
 {resource}
+"""
+
+    urls_view = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+{imports}
 
 {otherResource}
 """
-
     resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
 {imports}
@@ -143,9 +148,9 @@ class {className}Resource(Resource):
 # -*- coding:utf-8 -*-
 {imports}
 
+
 class {className}OtherResource(Resource):
 {method}
-
 """
 
     app_init = """#!/usr/bin/env python

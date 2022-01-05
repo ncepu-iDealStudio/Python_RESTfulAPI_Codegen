@@ -134,7 +134,8 @@ class CodeGenerator(object):
                                                                table_name_small_hump,
                                                                table_name_big_hump)
 
-            api_str = CodeBlockTemplate.urls_api.format(table_name_all_small)
+            api_str = ''
+            resource_str = ''
             other_esource_str = ''
 
             if table.get('is_view'):
@@ -142,12 +143,14 @@ class CodeGenerator(object):
                                                                         api_version,
                                                                         table_name_small_hump,
                                                                         table_name_big_hump)
-                resource_str = CodeBlockTemplate.urls_other_resource.format(table_name_big_hump,
-                                                                            table_name_small_hump)
                 other_esource_str = CodeBlockTemplate.urls_service_resource.format(table_name_all_small,
                                                                                    table_name_small_hump,
                                                                                    table_name_big_hump)
+                return FileTemplate.urls_view.format(imports=import_str,
+                                                     otherResource=other_esource_str
+                                                     )
             else:
+                api_str = CodeBlockTemplate.urls_api.format(table_name_all_small)
                 if table.get('business_key').get('column'):
                     primary_key_str = CodeBlockTemplate.primary_key.format(table_name_small_hump,
                                                                            table.get('business_key').get('column'))
@@ -158,11 +161,10 @@ class CodeGenerator(object):
                 resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_hump, primary_key_str,
                                                                       table_name_small_hump)
 
-            return FileTemplate.urls.format(imports=import_str,
-                                            api=api_str,
-                                            resource=resource_str,
-                                            otherResource=other_esource_str
-                                            )
+                return FileTemplate.urls.format(imports=import_str,
+                                                api=api_str,
+                                                resource=resource_str
+                                                )
 
         except Exception as e:
             loggings.exception(1, e)
