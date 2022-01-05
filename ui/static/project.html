@@ -128,7 +128,7 @@
                             // 判断是否有勾选表
                             let tables_data = [];
                             for (let i = 0; i < state.tables.length; i++) {
-                                if (state.tables[i].issave) {
+                                if (state.tables[i].ischecked) {
                                     tables_data.push(state.tables[i])
                                 }
                             }
@@ -169,7 +169,7 @@
                 const exportfile = () => {
                     let tables_data = [];
                     for (let i = 0; i < state.tables.length; i++) {
-                        if (state.tables[i].issave) {
+                        if (state.tables[i].ischecked) {
                             tables_data.push(state.tables[i])
                         }
                     }
