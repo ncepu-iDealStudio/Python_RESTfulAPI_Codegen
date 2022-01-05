@@ -19,12 +19,12 @@
   ],
   "view": [
     {
-      "view": "student_score",
+      "view": "",
       "filter_field": [
         {
-          "field_name": "Name",
-          "field_type": "str",
-          "ischecked": true
+          "field_name": "",
+          "field_type": "",
+          "ischecked": false
         }
       ],
       "ischecked": false
