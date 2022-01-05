@@ -145,7 +145,7 @@ from utils.response_code import RET"""
         if res['code'] == RET.OK:
             return jsonify(code=res['code'], message=res['message'], data=res['data'], totalCount=res['totalCount'], totalPage=res['totalPage'])
         else:
-            return jsonify(code=res['code'], message=res['message'], data=res['error'])"""
+            return jsonify(code=res['code'], message=res['message'], data=res['data'])"""
 
     app_init_blueprint = """
     # {0} blueprint register
