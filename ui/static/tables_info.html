@@ -39,7 +39,7 @@
                                 <template #header>数据库配置</template> 请检查要生成接口项目代码的目标数据库，生成器将针对此数据库生成一个分层设计的接口项目
                             </el-card>
                             <el-tabs v-model="show_switch" @tab-click="changeShow" style="padding: 0 10px;">
-                                <el-tab-pane label="基本表" name="tables"></el-tab-pane>
+                                <el-tab-pane label="数据表" name="tables"></el-tab-pane>
                                 <el-tab-pane label="视图" name="views"></el-tab-pane>
                             </el-tabs>
                             <el-card>
@@ -54,7 +54,7 @@
                                                     <div>加密字段</div>
                                                 </el-col>
                                                 <el-col :span="4">
-                                                    <div>是否逻辑删除</div>
+                                                    <div>逻辑删除字段</div>
                                                 </el-col>
 
                                                 <el-col :span="4">
@@ -96,7 +96,7 @@
                                                     <div>表名</div>
                                                 </el-col>
                                                 <el-col :span="16">
-                                                    <div>参数字段</div>
+                                                    <div>接口查询字段</div>
                                                 </el-col>
                                             </el-row>
                                             <el-divider style="margin:0;"></el-divider>
@@ -148,7 +148,7 @@
                     tables: [],
                     views: [],
                     nextStep_loading: false,
-                    show_switch: 'tabkes',
+                    show_switch: 'tables',
                 });
 
                 const nextStep = () => {
