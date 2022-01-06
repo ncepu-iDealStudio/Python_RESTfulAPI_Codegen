@@ -11,6 +11,8 @@
 """
 
 from sqlalchemy import create_engine, MetaData
+from sqlalchemy.engine import reflection
+
 from utils.checkTable import CheckTable
 from urllib import parse
 
@@ -37,43 +39,61 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             'oracle': 'cx_oracle',
             'postgresql': 'psycopg2'
         }
-        password=parse.quote_plus(password)
+        password = parse.quote_plus(password)
         url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
                                                            port, database)
         engine = create_engine(url)
         metadata = MetaData(engine)
-        metadata.reflect(engine)
+        insp = reflection.Inspector.from_engine(engine)
+        metadata.reflect(engine, views=True)
+
     except Exception as e:
         return {'code': False, 'message': str(e), 'error': str(e)}
 
-    table_dict, invalid_tables = CheckTable.main(metadata)
+    table_dict, invalid_tables = CheckTable.main(metadata, insp.get_view_names())
 
-    data = []
+    data = {
+        'table': [],
+        'view': []
+    }
     for table in table_dict.values():
-        filed = []
-        business_key_type = ''
-        for column in table['columns'].values():
-            if column['name'] == table['primaryKey'][0]:
-                business_key_type = column['type']
-            if column['name'] in table['primaryKey']:
-                # 剔除出主键
-                continue
-            else:
-                filed.append({
-                    'field_name': column['name'],
-                    'field_type': column['type'],
-                    'field_encrypt': False
-                })
-        data.append({
-            'table': str(table['table_name']),
-            'businesskeyname': table['business_key'].get('column'),
-            'businesskeyrule': '',
-            'logicaldeletemark': '',
-            'field': filed,
-            'businesskeyuneditable': True if table['business_key'].get('column') else False,
-            "businesskeytype": business_key_type,
-            'issave': False
-        })
+        if table['is_view']:
+            # 是一个视图
+            filter_field = []
+            for column in table['columns']:
+                column['ischecked'] = False
+                filter_field.append(column)
+            data['view'].append({
+                'view': table['table_name'],
+                'filter_field': filter_field,
+                'ischecked': False
+            })
+        else:
+            # 是一个基本表
+            filed = []
+            business_key_type = ''
+            for column in table['columns'].values():
+                if column['name'] == table['primaryKey'][0]:
+                    business_key_type = column['type']
+                if column['name'] in table['primaryKey']:
+                    # 剔除出主键
+                    continue
+                else:
+                    filed.append({
+                        'field_name': column['name'],
+                        'field_type': column['type'],
+                        'field_encrypt': False
+                    })
+            data['table'].append({
+                'table': str(table['table_name']),
+                'businesskeyname': table['business_key'].get('column'),
+                'businesskeyrule': '',
+                'logicaldeletemark': '',
+                'field': filed,
+                'businesskeyuneditable': True if table['business_key'].get('column') else False,
+                "businesskeytype": business_key_type,
+                'issave': False
+            })
     return {'code': True, 'message': '成功', 'data': data, 'invalid': invalid_tables}
 
 

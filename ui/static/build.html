@@ -72,19 +72,34 @@
                     path: "",
                 });
                 onMounted(() => {
-                    let data = JSON.parse(localStorage.getItem("tables"));
-                    if (!data) {
+                    let tables = JSON.parse(localStorage.getItem("tables"));
+                    // 获取勾选的表信息
+                    let tables_data = [];
+                    for (let i = 0; i < tables.length; i++) {
+                        if (tables[i].ischecked) {
+                            tables_data.push(tables[i])
+                        }
+                    }
+
+                    let views = JSON.parse(localStorage.getItem("views"));
+                    // 获取勾选的表信息
+                    let views_data = [];
+                    for (let i = 0; i < views.length; i++) {
+                        if (views[i].ischecked) {
+                            views_data.push(views[i])
+                        }
+                    }
+
+                    if (!tables || !views) {
                         ElMessage.warning('请重新连接数据库')
                         setTimeout(() => {
                             location.replace('/')
                         }, 1000)
                     }
-                    // 获取勾选的表信息
-                    let tables_data = [];
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].issave) {
-                            tables_data.push(data[i])
-                        }
+
+                    const profile = {
+                        "table": tables_data,
+                        "view": views_data,
                     }
 
                     // 获取目标代码路径
@@ -101,7 +116,7 @@
                     axios({
                         method: 'POST',
                         url: 'http://127.0.0.1:5000/startbuild',
-                        data: tables_data
+                        data: profile
                     }).then(result => {
                         const res = result.data
                         if (res.code === '2000') {

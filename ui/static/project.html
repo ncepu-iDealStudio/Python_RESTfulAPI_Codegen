@@ -113,6 +113,7 @@
                     nextStep_loading: false,
                     dialogVisible: false,
                     tables: [],
+                    views: [],
                     path: "",
                 });
 
@@ -128,7 +129,7 @@
                             // 判断是否有勾选表
                             let tables_data = [];
                             for (let i = 0; i < state.tables.length; i++) {
-                                if (state.tables[i].issave) {
+                                if (state.tables[i].ischecked) {
                                     tables_data.push(state.tables[i])
                                 }
                             }
@@ -167,16 +168,30 @@
 
                 // 导出文件
                 const exportfile = () => {
+                    //选中的tables
                     let tables_data = [];
                     for (let i = 0; i < state.tables.length; i++) {
-                        if (state.tables[i].issave) {
+                        if (state.tables[i].ischecked) {
                             tables_data.push(state.tables[i])
                         }
                     }
+                    //选中的views
+                    let views_data = [];
+                    for (let i = 0; i < state.views.length; i++) {
+                        if (state.views[i].ischecked) {
+                            views_data.push(state.views[i])
+                        }
+                    }
+
+                    const profile = {
+                        "table": tables_data,
+                        "view": views_data,
+                    }
+
                     let aTag = document.createElement('a');
-                    const content = JSON.stringify(tables_data);
+                    const content = JSON.stringify(profile);
                     let blob = new Blob([content]);
-                    aTag.download = "table_config" + ".json";
+                    aTag.download = "codegen_profile" + ".json";
                     aTag.href = URL.createObjectURL(blob);
                     aTag.click();
                     URL.revokeObjectURL(blob);
@@ -185,13 +200,16 @@
 
                 onMounted(() => {
                     let data_tables = JSON.parse(localStorage.getItem("tables"));
-                    if (!data_tables) {
+                    let data_views = JSON.parse(localStorage.getItem("views"));
+                    state.tables = data_tables;
+                    state.views = data_views;
+                    if (!data_tables || !data_views) {
                         ElMessage.warning('请重新连接数据库')
                         setTimeout(() => {
                             location.replace('/')
                         }, 1000)
                     }
-                    state.tables = data_tables;
+
 
                     let data = JSON.parse(localStorage.getItem("project_info"));
                     if (data) {

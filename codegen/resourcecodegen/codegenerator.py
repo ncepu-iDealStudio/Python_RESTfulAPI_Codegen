@@ -20,6 +20,7 @@ from codegen.resourcecodegen.template.filetemplate import FileTemplate
 from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
 from utils.loggings import loggings
 
+
 class CodeGenerator(object):
 
     def __init__(self):
@@ -59,7 +60,8 @@ class CodeGenerator(object):
             # file generation
             for table in table_dict.keys():
                 table_name_small_hump = str_to_little_camel_case(table_dict[table].get('table_name'))
-                os.makedirs(resource_dir := os.path.join(api_dir, '{0}Resource'.format(table_name_small_hump)), exist_ok=True)
+                os.makedirs(resource_dir := os.path.join(api_dir, '{0}Resource'.format(table_name_small_hump)),
+                            exist_ok=True)
 
                 # init generation
                 with open(os.path.join(resource_dir, '__init__.py'), 'w', encoding='utf8') as f:
@@ -70,25 +72,33 @@ class CodeGenerator(object):
                     f.write(self.urls_codegen(table_dict[table]).replace('\"', '\''))
 
                 # resource generation
-                with open(os.path.join(resource_dir, '{0}Resource.py'.format(table_name_small_hump)), 'w', encoding='utf8') as f:
-                    f.write(self.resource_codegen(table_dict[table]).replace('\"', '\''))
+                if not table_dict[table]['is_view']:
+                    with open(os.path.join(resource_dir, '{0}Resource.py'.format(table_name_small_hump)), 'w',
+                              encoding='utf8') as f:
+                        f.write(self.resource_codegen(table_dict[table]).replace('\"', '\''))
 
                 # otherResource generation
-                with open(os.path.join(resource_dir, '{0}OtherResource.py'.format(table_name_small_hump)), 'w', encoding='utf8') as f:
+                with open(os.path.join(resource_dir, '{0}OtherResource.py'.format(table_name_small_hump)), 'w',
+                          encoding='utf8') as f:
                     f.write(self.other_resource_codegen(table_dict[table]).replace('\"', '\''))
 
                 # ymls generation
-                if flasgger_mode:
+                if flasgger_mode and not table_dict[table]['is_view']:
                     os.makedirs(ymls_dir := os.path.join(resource_dir, 'ymls'), exist_ok=True)
-                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_get.yml'), 'w', encoding='utf8') as f:
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_get.yml'), 'w',
+                              encoding='utf8') as f:
                         f.write(self.yml_get_codegen(table_dict[table]).replace('\"', '\''))
-                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_gets.yml'), 'w', encoding='utf8') as f:
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_gets.yml'), 'w',
+                              encoding='utf8') as f:
                         f.write(self.yml_gets_codegen(table_dict[table]).replace('\"', '\''))
-                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_post.yml'), 'w', encoding='utf8') as f:
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_post.yml'), 'w',
+                              encoding='utf8') as f:
                         f.write(self.yml_post_codegen(table_dict[table]).replace('\"', '\''))
-                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_put.yml'), 'w', encoding='utf8') as f:
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_put.yml'), 'w',
+                              encoding='utf8') as f:
                         f.write(self.yml_put_codegen(table_dict[table]).replace('\"', '\''))
-                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_delete.yml'), 'w', encoding='utf8') as f:
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_delete.yml'), 'w',
+                              encoding='utf8') as f:
                         f.write(FileTemplate.yml_delete_template.format(table_dict[table].get('table_name')))
 
         except Exception as e:
@@ -119,22 +129,42 @@ class CodeGenerator(object):
             table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
 
             # template  generation
-            import_str = CodeBlockTemplate.urls_imports.format(table_name_all_small, api_version, table_name_small_hump,
+            import_str = CodeBlockTemplate.urls_imports.format(table_name_all_small,
+                                                               api_version,
+                                                               table_name_small_hump,
                                                                table_name_big_hump)
 
-            api_str = CodeBlockTemplate.urls_api.format(table_name_all_small)
+            api_str = ''
+            resource_str = ''
+            other_esource_str = ''
 
-            if table.get('business_key').get('column'):
-                primary_key_str = CodeBlockTemplate.primary_key.format(table_name_small_hump,
-                                                                       table.get('business_key').get('column'))
+            if table.get('is_view'):
+                import_str = CodeBlockTemplate.urls_imports_view.format(table_name_all_small,
+                                                                        api_version,
+                                                                        table_name_small_hump,
+                                                                        table_name_big_hump)
+                other_esource_str = CodeBlockTemplate.urls_service_resource.format(table_name_all_small,
+                                                                                   table_name_small_hump,
+                                                                                   table_name_big_hump)
+                return FileTemplate.urls_view.format(imports=import_str,
+                                                     otherResource=other_esource_str
+                                                     )
             else:
-                primary_key_str = CodeBlockTemplate.primary_key.format(
-                    table_name_small_hump, table.get('primaryKey')[0])
+                api_str = CodeBlockTemplate.urls_api.format(table_name_all_small)
+                if table.get('business_key').get('column'):
+                    primary_key_str = CodeBlockTemplate.primary_key.format(table_name_small_hump,
+                                                                           table.get('business_key').get('column'))
+                else:
+                    primary_key_str = CodeBlockTemplate.primary_key.format(
+                        table_name_small_hump, table.get('primaryKey')[0])
 
-            resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_hump, primary_key_str, table_name_small_hump)
+                resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_hump, primary_key_str,
+                                                                      table_name_small_hump)
 
-            return FileTemplate.urls.format(
-                imports=import_str, api=api_str, resource=resource_str)
+                return FileTemplate.urls.format(imports=import_str,
+                                                api=api_str,
+                                                resource=resource_str
+                                                )
 
         except Exception as e:
             loggings.exception(1, e)
@@ -209,7 +239,6 @@ class CodeGenerator(object):
 
                 import_flasgger = ''
 
-
             return FileTemplate.resource.format(
                 swag_get=swag_get,
                 swag_put=swag_put,
@@ -242,11 +271,20 @@ class CodeGenerator(object):
             # className_str = api_name[0].upper() + api_name[1:]
 
             # template generation
-            imports_str = CodeBlockTemplate.other_resource_imports
+            imports_str = CodeBlockTemplate.other_resource_imports.format(table_name_small_hump, table_name_big_hump)
+
+            parameter = ''
+            method = '\tpass'
+            if table.get('is_view'):
+                for column in table.get('columns'):
+                    parameter += CodeBlockTemplate.parameter_args_joint.format(column.get('field_name'),
+                                                                               column.get('field_type'))
+                method = CodeBlockTemplate.other_resource_query.format(parameter, table_name_big_hump)
 
             return FileTemplate.other_resource.format(
                 imports=imports_str,
-                className=table_name_big_hump
+                className=table_name_big_hump,
+                method=method
             )
 
         except Exception as e:

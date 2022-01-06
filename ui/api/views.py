@@ -33,6 +33,11 @@ def tables():
     return app.send_static_file('tables.html')
 
 
+@app.route('/views', methods=['GET'])
+def views():
+    return app.send_static_file('views.html')
+
+
 @app.route('/tables_info', methods=['GET'])
 def tables_info():
     return app.send_static_file('tables_info.html')
