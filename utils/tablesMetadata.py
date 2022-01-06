@@ -98,8 +98,10 @@ class TableMetadata(object):
                         if rsa_colume['field_encrypt']:
                             table_dict[table_name]['rsa_columns'].append(rsa_colume['field_name'])
 
+            from sqlalchemy.engine import reflection
+            insp = reflection.Inspector.from_engine(metadata.bind)
             # 初始化为空列表
-            table_dict[table_name]['primaryKey'] = []
+            table_dict[table_name]['primaryKey'] = insp.get_pk_constraint(table_name)['constrained_columns']
             table_dict[table_name]['columns'] = {}
 
             # Traverse each columns to get corresponding attributes
@@ -116,17 +118,18 @@ class TableMetadata(object):
                             break
                 table_dict[table_name]['columns'][str(column.name)].setdefault('type', 'str')
 
-                if column.primary_key:
-                    table_dict[table_name]['primaryKey'].append(str(column.name))
-
                 # 是否自动递增
                 table_dict[table_name]['columns'][str(column.name)][
                     'is_autoincrement'] = True if column.autoincrement is True else False
 
-                # 如果主键不是自增的，则将业务主键设置为主键
-                if str(column.name) in table_dict[table_name]['primaryKey'] and not \
-                        table_dict[table_name]['columns'][str(column.name)]['is_autoincrement']:
-                    table_dict[table_name]['business_key']['column'] = str(column.name)
+                # 存在复合主键
+                if len(table_dict[table_name]['primaryKey']) > 1:
+                    table_dict[table_name]['business_key']['column'] = {}
+                else:
+                    # 如果主键不是自增的，则将业务主键设置为主键
+                    if str(column.name) in table_dict[table_name]['primaryKey'] and not \
+                            table_dict[table_name]['columns'][str(column.name)]['is_autoincrement']:
+                        table_dict[table_name]['business_key']['column'] = str(column.name)
 
                 # 是否可以为空
                 table_dict[table_name]['columns'][str(column.name)]['nullable'] = column.nullable
