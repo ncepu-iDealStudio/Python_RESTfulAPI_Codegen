@@ -38,20 +38,12 @@ class CheckTable(object):
                 # 表中没有主键
                 invalid_tables.append(table['table_name'])
                 loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']))
-            elif len(table['primaryKey']) > 1:
-                # 表中有复数个主键
-                invalid_tables.append(table['table_name'])
-                loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
+            # elif len(table['primaryKey']) > 1:
+            #     # 表中有复数个主键
+            #     invalid_tables.append(table['table_name'])
+            #     loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
             else:
                 available_tables.append(table['table_name'])
-            # else:
-            #     # 仅有一个主键，检验是否自增
-            #     if not table['columns'][table['primaryKey'][0]]['is_autoincrement']:
-            #         invalid_tables.append(table['table_name'])
-            #         loggings.warning(1,
-            #                          'table {0} do not have an autoincrement primary key'.format(table['table_name']))
-            #     else:
-            #         available_tables.append(table['table_name'])
 
         return available_tables, invalid_tables
 
