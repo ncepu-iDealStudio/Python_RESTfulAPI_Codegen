@@ -42,73 +42,77 @@
                                 <div style="margin-bottom: 10px;">
                                     <el-switch v-model="show_switch" active-text="视图" inactive-text="数据表" :active-value="1" :inactive-value="0" @change="changeShow"></el-switch>
                                 </div>
-                                <el-carousel :autoplay="false" indicator-position="none" arrow="never" ref="carousel">
-                                    <el-carousel-item>
-                                        <el-row :gutter="10" style="padding:0  0 14px 0;">
-                                            <el-col :span="4">
-                                                <div>表名</div>
-                                            </el-col>
-                                            <el-col :span="8">
-                                                <div>加密字段</div>
-                                            </el-col>
-                                            <el-col :span="4">
-                                                <div>是否逻辑删除</div>
-                                            </el-col>
+                                <el-carousel :autoplay="false" indicator-position="none" arrow="never" ref="carousel" style="height:calc(100vh - 400px);">
+                                    <el-carousel-item style="height: auto;">
+                                        <el-scrollbar style="height:calc(100vh - 400px);">
+                                            <el-row style="padding:0  0 14px 0;">
+                                                <el-col :span="4">
+                                                    <div>表名</div>
+                                                </el-col>
+                                                <el-col :span="8">
+                                                    <div>加密字段</div>
+                                                </el-col>
+                                                <el-col :span="4">
+                                                    <div>是否逻辑删除</div>
+                                                </el-col>
 
-                                            <el-col :span="4">
-                                                <div>业务主键</div>
-                                            </el-col>
-                                            <el-col :span="4">
-                                                <div>业务主键生成规则</div>
-                                            </el-col>
-                                        </el-row>
-                                        <el-divider style="margin:0;"></el-divider>
-                                        <el-empty v-if="tables.length===0" description="no data"></el-empty>
-                                        <div class="container_tables" v-for="(item, index) in tables" :key="index" style="padding: 14px 0;">
-                                            <el-row>
                                                 <el-col :span="4">
-                                                    <div style="overflow: hidden; margin:0 10px;">{{item.table}}</div>
-                                                </el-col>
-                                                <el-col :span="8">
-                                                    <span v-if="item.encrypt.length===0">/</span>
-                                                    <span v-for="(fieldItem, index) in item.encrypt" :key="index"><span><el-divider v-if="index!=0" direction="vertical"></el-divider>{{fieldItem}}</span></span>
+                                                    <div>业务主键</div>
                                                 </el-col>
                                                 <el-col :span="4">
-                                                    <div>{{item.logicaldeletemark || '/'}}</div>
+                                                    <div>业务主键生成规则</div>
                                                 </el-col>
-                                                <el-col :span="4">
-                                                    <div>{{item.businesskeyname || '/'}}</div>
-                                                </el-col>
-                                                <el-col :span="4">
-                                                    <div>{{item.businesskeyrule || '/'}}</div>
-                                                </el-col>
-                                                <el-divider style="position: relative;bottom: -14px;margin: 0;"></el-divider>
                                             </el-row>
-                                        </div>
+                                            <el-divider style="margin:0;"></el-divider>
+                                            <el-empty v-if="tables.length===0" description="no data"></el-empty>
+                                            <div class="container_tables" v-for="(item, index) in tables" :key="index" style="padding: 14px 0;">
+                                                <el-row>
+                                                    <el-col :span="4">
+                                                        <div style="overflow: hidden; margin:0 10px;">{{item.table}}</div>
+                                                    </el-col>
+                                                    <el-col :span="8">
+                                                        <span v-if="item.encrypt.length===0">/</span>
+                                                        <span v-for="(fieldItem, index) in item.encrypt" :key="index"><span><el-divider v-if="index!=0" direction="vertical"></el-divider>{{fieldItem}}</span></span>
+                                                    </el-col>
+                                                    <el-col :span="4">
+                                                        <div>{{item.logicaldeletemark || '/'}}</div>
+                                                    </el-col>
+                                                    <el-col :span="4">
+                                                        <div>{{item.businesskeyname || '/'}}</div>
+                                                    </el-col>
+                                                    <el-col :span="4">
+                                                        <div>{{item.businesskeyrule || '/'}}</div>
+                                                    </el-col>
+                                                    <el-divider style="position: relative;bottom: -14px;margin: 0;"></el-divider>
+                                                </el-row>
+                                            </div>
+                                        </el-scrollbar>
                                     </el-carousel-item>
-                                    <el-carousel-item>
-                                        <el-row :gutter="10" style="padding:0  0 14px 0;">
-                                            <el-col :span="8">
-                                                <div>表名</div>
-                                            </el-col>
-                                            <el-col :span="16">
-                                                <div>参数字段</div>
-                                            </el-col>
-                                        </el-row>
-                                        <el-divider style="margin:0;"></el-divider>
-                                        <el-empty v-if="views.length===0" description="no data"></el-empty>
-                                        <div class="container_tables" v-for="(item, index) in views" :key="index" style="padding: 14px 0;">
-                                            <el-row>
+                                    <el-carousel-item style="height: auto;">
+                                        <el-scrollbar style="height:calc(100vh - 400px);">
+                                            <el-row style="padding:0  0 14px 0;">
                                                 <el-col :span="8">
-                                                    <div style="overflow: hidden; margin:0 10px;">{{item.view}}</div>
+                                                    <div>表名</div>
                                                 </el-col>
                                                 <el-col :span="16">
-                                                    <span v-if="item.filter.length===0">/</span>
-                                                    <span v-for="(fieldItem, index) in item.filter" :key="index"><span><el-divider v-if="index!=0" direction="vertical"></el-divider>{{fieldItem}}</span></span>
+                                                    <div>参数字段</div>
                                                 </el-col>
-                                                <el-divider style="position: relative;bottom: -14px;margin: 0;"></el-divider>
                                             </el-row>
-                                        </div>
+                                            <el-divider style="margin:0;"></el-divider>
+                                            <el-empty v-if="views.length===0" description="no data"></el-empty>
+                                            <div class="container_tables" v-for="(item, index) in views" :key="index" style="padding: 14px 0;">
+                                                <el-row>
+                                                    <el-col :span="8">
+                                                        <div style="overflow: hidden; margin:0 10px;">{{item.view}}</div>
+                                                    </el-col>
+                                                    <el-col :span="16">
+                                                        <span v-if="item.filter.length===0">/</span>
+                                                        <span v-for="(fieldItem, index) in item.filter" :key="index"><span><el-divider v-if="index!=0" direction="vertical"></el-divider>{{fieldItem}}</span></span>
+                                                    </el-col>
+                                                    <el-divider style="position: relative;bottom: -14px;margin: 0;"></el-divider>
+                                                </el-row>
+                                            </div>
+                                        </el-scrollbar>
                                     </el-carousel-item>
                                 </el-carousel>
 

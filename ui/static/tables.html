@@ -297,7 +297,19 @@
                         let profile_data = JSON.parse(fileString);
                         let tables_data = profile_data.table
                         let views_data = profile_data.view
-                        localStorage.setItem("views", JSON.stringify(views_data));
+
+                        //导入view
+                        let views = JSON.parse(localStorage.getItem("views"));
+                        for (let i = 0; i < views.length; i++) {
+                            for (let j = 0; j < views_data.length; j++) {
+                                if (views_data[j].view === views[i].view) {
+                                    views[i] = views_data[j];
+                                } else {
+                                    views[i].ischecked = false;
+                                }
+                            }
+                        }
+                        localStorage.setItem("views", JSON.stringify(views));
 
                         // 清空所有配置信息
                         for (let i = 0; i < state.tables.length; i++) {
