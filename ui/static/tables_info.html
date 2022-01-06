@@ -38,12 +38,13 @@
                             <el-card shadow="never">
                                 <template #header>数据库配置</template> 请检查要生成接口项目代码的目标数据库，生成器将针对此数据库生成一个分层设计的接口项目
                             </el-card>
+                            <el-tabs v-model="show_switch" @tab-click="changeShow" style="padding: 0 10px;">
+                                <el-tab-pane label="基本表" name="tables"></el-tab-pane>
+                                <el-tab-pane label="视图" name="views"></el-tab-pane>
+                            </el-tabs>
                             <el-card>
-                                <div style="margin-bottom: 10px;">
-                                    <el-switch v-model="show_switch" active-text="视图" inactive-text="数据表" :active-value="1" :inactive-value="0" @change="changeShow"></el-switch>
-                                </div>
                                 <el-carousel :autoplay="false" indicator-position="none" arrow="never" ref="carousel" style="height:calc(100vh - 400px);">
-                                    <el-carousel-item style="height: auto;">
+                                    <el-carousel-item style="height: auto;" name="tables">
                                         <el-scrollbar style="height:calc(100vh - 400px);">
                                             <el-row style="padding:0  0 14px 0;">
                                                 <el-col :span="4">
@@ -88,7 +89,7 @@
                                             </div>
                                         </el-scrollbar>
                                     </el-carousel-item>
-                                    <el-carousel-item style="height: auto;">
+                                    <el-carousel-item style="height: auto;" name="views">
                                         <el-scrollbar style="height:calc(100vh - 400px);">
                                             <el-row style="padding:0  0 14px 0;">
                                                 <el-col :span="8">
@@ -147,7 +148,7 @@
                     tables: [],
                     views: [],
                     nextStep_loading: false,
-                    show_switch: 0
+                    show_switch: 'tabkes',
                 });
 
                 const nextStep = () => {
@@ -162,8 +163,8 @@
 
                 //切换 数据表 视图的展示
                 const carousel = ref(null);
-                const changeShow = (val) => {
-                    carousel.value.setActiveItem(val)
+                const changeShow = (tab) => {
+                    carousel.value.setActiveItem(tab.paneName)
                 }
 
                 onMounted(() => {
