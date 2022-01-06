@@ -124,7 +124,7 @@ class TableMetadata(object):
 
                 # 存在复合主键
                 if len(table_dict[table_name]['primaryKey']) > 1:
-                    table_dict[table_name]['business_key']['column'] = {}
+                    table_dict[table_name]['business_key'] = {}
                 else:
                     # 如果主键不是自增的，则将业务主键设置为主键
                     if str(column.name) in table_dict[table_name]['primaryKey'] and not \
