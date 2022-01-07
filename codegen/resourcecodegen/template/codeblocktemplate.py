@@ -22,6 +22,8 @@ class CodeBlockTemplate():
 
     primary_key = '"/{0}/<{1}>", "/{0}"'
 
+    primary_key_multi = '"/{0}"'
+
     parameter_args = '''parser.add_argument("{0}", type={1}, location="args", required=False, help="{0}参数类型不正确或缺失")
         '''
 
@@ -33,6 +35,13 @@ class CodeBlockTemplate():
 
     parameter_form_true = '''parser.add_argument("{0}", type={1}, location="form", required=True, help="{0}参数类型不正确或缺失")
             '''
+
+    parameter_form_false_multi_primary = '''parser.add_argument("{0}", type={1}, location="form", required=False, help="{0}参数类型不正确或缺失")
+        '''
+
+    parameter_form_true_multi_primary = '''parser.add_argument("{0}", type={1}, location="form", required=True, help="{0}参数类型不正确或缺失")
+        '''
+
 
     parameter_form_put_false = '''parser.add_argument("{0}", type={1}, location="form", required=False, help="{0}参数类型不正确或缺失")
         '''

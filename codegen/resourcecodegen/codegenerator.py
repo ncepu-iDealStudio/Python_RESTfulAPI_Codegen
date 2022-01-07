@@ -155,8 +155,11 @@ class CodeGenerator(object):
                     primary_key_str = CodeBlockTemplate.primary_key.format(table_name_small_hump,
                                                                            table.get('business_key').get('column'))
                 else:
-                    primary_key_str = CodeBlockTemplate.primary_key.format(
-                        table_name_small_hump, table.get('primaryKey')[0])
+                    if len(table.get('primaryKey')) > 1:
+                        primary_key_str = CodeBlockTemplate.primary_key_multi.format(table_name_small_hump)
+                    else:
+                        primary_key_str = CodeBlockTemplate.primary_key.format(
+                            table_name_small_hump, table.get('primaryKey')[0])
 
                 resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_hump, primary_key_str,
                                                                       table_name_small_hump)
@@ -184,9 +187,6 @@ class CodeGenerator(object):
             # template  generation
             imports_str = CodeBlockTemplate.resource_imports.format(table_name_small_hump, table_name_big_hump)
 
-            business_key = table.get('business_key').get('column')
-            primaryKey = table.get('primaryKey')[0]
-
             if table.get('logical_delete_mark'):
                 delete_column = table.get('logical_delete_mark')
             else:
@@ -198,30 +198,6 @@ class CodeGenerator(object):
             parameter_put = ''
             parameter_delete = ''
             rsa_columns = table.get('rsa_columns')
-
-            for column in table.get('columns').values():
-                if column.get('name') == business_key and table.get('business_key').get('rule'):
-                    continue
-                elif column.get('name') == primaryKey and primaryKey != business_key:
-                    continue
-                elif column.get('name') == delete_column:
-                    continue
-                else:
-                    if column.get('name') not in rsa_columns and column.get('nullable'):
-                        parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
-                                                                                        column.get('type'))
-                    else:
-                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
-                                                                                       column.get('type'))
-                    parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
-                                                                                             column.get('type'))
-                    parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
-                    parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column.get('name'),
-                                                                                       column.get('type'))
-            if business_key:
-                id_str = business_key
-            else:
-                id_str = primaryKey
 
             # swag generation
             if flasgger_mode:
@@ -239,21 +215,81 @@ class CodeGenerator(object):
 
                 import_flasgger = ''
 
-            return FileTemplate.resource.format(
-                swag_get=swag_get,
-                swag_put=swag_put,
-                swag_post=swag_post,
-                swag_delete=swag_delete,
-                imports=imports_str,
-                flasgger_import=import_flasgger,
-                apiName=table_name_small_hump,
-                className=table_name_big_hump,
-                id=id_str,
-                putParameter=parameter_put,
-                getParameter=parameter_get,
-                postParameter=parameter_post,
-                deleteParameter=parameter_delete
-            )
+            # parameter generation
+            if len(table.get('primaryKey')) > 1:
+                for column in table.get('columns').values():
+                    if column.get('name') in table.get('primaryKey'):
+                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                       column.get('type'))
+                        parameter_put += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'),
+                                                                                      column.get('type'))
+                        parameter_delete += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'),
+                                                                                         column.get('type'))
+                    else:
+                        parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
+                                                                                        column.get('type'))
+                        parameter_put += CodeBlockTemplate.parameter_form_false_multi_primary.format(column.get('name'),
+                                                                                       column.get('type'))
+                    parameter_get += CodeBlockTemplate.parameter_form_false_multi_primary.format(column.get('name'),
+                                                                                   column.get('type'))
+
+                return FileTemplate.resource_multi_primary_key.format(
+                    swag_get=swag_get,
+                    swag_put=swag_put,
+                    swag_post=swag_post,
+                    swag_delete=swag_delete,
+                    imports=imports_str,
+                    flasgger_import=import_flasgger,
+                    apiName=table_name_small_hump,
+                    className=table_name_big_hump,
+                    putParameter=parameter_put,
+                    getParameter=parameter_get,
+                    postParameter=parameter_post,
+                    deleteParameter=parameter_delete
+                )
+
+            else:
+                business_key = table.get('business_key').get('column')
+                primaryKey = table.get('primaryKey')[0]
+                for column in table.get('columns').values():
+                    if column.get('name') == business_key and table.get('business_key').get('rule'):
+                        continue
+                    elif column.get('name') == primaryKey and primaryKey != business_key:
+                        continue
+                    elif column.get('name') == delete_column:
+                        continue
+                    else:
+                        if column.get('name') not in rsa_columns and column.get('nullable'):
+                            parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
+                                                                                            column.get('type'))
+                        else:
+                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
+                                                                                           column.get('type'))
+                        parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
+                                                                                                 column.get('type'))
+                        parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
+                        parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column.get('name'),
+                                                                                           column.get('type'))
+                if business_key:
+                    id_str = business_key
+                else:
+                    id_str = primaryKey
+
+                return FileTemplate.resource.format(
+                    swag_get=swag_get,
+                    swag_put=swag_put,
+                    swag_post=swag_post,
+                    swag_delete=swag_delete,
+                    imports=imports_str,
+                    flasgger_import=import_flasgger,
+                    apiName=table_name_small_hump,
+                    className=table_name_big_hump,
+                    id=id_str,
+                    putParameter=parameter_put,
+                    getParameter=parameter_get,
+                    postParameter=parameter_post,
+                    deleteParameter=parameter_delete
+                )
 
         except Exception as e:
             loggings.exception(1, e)
