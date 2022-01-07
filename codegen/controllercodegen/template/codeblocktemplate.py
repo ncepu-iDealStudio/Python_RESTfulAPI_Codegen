@@ -109,17 +109,17 @@ from utils.loggings import loggings"""
 """
 
     multi_get_filter_num = """if kwargs.get('{column}') is not None:
-                    filter_list.append(cls.{column} == kwargs.get('{column}'))
-                """
+                filter_list.append(cls.{column} == kwargs.get('{column}'))
+            """
 
     multi_get_filter_str = """if kwargs.get('{column}'):
-                    filter_list.append(cls.{column} == kwargs.get('{column}'))
-                """
+                filter_list.append(cls.{column} == kwargs.get('{column}'))
+            """
 
     multi_rsa_get_filter_num = """if kwargs.get('{column}') is not None:
-                    filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
-                """
+                filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+            """
 
     multi_rsa_get_filter_str = """if kwargs.get('{column}'):
-                    filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
-                """
+                filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+            """
