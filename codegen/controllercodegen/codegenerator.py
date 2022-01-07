@@ -123,23 +123,44 @@ class CodeGenerator(object):
                         # 当前字段是删除标识位，跳过
                         continue
                     else:
-                        if column['type'] in ['int', 'float']:
-                            # column type is a number
-                            if column['name'] not in table['rsa_columns']:
-                                # column do not encrypt
-                                text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
-                            else:
-                                text = CodeBlockTemplate.rsa_get_filter_num.format(column=column['name'])
+                        if len(table['primaryKey']) > 1:
+                            # 属于复合主键
+                            if column['type'] in ['int', 'float']:
+                                # column type is a number
+                                if column['name'] not in table['rsa_columns']:
+                                    # column do not encrypt
+                                    text = CodeBlockTemplate.multi_get_filter_num.format(column=column['name'])
+                                else:
+                                    text = CodeBlockTemplate.multi_rsa_get_filter_num.format(column=column['name'])
 
+                            else:
+                                # column type is a string
+                                if column['name'] not in table['rsa_columns']:
+                                    # column do not encrypt
+                                    text = CodeBlockTemplate.multi_get_filter_str.format(column=column['name'])
+                                else:
+                                    text = CodeBlockTemplate.multi_rsa_get_filter_str.format(column=column['name'])
+
+                            get_filter_list += text
                         else:
-                            # column type is a string
-                            if column['name'] not in table['rsa_columns']:
-                                # column do not encrypt
-                                text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
-                            else:
-                                text = CodeBlockTemplate.rsa_get_filter_str.format(column=column['name'])
+                            # 不属于复合主键
+                            if column['type'] in ['int', 'float']:
+                                # column type is a number
+                                if column['name'] not in table['rsa_columns']:
+                                    # column do not encrypt
+                                    text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
+                                else:
+                                    text = CodeBlockTemplate.rsa_get_filter_num.format(column=column['name'])
 
-                        get_filter_list += text
+                            else:
+                                # column type is a string
+                                if column['name'] not in table['rsa_columns']:
+                                    # column do not encrypt
+                                    text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
+                                else:
+                                    text = CodeBlockTemplate.rsa_get_filter_str.format(column=column['name'])
+
+                            get_filter_list += text
 
                 if len(table['primaryKey']) > 1:
                     # 属于复合主键
