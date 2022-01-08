@@ -251,10 +251,10 @@ class CodeGenerator(object):
                     # 不属于复合主键
                     # 注：更新方法较为特殊，所用的代码块模板也为复合主键用模板
                     filter_list_init += CodeBlockTemplate.multi_primary_key_filter.format(
-                        primary_key=primary_key
+                        primary_key=business_key if business_key else primary_key
                     )
                     results_primary_keys += CodeBlockTemplate.multi_primary_key_result.format(
-                        primary_key=primary_key
+                        primary_key=business_key if business_key else primary_key
                     )
 
                 if not table['logical_delete_mark']:
