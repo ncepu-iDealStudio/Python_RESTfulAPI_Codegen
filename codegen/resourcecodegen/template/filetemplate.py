@@ -377,7 +377,7 @@ def process_response(response):
 
         response.headers["Access-Control-Allow-Credentials"] = 'true'
         response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,GET,POST,PUT,DELETE'
-        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type,Token'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type,Token,Authorization'
         response.headers['Access-Control-Expose-Headers'] = 'VerifyCodeID,ext'
     return response
 

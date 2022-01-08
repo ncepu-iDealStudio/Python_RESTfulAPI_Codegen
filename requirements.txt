@@ -5,3 +5,4 @@ PyMySQL==1.0.2
 SQLAlchemy==1.4.23
 sqlacodegen==3.0.0b2
 flask-sqlacodegen==1.1.8
+Flask-Bootstrap==3.3.7.1
