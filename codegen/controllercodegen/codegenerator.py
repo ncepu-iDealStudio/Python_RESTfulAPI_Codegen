@@ -58,7 +58,7 @@ class CodeGenerator(object):
                     parent_model=parent_model
                 )
 
-                # combine column_init
+                # 添加模块
                 column_init = ''
                 business_key_init = ''
                 add_result_primary_key = ''
@@ -111,7 +111,7 @@ class CodeGenerator(object):
                     add_result_primary_key=add_result_primary_key
                 )
 
-                # combine get_filter_list
+                # 查询模块
                 get_filter_list = ''
                 for column in table['columns'].values():
                     if column['name'] == primary_key and business_key:
@@ -123,43 +123,28 @@ class CodeGenerator(object):
                     elif column['name'] == table['logical_delete_mark']:
                         # 当前字段是删除标识位，跳过
                         continue
+                    elif column['name'] in table['rsa_columns']:
+                        # 当前字段是加密字段，不作为查询字段
+                        continue
                     else:
                         if len(table['primaryKey']) > 1:
                             # 属于复合主键
                             if column['type'] in ['int', 'float']:
                                 # column type is a number
-                                if column['name'] not in table['rsa_columns']:
-                                    # column do not encrypt
-                                    text = CodeBlockTemplate.multi_get_filter_num.format(column=column['name'])
-                                else:
-                                    text = CodeBlockTemplate.multi_rsa_get_filter_num.format(column=column['name'])
-
+                                text = CodeBlockTemplate.multi_get_filter_num.format(column=column['name'])
                             else:
                                 # column type is a string
-                                if column['name'] not in table['rsa_columns']:
-                                    # column do not encrypt
-                                    text = CodeBlockTemplate.multi_get_filter_str.format(column=column['name'])
-                                else:
-                                    text = CodeBlockTemplate.multi_rsa_get_filter_str.format(column=column['name'])
+                                text = CodeBlockTemplate.multi_get_filter_str.format(column=column['name'])
 
                             get_filter_list += text
                         else:
                             # 不属于复合主键
                             if column['type'] in ['int', 'float']:
                                 # column type is a number
-                                if column['name'] not in table['rsa_columns']:
-                                    # column do not encrypt
-                                    text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
-                                else:
-                                    text = CodeBlockTemplate.rsa_get_filter_num.format(column=column['name'])
-
+                                text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
                             else:
                                 # column type is a string
-                                if column['name'] not in table['rsa_columns']:
-                                    # column do not encrypt
-                                    text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
-                                else:
-                                    text = CodeBlockTemplate.rsa_get_filter_str.format(column=column['name'])
+                                text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
 
                             get_filter_list += text
 
@@ -185,6 +170,7 @@ class CodeGenerator(object):
                         model_lower=table['table_name']
                     )
 
+                # 删除模块
                 # 拼接删除方法中的filter和results
                 filter_list_init = ''
                 results_primary_keys = ''
@@ -227,6 +213,7 @@ class CodeGenerator(object):
                         single_primary_key_result_append=single_primary_key_result_append
                     )
 
+                # 更新模块
                 # 拼接更新方法中的rsa_update
                 rsa_update = ''
                 if table['rsa_columns']:
@@ -272,7 +259,7 @@ class CodeGenerator(object):
                         results_primary_keys=results_primary_keys
                     )
 
-                # combine add_list
+                # 列表添加模块
                 add_list_column_init = ''
                 add_list_business_key_init = ''
                 for column in table['columns'].values():
