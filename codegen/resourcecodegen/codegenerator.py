@@ -231,8 +231,9 @@ class CodeGenerator(object):
                                                                                         column.get('type'))
                         parameter_put += CodeBlockTemplate.parameter_form_false_multi_primary.format(column.get('name'),
                                                                                                      column.get('type'))
-                    parameter_get += CodeBlockTemplate.parameter_args_false_multi_primary.format(column.get('name'),
-                                                                                                 column.get('type'))
+                    if column.get('name') not in rsa_columns:
+                        parameter_get += CodeBlockTemplate.parameter_args_false_multi_primary.format(column.get('name'),
+                                                                                                     column.get('type'))
 
                 return FileTemplate.resource_multi_primary_key.format(
                     swag_get=swag_get,
@@ -266,9 +267,11 @@ class CodeGenerator(object):
                         else:
                             parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
                                                                                            column.get('type'))
+                        if column.get('name') not in rsa_columns:
+                            parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'),
+                                                                                     column.get('type'))
                         parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
                                                                                                  column.get('type'))
-                        parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
                         parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column.get('name'),
                                                                                            column.get('type'))
                 if business_key:
