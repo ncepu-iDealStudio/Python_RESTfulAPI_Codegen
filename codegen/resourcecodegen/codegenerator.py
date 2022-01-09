@@ -222,16 +222,17 @@ class CodeGenerator(object):
                         parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
                                                                                        column.get('type'))
                         parameter_put += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'),
-                                                                                      column.get('type'))
-                        parameter_delete += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'),
-                                                                                         column.get('type'))
+                                                                                                    column.get('type'))
+                        parameter_delete += CodeBlockTemplate.parameter_form_true_multi_primary.format(
+                            column.get('name'),
+                            column.get('type'))
                     else:
                         parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
                                                                                         column.get('type'))
                         parameter_put += CodeBlockTemplate.parameter_form_false_multi_primary.format(column.get('name'),
-                                                                                       column.get('type'))
-                    parameter_get += CodeBlockTemplate.parameter_form_false_multi_primary.format(column.get('name'),
-                                                                                   column.get('type'))
+                                                                                                     column.get('type'))
+                    parameter_get += CodeBlockTemplate.parameter_args_false_multi_primary.format(column.get('name'),
+                                                                                                 column.get('type'))
 
                 return FileTemplate.resource_multi_primary_key.format(
                     swag_get=swag_get,
@@ -311,11 +312,16 @@ class CodeGenerator(object):
 
             parameter = ''
             method = '\tpass'
+
             if table.get('is_view'):
+                imports_str = CodeBlockTemplate.other_resource_imports.format(table_name_small_hump,
+                                                                              table_name_big_hump)
                 for column in table.get('columns'):
                     parameter += CodeBlockTemplate.parameter_args_joint.format(column.get('field_name'),
                                                                                column.get('field_type'))
                 method = CodeBlockTemplate.other_resource_query.format(parameter, table_name_big_hump)
+            else:
+                imports_str = ""
 
             return FileTemplate.other_resource.format(
                 imports=imports_str,

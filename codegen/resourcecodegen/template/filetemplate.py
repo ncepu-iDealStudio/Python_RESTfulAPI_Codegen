@@ -55,7 +55,6 @@ from flask_restful import Api
 {imports}
 {flasgger_import}
 
-
 class {className}Resource(Resource):
 
     # get
@@ -149,7 +148,6 @@ class {className}Resource(Resource):
 {imports}
 {flasgger_import}
 
-
 class {className}Resource(Resource):
 
     # get
@@ -174,7 +172,6 @@ class {className}Resource(Resource):
     def delete(cls):
         parser = reqparse.RequestParser()
         {deleteParameter}
-
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
 
@@ -218,7 +215,7 @@ class {className}Resource(Resource):
 
     other_resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
-{imports}
+from flask_restful import Resource{imports}
 
 
 class {className}OtherResource(Resource):
