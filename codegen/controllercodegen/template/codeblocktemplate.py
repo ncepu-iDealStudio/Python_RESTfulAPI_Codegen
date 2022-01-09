@@ -29,7 +29,7 @@ from utils.loggings import loggings"""
     add_column_init = """{column}=kwargs.get('{column}'),
                 """
 
-    rsa_add = """{column}=RSAEncryptionDecryption.encrypt(kwargs.get('{column}')),
+    rsa_add = """{column}=RSAEncryptionDecryption.encrypt(kwargs.get('{column}')) if kwargs.get('{column}') else None,
                 """
 
     business_key_add = """{column}={column},
