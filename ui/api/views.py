@@ -127,7 +127,7 @@ def next():
             conf.write(f)
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功', 'invalid': result_sql['invalid']}
     else:
-        return {'code': '4000', 'data': [], 'message': '数据库连接失败'}
+        return {'code': '4000', 'data': [], 'message': result_sql['message']}
 
 
 # 完成项目配置
