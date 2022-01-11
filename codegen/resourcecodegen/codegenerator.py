@@ -219,21 +219,14 @@ class CodeGenerator(object):
             if len(table.get('primaryKey')) > 1:
                 for column in table.get('columns').values():
                     if column.get('name') in table.get('primaryKey'):
-                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
-                                                                                       column.get('type'))
-                        parameter_put += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'),
-                                                                                                    column.get('type'))
-                        parameter_delete += CodeBlockTemplate.parameter_form_true_multi_primary.format(
-                            column.get('name'),
-                            column.get('type'))
+                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'))
+                        parameter_put += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'))
+                        parameter_delete += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'))
                     else:
-                        parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
-                                                                                        column.get('type'))
-                        parameter_put += CodeBlockTemplate.parameter_form_false_multi_primary.format(column.get('name'),
-                                                                                                     column.get('type'))
+                        parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'))
+                        parameter_put += CodeBlockTemplate.parameter_form_false_multi_primary.format(column.get('name'))
                     if column.get('name') not in rsa_columns:
-                        parameter_get += CodeBlockTemplate.parameter_args_false_multi_primary.format(column.get('name'),
-                                                                                                     column.get('type'))
+                        parameter_get += CodeBlockTemplate.parameter_args_false_multi_primary.format(column.get('name'))
 
                 return FileTemplate.resource_multi_primary_key.format(
                     swag_get=swag_get,
@@ -262,18 +255,13 @@ class CodeGenerator(object):
                         continue
                     else:
                         if column.get('name') not in rsa_columns and column.get('nullable'):
-                            parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
-                                                                                            column.get('type'))
+                            parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'))
                         else:
-                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
-                                                                                           column.get('type'))
+                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'))
                         if column.get('name') not in rsa_columns:
-                            parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'),
-                                                                                     column.get('type'))
-                        parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
-                                                                                                 column.get('type'))
-                        parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column.get('name'),
-                                                                                           column.get('type'))
+                            parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'))
+                        parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'))
+                        parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column.get('name'))
                 if business_key:
                     id_str = business_key
                 else:
@@ -320,8 +308,7 @@ class CodeGenerator(object):
                 imports_str = CodeBlockTemplate.other_resource_imports.format(table_name_small_hump,
                                                                               table_name_big_hump)
                 for column in table.get('columns'):
-                    parameter += CodeBlockTemplate.parameter_args_joint.format(column.get('field_name'),
-                                                                               column.get('field_type'))
+                    parameter += CodeBlockTemplate.parameter_args_joint.format(column.get('field_name'))
                 method = CodeBlockTemplate.other_resource_query.format(parameter, table_name_big_hump)
             else:
                 imports_str = ""
