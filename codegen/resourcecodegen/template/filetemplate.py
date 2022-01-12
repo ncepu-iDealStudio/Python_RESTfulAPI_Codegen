@@ -43,16 +43,22 @@ from flask_restful import Api
 {resource}
 """
 
+    urls_view = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+{imports}
+
+{otherResource}
+"""
     resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
 {imports}
-
+{flasgger_import}
 
 class {className}Resource(Resource):
 
     # get
-    @classmethod
-    @swag_from("ymls/{apiName}_get.yml")
+    @classmethod{swag_get}
     def get(cls, {id}=None):
         if {id}:
             kwargs = {{
@@ -67,8 +73,8 @@ class {className}Resource(Resource):
 
         parser = reqparse.RequestParser()
         {getParameter}
-        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
-        parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
+        parser.add_argument('Page', location='args', required=False, help='Page参数类型不正确或缺失')
+        parser.add_argument('Size', location='args', required=False, help='Size参数类型不正确或缺失')
 
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
@@ -80,8 +86,7 @@ class {className}Resource(Resource):
             return jsonify(code=res['code'], message=res['message'], data=res['data']) 
 
     # delete
-    @classmethod
-    @swag_from("ymls/{apiName}_delete.yml")
+    @classmethod{swag_delete}
     def delete(cls, {id}=None):
         if {id}:
             kwargs = {{
@@ -101,8 +106,7 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # put
-    @classmethod
-    @swag_from("ymls/{apiName}_put.yml")
+    @classmethod{swag_put}
     def put(cls, {id}):
         if not {id}:
             return jsonify(code=RET.NODATA, message='primary key missed', error='primary key missed')
@@ -118,8 +122,81 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # add
-    @classmethod
-    @swag_from("ymls/{apiName}_post.yml")
+    @classmethod{swag_post}
+    def post(cls):
+        \"\"\"
+        {className}List: Pass in values in JSON format to batch add
+        eg.[{k1:v1,k2:v2,...},{data2},...]
+        \"\"\"
+        parser = reqparse.RequestParser()
+        parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')
+
+        kwargs = parser.parse_args()
+        kwargs = commons.put_remove_none(**kwargs)
+
+        if kwargs.get('{className}List'):
+            res = {className}Controller.add_list(**kwargs)
+
+        else:
+            {postParameter}
+            kwargs = parser.parse_args()
+            kwargs = commons.put_remove_none(**kwargs)
+
+            res = {className}Controller.add(**kwargs)
+
+        return jsonify(code=res['code'], message=res['message'], data=res['data'])
+"""
+
+    resource_multi_primary_key = """#!/usr/bin/env python
+# -*- coding:utf-8 -*- 
+{imports}
+{flasgger_import}
+
+class {className}Resource(Resource):
+
+    # get
+    @classmethod{swag_get}
+    def get(cls):
+        parser = reqparse.RequestParser()
+        {getParameter}
+        parser.add_argument('Page', location='args', required=False, help='Page参数类型不正确或缺失')
+        parser.add_argument('Size', location='args', required=False, help='Size参数类型不正确或缺失')
+
+        kwargs = parser.parse_args()
+        kwargs = commons.put_remove_none(**kwargs)
+
+        res = {className}Controller.get(**kwargs)
+        if res['code'] == RET.OK:
+            return jsonify(code=res['code'], message=res['message'], data=res['data'], totalPage=res['totalPage'], totalCount=res['totalCount'])
+        else:
+            return jsonify(code=res['code'], message=res['message'], data=res['data']) 
+
+    # delete
+    @classmethod{swag_delete}
+    def delete(cls):
+        parser = reqparse.RequestParser()
+        {deleteParameter}
+        kwargs = parser.parse_args()
+        kwargs = commons.put_remove_none(**kwargs)
+
+        res = {className}Controller.delete(**kwargs)
+        
+        return jsonify(code=res['code'], message=res['message'], data=res['data'])
+
+    # put
+    @classmethod{swag_put}
+    def put(cls):
+        parser = reqparse.RequestParser()
+        {putParameter}
+        kwargs = parser.parse_args()
+        kwargs = commons.put_remove_none(**kwargs)
+
+        res = {className}Controller.update(**kwargs)
+        
+        return jsonify(code=res['code'], message=res['message'], data=res['data'])
+
+    # add
+    @classmethod{swag_post}
     def post(cls):
         parser = reqparse.RequestParser()
         parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')
@@ -142,12 +219,11 @@ class {className}Resource(Resource):
 
     other_resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
-{imports}
+from flask_restful import Resource{imports}
 
 
 class {className}OtherResource(Resource):
-
-    pass
+{method}
 """
 
     app_init = """#!/usr/bin/env python
@@ -160,7 +236,7 @@ class {className}OtherResource(Resource):
 from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from .setting import Settings
+from . import setting
 
 # 数据库
 db = SQLAlchemy()
@@ -170,13 +246,20 @@ db = SQLAlchemy()
 def create_app(config_name):
     \"\"\"
     创建flask的应用对象
-    :param config_name: string 配置模式的名字  （"develop", "product"）
+    :param config_name: string 配置模式的名字  （"develop", "product", "test"）
     :return:
     \"\"\"
+    
+    config_mode = {{
+        'develop': 'DevelopSettings',
+        'product': 'ProductSettings',
+        'test': 'TestSettings'
+    }}
+    
     app = Flask(__name__)
 
     # 根据配置模式的名字获取配置参数的类
-    app.config.from_object(Settings)
+    app.config.from_object(getattr(setting, config_mode[config_name]))
 
     # 使用app初始化db
     db.init_app(app)
@@ -242,7 +325,7 @@ class ApiVersionResource(Resource):
 \"\"\"
 
 from app import create_app
-from flask_script import Manager
+from flask_script import Manager, Server
 from flask import request, jsonify
 from flasgger import Swagger
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -251,7 +334,13 @@ from utils.response_code import RET
 # 创建flask的app对象
 app = create_app("develop")
 
+# 通过Flask-Script的Manager,Server接管Flask运行
 manager = Manager(app)
+
+# 开启Debug模式
+manager.add_command("runserver", Server(use_debugger=True))
+
+# 将swagger包引入Flask应用
 swagger = Swagger(app)
 
 
@@ -289,7 +378,7 @@ def process_response(response):
 
         response.headers["Access-Control-Allow-Credentials"] = 'true'
         response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,GET,POST,PUT,DELETE'
-        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type,Token'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type,Token,Authorization'
         response.headers['Access-Control-Expose-Headers'] = 'VerifyCodeID,ext'
     return response
 

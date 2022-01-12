@@ -31,24 +31,19 @@ class CheckTable(object):
         invalid_tables = []
 
         for table in table_dict.values():
-            if len(table['primaryKey']) == 0:
+            if table['is_view']:
+                # 是一个视图，不进行检查
+                continue
+            elif len(table['primaryKey']) == 0:
                 # 表中没有主键
                 invalid_tables.append(table['table_name'])
                 loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']))
-            elif len(table['primaryKey']) > 1:
-                # 表中有复数个主键
-                invalid_tables.append(table['table_name'])
-                loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
+            # elif len(table['primaryKey']) > 1:
+            #     # 表中有复数个主键
+            #     invalid_tables.append(table['table_name'])
+            #     loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
             else:
                 available_tables.append(table['table_name'])
-            # else:
-            #     # 仅有一个主键，检验是否自增
-            #     if not table['columns'][table['primaryKey'][0]]['is_autoincrement']:
-            #         invalid_tables.append(table['table_name'])
-            #         loggings.warning(1,
-            #                          'table {0} do not have an autoincrement primary key'.format(table['table_name']))
-            #     else:
-            #         available_tables.append(table['table_name'])
 
         return available_tables, invalid_tables
 
@@ -65,6 +60,11 @@ class CheckTable(object):
         invalid_table = []
 
         for table in table_dict.values():
+
+            if table['is_view']:
+                # 是一个视图，不进行检查
+                continue
+
             flag = True
 
             # 检查表名是否为python关键字
@@ -88,13 +88,14 @@ class CheckTable(object):
 
     # 入口函数定义
     @classmethod
-    def main(cls, metadata):
+    def main(cls, metadata, reflection_views):
         """
             建立数据库连接时对表进行检查，筛去没有唯一自增主键、表名/字段名与Python关键字有冲突的表
             :param metadata: 数据库元数据
+            :param reflection_views: 需要反射的视图名称列表
         """
 
-        table_dict = TableMetadata.get_tables_metadata(metadata)
+        table_dict = TableMetadata.get_tables_metadata(metadata, reflection_views)
         invalid_tables = {}
 
         # check table primary key
@@ -115,11 +116,11 @@ class CheckTable(object):
                 1,
                 "A total of {0} tables check passed."
                 "The following {1} tables do not meet the specifications and cannot be generated: {2}."
-                .format(
-                    len(available_tables),
-                    len(invalid_tables['primary_key'] + invalid_tables['keyword']),
-                    ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])
-                )
+                    .format(
+                        len(available_tables),
+                        len(invalid_tables['primary_key'] + invalid_tables['keyword']),
+                        ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])
+                    )
             )
 
             return table_dict, invalid_tables

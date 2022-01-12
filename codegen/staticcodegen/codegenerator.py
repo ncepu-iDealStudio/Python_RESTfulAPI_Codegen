@@ -24,7 +24,7 @@ class CodeGenerator(object):
     SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
 
     @classmethod
-    def generate_configuration_file(cls, configuration_file_path):
+    def generate_develop_configuration_file(cls, configuration_file_path):
         """
         :param configuration_file_path: 配置文件存储路径
         :return: None
@@ -49,6 +49,45 @@ class CodeGenerator(object):
                 target_config.add_section(section)
                 for option_key, option_value in cls.SECURITY_CONFIG.items(section):
                     target_config.set(section, option_key, option_value)
+
+            with open(configuration_file_path, 'w', encoding="utf-8") as f:
+                target_config.write(f)
+
+        except Exception as e:
+            loggings.exception(1, e)
+
+    @classmethod
+    def generate_blank_configuration_file(cls, configuration_file_path):
+        """
+        :param configuration_file_path: 配置文件存储路径
+        :return: None
+        """
+        try:
+            target_config = ConfigParser()
+
+            # write configueration about databse
+            target_config.add_section("DATABASE")
+            target_config.set("DATABASE", "DIALECT", dialect)
+            target_config.set("DATABASE", "DRIVER", driver)
+            target_config.set("DATABASE", "USERNAME", "")
+            target_config.set("DATABASE", "PASSWORD", "")
+            target_config.set("DATABASE", "HOST", "")
+            target_config.set("DATABASE", "PORT", "")
+            target_config.set("DATABASE", "DATABASE", "")
+            target_config.set("DATABASE", "SQLALCHEMY_TRACK_MODIFICATIONS", "True")
+            target_config.set("DATABASE", "SQLALCHEMY_POOL_SIZE", '50')
+            target_config.set("DATABASE", "SQLALCHEMY_MAX_OVERFLOW", '-1')
+
+            # write configueration about BASIC
+            target_config.add_section("BASIC")
+            target_config.set("BASIC", "secret_key", "")
+            target_config.set("BASIC", "token_expires", "3600")
+
+            for section in cls.SECURITY_CONFIG.sections():
+                if section != 'BASIC':
+                    target_config.add_section(section)
+                    for option_key, option_value in cls.SECURITY_CONFIG.items(section):
+                        target_config.set(section, option_key, "")
 
             with open(configuration_file_path, 'w', encoding="utf-8") as f:
                 target_config.write(f)

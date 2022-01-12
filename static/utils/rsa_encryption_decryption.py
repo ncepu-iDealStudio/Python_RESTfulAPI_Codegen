@@ -9,7 +9,7 @@ from utils.loggings import loggings
 
 os.chdir(os.path.dirname(os.path.dirname(__file__)))
 
-CONFIG_DIR = "config/config.conf"
+CONFIG_DIR = "config/develop_config.conf"
 CONFIG = ConfigParser()
 CONFIG.read(CONFIG_DIR, encoding='utf-8')
 

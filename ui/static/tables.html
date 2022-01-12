@@ -30,12 +30,6 @@
                             </a>
                         </el-tooltip>
                         <el-tooltip placement="bottom">
-                            <template #content>导出配置文件</template>
-                            <div style="float: right;margin-right: 20px;">
-                                <div @click="exportfile" class="iconfont icon-xiazaidaoru"></div>
-                            </div>
-                        </el-tooltip>
-                        <el-tooltip placement="bottom">
                             <template #content>导入配置文件</template>
                             <div style="float: right;margin-right: 20px;">
                                 <div @click="importfile" class="iconfont icon-shangchuandaochu"></div>
@@ -53,7 +47,7 @@
                                     <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
                                 </div>
                                 <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
-                                    <el-checkbox v-model="item.issave" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
+                                    <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
                                 </el-menu-item>
                             </el-menu>
                         </el-scrollbar>
@@ -76,7 +70,7 @@
                                                 <el-col :span="23">
                                                     <div>以下表不符合规范，已被过滤</div>
                                                     <div v-if="invalid_primary_key!=''">
-                                                        <div> 缺少主键或存在符合主键：</div>
+                                                        <div> 缺少主键或存在复合主键：</div>
                                                         <div> {{invalid_primary_key}}</div>
                                                     </div>
                                                     <div v-if="invalid_keyword!=''">
@@ -205,7 +199,7 @@
             // 全选
             const handleCheckAllChange = (val) => {
                 for (let i = 0; i < state.tables.length; i++) {
-                    state.tables[i].issave = val;
+                    state.tables[i].ischecked = val;
                 }
                 state.isIndeterminate = false;
             }
@@ -214,7 +208,7 @@
                 state.isIndeterminate = true;
                 let index_checked = 0;
                 for (let i = 0; i < state.tables.length; i++) {
-                    if (state.tables[i].issave) {
+                    if (state.tables[i].ischecked) {
                         index_checked++;
                     }
                 }
@@ -227,20 +221,22 @@
                 }
             }
 
+            // 上一步
             const back = () => {
                 location.replace('/');
             }
 
+            //下一步
             const nextStep = () => {
                 state.nextStep_loading = true;
                 localStorage.setItem("tables", JSON.stringify(state.tables));
-                location.replace('tables_info')
+                location.replace('views')
                 state.nextStep_loading = false;
             }
 
             //清空
             const handleClear = () => {
-                state.tables[state.activeIndex].issave = false;
+                state.tables[state.activeIndex].ischecked = false;
                 state.tables[state.activeIndex].logicaldeletemark = "";
                 if (!state.tables.businesskeyuneditable) {
                     state.tables.businesskeyname = "";
@@ -272,7 +268,7 @@
 
             //勾选左边表
             const checkCurrentTables = () => {
-                state.tables[state.activeIndex].issave = true;
+                state.tables[state.activeIndex].ischecked = true;
 
             }
 
@@ -280,27 +276,6 @@
             const blurbusinesskey = () => {
                 checkCurrentTables();
                 state.tables[state.activeIndex].businesskeyrule = "";
-            }
-
-            // 导出文件
-            const exportfile = () => {
-                let tables_data = [];
-                for (let i = 0; i < state.tables.length; i++) {
-                    if (state.tables[i].issave) {
-                        tables_data.push(state.tables[i])
-                    }
-                }
-                if (tables_data.length === 0) {
-                    ElMessage.warning('请至少勾选一张表');
-                } else {
-                    let aTag = document.createElement('a');
-                    const content = JSON.stringify(tables_data);
-                    let blob = new Blob([content]);
-                    aTag.download = "table_config" + ".json";
-                    aTag.href = URL.createObjectURL(blob);
-                    aTag.click();
-                    URL.revokeObjectURL(blob);
-                }
             }
 
             // 导入文件
@@ -319,11 +294,26 @@
                     let fileString = evt.target.result; // 读取文件内容
 
                     try {
-                        let tables_data = JSON.parse(fileString);
+                        let profile_data = JSON.parse(fileString);
+                        let tables_data = profile_data.table
+                        let views_data = profile_data.view
+
+                        //导入view
+                        let views = JSON.parse(localStorage.getItem("views"));
+                        for (let i = 0; i < views.length; i++) {
+                            for (let j = 0; j < views_data.length; j++) {
+                                if (views_data[j].view === views[i].view) {
+                                    views[i] = views_data[j];
+                                } else {
+                                    views[i].ischecked = false;
+                                }
+                            }
+                        }
+                        localStorage.setItem("views", JSON.stringify(views));
 
                         // 清空所有配置信息
                         for (let i = 0; i < state.tables.length; i++) {
-                            state.tables[i].issave = false;
+                            state.tables[i].ischecked = false;
                             state.tables[i].logicaldeletemark = "";
                             if (!state.tables[i].businesskeyuneditable) {
                                 state.tables[i].businesskeyname = "";
@@ -342,7 +332,7 @@
                             for (let j = 0; j < state.tables.length; j++) {
                                 // 判断表名是否存在
                                 if (tables_data[i].table === state.tables[j].table) {
-                                    state.tables[j].issave = tables_data[i].issave;
+                                    state.tables[j].ischecked = tables_data[i].ischecked;
 
                                     //校验主键是否修改
                                     if (tables_data[i].table.businesskeyuneditable != state.tables[j].table.businesskeyuneditable) {
@@ -442,7 +432,6 @@
                 blurbusinesskey,
                 handleCheckAllChange,
                 handleCheckChange,
-                exportfile,
                 importfile,
                 selectfile,
                 back,

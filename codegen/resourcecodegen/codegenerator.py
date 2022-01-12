@@ -14,7 +14,7 @@
 
 import os
 
-from codegen import project_dir, api_version
+from codegen import project_dir, api_version, flasgger_mode
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
 from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
@@ -52,14 +52,16 @@ class CodeGenerator(object):
                 f.write(FileTemplate.api_version_resource.format(apiversion=api_version.replace('_', '.')))
 
             # apiversion ymls file generation
-            os.makedirs(apiVersion_ymls_dir := os.path.join(apiVersion_dir, 'ymls'), exist_ok=True)
-            with open(os.path.join(apiVersion_ymls_dir, 'apiversion_get.yml'), 'w', encoding='utf8') as f:
-                f.write(FileTemplate.yml_get_template.format('apiversion', ''))
+            if flasgger_mode:
+                os.makedirs(apiVersion_ymls_dir := os.path.join(apiVersion_dir, 'ymls'), exist_ok=True)
+                with open(os.path.join(apiVersion_ymls_dir, 'apiversion_get.yml'), 'w', encoding='utf8') as f:
+                    f.write(FileTemplate.yml_get_template.format('apiversion', ''))
 
             # file generation
             for table in table_dict.keys():
                 table_name_small_hump = str_to_little_camel_case(table_dict[table].get('table_name'))
-                os.makedirs(resource_dir := os.path.join(api_dir, '{0}Resource'.format(table_name_small_hump)), exist_ok=True)
+                os.makedirs(resource_dir := os.path.join(api_dir, '{0}Resource'.format(table_name_small_hump)),
+                            exist_ok=True)
 
                 # init generation
                 with open(os.path.join(resource_dir, '__init__.py'), 'w', encoding='utf8') as f:
@@ -70,25 +72,34 @@ class CodeGenerator(object):
                     f.write(self.urls_codegen(table_dict[table]).replace('\"', '\''))
 
                 # resource generation
-                with open(os.path.join(resource_dir, '{0}Resource.py'.format(table_name_small_hump)), 'w', encoding='utf8') as f:
-                    f.write(self.resource_codegen(table_dict[table]).replace('\"', '\''))
+                if not table_dict[table]['is_view']:
+                    with open(os.path.join(resource_dir, '{0}Resource.py'.format(table_name_small_hump)), 'w',
+                              encoding='utf8') as f:
+                        f.write(self.resource_codegen(table_dict[table]).replace('\"', '\''))
 
                 # otherResource generation
-                with open(os.path.join(resource_dir, '{0}OtherResource.py'.format(table_name_small_hump)), 'w', encoding='utf8') as f:
+                with open(os.path.join(resource_dir, '{0}OtherResource.py'.format(table_name_small_hump)), 'w',
+                          encoding='utf8') as f:
                     f.write(self.other_resource_codegen(table_dict[table]).replace('\"', '\''))
 
                 # ymls generation
-                os.makedirs(ymls_dir := os.path.join(resource_dir, 'ymls'), exist_ok=True)
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_get.yml'), 'w', encoding='utf8') as f:
-                    f.write(self.yml_get_codegen(table_dict[table]).replace('\"', '\''))
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_gets.yml'), 'w', encoding='utf8') as f:
-                    f.write(self.yml_gets_codegen(table_dict[table]).replace('\"', '\''))
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_post.yml'), 'w', encoding='utf8') as f:
-                    f.write(self.yml_post_codegen(table_dict[table]).replace('\"', '\''))
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_put.yml'), 'w', encoding='utf8') as f:
-                    f.write(self.yml_put_codegen(table_dict[table]).replace('\"', '\''))
-                with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_delete.yml'), 'w', encoding='utf8') as f:
-                    f.write(FileTemplate.yml_delete_template.format(table_dict[table].get('table_name')))
+                if flasgger_mode and not table_dict[table]['is_view']:
+                    os.makedirs(ymls_dir := os.path.join(resource_dir, 'ymls'), exist_ok=True)
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_get.yml'), 'w',
+                              encoding='utf8') as f:
+                        f.write(self.yml_get_codegen(table_dict[table]).replace('\"', '\''))
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_gets.yml'), 'w',
+                              encoding='utf8') as f:
+                        f.write(self.yml_gets_codegen(table_dict[table]).replace('\"', '\''))
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_post.yml'), 'w',
+                              encoding='utf8') as f:
+                        f.write(self.yml_post_codegen(table_dict[table]).replace('\"', '\''))
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_put.yml'), 'w',
+                              encoding='utf8') as f:
+                        f.write(self.yml_put_codegen(table_dict[table]).replace('\"', '\''))
+                    with open(os.path.join(ymls_dir, '{0}'.format(table_name_small_hump) + '_delete.yml'), 'w',
+                              encoding='utf8') as f:
+                        f.write(FileTemplate.yml_delete_template.format(table_dict[table].get('table_name')))
 
         except Exception as e:
             loggings.exception(1, e)
@@ -116,28 +127,47 @@ class CodeGenerator(object):
             table_name_all_small = str_to_all_small(table.get('table_name'))
             table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
             table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
-            # api_name = table_name_small_hump
-            # className_str = api_name[0].upper() + api_name[1:]
 
             # template  generation
-            import_str = CodeBlockTemplate.urls_imports.format(table_name_all_small, api_version, table_name_small_hump,
+            import_str = CodeBlockTemplate.urls_imports.format(table_name_all_small,
+                                                               api_version,
+                                                               table_name_small_hump,
                                                                table_name_big_hump)
 
-            api_str = CodeBlockTemplate.urls_api.format(table_name_all_small)
+            api_str = ''
+            resource_str = ''
+            other_esource_str = ''
 
-            if table.get('business_key').get('column'):
-                primary_key_str = CodeBlockTemplate.primary_key.format(table_name_small_hump,
-                                                                       table.get('business_key').get('column'))
+            if table.get('is_view'):
+                import_str = CodeBlockTemplate.urls_imports_view.format(table_name_all_small,
+                                                                        api_version,
+                                                                        table_name_small_hump,
+                                                                        table_name_big_hump)
+                other_esource_str = CodeBlockTemplate.urls_service_resource.format(table_name_all_small,
+                                                                                   table_name_small_hump,
+                                                                                   table_name_big_hump)
+                return FileTemplate.urls_view.format(imports=import_str,
+                                                     otherResource=other_esource_str
+                                                     )
             else:
-                primary_key_str = CodeBlockTemplate.primary_key.format(
-                    table_name_small_hump, table.get('primaryKey')[0])
+                api_str = CodeBlockTemplate.urls_api.format(table_name_all_small)
+                if table.get('business_key').get('column'):
+                    primary_key_str = CodeBlockTemplate.primary_key.format(table_name_small_hump,
+                                                                           table.get('business_key').get('column'))
+                else:
+                    if len(table.get('primaryKey')) > 1:
+                        primary_key_str = CodeBlockTemplate.primary_key_multi.format(table_name_small_hump)
+                    else:
+                        primary_key_str = CodeBlockTemplate.primary_key.format(
+                            table_name_small_hump, table.get('primaryKey')[0])
 
-            resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_hump, primary_key_str, table_name_small_hump)
+                resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_hump, primary_key_str,
+                                                                      table_name_small_hump)
 
-            # other_resource_str = CodeBlockTemplate.urls_other_resource.format(table_name_big_hump, table_name_small_hump)
-
-            return FileTemplate.urls.format(
-                imports=import_str, api=api_str, resource=resource_str)
+                return FileTemplate.urls.format(imports=import_str,
+                                                api=api_str,
+                                                resource=resource_str
+                                                )
 
         except Exception as e:
             loggings.exception(1, e)
@@ -157,9 +187,6 @@ class CodeGenerator(object):
             # template  generation
             imports_str = CodeBlockTemplate.resource_imports.format(table_name_small_hump, table_name_big_hump)
 
-            business_key = table.get('business_key').get('column')
-            primaryKey = table.get('primaryKey')[0]
-
             if table.get('logical_delete_mark'):
                 delete_column = table.get('logical_delete_mark')
             else:
@@ -172,40 +199,89 @@ class CodeGenerator(object):
             parameter_delete = ''
             rsa_columns = table.get('rsa_columns')
 
-            for column in table.get('columns').values():
-                if column.get('name') == business_key and table.get('business_key').get('rule'):
-                    continue
-                elif column.get('name') == primaryKey and primaryKey != business_key:
-                    continue
-                elif column.get('name') == delete_column:
-                    continue
-                else:
-                    if column.get('name') not in rsa_columns and column.get('is_exist_default'):
-                        parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'),
-                                                                                        column.get('type'))
-                    else:
-                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'),
-                                                                                       column.get('type'))
-                    parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'),
-                                                                                             column.get('type'))
-                    parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'), column.get('type'))
-                    parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column.get('name'),
-                                                                                       column.get('type'))
-            if business_key:
-                id_str = business_key
-            else:
-                id_str = primaryKey
+            # swag generation
+            if flasgger_mode:
+                swag_get = CodeBlockTemplate.resource_swag_get.format(table_name_small_hump)
+                swag_put = CodeBlockTemplate.resource_swag_put.format(table_name_small_hump)
+                swag_post = CodeBlockTemplate.resource_swag_post.format(table_name_small_hump)
+                swag_delete = CodeBlockTemplate.resource_swag_delete.format(table_name_small_hump)
 
-            return FileTemplate.resource.format(
-                imports=imports_str,
-                apiName=table_name_small_hump,
-                className=table_name_big_hump,
-                id=id_str,
-                putParameter=parameter_put,
-                getParameter=parameter_get,
-                postParameter=parameter_post,
-                deleteParameter=parameter_delete
-            )
+                import_flasgger = CodeBlockTemplate.resource_import_flasgger
+            else:
+                swag_get = ''
+                swag_put = ''
+                swag_post = ''
+                swag_delete = ''
+
+                import_flasgger = ''
+
+            # parameter generation
+            if len(table.get('primaryKey')) > 1:
+                for column in table.get('columns').values():
+                    if column.get('name') in table.get('primaryKey'):
+                        parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'))
+                        parameter_put += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'))
+                        parameter_delete += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'))
+                    else:
+                        parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'))
+                        parameter_put += CodeBlockTemplate.parameter_form_false_multi_primary.format(column.get('name'))
+                    if column.get('name') not in rsa_columns:
+                        parameter_get += CodeBlockTemplate.parameter_args_false_multi_primary.format(column.get('name'))
+
+                return FileTemplate.resource_multi_primary_key.format(
+                    swag_get=swag_get,
+                    swag_put=swag_put,
+                    swag_post=swag_post,
+                    swag_delete=swag_delete,
+                    imports=imports_str,
+                    flasgger_import=import_flasgger,
+                    apiName=table_name_small_hump,
+                    className=table_name_big_hump,
+                    putParameter=parameter_put,
+                    getParameter=parameter_get,
+                    postParameter=parameter_post,
+                    deleteParameter=parameter_delete
+                )
+
+            else:
+                business_key = table.get('business_key').get('column')
+                primaryKey = table.get('primaryKey')[0]
+                for column in table.get('columns').values():
+                    if column.get('name') == business_key and table.get('business_key').get('rule'):
+                        continue
+                    elif column.get('name') == primaryKey and primaryKey != business_key:
+                        continue
+                    elif column.get('name') == delete_column:
+                        continue
+                    else:
+                        if column.get('name') not in rsa_columns and column.get('nullable'):
+                            parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'))
+                        else:
+                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'))
+                        if column.get('name') not in rsa_columns:
+                            parameter_get += CodeBlockTemplate.parameter_args.format(column.get('name'))
+                        parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column.get('name'))
+                        parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column.get('name'))
+                if business_key:
+                    id_str = business_key
+                else:
+                    id_str = primaryKey
+
+                return FileTemplate.resource.format(
+                    swag_get=swag_get,
+                    swag_put=swag_put,
+                    swag_post=swag_post,
+                    swag_delete=swag_delete,
+                    imports=imports_str,
+                    flasgger_import=import_flasgger,
+                    apiName=table_name_small_hump,
+                    className=table_name_big_hump,
+                    id=id_str,
+                    putParameter=parameter_put,
+                    getParameter=parameter_get,
+                    postParameter=parameter_post,
+                    deleteParameter=parameter_delete
+                )
 
         except Exception as e:
             loggings.exception(1, e)
@@ -223,11 +299,24 @@ class CodeGenerator(object):
             # className_str = api_name[0].upper() + api_name[1:]
 
             # template generation
-            imports_str = CodeBlockTemplate.other_resource_imports
+            imports_str = CodeBlockTemplate.other_resource_imports.format(table_name_small_hump, table_name_big_hump)
+
+            parameter = ''
+            method = '\tpass'
+
+            if table.get('is_view'):
+                imports_str = CodeBlockTemplate.other_resource_imports.format(table_name_small_hump,
+                                                                              table_name_big_hump)
+                for column in table.get('columns'):
+                    parameter += CodeBlockTemplate.parameter_args_joint.format(column.get('field_name'))
+                method = CodeBlockTemplate.other_resource_query.format(parameter, table_name_big_hump)
+            else:
+                imports_str = ""
 
             return FileTemplate.other_resource.format(
                 imports=imports_str,
-                className=table_name_big_hump
+                className=table_name_big_hump,
+                method=method
             )
 
         except Exception as e:
@@ -303,7 +392,7 @@ class CodeGenerator(object):
         parameter = ""
         for column in table.get('columns').values():
             data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
-            if table.get('business_key'):
+            if table.get('business_key').get('column'):
                 if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
                         'business_key').get('column'):
                     parameter += CodeBlockTemplate.yml_get_parameter_template.format(column.get('name'),
@@ -324,7 +413,7 @@ class CodeGenerator(object):
         parameter = ""
         for column in table.get('columns').values():
             data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
-            if table.get('business_key'):
+            if table.get('business_key').get('column'):
                 if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
                         'business_key').get('column'):
                     parameter += CodeBlockTemplate.yml_post_parameter_template.format(column.get('name'),
@@ -345,7 +434,7 @@ class CodeGenerator(object):
         parameter = ""
         for column in table.get('columns').values():
             data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
-            if table.get('business_key'):
+            if table.get('business_key').get('column'):
                 if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
                         'business_key').get('column'):
                     parameter += CodeBlockTemplate.yml_put_parameter_template.format(column.get('name'),
