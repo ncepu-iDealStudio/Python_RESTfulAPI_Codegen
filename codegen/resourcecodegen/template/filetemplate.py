@@ -73,8 +73,8 @@ class {className}Resource(Resource):
 
         parser = reqparse.RequestParser()
         {getParameter}
-        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
-        parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
+        parser.add_argument('Page', location='args', required=False, help='Page参数类型不正确或缺失')
+        parser.add_argument('Size', location='args', required=False, help='Size参数类型不正确或缺失')
 
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
@@ -155,8 +155,8 @@ class {className}Resource(Resource):
     def get(cls):
         parser = reqparse.RequestParser()
         {getParameter}
-        parser.add_argument('Page', type=int, location='args', required=False, help='Page参数类型不正确或缺失')
-        parser.add_argument('Size', type=int, location='args', required=False, help='Size参数类型不正确或缺失')
+        parser.add_argument('Page', location='args', required=False, help='Page参数类型不正确或缺失')
+        parser.add_argument('Size', location='args', required=False, help='Size参数类型不正确或缺失')
 
         kwargs = parser.parse_args()
         kwargs = commons.put_remove_none(**kwargs)
