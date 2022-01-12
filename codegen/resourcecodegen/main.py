@@ -25,8 +25,8 @@ def main(table_dict):
     """
 
     try:
-        if not list(table_dict.keys()):
-            return
+        # if not list(table_dict.keys()):
+        #     return
 
         # Get target directory
         os.makedirs(api_dir := os.path.join(project_dir, 'api_' + api_version), exist_ok=True)

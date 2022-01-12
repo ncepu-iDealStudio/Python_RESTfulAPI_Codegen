@@ -45,9 +45,15 @@ def start(table_config):
         engine = create_engine(url)
         metadata = MetaData(engine)
 
-        metadata.reflect(engine, only=[table['table'] for table in table_config])
+        reflection_tables = [table['table'] for table in table_config['table']]
+        reflection_views = [view['view'] for view in table_config['view']]
+        metadata.reflect(engine, only=reflection_tables + reflection_views, views=True)
 
-        table_dict = TableMetadata.get_tables_metadata(metadata, table_config)
+        table_dict = TableMetadata.get_tables_metadata(
+            metadata=metadata,
+            reflection_views=reflection_views,
+            table_config=table_config
+        )
 
         # 第一步
         loggings.info(1, "Start to build the Model layer code, please wait...")

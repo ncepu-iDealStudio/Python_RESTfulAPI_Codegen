@@ -10,7 +10,6 @@
 
 import os
 
-
 from codegen.testcodegen.template.filetemplate import FileTemplate
 from utils.common import str_format_convert
 from utils.loggings import loggings
@@ -41,8 +40,9 @@ class CodeGenerator(object):
 
             # Test_xController generation
             for table in table_dict.keys():
+                if table_dict[table]['is_view']:
+                    continue
                 tableName = str_format_convert(table_dict[table].get('table_name'))
-
                 os.makedirs(test_xController_dir := os.path.join(test_dir, TestController_dir,
                                                                  'Test_{0}Controller'.format(tableName)), exist_ok=True)
 
@@ -81,6 +81,8 @@ class CodeGenerator(object):
 
             # Test_xResource generation
             for table in table_dict.keys():
+                if table_dict[table]['is_view']:
+                    continue
                 tableName = str_format_convert(table_dict[table].get('table_name'))
 
                 os.makedirs(test_xResource_dir := os.path.join(test_dir, TestResource_dir,

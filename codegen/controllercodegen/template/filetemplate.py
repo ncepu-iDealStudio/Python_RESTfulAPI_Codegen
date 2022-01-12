@@ -39,8 +39,8 @@ class {class_name}({parent_model}):
             db.session.add(model)
             db.session.commit()
             results = {{
-                '{primary_key}': model.{primary_key},
-                'add_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                'add_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                {add_result_primary_key}
             }}
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
             
@@ -58,10 +58,7 @@ class {class_name}({parent_model}):
     def get(cls, **kwargs):
         try:
             filter_list = [{get_filter_list_logic}]
-            if kwargs.get('{primary_key}'):
-                filter_list.append(cls.{primary_key} == kwargs.get('{primary_key}'))
-            else:
-                {get_filter_list}
+            {get_filter_list}
             page = int(kwargs.get('Page', 1))
             size = int(kwargs.get('Size', 10))
             
@@ -70,11 +67,7 @@ class {class_name}({parent_model}):
             count = {model_lower}_info.count()
             pages = math.ceil(count / size)
             {model_lower}_info = {model_lower}_info.limit(size).offset((page - 1) * size).all()
-
-            # judge whether the data is None
-            if not {model_lower}_info:
-                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No query results'}}}}
-                
+   
             results = commons.query_to_dict({model_lower}_info)
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'totalCount': count, 'totalPage': pages, 'data': results}}
             
@@ -85,36 +78,97 @@ class {class_name}({parent_model}):
             db.session.close()
 """
 
-    delete_template_physical = """    
+#     delete_template_physical = """
+#     # delete
+#     @classmethod
+#     def delete(cls, **kwargs):
+#         try:
+#             filter_list = []
+#             if kwargs.get('{primary_key}'):
+#                 primary_key_list = []
+#                 for primary_key in str(kwargs.get('{primary_key}')).replace(' ', '').split(','):
+#                     primary_key_list.append(cls.{primary_key} == primary_key)
+#                 filter_list.append(or_(*primary_key_list))
+#
+#             else:
+#                 {delete_filter_list}
+#             res = db.session.query(cls).filter(*filter_list).with_for_update()
+#
+#             results = {{
+#                 '{primary_key}': [],
+#                 'delete_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#             }}
+#             for query_model in res.all():
+#                 results['{primary_key}'].append(query_model.{primary_key})
+#
+#             res = res.delete()
+#             db.session.commit()
+#
+#             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
+#
+#         except Exception as e:
+#             db.session.rollback()
+#             loggings.exception(1, e)
+#             return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'data': {{'error': str(e)}}}}
+#         finally:
+#             db.session.close()
+# """
+#
+#     delete_template_logic = """
+#     # delete
+#     @classmethod
+#     def delete(cls, **kwargs):
+#         try:
+#             filter_list = [cls.{logical_delete_mark} == 0]
+#             if kwargs.get('{primary_key}'):
+#                 primary_key_list = []
+#                 for primary_key in str(kwargs.get('{primary_key}')).replace(' ', '').split(','):
+#                     primary_key_list.append(cls.{primary_key} == primary_key)
+#                 filter_list.append(or_(*primary_key_list))
+#
+#             else:
+#                 {delete_filter_list}
+#             res = db.session.query(cls).filter(*filter_list).with_for_update()
+#
+#             results = {{
+#                 '{primary_key}': [],
+#                 'delete_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#             }}
+#             for query_model in res.all():
+#                 results['{primary_key}'].append(query_model.{primary_key})
+#
+#             res = res.update({{'{logical_delete_mark}': 1}})
+#             db.session.commit()
+#
+#             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
+#
+#         except Exception as e:
+#             db.session.rollback()
+#             loggings.exception(1, e)
+#             return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'data': {{'error': str(e)}}}}
+#         finally:
+#             db.session.close()
+# """
+
+    delete_template_physical = """
     # delete
     @classmethod
     def delete(cls, **kwargs):
         try:
             filter_list = []
-            if kwargs.get('{primary_key}'):
-                primary_key_list = []
-                for primary_key in str(kwargs.get('{primary_key}')).replace(' ', '').split(','):
-                    primary_key_list.append(cls.{primary_key} == primary_key)
-                filter_list.append(or_(*primary_key_list))
-                
-            else:
-                {delete_filter_list}
+            {filter_list_init}
             res = db.session.query(cls).filter(*filter_list).with_for_update()
-            
+
             results = {{
-                '{primary_key}': [],
-                'delete_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                'delete_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                {results_primary_keys}
             }}
-            for query_model in res.all():
-                results['{primary_key}'].append(query_model.{primary_key})
-            
-            res = res.delete()
-            if res < 1:
-                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No data to delete'}}}}
+            {single_primary_key_result_append}
+            res.delete()
             db.session.commit()
-            
+
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
-            
+
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
@@ -129,37 +183,26 @@ class {class_name}({parent_model}):
     def delete(cls, **kwargs):
         try:
             filter_list = [cls.{logical_delete_mark} == 0]
-            if kwargs.get('{primary_key}'):
-                primary_key_list = []
-                for primary_key in str(kwargs.get('{primary_key}')).replace(' ', '').split(','):
-                    primary_key_list.append(cls.{primary_key} == primary_key)
-                filter_list.append(or_(*primary_key_list))
-                
-            else:
-                {delete_filter_list}
+            {filter_list_init}
             res = db.session.query(cls).filter(*filter_list).with_for_update()
-            
+
             results = {{
-                '{primary_key}': [],
-                'delete_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                'delete_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                {results_primary_keys}
             }}
-            for query_model in res.all():
-                results['{primary_key}'].append(query_model.{primary_key})
-            
-            res = res.update({{'{logical_delete_mark}': 1}})
-            if res < 1:
-                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No data to delete'}}}}
+            {single_primary_key_result_append}
+            res.update({{'{logical_delete_mark}': 1}})
             db.session.commit()
-            
+
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
-            
+
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
             return {{'code': RET.DBERR, 'message': error_map_EN[RET.DBERR], 'data': {{'error': str(e)}}}}
         finally:
             db.session.close()
-"""
+    """
 
     update_template_physical = """
     # update
@@ -167,21 +210,20 @@ class {class_name}({parent_model}):
     def update(cls, **kwargs):
         try:
             {rsa_update}
-            res = db.session.query(cls).filter(
-                cls.{primary_key} == kwargs.get('{primary_key}')
-            ).with_for_update().update(kwargs)
-            
-            if res < 1:
-                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No data to update'}}}}
-            db.session.commit()
-            
+            filter_list = []
+            {filter_list_init}
+            res = db.session.query(cls).filter(*filter_list).with_for_update()
+
             results = {{
-                '{primary_key}': kwargs.get('{primary_key}'),
-                'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                {results_primary_keys}
             }}
             
-            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
+            res.update(kwargs)
+            db.session.commit()
             
+            return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
+
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
@@ -196,22 +238,20 @@ class {class_name}({parent_model}):
     def update(cls, **kwargs):
         try:
             {rsa_update}
-            res = db.session.query(cls).filter(
-                cls.{primary_key} == kwargs.get('{primary_key}'),
-                cls.{logical_delete_mark} == 0
-            ).with_for_update().update(kwargs)
-            
-            if res < 1:
-                return {{'code': RET.NODATA, 'message': error_map_EN[RET.NODATA], 'data': {{'error': 'No data to update'}}}}
-            db.session.commit()
-            
+            filter_list = [cls.{logical_delete_mark} == 0]
+            {filter_list_init}
+            res = db.session.query(cls).filter(*filter_list).with_for_update()
+
             results = {{
-                '{primary_key}': kwargs.get('{primary_key}'),
-                'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                {results_primary_keys}
             }}
             
+            res.update(kwargs)
+            db.session.commit()
+
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
-            
+
         except Exception as e:
             db.session.rollback()
             loggings.exception(1, e)
@@ -237,11 +277,13 @@ class {class_name}({parent_model}):
             db.session.add_all(model_list)
             db.session.commit()
             results = {{
-                '{primary_key}': [],
+                'added_records': [],
                 'add_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }}
             for model in model_list:
-                results['{primary_key}'].append(model.{primary_key})
+                added_record = {{}}
+                {added_record_primary_keys}
+                results['added_records'].append(added_record)
             
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
             

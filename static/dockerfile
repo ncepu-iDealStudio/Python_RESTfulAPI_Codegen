@@ -43,7 +43,6 @@ RUN yum -y groupremove "Development Tools"
 
 # Setup the environment
 ENV PYTHONIOENCODING=utf-8
-ENV PIPSOURSE=https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
 # Build folder
 RUN mkdir -p /deploy/app
@@ -55,8 +54,8 @@ COPY ./requirements.txt /deploy/app/requirements.txt
 # Create a virtual environment
 RUN python3 -m venv venv \
 && source ./venv/bin/activate \
-&& pip3 install -r /deploy/app/requirements.txt -i ${PIPSOURSE} \
-&& pip3 install gunicorn==20.1.0 -i ${PIPSOURSE}
+&& pip3 install -r /deploy/app/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
+&& pip3 install gunicorn==20.1.0 -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
 # system bugfix
 COPY ./deploy/werkzeug.py  /deploy/app/venv/lib/python3.8/site-packages/werkzeug/__init__.py

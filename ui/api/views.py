@@ -33,6 +33,11 @@ def tables():
     return app.send_static_file('tables.html')
 
 
+@app.route('/views', methods=['GET'])
+def views():
+    return app.send_static_file('views.html')
+
+
 @app.route('/tables_info', methods=['GET'])
 def tables_info():
     return app.send_static_file('tables_info.html')
@@ -122,7 +127,7 @@ def next():
             conf.write(f)
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功', 'invalid': result_sql['invalid']}
     else:
-        return {'code': '4000', 'data': [], 'message': '数据库连接失败'}
+        return {'code': '4000', 'data': [], 'message': result_sql['message']}
 
 
 # 完成项目配置
@@ -132,6 +137,7 @@ def setproject():
     projectPath = 'dist'
     projectName = kwargs["projectName"]
     interfaceVersion = kwargs["projectVersion"]
+    flasgger_mode = kwargs["flasggerMode"]
 
     configfile = "config/config.conf"
     conf = configparser.ConfigParser()  # 实例类
@@ -140,6 +146,7 @@ def setproject():
     conf.set("PARAMETER", "target_dir", projectPath)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
     conf.set("PARAMETER", "project_name", projectName)
     conf.set("PARAMETER", "api_version", interfaceVersion)
+    conf.set("PARAMETER", "flasgger_mode", str(flasgger_mode))
     with open(configfile, "w") as f:
         conf.write(f)
     return {'code': '2000', 'data': [], 'message': '写入配置成功'}

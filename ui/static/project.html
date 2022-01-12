@@ -39,7 +39,7 @@
                             <el-card shadow="never">
                                 <template #header>要生成的目标接口项目基本配置</template>
                             </el-card>
-                            <el-form ref="ruleForm" :model="Form" :rules="rules" label-width="120px">
+                            <el-form ref="ruleForm" :model="Form" :rules="rules" label-width="130px">
                                 <el-form-item label="目标代码路径" prop="projectPath">
                                     <el-input v-model="path" disabled></el-input>
                                 </el-form-item>
@@ -48,6 +48,9 @@
                                 </el-form-item>
                                 <el-form-item label="接口版本" prop="projectVersion">
                                     <el-input v-model="Form.projectVersion" placeholder="1.0"></el-input>
+                                </el-form-item>
+                                <el-form-item label="flasgger文档生成">
+                                    <el-switch v-model="Form.flasggerMode" />
                                 </el-form-item>
                             </el-form>
                         </el-card>
@@ -93,6 +96,7 @@
                     Form: {
                         projectName: "",
                         projectVersion: "",
+                        flasggerMode: true,
                     },
                     rules: {
                         projectName: [{
@@ -109,6 +113,7 @@
                     nextStep_loading: false,
                     dialogVisible: false,
                     tables: [],
+                    views: [],
                     path: "",
                 });
 
@@ -124,7 +129,7 @@
                             // 判断是否有勾选表
                             let tables_data = [];
                             for (let i = 0; i < state.tables.length; i++) {
-                                if (state.tables[i].issave) {
+                                if (state.tables[i].ischecked) {
                                     tables_data.push(state.tables[i])
                                 }
                             }
@@ -163,16 +168,30 @@
 
                 // 导出文件
                 const exportfile = () => {
+                    //选中的tables
                     let tables_data = [];
                     for (let i = 0; i < state.tables.length; i++) {
-                        if (state.tables[i].issave) {
+                        if (state.tables[i].ischecked) {
                             tables_data.push(state.tables[i])
                         }
                     }
+                    //选中的views
+                    let views_data = [];
+                    for (let i = 0; i < state.views.length; i++) {
+                        if (state.views[i].ischecked) {
+                            views_data.push(state.views[i])
+                        }
+                    }
+
+                    const profile = {
+                        "table": tables_data,
+                        "view": views_data,
+                    }
+
                     let aTag = document.createElement('a');
-                    const content = JSON.stringify(tables_data);
+                    const content = JSON.stringify(profile);
                     let blob = new Blob([content]);
-                    aTag.download = "table_config" + ".json";
+                    aTag.download = "codegen_profile" + ".json";
                     aTag.href = URL.createObjectURL(blob);
                     aTag.click();
                     URL.revokeObjectURL(blob);
@@ -181,13 +200,16 @@
 
                 onMounted(() => {
                     let data_tables = JSON.parse(localStorage.getItem("tables"));
-                    if (!data_tables) {
+                    let data_views = JSON.parse(localStorage.getItem("views"));
+                    state.tables = data_tables;
+                    state.views = data_views;
+                    if (!data_tables || !data_views) {
                         ElMessage.warning('请重新连接数据库')
                         setTimeout(() => {
                             location.replace('/')
                         }, 1000)
                     }
-                    state.tables = data_tables;
+
 
                     let data = JSON.parse(localStorage.getItem("project_info"));
                     if (data) {
