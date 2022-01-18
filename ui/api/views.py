@@ -14,10 +14,11 @@ import configparser
 import json
 import os
 import time
+import zipfile
 from datetime import timedelta
 
 import pymysql
-from flask import Flask, request, session
+from flask import Flask, request, session, send_file, send_from_directory, make_response, current_app
 from urllib import parse
 
 from utils.checkSqlLink import check_sql_link, connection_check
@@ -58,11 +59,17 @@ def build():
     return app.send_static_file('build.html')
 
 
+@app.route('/dist', methods=['GET'])
+def dist():
+    dir = os.getcwd()
+    return send_from_directory(dir, "dist.zip", as_attachment=True)
+
+
 # 获取项目路径
 @app.route('/getpath', methods=['POST'])
 def getpath():
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    path = BASE_DIR + "\dist"
+    dir = os.getcwd()
+    path = dir + "\dist"
     return {'code': '2000', 'data': path, 'message': '获取路径成功'}
 
 
@@ -109,8 +116,8 @@ def connecttest():
 def next():
     # 获取会话id并创建对应配置文件
     id = session.get('id')
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    f = open(BASE_DIR + "/config/config_" + str(id) + ".conf", "w")
+    dir = os.getcwd()
+    f = open(dir + "/config/config_" + str(id) + ".conf", "w")
     f.close()
 
     # 接收参数
@@ -170,14 +177,27 @@ def setproject():
 # 开始生成代码
 @app.route('/startbuild', methods=['POST'])
 def startbuild():
+    id = session.get('id')
     kwargs = json.loads(request.data)
     from codegen.main import start
-    res = start(kwargs)
+    res = start(kwargs,id)
     if res['code'] == '2000':
         return {'code': '2000', 'data': res['data'], 'message': '写入配置成功'}
     else:
         return {'code': '5000', 'data': [], 'message': res['error']}
 
+
+# 下载
+@app.route('/download', methods=['POST'])
+def download():
+    folder = "dist"
+    zipfile_name = os.path.basename(folder) + '.zip'  # 压缩包和文件夹同名
+    with zipfile.ZipFile(zipfile_name, 'w') as zfile:  # 以写入模式创建压缩包
+        for foldername, subfolders, files in os.walk(folder):  # 遍历文件夹
+            zfile.write(foldername)
+            for i in files:
+                zfile.write(os.path.join(foldername, i))
+    return {'code': '2000', 'data': [], 'message': '压缩成功'}
 
 # 关闭服务
 # @app.route('/seriouslykill', methods=['POST'])

@@ -31,27 +31,38 @@
                 </el-col>
             </el-row>
         </div>
-        <el-row>
-            <el-col :offset="4" :span="16">
-                <el-card shadow="never">
+        <div class="container_body">
+            <el-row>
+                <el-col :offset="4" :span="16">
                     <el-card shadow="never">
-                        <template #header>
+                        <el-card shadow="never">
+                            <template #header>
                             <div v-if="loading">生成中...</div>
                             <div v-else>已完成</div>
                         </template>
-                        <div v-if="!loading" style="margin-bottom: 10px;">目标代码请在{{path}}查看</div>
-                        <el-progress :percentage="100" :indeterminate="loading" :duration="3" :show-text="false" />
-                    </el-card>
+                            <div v-if="!loading" style="margin-bottom: 10px;">目标代码请在{{path}}查看</div>
+                            <el-progress :percentage="100" :indeterminate="loading" :duration="3" :show-text="false" />
+                        </el-card>
 
-                    <el-card>
-                        程序运行日志
-                        <el-scrollbar style="height: calc(100vh - 320px);">
-                            <pre>{{log_info}}</pre>
-                        </el-scrollbar>
+                        <el-card>
+                            程序运行日志
+                            <el-scrollbar style="height: calc(100vh - 380px);">
+                                <pre>{{log_info}}</pre>
+                            </el-scrollbar>
+                        </el-card>
                     </el-card>
-                </el-card>
-            </el-col>
-        </el-row>
+                </el-col>
+            </el-row>
+        </div>
+        <div class="container_footer">
+            <el-row>
+                <el-col :offset="4" :span="16">
+                    <div style="margin:0 20px;">
+                        <el-button type="primary" style="float:right;width: 150px;" :disabled="loading" @click="download">项目下载</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
     </div>
 </body>
 
@@ -71,6 +82,25 @@
                     log_info: "",
                     path: "",
                 });
+
+                //下载目标代码
+                const download = () => {
+                    axios({
+                        method: 'POST',
+                        url: '/download',
+                    }).then(
+                        result => {
+                            const res = result.data
+                            if (res.code === '2000') {
+                                let aTag = document.createElement('a');
+                                aTag.href = "/dist";
+                                aTag.click();
+                            }
+                        }).catch(function(error) {
+                        console.log(error)
+                    })
+                }
+
                 onMounted(() => {
                     let tables = JSON.parse(localStorage.getItem("tables"));
                     // 获取勾选的表信息
@@ -122,17 +152,17 @@
                         if (res.code === '2000') {
                             state.log_info = res.data;
                             state.loading = false;
-                            axios({
-                                method: 'POST',
-                                url: '/seriouslykill',
-                            }).then(result => {
-                                const res = result.data
-                                if (res.code === '2000') {
-                                    ElMessage.warning(res.message)
-                                } else {
-                                    ElMessage.error(res.message)
-                                }
-                            })
+                            // axios({
+                            //     method: 'POST',
+                            //     url: '/seriouslykill',
+                            // }).then(result => {
+                            //     const res = result.data
+                            //     if (res.code === '2000') {
+                            //         ElMessage.warning(res.message)
+                            //     } else {
+                            //         ElMessage.error(res.message)
+                            //     }
+                            // })
                         } else {
                             ElMessage({
                                 showClose: true,
@@ -147,6 +177,7 @@
 
                 return {
                     ...toRefs(state),
+                    download,
                 };
             },
         }
