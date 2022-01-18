@@ -146,7 +146,7 @@
                         state.nextStep_loading = true;
                         axios({
                             method: 'POST',
-                            url: 'http://127.0.0.1:5000/next',
+                            url: '/next',
                             data: state.form
                         }).then(result => {
                             const res = result.data
@@ -171,7 +171,7 @@
                         state.connectTest_loading = true;
                         axios({
                             method: 'POST',
-                            url: 'http://127.0.0.1:5000/connecttest',
+                            url: '/connecttest',
                             data: state.form
                         }).then(result => {
                             const res = result.data
@@ -193,7 +193,7 @@
                 state.dbname_list = [];
                 axios({
                     method: 'POST',
-                    url: 'http://127.0.0.1:5000/getdbname',
+                    url: '/getdbname',
                     data: state.form
                 }).then(result => {
                     const res = result.data;

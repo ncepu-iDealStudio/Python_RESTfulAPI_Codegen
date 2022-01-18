@@ -13,18 +13,23 @@
 import configparser
 import json
 import os
+import time
+from datetime import timedelta
 
 import pymysql
-from flask import Flask, request
+from flask import Flask, request, session
 from urllib import parse
 
 from utils.checkSqlLink import check_sql_link, connection_check
 
 app = Flask(__name__, static_folder="../static")
+app.config['SECRET_KEY'] = os.urandom(24)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # 配置7天有效
 
 
 @app.route('/', methods=['GET'])
 def index():
+    session['id'] = int(round(time.time() * 1000))
     return app.send_static_file('index.html')
 
 
@@ -102,6 +107,12 @@ def connecttest():
 # 连接数据库接口
 @app.route('/next', methods=['POST'])
 def next():
+    # 获取会话id并创建对应配置文件
+    id = session.get('id')
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    f = open(BASE_DIR + "/config/config_" + str(id) + ".conf", "w")
+    f.close()
+
     # 接收参数
     kwargs = json.loads(request.data)
     dialect = kwargs['DatabaseDialects']
@@ -114,9 +125,10 @@ def next():
     result_sql = check_sql_link(dialect, username, password, host, port, database)
     if result_sql['code']:
         # 填写配置文件
-        configfile = "config/config.conf"
+        configfile = "config/config_" + str(id) + ".conf"
         conf = configparser.ConfigParser()  # 实例类
         conf.read(configfile, encoding='UTF-8')  # 读取配置文件
+        conf.add_section('DATABASE')
         conf.set("DATABASE", "dialect", dialect)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
         conf.set("DATABASE", "host", host)
         conf.set("DATABASE", "port", port)
@@ -139,10 +151,13 @@ def setproject():
     interfaceVersion = kwargs["projectVersion"]
     flasgger_mode = kwargs["flasggerMode"]
 
-    configfile = "config/config.conf"
+    id = session.get('id')
+
+    configfile = "config/config_" + str(id) + ".conf"
     conf = configparser.ConfigParser()  # 实例类
     conf.read(configfile, encoding='UTF-8')  # 读取配置文件
 
+    conf.add_section('PARAMETER')
     conf.set("PARAMETER", "target_dir", projectPath)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
     conf.set("PARAMETER", "project_name", projectName)
     conf.set("PARAMETER", "api_version", interfaceVersion)
@@ -165,10 +180,10 @@ def startbuild():
 
 
 # 关闭服务
-@app.route('/seriouslykill', methods=['POST'])
-def seriouslykill():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-    return {'code': '2000', 'data': [], 'message': 'http://127.0.0.1:5000/ is shutdown!'}
+# @app.route('/seriouslykill', methods=['POST'])
+# def seriouslykill():
+#     func = request.environ.get('werkzeug.server.shutdown')
+#     if func is None:
+#         raise RuntimeError('Not running with the Werkzeug Server')
+#     func()
+#     return {'code': '2000', 'data': [], 'message': 'http://127.0.0.1:5000/ is shutdown!'}
