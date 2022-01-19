@@ -18,13 +18,13 @@ import codegen.resourcecodegen.main
 import codegen.servicecodegen.main
 import codegen.staticcodegen.main
 import codegen.testcodegen.main
-from codegen import model_url
+
 from utils.loggings import loggings
 from utils.response_code import RET, error_map
 from utils.tablesMetadata import TableMetadata
 
 
-def start(table_config):
+def start(table_config, session_id):
     """
         步骤：
             零、 获取新的table_dict的值
@@ -40,9 +40,13 @@ def start(table_config):
             f.seek(0)
             f.truncate()
 
-        # 参数初始化
-        url = model_url
-        engine = create_engine(url)
+        # 初始化配置文件
+        from config.setting import Settings
+        settings = Settings(session_id)
+
+        # 参数初始化 --- !!!
+        from codegen import model_url
+        engine = create_engine(model_url)
         metadata = MetaData(engine)
 
         reflection_tables = [table['table'] for table in table_config['table']]
@@ -57,22 +61,23 @@ def start(table_config):
 
         # 第一步
         loggings.info(1, "Start to build the Model layer code, please wait...")
-        codegen.modelcodegen.main.main(table_dict)
+
+        codegen.modelcodegen.main.main(table_dict, settings)
         loggings.info(1, "Model layer code build completed")
 
         # 第二步
         loggings.info(1, "Start to build the Controller layer code, please wait...")
-        codegen.controllercodegen.main.main(table_dict)
+        codegen.controllercodegen.main.main(table_dict, settings)
         loggings.info(1, "Controller layer code build completed")
 
         # 第三步
         loggings.info(1, "Start to build the Service layer code, please wait...")
-        codegen.servicecodegen.main.main(table_dict)
+        codegen.servicecodegen.main.main(table_dict, settings)
         loggings.info(1, "Service layer code build completed")
 
         # 第四步
         loggings.info(1, "Start to build the Resource layer code, please wait...")
-        codegen.resourcecodegen.main.main(table_dict)
+        codegen.resourcecodegen.main.main(table_dict, settings)
         loggings.info(1, "Resource layer code build completed")
 
         # 第五步
@@ -82,7 +87,7 @@ def start(table_config):
 
         # 第六步
         loggings.info(1, "Start to build the Test layer code, please wait...")
-        codegen.testcodegen.main.main(table_dict)
+        codegen.testcodegen.main.main(table_dict, settings)
         loggings.info(1, "Test layer code build completed")
 
         loggings.info(1, "Api project code generation completed")

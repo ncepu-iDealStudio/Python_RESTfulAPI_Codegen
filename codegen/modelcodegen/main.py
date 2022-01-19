@@ -12,20 +12,21 @@
 
 import os
 
-from codegen import project_dir
-from config.setting import Settings
+from codegen import project_dir, model_url
 from utils.common import str_to_little_camel_case
 from utils.loggings import loggings
 from . import cmd
 
 
-def main(table_dict):
+def main(table_dict, settings):
     """
     model层代码的生成
     :return: None
     """
 
     try:
+        project_dir = settings.PROJECT_DIR
+
 
         # 在项目文件夹中创建models的目录
         os.makedirs(models_path := os.path.join(project_dir, 'models'), exist_ok=True)
@@ -40,7 +41,7 @@ def main(table_dict):
         for table in tables:
             loggings.info(1, "Model code for {0} table is being generated".format(table))
             command = cmd.format(
-                url=Settings.MODEL_URL,
+                url=model_url,
                 schema="",
                 tables=" --tables {0}".format(table),
                 noviews="",
