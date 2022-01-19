@@ -14,17 +14,24 @@
 
 import os
 
-from codegen import project_dir, api_version, flasgger_mode
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
 from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
 from utils.loggings import loggings
 
+project_dir = ''
+api_version = ''
+flasgger_mode = ''
+
 
 class CodeGenerator(object):
 
-    def __init__(self):
+    def __init__(self, settings):
         super(CodeGenerator, self).__init__()
+        global project_dir, api_version, flasgger_mode
+        project_dir = settings.PROJECT_DIR
+        api_version = settings.API_VERSION
+        flasgger_mode = settings.FLASGGER_MODE
         self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object', 'float': 'float'}
 
     # resource layer generation
@@ -221,7 +228,8 @@ class CodeGenerator(object):
                     if column.get('name') in table.get('primaryKey'):
                         parameter_post += CodeBlockTemplate.parameter_form_true.format(column.get('name'))
                         parameter_put += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'))
-                        parameter_delete += CodeBlockTemplate.parameter_form_true_multi_primary.format(column.get('name'))
+                        parameter_delete += CodeBlockTemplate.parameter_form_true_multi_primary.format(
+                            column.get('name'))
                     else:
                         parameter_post += CodeBlockTemplate.parameter_form_false.format(column.get('name'))
                         parameter_put += CodeBlockTemplate.parameter_form_false_multi_primary.format(column.get('name'))
