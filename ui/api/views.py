@@ -189,7 +189,8 @@ def startbuild():
 # 下载
 @app.route('/download', methods=['GET'])
 def download():
-    folder = "dist"
+    id = session.get('id')
+    folder = "dist_" + str(id)
     zipfile_name = os.path.basename(folder) + '.zip'  # 压缩包和文件夹同名
     with zipfile.ZipFile(zipfile_name, 'w') as zfile:  # 以写入模式创建压缩包
         for foldername, subfolders, files in os.walk(folder):  # 遍历文件夹
@@ -197,4 +198,4 @@ def download():
             for i in files:
                 zfile.write(os.path.join(foldername, i))
     dir = os.getcwd()
-    return send_from_directory(dir, "dist.zip", as_attachment=True)
+    return send_from_directory(dir, folder + ".zip", as_attachment=True)
