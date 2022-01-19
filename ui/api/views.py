@@ -18,7 +18,7 @@ import zipfile
 from datetime import timedelta
 
 import pymysql
-from flask import Flask, request, session, send_file, send_from_directory, make_response, current_app
+from flask import Flask, request, session, send_from_directory
 from urllib import parse
 
 from utils.checkSqlLink import check_sql_link, connection_check
@@ -57,12 +57,6 @@ def project():
 @app.route('/build', methods=['GET'])
 def build():
     return app.send_static_file('build.html')
-
-
-@app.route('/dist', methods=['GET'])
-def dist():
-    dir = os.getcwd()
-    return send_from_directory(dir, "dist.zip", as_attachment=True)
 
 
 # 获取项目路径
@@ -135,7 +129,10 @@ def next():
         configfile = "config/config_" + str(id) + ".conf"
         conf = configparser.ConfigParser()  # 实例类
         conf.read(configfile, encoding='UTF-8')  # 读取配置文件
-        conf.add_section('DATABASE')
+
+        if not conf.has_section('DATABASE'):
+            conf.add_section('DATABASE')
+
         conf.set("DATABASE", "dialect", dialect)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
         conf.set("DATABASE", "host", host)
         conf.set("DATABASE", "port", port)
@@ -164,7 +161,9 @@ def setproject():
     conf = configparser.ConfigParser()  # 实例类
     conf.read(configfile, encoding='UTF-8')  # 读取配置文件
 
-    conf.add_section('PARAMETER')
+    if not conf.has_section('PARAMETER'):
+        conf.add_section('PARAMETER')
+
     conf.set("PARAMETER", "target_dir", projectPath)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
     conf.set("PARAMETER", "project_name", projectName)
     conf.set("PARAMETER", "api_version", interfaceVersion)
@@ -180,7 +179,7 @@ def startbuild():
     id = session.get('id')
     kwargs = json.loads(request.data)
     from codegen.main import start
-    res = start(kwargs,id)
+    res = start(kwargs, id)
     if res['code'] == '2000':
         return {'code': '2000', 'data': res['data'], 'message': '写入配置成功'}
     else:
@@ -188,7 +187,7 @@ def startbuild():
 
 
 # 下载
-@app.route('/download', methods=['POST'])
+@app.route('/download', methods=['GET'])
 def download():
     folder = "dist"
     zipfile_name = os.path.basename(folder) + '.zip'  # 压缩包和文件夹同名
@@ -197,13 +196,5 @@ def download():
             zfile.write(foldername)
             for i in files:
                 zfile.write(os.path.join(foldername, i))
-    return {'code': '2000', 'data': [], 'message': '压缩成功'}
-
-# 关闭服务
-# @app.route('/seriouslykill', methods=['POST'])
-# def seriouslykill():
-#     func = request.environ.get('werkzeug.server.shutdown')
-#     if func is None:
-#         raise RuntimeError('Not running with the Werkzeug Server')
-#     func()
-#     return {'code': '2000', 'data': [], 'message': 'http://127.0.0.1:5000/ is shutdown!'}
+    dir = os.getcwd()
+    return send_from_directory(dir, "dist.zip", as_attachment=True)

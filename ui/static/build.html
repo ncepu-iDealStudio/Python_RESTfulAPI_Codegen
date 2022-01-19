@@ -85,20 +85,9 @@
 
                 //下载目标代码
                 const download = () => {
-                    axios({
-                        method: 'POST',
-                        url: '/download',
-                    }).then(
-                        result => {
-                            const res = result.data
-                            if (res.code === '2000') {
-                                let aTag = document.createElement('a');
-                                aTag.href = "/dist";
-                                aTag.click();
-                            }
-                        }).catch(function(error) {
-                        console.log(error)
-                    })
+                    let aTag = document.createElement('a');
+                    aTag.href = "/download";
+                    aTag.click();
                 }
 
                 onMounted(() => {
@@ -152,17 +141,6 @@
                         if (res.code === '2000') {
                             state.log_info = res.data;
                             state.loading = false;
-                            // axios({
-                            //     method: 'POST',
-                            //     url: '/seriouslykill',
-                            // }).then(result => {
-                            //     const res = result.data
-                            //     if (res.code === '2000') {
-                            //         ElMessage.warning(res.message)
-                            //     } else {
-                            //         ElMessage.error(res.message)
-                            //     }
-                            // })
                         } else {
                             ElMessage({
                                 showClose: true,
