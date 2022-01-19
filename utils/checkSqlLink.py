@@ -10,8 +10,7 @@
     检验数据库连接是否成功并返回所有表、字段信息（前端用）
 """
 
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.engine import reflection
+from sqlalchemy import create_engine, MetaData, inspect
 
 from utils.checkTable import CheckTable
 from urllib import parse
@@ -44,13 +43,13 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
                                                            port, database)
         engine = create_engine(url)
         metadata = MetaData(engine)
-        insp = reflection.Inspector.from_engine(engine)
+        inspector = inspect(engine)
         metadata.reflect(engine, views=True)
 
     except Exception as e:
         return {'code': False, 'message': str(e), 'error': str(e)}
 
-    table_dict, invalid_tables = CheckTable.main(metadata, insp.get_view_names())
+    table_dict, invalid_tables = CheckTable.main(metadata, inspector.get_view_names())
 
     data = {
         'table': [],
