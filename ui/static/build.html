@@ -38,7 +38,9 @@
                         <el-card shadow="never">
                             <template #header>
                             <div v-if="loading">生成中...</div>
-                            <div v-else>已完成</div>
+                            <div v-else>
+                                <div>已完成</div>
+                            </div>
                         </template>
                             <div v-if="!loading" style="margin-bottom: 10px;">目标代码请在{{path}}查看</div>
                             <el-progress :percentage="100" :indeterminate="loading" :duration="3" :show-text="false" />
@@ -58,7 +60,8 @@
             <el-row>
                 <el-col :offset="4" :span="16">
                     <div style="margin:0 20px;">
-                        <el-button type="primary" style="float:right;width: 150px;" :disabled="loading" @click="download">项目下载</el-button>
+                        <el-button type="primary" style="float:right;width: 150px;" :disabled="loading" @click="download">代码下载</el-button>
+                        <el-button type="primary" style="float:left;width: 150px;" :disabled="loading" @click="gohome">返回首页</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -88,6 +91,10 @@
                     let aTag = document.createElement('a');
                     aTag.href = "/download";
                     aTag.click();
+                }
+
+                const gohome = () => {
+                    location.replace('/');
                 }
 
                 onMounted(() => {
@@ -156,6 +163,7 @@
                 return {
                     ...toRefs(state),
                     download,
+                    gohome,
                 };
             },
         }
