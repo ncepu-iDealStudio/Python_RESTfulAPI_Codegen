@@ -14,7 +14,6 @@ import os
 import shutil
 from configparser import ConfigParser
 
-from codegen import dialect, driver, username, password, host, port, database
 from utils.loggings import loggings
 
 
@@ -24,12 +23,21 @@ class CodeGenerator(object):
     SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
 
     @classmethod
-    def generate_develop_configuration_file(cls, configuration_file_path):
+    def generate_develop_configuration_file(cls, configuration_file_path, settings):
         """
-        :param configuration_file_path: 配置文件存储路径
-        :return: None
+            :param configuration_file_path: 配置文件存储路径
+            :param settings: 用户配置
+            :return: None
         """
         try:
+            dialect = settings.DIALECT
+            driver = settings.DRIVER
+            username = settings.USERNAME
+            password = settings.PASSWORD
+            host = settings.HOST
+            port = settings.PORT
+            database = settings.DATABASE
+
             target_config = ConfigParser()
 
             # write configueration about databse
@@ -57,12 +65,16 @@ class CodeGenerator(object):
             loggings.exception(1, e)
 
     @classmethod
-    def generate_blank_configuration_file(cls, configuration_file_path):
+    def generate_blank_configuration_file(cls, configuration_file_path, settings):
         """
-        :param configuration_file_path: 配置文件存储路径
-        :return: None
+            :param configuration_file_path: 配置文件存储路径
+            :param settings: 用户配置
+            :return: None
         """
         try:
+            dialect = settings.DIALECT
+            driver = settings.DRIVER
+
             target_config = ConfigParser()
 
             # write configueration about databse

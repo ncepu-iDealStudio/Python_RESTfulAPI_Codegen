@@ -12,17 +12,17 @@
 
 import os
 
-from codegen import project_dir
 from codegen.servicecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
 
-def main(table_dict):
+def main(table_dict, settings):
     """
     Generate service layer code
     :return: None
     """
     try:
+        project_dir = settings.PROJECT_DIR
 
         # Create folder named "service" in project directory
         os.makedirs(service_path := os.path.join(project_dir, 'service'), exist_ok=True)

@@ -12,7 +12,6 @@
 
 import os
 
-from codegen import project_dir, model_url
 from utils.common import str_to_little_camel_case
 from utils.loggings import loggings
 from . import cmd
@@ -26,7 +25,7 @@ def main(table_dict, settings):
 
     try:
         project_dir = settings.PROJECT_DIR
-
+        model_url = settings.MODEL_URL
 
         # 在项目文件夹中创建models的目录
         os.makedirs(models_path := os.path.join(project_dir, 'models'), exist_ok=True)

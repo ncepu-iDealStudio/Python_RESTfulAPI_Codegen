@@ -36,7 +36,7 @@ def start(table_config, session_id):
             六、 生成test层代码
     """
     try:
-        with open('logs/codegen_log.log', 'w', encoding='utf-8') as f:
+        with open('logs/codegen_log_' + str(session_id) + '.log', 'w', encoding='utf-8') as f:
             f.seek(0)
             f.truncate()
 
@@ -44,9 +44,8 @@ def start(table_config, session_id):
         from config.setting import Settings
         settings = Settings(session_id)
 
-        # 参数初始化 --- !!!
-        from codegen import model_url
-        engine = create_engine(model_url)
+        # 参数初始化
+        engine = create_engine(settings.MODEL_URL)
         metadata = MetaData(engine)
 
         reflection_tables = [table['table'] for table in table_config['table']]
@@ -82,7 +81,7 @@ def start(table_config, session_id):
 
         # 第五步
         loggings.info(1, "Start packing static files, please wait...")
-        codegen.staticcodegen.main.main()
+        codegen.staticcodegen.main.main(settings)
         loggings.info(1, "Static resource packaging is complete")
 
         # 第六步
