@@ -33,7 +33,8 @@ class Settings(object):
         # 项目生成的目标路径
         self.BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         # 目标目录
-        self.TARGET_DIR = os.path.join(self.BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR']) + "_" + str(session_id)
+        self.TARGET_DIR = os.path.join(self.BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR']) + "/" + (
+                    os.path.join(self.BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR']) + "_" + str(session_id))
         # 项目目录
         self.PROJECT_DIR = os.path.join(self.TARGET_DIR, self.PROJECT_NAME)
         # 生成项目API的版本
