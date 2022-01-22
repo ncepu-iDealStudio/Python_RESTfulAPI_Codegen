@@ -181,7 +181,7 @@ def startbuild():
     from codegen.main import start
     res = start(kwargs, id)
     if res['code'] == '2000':
-        return {'code': '2000', 'data': res['data'], 'message': '写入配置成功'}
+        return {'code': '2000', 'data': res['data'], 'message': '目标代码生成成功'}
     else:
         return {'code': '5000', 'data': [], 'message': res['error']}
 
