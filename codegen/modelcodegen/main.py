@@ -50,7 +50,7 @@ def main(table_dict, settings):
                 noinflect="",
                 noclasses="",
                 notables="",
-                outfile=" --outfile {0}\{1}".format(models_path, str_to_little_camel_case(table) + "Model.py"),
+                outfile=" --outfile {0}/{1}".format(models_path, str_to_little_camel_case(table) + "Model.py"),
                 nobackrefs="",
                 nocomments="",
                 ignore_cols=""
