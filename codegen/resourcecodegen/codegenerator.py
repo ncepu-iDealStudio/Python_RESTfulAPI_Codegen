@@ -38,6 +38,25 @@ class CodeGenerator(object):
     def resource_generator(self, api_dir, app_dir, table_dict):
 
         try:
+            # table_dict processing
+            for table in table_dict.keys():
+                table_dict[table]['table_name_all_small'] = str_to_all_small(table)
+                table_dict[table]['table_name_small_hump'] = str_to_little_camel_case(table)
+                table_dict[table]['table_name_big_hump'] = str_to_big_camel_case(table)
+                if table_dict[table]['is_view']:
+                    pass
+                else:
+                    table_dict[table]['autoincrement_columns'] = []
+                    table_dict[table]['nullable_columns'] = []
+                    table_dict[table]['exist_default_columns'] = []
+                    for column in table_dict[table]['columns'].values():
+                        if column['is_autoincrement']:
+                            table_dict[table]['autoincrement_columns'].append(column['name'])
+                        if column['nullable']:
+                            table_dict[table]['nullable_columns'].append(column['name'])
+                        if column['is_exist_default']:
+                            table_dict[table]['exist_default_columns'].append(column['name'])
+
             self.manage_codegen(table_dict)
             # api_init generation
             with open(os.path.join(api_dir, '__init__.py'), 'w', encoding='utf8') as f:
@@ -141,10 +160,6 @@ class CodeGenerator(object):
                                                                table_name_small_hump,
                                                                table_name_big_hump)
 
-            api_str = ''
-            resource_str = ''
-            other_esource_str = ''
-
             if table.get('is_view'):
                 import_str = CodeBlockTemplate.urls_imports_view.format(table_name_all_small,
                                                                         api_version,
@@ -186,10 +201,6 @@ class CodeGenerator(object):
             table_name_all_small = str_to_all_small(table.get('table_name'))
             table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
             table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
-
-            # remove underline
-            # api_name = table_name_small_hump
-            # className_str = api_name[0].upper() + api_name[1:]
 
             # template  generation
             imports_str = CodeBlockTemplate.resource_imports.format(table_name_small_hump, table_name_big_hump)
@@ -302,10 +313,6 @@ class CodeGenerator(object):
             table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
             table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
 
-            # remove underline
-            # api_name = table_name_small_hump
-            # className_str = api_name[0].upper() + api_name[1:]
-
             # template generation
             imports_str = CodeBlockTemplate.other_resource_imports.format(table_name_small_hump, table_name_big_hump)
 
@@ -344,16 +351,11 @@ class CodeGenerator(object):
                 table_name_small_hump = str_to_little_camel_case(table_name)
                 table_name_big_hump = str_to_big_camel_case(table_name)
 
-                # table_name = str_format_convert(tables[str(table)].get('table_name'))
-                # table_name = table_name_small_hump
-                # blueprint_name = table_name_all_small
                 blueprint_register_str += CodeBlockTemplate.app_init_blueprint.format(
                     table_name_small_hump, api_version, table_name_all_small,
                 )
 
-            # print(blueprint_register_str)
             app_init_file = os.path.join(app_dir, '__init__.py')
-            # new_file_or_dir(1, app_init_file)
             with open(app_init_file, 'w', encoding='utf8') as f:
                 f.write(FileTemplate.app_init.format(blueprint_register=blueprint_register_str))
 
@@ -362,16 +364,16 @@ class CodeGenerator(object):
 
     # manage generation
     def manage_codegen(self, tables):
+        # permission generation
         permission = ["apiversion.apiversion"]
         for table in tables.values():
-            table_name_all_small = str_to_all_small(table.get('table_name'))
-            table_name_small_hump = str_to_little_camel_case(table.get('table_name'))
-            table_name_big_hump = str_to_big_camel_case(table.get('table_name'))
+            table_name_small_hump = table.get('table_name_small_hump')
+            table_name_endpoint = table_name_small_hump + '.' + table_name_small_hump
 
-            # blueprint_name = table_name_small_hump
-            permission.append(table_name_small_hump + '.' + table_name_small_hump)
-            permission.append(table_name_small_hump + '.' + table_name_small_hump + '_list')
-            permission.append(table_name_small_hump + '.' + table_name_small_hump + '_query')
+            if table.get('is_view'):
+                permission.append(table_name_endpoint + '_query')
+            else:
+                permission.append(table_name_endpoint)
 
         # swagger permission
         permission.append('flasgger.apidocs')
