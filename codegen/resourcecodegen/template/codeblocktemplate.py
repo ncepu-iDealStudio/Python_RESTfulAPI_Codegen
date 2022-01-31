@@ -45,7 +45,6 @@ class CodeBlockTemplate():
     parameter_form_true_multi_primary = '''parser.add_argument("{0}", location="form", required=True, help="{0}参数类型不正确或缺失")
         '''
 
-
     parameter_form_put_false = '''parser.add_argument("{0}", location="form", required=False, help="{0}参数类型不正确或缺失")
         '''
 
