@@ -96,6 +96,7 @@ class {className}Resource(Resource):
         else:
             parser = reqparse.RequestParser()
             {deleteParameter}
+            # Pass in the ID list for multiple deletions
             parser.add_argument('{id}', type=str, location='form', required=False, help='{id}参数类型不正确或缺失')
 
             kwargs = parser.parse_args()
@@ -126,7 +127,7 @@ class {className}Resource(Resource):
     def post(cls):
         \"\"\"
         {className}List: Pass in values in JSON format to batch add
-        eg.[{{k1:v1,k2:v2,...}},{{data2}},...]
+        eg.[{{k1:v1,k2:v2,...}},...]
         \"\"\"
         parser = reqparse.RequestParser()
         parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')
@@ -198,6 +199,10 @@ class {className}Resource(Resource):
     # add
     @classmethod{swag_post}
     def post(cls):
+        \"\"\"
+        {className}List: Pass in values in JSON format to batch add
+        eg.[{{k1:v1,k2:v2,...}},...]
+        \"\"\"
         parser = reqparse.RequestParser()
         parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')
 

@@ -76,6 +76,13 @@ class CodeGenerator(object):
                             business_key_rule = table_dict[table].get('business_key').get('rule')
                             primary_key = table_dict[table].get('primaryKey')[0]
                             delete_column = table_dict[table].get('logical_delete_mark') or ''
+                            # real primary key
+                            if business_key:
+                                real_primary_key = business_key
+                            else:
+                                real_primary_key = primary_key
+                            table_dict[table]['real_primary_key'] = real_primary_key
+
                             if column.get('name') == business_key and business_key_rule:
                                 continue
                             elif column.get('name') == primary_key and primary_key != business_key:
@@ -87,10 +94,11 @@ class CodeGenerator(object):
                                     table_dict[table]['post_columns'][column.get('name')] = False
                                 else:
                                     table_dict[table]['post_columns'][column.get('name')] = True
-                                if column.get('name') not in rsa_columns:
-                                    table_dict[table]['get_columns'][column.get('name')] = False
-                                table_dict[table]['put_columns'][column.get('name')] = False
-                                table_dict[table]['delete_columns'][column.get('name')] = False
+                                if column.get('name') != real_primary_key:
+                                    if column.get('name') not in rsa_columns:
+                                        table_dict[table]['get_columns'][column.get('name')] = False
+                                    table_dict[table]['put_columns'][column.get('name')] = False
+                                    table_dict[table]['delete_columns'][column.get('name')] = False
 
             # manage.py generation
             self.manage_codegen(table_dict)
@@ -247,17 +255,11 @@ class CodeGenerator(object):
             imports_str = CodeBlockTemplate.resource_imports.format(table_name_little_camel_case,
                                                                     table_name_big_camel_case)
 
-            if table.get('logical_delete_mark'):
-                delete_column = table.get('logical_delete_mark')
-            else:
-                delete_column = ''
-
             # get field list (except primary key)
             parameter_post = ''
             parameter_get = ''
             parameter_put = ''
             parameter_delete = ''
-            rsa_columns = table.get('rsa_columns')
 
             # swag generation
             if flasgger_mode:
@@ -297,6 +299,7 @@ class CodeGenerator(object):
                             pass
                         else:
                             parameter_get += CodeBlockTemplate.parameter_args_false_multi_primary.format(column_name)
+
                 return FileTemplate.resource_multi_primary_key.format(
                     swag_get=swag_get,
                     swag_put=swag_put,
@@ -313,8 +316,6 @@ class CodeGenerator(object):
                 ).replace('\"', '\'')
             # single primary key
             else:
-                business_key = table.get('business_key').get('column')
-                primary_key = table.get('primaryKey')[0]
                 for column in table.get('columns').values():
                     column_name = column.get('name')
                     if column_name in table.get('post_columns').keys():
@@ -337,10 +338,8 @@ class CodeGenerator(object):
                             pass
                         else:
                             parameter_get += CodeBlockTemplate.parameter_args.format(column_name)
-                if business_key:
-                    id_str = business_key
-                else:
-                    id_str = primary_key
+
+                id_str = table.get('real_primary_key')
 
                 return FileTemplate.resource.format(
                     swag_get=swag_get,
