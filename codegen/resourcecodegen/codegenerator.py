@@ -190,10 +190,9 @@ class CodeGenerator(object):
             table_name_all_small = table.get('table_name_all_small')
             table_name_little_camel_case = table.get('table_name_little_camel_case')
 
-            blueprint_str = CodeBlockTemplate.init_blueprint.format(table_name_all_small,
-                                                                    table_name_little_camel_case)
-
-            return FileTemplate.init.format(blueprint=blueprint_str).replace('\"', '\'')
+            return FileTemplate.init.format(
+                table_name_all_small=table_name_all_small,
+                table_name_little_camel_case=table_name_little_camel_case).replace('\"', '\'')
 
         except Exception as e:
             loggings.exception(1, e)
@@ -206,39 +205,40 @@ class CodeGenerator(object):
             table_name_little_camel_case = table.get('table_name_little_camel_case')
             table_name_big_camel_case = table.get('table_name_big_camel_case')
 
-            import_str = CodeBlockTemplate.urls_imports.format(table_name_all_small,
-                                                               api_version,
-                                                               table_name_little_camel_case,
-                                                               table_name_big_camel_case)
-
             if table.get('is_view'):
                 import_str = CodeBlockTemplate.urls_imports_view.format(table_name_all_small,
                                                                         api_version,
                                                                         table_name_little_camel_case,
                                                                         table_name_big_camel_case)
-                other_resource_str = CodeBlockTemplate.urls_service_resource.format(table_name_all_small,
+                other_resource_str = CodeBlockTemplate.urls_other_resource.format(table_name_all_small,
                                                                                     table_name_little_camel_case,
                                                                                     table_name_big_camel_case)
                 return FileTemplate.urls_view.format(imports=import_str,
+                                                     table_name_all_small=table_name_all_small,
                                                      otherResource=other_resource_str
                                                      ).replace('\"', '\'')
             else:
-                api_str = CodeBlockTemplate.urls_api.format(table_name_all_small)
+                import_str = CodeBlockTemplate.urls_imports_table.format(table_name_all_small,
+                                                                         api_version,
+                                                                         table_name_little_camel_case,
+                                                                         table_name_big_camel_case)
+
                 if table.get('business_key').get('column'):
-                    primary_key_str = CodeBlockTemplate.primary_key.format(table_name_little_camel_case,
-                                                                           table.get('business_key').get('column'))
+                    primary_key_str = CodeBlockTemplate.primary_key_single.format(table_name_little_camel_case,
+                                                                                  table.get('business_key').get(
+                                                                                      'column'))
                 else:
                     if len(table.get('primaryKey')) > 1:
                         primary_key_str = CodeBlockTemplate.primary_key_multi.format(table_name_little_camel_case)
                     else:
-                        primary_key_str = CodeBlockTemplate.primary_key.format(
+                        primary_key_str = CodeBlockTemplate.primary_key_single.format(
                             table_name_little_camel_case, table.get('primaryKey')[0])
 
                 resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_camel_case, primary_key_str,
                                                                       table_name_little_camel_case)
 
                 return FileTemplate.urls.format(imports=import_str,
-                                                api=api_str,
+                                                table_name_all_small=table_name_all_small,
                                                 resource=resource_str
                                                 ).replace('\"', '\'')
 
@@ -251,9 +251,6 @@ class CodeGenerator(object):
         try:
             table_name_little_camel_case = table.get('table_name_little_camel_case')
             table_name_big_camel_case = table.get('table_name_big_camel_case')
-
-            imports_str = CodeBlockTemplate.resource_imports.format(table_name_little_camel_case,
-                                                                    table_name_big_camel_case)
 
             # get field list (except primary key)
             parameter_post = ''
@@ -282,30 +279,37 @@ class CodeGenerator(object):
                 for column in table.get('columns').values():
                     column_name = column.get('name')
                     if column_name in table.get('post_columns').keys():
-                        if table.get('post_columns').get(column_name):
-                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column_name)
-                        else:
-                            parameter_post += CodeBlockTemplate.parameter_form_false.format(column_name)
+                        parameter_post += CodeBlockTemplate.parameter_3.format(
+                            column=column_name,
+                            location='form',
+                            required=table.get('post_columns').get(column_name)
+                        )
                     if column_name in table.get('delete_columns'):
-                        if table.get('delete_columns').get(column_name):
-                            parameter_delete += CodeBlockTemplate.parameter_form_true_multi_primary.format(column_name)
+                        parameter_delete += CodeBlockTemplate.parameter_2.format(
+                            column=column_name,
+                            location='form',
+                            required=table.get('delete_columns').get(column_name)
+                        )
                     if column_name in table.get('put_columns'):
-                        if table.get('put_columns').get(column_name):
-                            parameter_put += CodeBlockTemplate.parameter_form_true_multi_primary.format(column_name)
-                        else:
-                            parameter_put += CodeBlockTemplate.parameter_form_false_multi_primary.format(column_name)
+                        parameter_put += CodeBlockTemplate.parameter_2.format(
+                            column=column_name,
+                            location='form',
+                            required=table.get('put_columns').get(column_name)
+                        )
                     if column_name in table.get('get_columns'):
-                        if table.get('get_columns').get(column_name):
-                            pass
-                        else:
-                            parameter_get += CodeBlockTemplate.parameter_args_false_multi_primary.format(column_name)
+                        parameter_get += CodeBlockTemplate.parameter_2.format(
+                            column=column_name,
+                            location='args',
+                            required=table.get('get_columns').get(column_name)
+                        )
 
                 return FileTemplate.resource_multi_primary_key.format(
                     swag_get=swag_get,
                     swag_put=swag_put,
                     swag_post=swag_post,
                     swag_delete=swag_delete,
-                    imports=imports_str,
+                    table_name_little_camel_case=table_name_little_camel_case,
+                    table_name_big_camel_case=table_name_big_camel_case,
                     flasgger_import=import_flasgger,
                     apiName=table_name_little_camel_case,
                     className=table_name_big_camel_case,
@@ -319,25 +323,29 @@ class CodeGenerator(object):
                 for column in table.get('columns').values():
                     column_name = column.get('name')
                     if column_name in table.get('post_columns').keys():
-                        if table.get('post_columns').get(column_name):
-                            parameter_post += CodeBlockTemplate.parameter_form_true.format(column_name)
-                        else:
-                            parameter_post += CodeBlockTemplate.parameter_form_false.format(column_name)
+                        parameter_post += CodeBlockTemplate.parameter_3.format(
+                            column=column_name,
+                            location='form',
+                            required=table.get('post_columns').get(column_name)
+                        )
                     if column_name in table.get('delete_columns'):
-                        if table.get('delete_columns').get(column_name):
-                            pass
-                        else:
-                            parameter_delete += CodeBlockTemplate.parameter_form_delete_false.format(column_name)
+                        parameter_delete += CodeBlockTemplate.parameter_3.format(
+                            column=column_name,
+                            location='form',
+                            required=table.get('delete_columns').get(column_name)
+                        )
                     if column_name in table.get('put_columns'):
-                        if table.get('put_columns').get(column_name):
-                            pass
-                        else:
-                            parameter_put += CodeBlockTemplate.parameter_form_put_false.format(column_name)
+                        parameter_put += CodeBlockTemplate.parameter_3.format(
+                            column=column_name,
+                            location='form',
+                            required=table.get('put_columns').get(column_name)
+                        )
                     if column_name in table.get('get_columns'):
-                        if table.get('get_columns').get(column_name):
-                            pass
-                        else:
-                            parameter_get += CodeBlockTemplate.parameter_args.format(column_name)
+                        parameter_get += CodeBlockTemplate.parameter_3.format(
+                            column=column_name,
+                            location='args',
+                            required=table.get('get_columns').get(column_name)
+                        )
 
                 id_str = table.get('real_primary_key')
 
@@ -346,7 +354,8 @@ class CodeGenerator(object):
                     swag_put=swag_put,
                     swag_post=swag_post,
                     swag_delete=swag_delete,
-                    imports=imports_str,
+                    table_name_little_camel_case=table_name_little_camel_case,
+                    table_name_big_camel_case=table_name_big_camel_case,
                     flasgger_import=import_flasgger,
                     apiName=table_name_little_camel_case,
                     className=table_name_big_camel_case,
@@ -374,7 +383,11 @@ class CodeGenerator(object):
                 imports_str = CodeBlockTemplate.other_resource_imports.format(table_name_little_camel_case,
                                                                               table_name_big_camel_case)
                 for column in table.get('columns'):
-                    parameter += CodeBlockTemplate.parameter_args_joint.format(column.get('field_name'))
+                    parameter += CodeBlockTemplate.parameter_2.format(
+                        column=column.get('field_name'),
+                        location='args',
+                        required='False'
+                    )
                 method = CodeBlockTemplate.other_resource_query.format(parameter, table_name_big_camel_case)
             else:
                 imports_str = ""

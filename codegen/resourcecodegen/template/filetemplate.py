@@ -26,7 +26,7 @@ class FileTemplate():
 
 from flask import Blueprint
 
-{blueprint}
+{table_name_all_small}_blueprint = Blueprint("{table_name_little_camel_case}", __name__)
 
 from . import urls
 """
@@ -38,7 +38,7 @@ from flask_restful import Api
 
 {imports}
 
-{api}
+api = Api({table_name_all_small}_blueprint)
 
 {resource}
 """
@@ -46,14 +46,26 @@ from flask_restful import Api
     urls_view = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+from flask_restful import Api
+
 {imports}
+
+api = Api({table_name_all_small}_blueprint)
 
 {otherResource}
 """
+
     resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
-{imports}
+
+from flask_restful import Resource, reqparse
+from flask import jsonify
+
+from controller.{table_name_little_camel_case}Controller import {table_name_big_camel_case}Controller
+from utils import commons
+from utils.response_code import RET
 {flasgger_import}
+
 
 class {className}Resource(Resource):
 
@@ -150,8 +162,15 @@ class {className}Resource(Resource):
 
     resource_multi_primary_key = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
-{imports}
+
+from flask_restful import Resource, reqparse
+from flask import jsonify
+
+from controller.{table_name_little_camel_case}Controller import {table_name_big_camel_case}Controller
+from utils import commons
+from utils.response_code import RET
 {flasgger_import}
+
 
 class {className}Resource(Resource):
 
@@ -224,6 +243,7 @@ class {className}Resource(Resource):
 
     other_resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 from flask_restful import Resource{imports}
 
 
