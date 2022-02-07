@@ -36,7 +36,7 @@ def start(table_config, session_id):
             六、 生成test层代码
     """
     try:
-        with open('logs/codegen_log_' + str(session_id) + '.log', 'w', encoding='utf-8') as f:
+        with open('logs/codegen_log.log', 'w', encoding='utf-8') as f:
             f.seek(0)
             f.truncate()
 
@@ -91,7 +91,7 @@ def start(table_config, session_id):
 
         loggings.info(1, "Api project code generation completed")
 
-        with open('logs/codegen_log_' + str(session_id) + '.log', 'r', encoding='utf-8') as f:
+        with open('logs/codegen_log.log', 'r', encoding='utf-8') as f:
             result = f.read()
 
         return {'code': RET.OK, 'message': error_map[RET.OK], 'data': result}
