@@ -38,15 +38,13 @@ def main(settings):
         CodeGenerator.generate_blank_configuration_file(os.path.join(project_dir, "config", "product_config.conf"),
                                                         settings)
 
-        # 第二步
-        # app_setting
+        # 第二步 app_setting
         app_setting_dir = os.path.join(project_dir, 'app')
         os.makedirs(app_setting_dir, exist_ok=True)
         with open(app_setting_dir + '/setting.py', 'w', encoding='utf8') as f:
             f.write(FileTemplate.app_setting)
 
-        # 第三步
-        # 获取静态资源目录
+        # 第三步 获取静态资源目录
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         source_dir = os.path.join(BASE_DIR, 'static')
         # 创建目标路径

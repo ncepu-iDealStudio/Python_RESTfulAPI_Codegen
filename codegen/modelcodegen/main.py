@@ -28,7 +28,8 @@ def main(table_dict, settings):
         model_url = settings.MODEL_URL
 
         # 在项目文件夹中创建models的目录
-        os.makedirs(models_path := os.path.join(project_dir, 'models'), exist_ok=True)
+        models_path = os.path.join(project_dir, 'models')
+        os.makedirs(models_path, exist_ok=True)
 
         # 创建空的 __init__.py 文件
         with open(os.path.join(models_path, '__init__.py'), 'w', encoding='utf-8') as f:
