@@ -93,12 +93,12 @@ def connecttest():
     dialect = kwargs['DatabaseDialects']
     host = kwargs['Host']
     port = kwargs['Port']
-    database = kwargs['DatebaseName']
+    datebase = kwargs['DatebaseName']
     username = kwargs['Username']
     password = parse.quote_plus(kwargs['Password'])
 
     # 检查数据库链接
-    result_sql = connection_check(dialect, username, password, host, port, database)
+    result_sql = connection_check(dialect, username, password, host, port, datebase)
     if result_sql['code']:
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
     else:
@@ -119,11 +119,11 @@ def next():
     dialect = kwargs['DatabaseDialects']
     host = kwargs['Host']
     port = kwargs['Port']
-    database = kwargs['DatebaseName']
+    datebase = kwargs['DatebaseName']
     username = kwargs['Username']
     password = kwargs['Password']
     # 检查数据库链接
-    result_sql = check_sql_link(dialect, username, password, host, port, database)
+    result_sql = check_sql_link(dialect, username, password, host, port, datebase)
     if result_sql['code']:
         # 填写配置文件
         configfile = "config/config_" + str(id) + ".conf"
@@ -136,7 +136,7 @@ def next():
         conf.set("DATABASE", "dialect", dialect)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
         conf.set("DATABASE", "host", host)
         conf.set("DATABASE", "port", port)
-        conf.set("DATABASE", "database", database)
+        conf.set("DATABASE", "datebase", datebase)
         conf.set("DATABASE", "username", username)
         conf.set("DATABASE", "password", password)
         with open(configfile, "w") as f:
@@ -153,7 +153,6 @@ def setproject():
     projectPath = 'dist'
     projectName = kwargs["projectName"]
     interfaceVersion = kwargs["projectVersion"]
-    flasgger_mode = kwargs["flasggerMode"]
 
     id = session.get('id')
 
@@ -167,7 +166,6 @@ def setproject():
     conf.set("PARAMETER", "target_dir", projectPath)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
     conf.set("PARAMETER", "project_name", projectName)
     conf.set("PARAMETER", "api_version", interfaceVersion)
-    conf.set("PARAMETER", "flasgger_mode", str(flasgger_mode))
     with open(configfile, "w") as f:
         conf.write(f)
     return {'code': '2000', 'data': [], 'message': '写入配置成功'}
