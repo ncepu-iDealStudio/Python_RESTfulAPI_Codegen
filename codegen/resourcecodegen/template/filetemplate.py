@@ -64,13 +64,12 @@ from flask import jsonify
 from controller.{table_name_little_camel_case}Controller import {table_name_big_camel_case}Controller
 from utils import commons
 from utils.response_code import RET
-{flasgger_import}
 
 
 class {className}Resource(Resource):
 
     # get
-    @classmethod{swag_get}
+    @classmethod
     def get(cls, {id}=None):
         if {id}:
             kwargs = {{
@@ -98,7 +97,7 @@ class {className}Resource(Resource):
             return jsonify(code=res['code'], message=res['message'], data=res['data']) 
 
     # delete
-    @classmethod{swag_delete}
+    @classmethod
     def delete(cls, {id}=None):
         if {id}:
             kwargs = {{
@@ -119,7 +118,7 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # put
-    @classmethod{swag_put}
+    @classmethod
     def put(cls, {id}):
         if not {id}:
             return jsonify(code=RET.NODATA, message='primary key missed', error='primary key missed')
@@ -135,7 +134,7 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # add
-    @classmethod{swag_post}
+    @classmethod
     def post(cls):
         \"\"\"
         {className}List: Pass in values in JSON format to batch add
@@ -169,13 +168,12 @@ from flask import jsonify
 from controller.{table_name_little_camel_case}Controller import {table_name_big_camel_case}Controller
 from utils import commons
 from utils.response_code import RET
-{flasgger_import}
 
 
 class {className}Resource(Resource):
 
     # get
-    @classmethod{swag_get}
+    @classmethod
     def get(cls):
         parser = reqparse.RequestParser()
         {getParameter}
@@ -192,7 +190,7 @@ class {className}Resource(Resource):
             return jsonify(code=res['code'], message=res['message'], data=res['data']) 
 
     # delete
-    @classmethod{swag_delete}
+    @classmethod
     def delete(cls):
         parser = reqparse.RequestParser()
         {deleteParameter}
@@ -204,7 +202,7 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # put
-    @classmethod{swag_put}
+    @classmethod
     def put(cls):
         parser = reqparse.RequestParser()
         {putParameter}
@@ -216,7 +214,7 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # add
-    @classmethod{swag_post}
+    @classmethod
     def post(cls):
         \"\"\"
         {className}List: Pass in values in JSON format to batch add
@@ -328,13 +326,11 @@ api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiversion')  # �
 from flask_restful import Resource
 from flask import jsonify
 from utils.response_code import RET
-from flasgger import swag_from
 
 
 class ApiVersionResource(Resource):
 
     # get the interface of apiversion -- test
-    @swag_from("ymls/apiversion_get.yml")
     def get(self):
         back_data = {{
             'version': '{apiversion}'
@@ -352,7 +348,6 @@ class ApiVersionResource(Resource):
 from app import create_app
 from flask_script import Manager, Server
 from flask import request, jsonify
-from flasgger import Swagger
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from utils.response_code import RET
 
@@ -364,9 +359,6 @@ manager = Manager(app)
 
 # 开启Debug模式
 manager.add_command("runserver", Server(use_debugger=True))
-
-# 将swagger包引入Flask应用
-swagger = Swagger(app)
 
 
 # 创建全站拦截器,每个请求之前做处理
@@ -411,127 +403,4 @@ def process_response(response):
 if __name__ == "__main__":
     manager.run()
 
-"""
-
-    yml_get_template = """{0}_get
----
-tags:
- - name: '{0}'
-definitions:
- {0}_get_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-   data:
-    type: object
-    description: response_data
-    properties:         {1}
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_get_res_data'
-"""
-
-    yml_gets_template = """{0}_gets
----
-tags:
- - name: '{0}'
-parameters:
-{1}
-definitions:
- {0}_gets_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-   data:
-    type: object
-    description: response_data
-    properties:         {2}
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_gets_res_data'
-"""
-
-    yml_post_template = """{0}_post
----
-tags:
- - name: '{0}'
-parameters:
-{1}
-definitions:
- {0}_post_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-   data:
-    type: object
-    description: response_data
-    properties:         {2}
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_post_res_data'
-"""
-
-    yml_delete_template = """{0}_delete
----
-tags:
- - name: '{0}'
-definitions:
- {0}_delete_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_delete_res_data'
-"""
-
-    yml_put_template = """{0}_put
----
-tags:
- - name: '{0}'
-parameters:
-{1}
-definitions:
- {0}_put_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_put_res_data'
 """

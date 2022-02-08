@@ -21,17 +21,15 @@ from utils.loggings import loggings
 
 project_dir = ''
 api_version = ''
-flasgger_mode = ''
 
 
 class CodeGenerator(object):
 
     def __init__(self, settings):
         super(CodeGenerator, self).__init__()
-        global project_dir, api_version, flasgger_mode
+        global project_dir, api_version
         project_dir = settings.PROJECT_DIR
         api_version = settings.API_VERSION
-        flasgger_mode = settings.FLASGGER_MODE
         self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object', 'float': 'float'}
 
     # resource layer generation
@@ -126,12 +124,6 @@ class CodeGenerator(object):
             with open(os.path.join(apiVersion_dir, 'apiVersionResource.py'), 'w', encoding='utf8') as f:
                 f.write(FileTemplate.api_version_resource.format(apiversion=api_version.replace('_', '.')))
 
-            # apiversion ymls file generation
-            if flasgger_mode:
-                os.makedirs(apiVersion_ymls_dir := os.path.join(apiVersion_dir, 'ymls'), exist_ok=True)
-                with open(os.path.join(apiVersion_ymls_dir, 'apiversion_get.yml'), 'w', encoding='utf8') as f:
-                    f.write(FileTemplate.yml_get_template.format('apiversion', ''))
-
             # file generation
             for table in table_dict.values():
                 table_name_little_camel_case = table.get('table_name_little_camel_case')
@@ -156,29 +148,6 @@ class CodeGenerator(object):
                 with open(os.path.join(resource_dir, '{0}OtherResource.py'.format(table_name_little_camel_case)),
                           'w', encoding='utf8') as f:
                     f.write(self.other_resource_codegen(table))
-
-                # ymls generation
-                if flasgger_mode and not table.get('is_view'):
-                    os.makedirs(ymls_dir := os.path.join(resource_dir, 'ymls'), exist_ok=True)
-                    with open(os.path.join(ymls_dir, '{0}_get.yml'.format(table_name_little_camel_case)),
-                              'w', encoding='utf8') as f:
-                        f.write(self.yml_get_codegen(table))
-
-                    with open(os.path.join(ymls_dir, '{0}_gets.yml'.format(table_name_little_camel_case)),
-                              'w', encoding='utf8') as f:
-                        f.write(self.yml_gets_codegen(table))
-
-                    with open(os.path.join(ymls_dir, '{0}_post.yml'.format(table_name_little_camel_case)),
-                              'w', encoding='utf8') as f:
-                        f.write(self.yml_post_codegen(table))
-
-                    with open(os.path.join(ymls_dir, '{0}_put.yml'.format(table_name_little_camel_case)),
-                              'w', encoding='utf8') as f:
-                        f.write(self.yml_put_codegen(table))
-
-                    with open(os.path.join(ymls_dir, '{0}_delete.yml'.format(table_name_little_camel_case)),
-                              'w', encoding='utf8') as f:
-                        f.write(FileTemplate.yml_delete_template.format(table.get('table_name')))
 
         except Exception as e:
             loggings.exception(1, e)
@@ -258,22 +227,6 @@ class CodeGenerator(object):
             parameter_put = ''
             parameter_delete = ''
 
-            # swag generation
-            if flasgger_mode:
-                swag_get = CodeBlockTemplate.resource_swag_get.format(table_name_little_camel_case)
-                swag_put = CodeBlockTemplate.resource_swag_put.format(table_name_little_camel_case)
-                swag_post = CodeBlockTemplate.resource_swag_post.format(table_name_little_camel_case)
-                swag_delete = CodeBlockTemplate.resource_swag_delete.format(table_name_little_camel_case)
-
-                import_flasgger = CodeBlockTemplate.resource_import_flasgger
-            else:
-                swag_get = ''
-                swag_put = ''
-                swag_post = ''
-                swag_delete = ''
-
-                import_flasgger = ''
-
             # multiple primary key
             if len(table.get('primaryKey')) > 1:
                 for column in table.get('columns').values():
@@ -304,13 +257,8 @@ class CodeGenerator(object):
                         )
 
                 return FileTemplate.resource_multi_primary_key.format(
-                    swag_get=swag_get,
-                    swag_put=swag_put,
-                    swag_post=swag_post,
-                    swag_delete=swag_delete,
                     table_name_little_camel_case=table_name_little_camel_case,
                     table_name_big_camel_case=table_name_big_camel_case,
-                    flasgger_import=import_flasgger,
                     apiName=table_name_little_camel_case,
                     className=table_name_big_camel_case,
                     putParameter=parameter_put,
@@ -350,13 +298,8 @@ class CodeGenerator(object):
                 id_str = table.get('real_primary_key')
 
                 return FileTemplate.resource.format(
-                    swag_get=swag_get,
-                    swag_put=swag_put,
-                    swag_post=swag_post,
-                    swag_delete=swag_delete,
                     table_name_little_camel_case=table_name_little_camel_case,
                     table_name_big_camel_case=table_name_big_camel_case,
-                    flasgger_import=import_flasgger,
                     apiName=table_name_little_camel_case,
                     className=table_name_big_camel_case,
                     id=id_str,
@@ -436,86 +379,6 @@ class CodeGenerator(object):
             else:
                 permission.append(table_name_endpoint)
 
-        # swagger permission
-        permission.append('flasgger.apidocs')
-        permission.append('flasgger.static')
-        permission.append('flasgger.apispec_1')
-        permission.append('flasgger.<lambda>')
-
         os.makedirs(project_dir, exist_ok=True)
         with open(os.path.join(project_dir, 'manage.py'), 'w', encoding='utf8') as f:
             f.write(FileTemplate.manage.format(permission=permission))
-
-    # yml generation
-    def yml_get_codegen(self, table):
-        # data codegen
-        data = ""
-        for column in table.get('columns').values():
-            data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
-
-        # yml_get codegen
-        yml_get = FileTemplate.yml_get_template.format(table.get('table_name'), data).replace('\"', '\'')
-        return yml_get
-
-    def yml_gets_codegen(self, table):
-        # data codegen
-        data = ""
-        parameter = ""
-        for column in table.get('columns').values():
-            data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
-            if table.get('business_key').get('column'):
-                if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
-                        'business_key').get('column'):
-                    parameter += CodeBlockTemplate.yml_get_parameter_template.format(column.get('name'),
-                                                                                     self.maps[column.get('type')])
-
-            else:
-                if column.get('name') != table.get('primaryKey')[0]:
-                    parameter += CodeBlockTemplate.yml_get_parameter_template.format(column.get('name'),
-                                                                                     self.maps[column.get('type')])
-
-        # yml_gets codegen
-        yml_gets = FileTemplate.yml_gets_template.format(table.get('table_name'), parameter, data).replace('\"', '\'')
-        return yml_gets
-
-    def yml_post_codegen(self, table):
-        # data codegen
-        data = ""
-        parameter = ""
-        for column in table.get('columns').values():
-            data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
-            if table.get('business_key').get('column'):
-                if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
-                        'business_key').get('column'):
-                    parameter += CodeBlockTemplate.yml_post_parameter_template.format(column.get('name'),
-                                                                                      self.maps[column.get('type')])
-
-            else:
-                if column.get('name') != table.get('primaryKey')[0]:
-                    parameter += CodeBlockTemplate.yml_post_parameter_template.format(column.get('name'),
-                                                                                      self.maps[column.get('type')])
-
-        # yml_post codegen
-        yml_post = FileTemplate.yml_post_template.format(table.get('table_name'), parameter, data).replace('\"', '\'')
-        return yml_post
-
-    def yml_put_codegen(self, table):
-        # data codegen
-        data = ""
-        parameter = ""
-        for column in table.get('columns').values():
-            data += CodeBlockTemplate.yml_data_template.format(column.get('name'), self.maps[column.get('type')])
-            if table.get('business_key').get('column'):
-                if column.get('name') != table.get('primaryKey')[0] and column.get('name') != table.get(
-                        'business_key').get('column'):
-                    parameter += CodeBlockTemplate.yml_put_parameter_template.format(column.get('name'),
-                                                                                     self.maps[column.get('type')])
-
-            else:
-                if column.get('name') != table.get('primaryKey')[0]:
-                    parameter += CodeBlockTemplate.yml_put_parameter_template.format(column.get('name'),
-                                                                                     self.maps[column.get('type')])
-
-        # yml_gets codegen
-        yml_gets = FileTemplate.yml_gets_template.format(table.get('table_name'), parameter, data).replace('\"', '\'')
-        return yml_gets
