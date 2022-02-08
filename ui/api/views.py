@@ -119,7 +119,7 @@ def next():
     dialect = kwargs['DatabaseDialects']
     host = kwargs['Host']
     port = kwargs['Port']
-    database = kwargs['DatebaseName']
+    database = kwargs['DatabaseName']
     username = kwargs['Username']
     password = kwargs['Password']
     # 检查数据库链接
@@ -191,16 +191,18 @@ def download():
     path = "dist"
     folder = "dist_" + str(id)
     folder_dir = folder + ".zip"
-    os.chdir(path)
+
+    # 查看当前工作目录
+    retval = os.getcwd()
+    if retval[-4:] != "dist":
+        os.chdir(path)
 
     zfile = zipfile.ZipFile(folder_dir, 'w', zipfile.ZIP_DEFLATED)
-    for foldername, subfolders, files in os.walk(folder):  # 遍历文件夹
-
-        # 处理根目录不被压缩
-        folderoath = foldername.replace(folder, "")
-        folderoath = folderoath and folderoath + os.sep or ''
-
-        for i in files:
-            zfile.write(os.path.join(foldername, i), folderoath + i)
+    for dirpath, dirnames, filenames in os.walk(folder):
+        fpath = dirpath.replace(folder, '')  # 这一句很重要，不replace的话，就从根目录开始复制
+        fpath = fpath and fpath + os.sep or ''  # 这句话理解我也点郁闷，实现当前文件夹以及包含的所有文件的压缩
+        for filename in filenames:
+            zfile.write(os.path.join(dirpath, filename), fpath + filename)
+    zfile.close()
     dir = os.getcwd()
     return send_from_directory(dir, folder_dir, as_attachment=True)
