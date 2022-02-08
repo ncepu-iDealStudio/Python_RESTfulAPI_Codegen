@@ -41,11 +41,6 @@ class Settings(object):
         self.API_VERSION = CONFIG['PARAMETER']['API_VERSION'].replace('.', '_')
         # 定义静态资源文件路径
         self.STATIC_RESOURCE_DIR = os.path.join(self.BASE_DIR, 'static')
-        # 是否生成flasgger文档的开关，默认为生成
-        try:
-            self.FLASGGER_MODE = CONFIG.getboolean('PARAMETER', 'flasgger_mode')
-        except ValueError:
-            self.FLASGGER_MODE = True
 
         # 数据库dialect到driver的映射
         driver_dict = {
