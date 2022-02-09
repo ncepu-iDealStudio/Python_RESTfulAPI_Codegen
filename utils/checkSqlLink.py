@@ -72,10 +72,10 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             filed = []
             business_key_type = ''
             for column in table['columns'].values():
-                if table.get('business_key') and column['name'] == table['primaryKey'][0]:
+                if table.get('business_key_column') and column['name'] == table['primary_key_columns'][0]:
                     # 唯一主键不是递增时，需要记录该主键的数据类型
                     business_key_type = column['type']
-                if column['name'] in table['primaryKey']:
+                if column['name'] in table['primary_key_columns']:
                     # 剔除出主键
                     continue
                 else:
@@ -86,11 +86,11 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
                     })
             data['table'].append({
                 'table': str(table['table_name']),
-                'businesskeyname': table['business_key'].get('column') if table['business_key'].get('column') else '',
+                'businesskeyname': table['business_key_column'].get('column') if table['business_key_column'].get('column') else '',
                 'businesskeyrule': '',
                 'logicaldeletemark': '',
                 'field': filed,
-                'businesskeyuneditable': True if table['business_key'].get('column') or len(table['primaryKey']) > 1 else False,
+                'businesskeyuneditable': True if table['business_key_column'].get('column') or len(table['primary_key_columns']) > 1 else False,
                 "businesskeytype": business_key_type,
                 'issave': False
             })
