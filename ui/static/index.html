@@ -223,7 +223,9 @@
                 if (userInfo) {
                     state.form = userInfo;
                 }
-                localStorage.clear()
+                localStorage.removeItem("tables")
+                localStorage.removeItem("views")
+                localStorage.removeItem("invalid")
             })
 
             return {
