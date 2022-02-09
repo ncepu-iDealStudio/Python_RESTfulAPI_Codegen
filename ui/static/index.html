@@ -57,8 +57,8 @@
                                 <el-form-item label="密码" prop="Password">
                                     <el-input v-model="form.Password" show-password></el-input>
                                 </el-form-item>
-                                <el-form-item label="数据库" prop="DatebaseName">
-                                    <el-select v-model="form.DatebaseName" placeholder="请选择目标数据库" @focus="getdbname">
+                                <el-form-item label="数据库" prop="DatabaseName">
+                                    <el-select v-model="form.DatabaseName" placeholder="请选择目标数据库" @focus="getdbname">
                                         <el-option v-if="getdbname_loading" v-loading="getdbname_loading" label="" value=""> </el-option>
                                         <el-option :label="item[0]" :value="item[0]" v-for="(item, index) in dbname_list" :key="index"></el-option>
                                     </el-select>
@@ -100,7 +100,7 @@
                     Port: "",
                     Username: "",
                     Password: "",
-                    DatebaseName: "",
+                    DatabaseName: "",
                 },
                 rules: {
                     DatabaseDialects: [{
@@ -118,7 +118,7 @@
                         message: '请填写完整信息',
                         trigger: 'blur',
                     }],
-                    DatebaseName: [{
+                    DatabaseName: [{
                         required: true,
                         message: '请填写完整信息',
                         trigger: 'blur',
@@ -189,7 +189,7 @@
 
             const getdbname = () => {
                 state.getdbname_loading = true;
-                state.form.DatebaseName = "";
+                state.form.DatabaseName = "";
                 state.dbname_list = [];
                 axios({
                     method: 'POST',
