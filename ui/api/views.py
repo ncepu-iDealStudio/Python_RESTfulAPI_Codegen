@@ -191,11 +191,8 @@ def download():
     path = "dist"
     folder = "dist_" + str(id)
     folder_dir = folder + ".zip"
-
-    # 查看当前工作目录
     retval = os.getcwd()
-    if retval[-4:] != "dist":
-        os.chdir(path)
+    os.chdir(path) #改变工作目录至dist
 
     zfile = zipfile.ZipFile(folder_dir, 'w', zipfile.ZIP_DEFLATED)
     for dirpath, dirnames, filenames in os.walk(folder):
@@ -204,5 +201,7 @@ def download():
         for filename in filenames:
             zfile.write(os.path.join(dirpath, filename), fpath + filename)
     zfile.close()
+    os.chdir(retval)  # 改变工作目录至上一层
     dir = os.getcwd()
-    return send_from_directory(dir, folder_dir, as_attachment=True)
+    print(dir)
+    return send_from_directory(dir+"\\dist", folder_dir, as_attachment=True)

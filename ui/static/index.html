@@ -64,6 +64,9 @@
                                     </el-select>
                                     <el-button type="primary" style="margin-left: 10px;" :loading="connectTest_loading" @click="connectTest">连接测试</el-button>
                                 </el-form-item>
+                                <el-form-item>
+                                    <el-checkbox v-model="form.remember" label="记住我" size="large"></el-checkbox>
+                                </el-form-item>
                             </el-form>
                         </el-card>
                     </el-col>
@@ -101,6 +104,7 @@
                     Username: "",
                     Password: "",
                     DatabaseName: "",
+                    remember: false,
                 },
                 rules: {
                     DatabaseDialects: [{
@@ -139,6 +143,7 @@
                 getdbname_loading: false,
                 dbname_list: [],
             });
+
             const formRef = ref(null);
             const nextStep = () => {
                 formRef.value.validate((valid) => {
@@ -152,6 +157,11 @@
                             const res = result.data
                             if (res.code === '2000') {
                                 ElMessage.success(res.message)
+                                if (state.form.remember) { //是否保存登录配置信息到本地
+                                    localStorage.setItem("userInfo", JSON.stringify(state.form));
+                                } else {
+                                    localStorage.removeItem("userInfo")
+                                }
                                 localStorage.setItem("tables", JSON.stringify(res.data.table));
                                 localStorage.setItem("views", JSON.stringify(res.data.view));
                                 localStorage.setItem("invalid", JSON.stringify(res.invalid));
@@ -165,6 +175,7 @@
                     }
                 })
             }
+
             const connectTest = () => {
                 formRef.value.validate((valid) => {
                     if (valid) {
@@ -208,6 +219,10 @@
             }
 
             onMounted(() => {
+                let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+                if (userInfo) {
+                    state.form = userInfo;
+                }
                 localStorage.clear()
             })
 
