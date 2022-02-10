@@ -38,9 +38,6 @@ class CodeGenerator(object):
         try:
             # table_dict processing
             for table in table_dict.keys():
-                table_dict[table]['table_name_all_small'] = str_to_all_small(table)
-                table_dict[table]['table_name_little_camel_case'] = str_to_little_camel_case(table)
-                table_dict[table]['table_name_big_camel_case'] = str_to_big_camel_case(table)
                 if table_dict[table]['is_view']:
                     pass
                 else:
@@ -59,8 +56,8 @@ class CodeGenerator(object):
                         if column['is_exist_default']:
                             table_dict[table]['exist_default_columns'].append(column.get('name'))
                         rsa_columns = table_dict[table]['rsa_columns']
-                        if len(table_dict[table].get('primaryKey')) > 1:
-                            if column.get('name') in table_dict[table].get('primaryKey'):
+                        if len(table_dict[table].get('primary_key_columns')) > 1:
+                            if column.get('name') in table_dict[table].get('primary_key_columns'):
                                 table_dict[table]['post_columns'][column.get('name')] = True
                                 table_dict[table]['put_columns'][column.get('name')] = True
                                 table_dict[table]['delete_columns'][column.get('name')] = True
@@ -70,10 +67,10 @@ class CodeGenerator(object):
                             if column.get('name') not in rsa_columns:
                                 table_dict[table]['get_columns'][column.get('name')] = False
                         else:
-                            business_key = table_dict[table].get('business_key').get('column')
-                            business_key_rule = table_dict[table].get('business_key').get('rule')
-                            primary_key = table_dict[table].get('primaryKey')[0]
-                            delete_column = table_dict[table].get('logical_delete_mark') or ''
+                            business_key = table_dict[table].get('business_key_column').get('column')
+                            business_key_rule = table_dict[table].get('business_key_column').get('rule')
+                            primary_key = table_dict[table].get('primary_key_columns')[0]
+                            delete_column = table_dict[table].get('logical_delete_column') or ''
                             # real primary key
                             if business_key:
                                 real_primary_key = business_key
@@ -192,16 +189,16 @@ class CodeGenerator(object):
                                                                          table_name_little_camel_case,
                                                                          table_name_big_camel_case)
 
-                if table.get('business_key').get('column'):
+                if table.get('business_key_column').get('column'):
                     primary_key_str = CodeBlockTemplate.primary_key_single.format(table_name_little_camel_case,
-                                                                                  table.get('business_key').get(
+                                                                                  table.get('business_key_column').get(
                                                                                       'column'))
                 else:
-                    if len(table.get('primaryKey')) > 1:
+                    if len(table.get('primary_key_columns')) > 1:
                         primary_key_str = CodeBlockTemplate.primary_key_multi.format(table_name_little_camel_case)
                     else:
                         primary_key_str = CodeBlockTemplate.primary_key_single.format(
-                            table_name_little_camel_case, table.get('primaryKey')[0])
+                            table_name_little_camel_case, table.get('primary_key_columns')[0])
 
                 resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_camel_case, primary_key_str,
                                                                       table_name_little_camel_case)
@@ -228,7 +225,7 @@ class CodeGenerator(object):
             parameter_delete = ''
 
             # multiple primary key
-            if len(table.get('primaryKey')) > 1:
+            if len(table.get('primary_key_columns')) > 1:
                 for column in table.get('columns').values():
                     column_name = column.get('name')
                     if column_name in table.get('post_columns').keys():
