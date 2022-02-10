@@ -17,7 +17,7 @@ from codegen.resourcecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
 
-def main(table_dict, settings):
+def main(table_dict, settings, session_id):
     """
     Generate resource layer code
     :return: None
@@ -30,7 +30,7 @@ def main(table_dict, settings):
         os.makedirs(api_dir := os.path.join(project_dir, 'api_' + api_version), exist_ok=True)
         os.makedirs(app_dir := os.path.join(project_dir, 'app'), exist_ok=True)
 
-        generator = CodeGenerator(settings)
+        generator = CodeGenerator(settings, session_id)
         generator.resource_generator(api_dir, app_dir, table_dict)
         print(1)
 

@@ -72,7 +72,7 @@ def start(table_config, session_id):
 
         # 第四步
         loggings.info(1, "Start to build the Resource layer code, please wait...", session_id)
-        codegen.resourcecodegen.main.main(table_dict, settings)
+        codegen.resourcecodegen.main.main(table_dict, settings, session_id)
         loggings.info(1, "Resource layer code build completed", session_id)
 
         # 第五步

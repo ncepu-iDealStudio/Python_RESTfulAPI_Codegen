@@ -16,20 +16,21 @@ import os
 
 from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.resourcecodegen.template.filetemplate import FileTemplate
-from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
 from utils.loggings import loggings
 
 project_dir = ''
 api_version = ''
+session_id = None
 
 
 class CodeGenerator(object):
 
-    def __init__(self, settings):
+    def __init__(self, settings, sessionid):
         super(CodeGenerator, self).__init__()
-        global project_dir, api_version
+        global project_dir, api_version, session_id
         project_dir = settings.PROJECT_DIR
         api_version = settings.API_VERSION
+        session_id = sessionid
         self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object', 'float': 'float'}
 
     # resource layer generation
@@ -103,11 +104,9 @@ class CodeGenerator(object):
                 f.write('#!/usr/bin/env python \n# -*- coding:utf-8 -*-')
 
             # app/__init__.py generation
-            loggings.info(1, 'Start generating API layer, please wait...')
             app_init_file = os.path.join(app_dir, '__init__.py')
             with open(app_init_file, 'w', encoding='utf8') as f:
                 f.write(self.app_codegen(table_dict))
-            loggings.info(1, 'Generating API layer complete')
 
             # api/apiVersionResource/* generation
             os.makedirs(apiVersion_dir := os.path.join(api_dir, 'apiVersionResource'), exist_ok=True)
@@ -147,7 +146,7 @@ class CodeGenerator(object):
                     f.write(self.other_resource_codegen(table))
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)
             return
 
     # init generation
@@ -161,7 +160,7 @@ class CodeGenerator(object):
                 table_name_little_camel_case=table_name_little_camel_case).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)
             return
 
     #  urls generation
@@ -177,8 +176,8 @@ class CodeGenerator(object):
                                                                         table_name_little_camel_case,
                                                                         table_name_big_camel_case)
                 other_resource_str = CodeBlockTemplate.urls_other_resource.format(table_name_all_small,
-                                                                                    table_name_little_camel_case,
-                                                                                    table_name_big_camel_case)
+                                                                                  table_name_little_camel_case,
+                                                                                  table_name_big_camel_case)
                 return FileTemplate.urls_view.format(imports=import_str,
                                                      table_name_all_small=table_name_all_small,
                                                      otherResource=other_resource_str
@@ -209,7 +208,7 @@ class CodeGenerator(object):
                                                 ).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)
             return
 
     # resource generation
@@ -307,7 +306,7 @@ class CodeGenerator(object):
                 ).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)
             return
 
     # otherResource generation
@@ -339,7 +338,7 @@ class CodeGenerator(object):
             ).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)
             return
 
     # app_init generation
@@ -360,7 +359,7 @@ class CodeGenerator(object):
             return FileTemplate.app_init.format(blueprint_register=blueprint_register_str)
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)
             return
 
     # manage generation
