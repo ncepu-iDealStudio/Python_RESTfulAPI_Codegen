@@ -36,10 +36,6 @@ def start(table_config, session_id):
             六、 生成test层代码
     """
     try:
-        with open('logs/codegen_log.log', 'w', encoding='utf-8') as f:
-            f.seek(0)
-            f.truncate()
-
         # 初始化配置文件
         from config.setting import Settings
         settings = Settings(session_id)
@@ -59,39 +55,43 @@ def start(table_config, session_id):
         )
 
         # 第一步
-        loggings.info(1, "Start to build the Model layer code, please wait...")
+        loggings.info(1, "Start to build the Model layer code, please wait...", session_id)
 
         codegen.modelcodegen.main.main(table_dict, settings)
-        loggings.info(1, "Model layer code build completed")
+        loggings.info(1, "Model layer code build completed", session_id)
 
         # 第二步
-        loggings.info(1, "Start to build the Controller layer code, please wait...")
+        loggings.info(1, "Start to build the Controller layer code, please wait...", session_id)
         codegen.controllercodegen.main.main(table_dict, settings)
-        loggings.info(1, "Controller layer code build completed")
+        loggings.info(1, "Controller layer code build completed", session_id)
 
         # 第三步
-        loggings.info(1, "Start to build the Service layer code, please wait...")
+        loggings.info(1, "Start to build the Service layer code, please wait...", session_id)
         codegen.servicecodegen.main.main(table_dict, settings)
-        loggings.info(1, "Service layer code build completed")
+        loggings.info(1, "Service layer code build completed", session_id)
 
         # 第四步
-        loggings.info(1, "Start to build the Resource layer code, please wait...")
+        loggings.info(1, "Start to build the Resource layer code, please wait...", session_id)
         codegen.resourcecodegen.main.main(table_dict, settings)
-        loggings.info(1, "Resource layer code build completed")
+        loggings.info(1, "Resource layer code build completed", session_id)
 
         # 第五步
-        loggings.info(1, "Start packing static files, please wait...")
+        loggings.info(1, "Start packing static files, please wait...", session_id)
         codegen.staticcodegen.main.main(settings)
-        loggings.info(1, "Static resource packaging is complete")
+        loggings.info(1, "Static resource packaging is complete", session_id)
 
         # 第六步
-        loggings.info(1, "Start to build the Test layer code, please wait...")
+        loggings.info(1, "Start to build the Test layer code, please wait...", session_id)
         codegen.testcodegen.main.main(table_dict, settings)
-        loggings.info(1, "Test layer code build completed")
+        loggings.info(1, "Test layer code build completed", session_id)
 
-        loggings.info(1, "Api project code generation completed")
+        loggings.info(1, "Api project code generation completed", session_id)
 
-        with open('logs/codegen_log.log', 'r', encoding='utf-8') as f:
+        if session_id:
+            log_path = "logs/codegen_log_{0}.log".format(session_id)
+        else:
+            log_path = "logs/codegen_log.log"
+        with open(log_path, 'r', encoding='utf-8') as f:
             result = f.read()
 
         return {'code': RET.OK, 'message': error_map[RET.OK], 'data': result}
