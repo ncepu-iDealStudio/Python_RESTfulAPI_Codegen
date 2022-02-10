@@ -15,7 +15,7 @@ import os
 from .codegenerator import CodeGenerator
 
 
-def main(table_dict, settings):
+def main(table_dict, settings, session_id):
     """
     Generate Controller code
     :return: None
@@ -28,6 +28,7 @@ def main(table_dict, settings):
 
     generator = CodeGenerator(table_dict)
     generator.controller_codegen(
-        controller_dir=controller_dir
+        controller_dir=controller_dir,
+        session_id=session_id
     )
     return

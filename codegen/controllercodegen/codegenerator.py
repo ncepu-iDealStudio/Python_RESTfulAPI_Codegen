@@ -18,7 +18,6 @@ import os.path
 
 from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
 from codegen.controllercodegen.template.filetemplate import FileTemplate
-from utils import common
 from utils.loggings import loggings
 
 
@@ -28,7 +27,7 @@ class CodeGenerator(object):
         super().__init__()
         self.table_dict = table_dict
 
-    def controller_codegen(self, controller_dir):
+    def controller_codegen(self, controller_dir, session_id):
 
         try:
             codes = {}
@@ -319,18 +318,18 @@ class CodeGenerator(object):
                 codes[file_name] = basic + add + get + delete + update + add_list
 
             # generate files
-            loggings.info(1, 'Generating __init__...')
+            loggings.info(1, 'Generating __init__...', session_id)
             inti_file = os.path.join(controller_dir, '__init__.py')
             with open(inti_file, 'w', encoding='utf-8') as fw:
                 fw.write(FileTemplate.init_template)
 
-            loggings.info(1, '__init__ generated successfully')
+            loggings.info(1, '__init__ generated successfully', session_id)
             for file_name, code in codes.items():
-                loggings.info(1, 'Generating {}...'.format(file_name))
+                loggings.info(1, 'Generating {}...'.format(file_name), session_id)
                 m_file = os.path.join(controller_dir, file_name + '.py')
                 with open(m_file, 'w', encoding='utf-8') as fw:
                     fw.write(code)
-                loggings.info(1, '{} generated successfully'.format(file_name))
+                loggings.info(1, '{} generated successfully'.format(file_name), session_id)
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)

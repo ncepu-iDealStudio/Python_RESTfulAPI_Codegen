@@ -62,7 +62,7 @@ def start(table_config, session_id):
 
         # 第二步
         loggings.info(1, "Start to build the Controller layer code, please wait...", session_id)
-        codegen.controllercodegen.main.main(table_dict, settings)
+        codegen.controllercodegen.main.main(table_dict, settings, session_id)
         loggings.info(1, "Controller layer code build completed", session_id)
 
         # 第三步
