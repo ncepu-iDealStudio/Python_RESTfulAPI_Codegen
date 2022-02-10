@@ -37,7 +37,7 @@ class CodeGenerator(object):
 
             # generate code and save in 'codes'
             for table in [table_view for table_view in table_dict.values() if not table_view.get('is_view')]:
-                little_camel_case_str = table['table_name_small_camel_case']
+                little_camel_case_str = table['table_name_little_camel_case']
                 big_camel_case_str = table['table_name_big_camel_case']
                 model_name = little_camel_case_str + 'Model'
                 class_name = big_camel_case_str + 'Controller'
