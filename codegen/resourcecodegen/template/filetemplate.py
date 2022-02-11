@@ -293,11 +293,19 @@ def create_app(config_name):
     '''
       整个应用的蓝图加载和注册
     '''
-    # apiversion blueprint register
-    {blueprint_register}
+    from api_{api_version} import init_view
+    init_view(app)
+    
     return app
 """
 
+    api_init = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+{imports}
+def init_view(app):
+{blueprint_register}
+"""
     api_version_init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 

@@ -101,12 +101,12 @@ class CodeGenerator(object):
 
             # api/__init__.py generation
             with open(os.path.join(api_dir, '__init__.py'), 'w', encoding='utf8') as f:
-                f.write('#!/usr/bin/env python \n# -*- coding:utf-8 -*-')
+                f.write(self.api_codegen(table_dict))
 
             # app/__init__.py generation
             app_init_file = os.path.join(app_dir, '__init__.py')
             with open(app_init_file, 'w', encoding='utf8') as f:
-                f.write(self.app_codegen(table_dict))
+                f.write(FileTemplate.app_init.format(api_version=api_version))
 
             # api/apiVersionResource/* generation
             os.makedirs(apiVersion_dir := os.path.join(api_dir, 'apiVersionResource'), exist_ok=True)
@@ -341,22 +341,27 @@ class CodeGenerator(object):
             loggings.exception(1, e, session_id)
             return
 
-    # app_init generation
-    def app_codegen(self, tables):
+    # api_init generation
+    def api_codegen(self, tables):
         try:
-            # app_init
-            blueprint_register_str = '''from api_{0}.apiVersionResource import apiversion_blueprint
+            imports_str = '''from .apiVersionResource import apiversion_blueprint\n'''
+            blueprint_register_str = '''    from api_{0}.apiVersionResource import apiversion_blueprint
     app.register_blueprint(apiversion_blueprint, url_prefix="/api_{0}")\n'''.format(api_version)
 
             for table in tables.values():
                 table_name_all_small = table.get('table_name_all_small')
                 table_name_little_camel_case = table.get('table_name_little_camel_case')
 
-                blueprint_register_str += CodeBlockTemplate.app_init_blueprint.format(
+                imports_str += CodeBlockTemplate.api_init_imports.format(
+                    table_name_little_camel_case, table_name_all_small
+                )
+                blueprint_register_str += CodeBlockTemplate.api_init_blueprint.format(
                     table_name_little_camel_case, api_version, table_name_all_small,
                 )
 
-            return FileTemplate.app_init.format(blueprint_register=blueprint_register_str)
+            return FileTemplate.api_init.format(
+                imports=imports_str,
+                blueprint_register=blueprint_register_str)
 
         except Exception as e:
             loggings.exception(1, e, session_id)

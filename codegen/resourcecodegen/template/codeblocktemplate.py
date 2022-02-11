@@ -70,8 +70,10 @@ from utils.response_code import RET"""
         else:
             return jsonify(code=res['code'], message=res['message'], data=res['data'])"""
 
-    app_init_blueprint = """
+    api_init_blueprint = """
     # {0} blueprint register
     from api_{1}.{0}Resource import {2}_blueprint
     app.register_blueprint({2}_blueprint, url_prefix="/api_{1}")
     """
+
+    api_init_imports = 'from .{0}Resource import {1}_blueprint\n'
