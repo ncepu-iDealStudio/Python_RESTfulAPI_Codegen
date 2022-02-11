@@ -290,11 +290,9 @@ def create_app(config_name):
     # 利用Flask_session将数据保存的session中
     Session(app)
 
-    '''
-      整个应用的蓝图加载和注册
-    '''
-    from api_{api_version} import init_view
-    init_view(app)
+    # 调用resource层中定义的方法，初始化所有路由(注册)蓝图
+    from api_{api_version} import init_router
+    init_router(app)
     
     return app
 """
@@ -303,7 +301,7 @@ def create_app(config_name):
 # -*- coding:utf-8 -*-
 
 {imports}
-def init_view(app):
+def init_router(app):
 {blueprint_register}
 """
     api_version_init = """#!/usr/bin/env python
