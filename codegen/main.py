@@ -57,7 +57,7 @@ def start(table_config, session_id):
         # 第一步
         loggings.info(1, "Start to build the Model layer code, please wait...", session_id)
 
-        codegen.modelcodegen.main.main(table_dict, settings)
+        codegen.modelcodegen.main.main(table_dict, settings, session_id)
         loggings.info(1, "Model layer code build completed", session_id)
 
         # 第二步
@@ -67,7 +67,7 @@ def start(table_config, session_id):
 
         # 第三步
         loggings.info(1, "Start to build the Service layer code, please wait...", session_id)
-        codegen.servicecodegen.main.main(table_dict, settings)
+        codegen.servicecodegen.main.main(table_dict, settings, session_id)
         loggings.info(1, "Service layer code build completed", session_id)
 
         # 第四步
@@ -77,7 +77,7 @@ def start(table_config, session_id):
 
         # 第五步
         loggings.info(1, "Start packing static files, please wait...", session_id)
-        codegen.staticcodegen.main.main(settings)
+        codegen.staticcodegen.main.main(settings, session_id)
         loggings.info(1, "Static resource packaging is complete", session_id)
 
         # 第六步

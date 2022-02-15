@@ -17,7 +17,7 @@ from codegen.staticcodegen.template.filetemplate import FileTemplate
 from utils.loggings import loggings
 
 
-def main(settings):
+def main(settings, session_id):
     """
     步骤：
         一、 按照当前项目的config/security.conf 文件 生成 static/config/security.conf
@@ -32,11 +32,11 @@ def main(settings):
         # 第一步
         os.makedirs(os.path.join(project_dir, "config"), exist_ok=True)
         CodeGenerator.generate_develop_configuration_file(os.path.join(project_dir, "config", "develop_config.conf"),
-                                                          settings)
+                                                          settings, session_id)
         CodeGenerator.generate_blank_configuration_file(os.path.join(project_dir, "config", "test_config.conf"),
-                                                        settings)
+                                                        settings, session_id)
         CodeGenerator.generate_blank_configuration_file(os.path.join(project_dir, "config", "product_config.conf"),
-                                                        settings)
+                                                        settings, session_id)
 
         # 第二步 app_setting
         app_setting_dir = os.path.join(project_dir, 'app')
@@ -50,7 +50,7 @@ def main(settings):
         # 创建目标路径
         os.makedirs(project_dir, exist_ok=True)
         # 调用静态资源生成函数
-        CodeGenerator.static_generate(project_dir, source_dir)
+        CodeGenerator.static_generate(project_dir, source_dir, session_id)
 
     except Exception as e:
-        loggings.exception(1, e)
+        loggings.exception(1, e, session_id)
