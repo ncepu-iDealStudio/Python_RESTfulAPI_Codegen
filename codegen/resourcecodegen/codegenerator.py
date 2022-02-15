@@ -279,13 +279,13 @@ class CodeGenerator(object):
                             required=table.get('delete_columns').get(column_name)
                         )
                     if column_name in table.get('put_columns'):
-                        parameter_put += CodeBlockTemplate.parameter_3.format(
+                        parameter_put += CodeBlockTemplate.parameter_2.format(
                             column=column_name,
                             location='form',
                             required=table.get('put_columns').get(column_name)
                         )
                     if column_name in table.get('get_columns'):
-                        parameter_get += CodeBlockTemplate.parameter_3.format(
+                        parameter_get += CodeBlockTemplate.parameter_2.format(
                             column=column_name,
                             location='args',
                             required=table.get('get_columns').get(column_name)
