@@ -26,7 +26,7 @@ class FileTemplate():
 
 from flask import Blueprint
 
-{blueprint}
+{table_name_all_small}_blueprint = Blueprint("{table_name_little_camel_case}", __name__)
 
 from . import urls
 """
@@ -38,7 +38,7 @@ from flask_restful import Api
 
 {imports}
 
-{api}
+api = Api({table_name_all_small}_blueprint)
 
 {resource}
 """
@@ -46,19 +46,30 @@ from flask_restful import Api
     urls_view = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+from flask_restful import Api
+
 {imports}
+
+api = Api({table_name_all_small}_blueprint)
 
 {otherResource}
 """
+
     resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
-{imports}
-{flasgger_import}
+
+from flask_restful import Resource, reqparse
+from flask import jsonify
+
+from controller.{table_name_little_camel_case}Controller import {table_name_big_camel_case}Controller
+from utils import commons
+from utils.response_code import RET
+
 
 class {className}Resource(Resource):
 
     # get
-    @classmethod{swag_get}
+    @classmethod
     def get(cls, {id}=None):
         if {id}:
             kwargs = {{
@@ -86,7 +97,7 @@ class {className}Resource(Resource):
             return jsonify(code=res['code'], message=res['message'], data=res['data']) 
 
     # delete
-    @classmethod{swag_delete}
+    @classmethod
     def delete(cls, {id}=None):
         if {id}:
             kwargs = {{
@@ -96,6 +107,7 @@ class {className}Resource(Resource):
         else:
             parser = reqparse.RequestParser()
             {deleteParameter}
+            # Pass in the ID list for multiple deletions
             parser.add_argument('{id}', type=str, location='form', required=False, help='{id}参数类型不正确或缺失')
 
             kwargs = parser.parse_args()
@@ -106,7 +118,7 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # put
-    @classmethod{swag_put}
+    @classmethod
     def put(cls, {id}):
         if not {id}:
             return jsonify(code=RET.NODATA, message='primary key missed', error='primary key missed')
@@ -122,11 +134,11 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # add
-    @classmethod{swag_post}
+    @classmethod
     def post(cls):
         \"\"\"
         {className}List: Pass in values in JSON format to batch add
-        eg.[{{k1:v1,k2:v2,...}},{{data2}},...]
+        eg.[{{k1:v1,k2:v2,...}},...]
         \"\"\"
         parser = reqparse.RequestParser()
         parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')
@@ -149,13 +161,19 @@ class {className}Resource(Resource):
 
     resource_multi_primary_key = """#!/usr/bin/env python
 # -*- coding:utf-8 -*- 
-{imports}
-{flasgger_import}
+
+from flask_restful import Resource, reqparse
+from flask import jsonify
+
+from controller.{table_name_little_camel_case}Controller import {table_name_big_camel_case}Controller
+from utils import commons
+from utils.response_code import RET
+
 
 class {className}Resource(Resource):
 
     # get
-    @classmethod{swag_get}
+    @classmethod
     def get(cls):
         parser = reqparse.RequestParser()
         {getParameter}
@@ -172,7 +190,7 @@ class {className}Resource(Resource):
             return jsonify(code=res['code'], message=res['message'], data=res['data']) 
 
     # delete
-    @classmethod{swag_delete}
+    @classmethod
     def delete(cls):
         parser = reqparse.RequestParser()
         {deleteParameter}
@@ -184,7 +202,7 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # put
-    @classmethod{swag_put}
+    @classmethod
     def put(cls):
         parser = reqparse.RequestParser()
         {putParameter}
@@ -196,8 +214,12 @@ class {className}Resource(Resource):
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
     # add
-    @classmethod{swag_post}
+    @classmethod
     def post(cls):
+        \"\"\"
+        {className}List: Pass in values in JSON format to batch add
+        eg.[{{k1:v1,k2:v2,...}},...]
+        \"\"\"
         parser = reqparse.RequestParser()
         parser.add_argument('{className}List', type=str, location='form', required=False, help='{className}List参数类型不正确或缺失')
 
@@ -219,6 +241,7 @@ class {className}Resource(Resource):
 
     other_resource = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 from flask_restful import Resource{imports}
 
 
@@ -236,30 +259,24 @@ class {className}OtherResource(Resource):
 from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from . import setting
+from .setting import Settings
 
 # 数据库
 db = SQLAlchemy()
 
 
 # 工厂模式创建app应用对象
-def create_app(config_name):
+def create_app(run_mode):
     \"\"\"
     创建flask的应用对象
-    :param config_name: string 配置模式的名字  （"develop", "product", "test"）
+    :param run_mode: string 配置模式的名字  （"develop", "product", "test"）
     :return:
     \"\"\"
-    
-    config_mode = {{
-        'develop': 'DevelopSettings',
-        'product': 'ProductSettings',
-        'test': 'TestSettings'
-    }}
     
     app = Flask(__name__)
 
     # 根据配置模式的名字获取配置参数的类
-    app.config.from_object(getattr(setting, config_mode[config_name]))
+    app.config.from_object(Settings.get_setting(run_mode))
 
     # 使用app初始化db
     db.init_app(app)
@@ -267,14 +284,21 @@ def create_app(config_name):
     # 利用Flask_session将数据保存的session中
     Session(app)
 
-    '''
-      整个应用的蓝图加载和注册
-    '''
-    # apiversion blueprint register
-    {blueprint_register}
+    # 调用resource层中定义的方法，初始化所有路由(注册)蓝图
+    from api_{api_version} import init_router
+    init_router(app)
+    
     return app
 """
 
+    api_init = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+{imports}
+
+def init_router(app):
+{blueprint_register}
+"""
     api_version_init = """#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
@@ -303,13 +327,11 @@ api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiversion')  # �
 from flask_restful import Resource
 from flask import jsonify
 from utils.response_code import RET
-from flasgger import swag_from
 
 
 class ApiVersionResource(Resource):
 
     # get the interface of apiversion -- test
-    @swag_from("ymls/apiversion_get.yml")
     def get(self):
         back_data = {{
             'version': '{apiversion}'
@@ -327,7 +349,6 @@ class ApiVersionResource(Resource):
 from app import create_app
 from flask_script import Manager, Server
 from flask import request, jsonify
-from flasgger import Swagger
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from utils.response_code import RET
 
@@ -339,9 +360,6 @@ manager = Manager(app)
 
 # 开启Debug模式
 manager.add_command("runserver", Server(use_debugger=True))
-
-# 将swagger包引入Flask应用
-swagger = Swagger(app)
 
 
 # 创建全站拦截器,每个请求之前做处理
@@ -386,127 +404,4 @@ def process_response(response):
 if __name__ == "__main__":
     manager.run()
 
-"""
-
-    yml_get_template = """{0}_get
----
-tags:
- - name: '{0}'
-definitions:
- {0}_get_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-   data:
-    type: object
-    description: response_data
-    properties:         {1}
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_get_res_data'
-"""
-
-    yml_gets_template = """{0}_gets
----
-tags:
- - name: '{0}'
-parameters:
-{1}
-definitions:
- {0}_gets_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-   data:
-    type: object
-    description: response_data
-    properties:         {2}
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_gets_res_data'
-"""
-
-    yml_post_template = """{0}_post
----
-tags:
- - name: '{0}'
-parameters:
-{1}
-definitions:
- {0}_post_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-   data:
-    type: object
-    description: response_data
-    properties:         {2}
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_post_res_data'
-"""
-
-    yml_delete_template = """{0}_delete
----
-tags:
- - name: '{0}'
-definitions:
- {0}_delete_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_delete_res_data'
-"""
-
-    yml_put_template = """{0}_put
----
-tags:
- - name: '{0}'
-parameters:
-{1}
-definitions:
- {0}_put_res_data:
-  type: object
-  properties:
-   code:
-    type: string
-    description: response_code
-   message:
-    type: string
-    description: response_message
-responses:
- 200:
-  description: response successfully
-  schema:
-   $ref: '#/definitions/{0}_put_res_data'
 """

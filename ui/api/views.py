@@ -13,18 +13,24 @@
 import configparser
 import json
 import os
+import time
+import zipfile
+from datetime import timedelta
 
 import pymysql
-from flask import Flask, request
+from flask import Flask, request, session, send_from_directory
 from urllib import parse
 
 from utils.checkSqlLink import check_sql_link, connection_check
 
 app = Flask(__name__, static_folder="../static")
+app.config['SECRET_KEY'] = os.urandom(24)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # 配置7天有效
 
 
 @app.route('/', methods=['GET'])
 def index():
+    session['id'] = int(round(time.time() * 1000))
     return app.send_static_file('index.html')
 
 
@@ -56,8 +62,8 @@ def build():
 # 获取项目路径
 @app.route('/getpath', methods=['POST'])
 def getpath():
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    path = BASE_DIR + "\dist"
+    dir = os.getcwd()
+    path = dir + "\dist"
     return {'code': '2000', 'data': path, 'message': '获取路径成功'}
 
 
@@ -102,21 +108,31 @@ def connecttest():
 # 连接数据库接口
 @app.route('/next', methods=['POST'])
 def next():
+    # 获取会话id并创建对应配置文件
+    id = session.get('id')
+    dir = os.getcwd()
+    f = open(dir + "/config/config_" + str(id) + ".conf", "w")
+    f.close()
+
     # 接收参数
     kwargs = json.loads(request.data)
     dialect = kwargs['DatabaseDialects']
     host = kwargs['Host']
     port = kwargs['Port']
-    database = kwargs['DatebaseName']
+    database = kwargs['DatabaseName']
     username = kwargs['Username']
     password = kwargs['Password']
     # 检查数据库链接
     result_sql = check_sql_link(dialect, username, password, host, port, database)
     if result_sql['code']:
         # 填写配置文件
-        configfile = "config/config.conf"
+        configfile = "config/config_" + str(id) + ".conf"
         conf = configparser.ConfigParser()  # 实例类
         conf.read(configfile, encoding='UTF-8')  # 读取配置文件
+
+        if not conf.has_section('DATABASE'):
+            conf.add_section('DATABASE')
+
         conf.set("DATABASE", "dialect", dialect)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
         conf.set("DATABASE", "host", host)
         conf.set("DATABASE", "port", port)
@@ -137,16 +153,19 @@ def setproject():
     projectPath = 'dist'
     projectName = kwargs["projectName"]
     interfaceVersion = kwargs["projectVersion"]
-    flasgger_mode = kwargs["flasggerMode"]
 
-    configfile = "config/config.conf"
+    id = session.get('id')
+
+    configfile = "config/config_" + str(id) + ".conf"
     conf = configparser.ConfigParser()  # 实例类
     conf.read(configfile, encoding='UTF-8')  # 读取配置文件
+
+    if not conf.has_section('PARAMETER'):
+        conf.add_section('PARAMETER')
 
     conf.set("PARAMETER", "target_dir", projectPath)  # 第一个参数为组名，第二个参数为属性名，第三个参数为属性的值
     conf.set("PARAMETER", "project_name", projectName)
     conf.set("PARAMETER", "api_version", interfaceVersion)
-    conf.set("PARAMETER", "flasgger_mode", str(flasgger_mode))
     with open(configfile, "w") as f:
         conf.write(f)
     return {'code': '2000', 'data': [], 'message': '写入配置成功'}
@@ -155,20 +174,33 @@ def setproject():
 # 开始生成代码
 @app.route('/startbuild', methods=['POST'])
 def startbuild():
+    id = session.get('id')
     kwargs = json.loads(request.data)
     from codegen.main import start
-    res = start(kwargs)
+    res = start(kwargs, id)
     if res['code'] == '2000':
-        return {'code': '2000', 'data': res['data'], 'message': '写入配置成功'}
+        return {'code': '2000', 'data': res['data'], 'message': '目标代码生成成功'}
     else:
         return {'code': '5000', 'data': [], 'message': res['error']}
 
 
-# 关闭服务
-@app.route('/seriouslykill', methods=['POST'])
-def seriouslykill():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-    return {'code': '2000', 'data': [], 'message': 'http://127.0.0.1:5000/ is shutdown!'}
+# 下载
+@app.route('/download', methods=['GET'])
+def download():
+    id = session.get('id')
+    path = "dist"
+    folder = "dist_" + str(id)
+    folder_dir = folder + ".zip"
+    retval = os.getcwd()
+    os.chdir(path)  # 改变工作目录至dist
+
+    zfile = zipfile.ZipFile(folder_dir, 'w', zipfile.ZIP_DEFLATED)
+    for dirpath, dirnames, filenames in os.walk(folder):
+        fpath = dirpath.replace(folder, '')  # 这一句很重要，不replace的话，就从根目录开始复制
+        fpath = fpath and fpath + os.sep or ''  # 这句话理解我也点郁闷，实现当前文件夹以及包含的所有文件的压缩
+        for filename in filenames:
+            zfile.write(os.path.join(dirpath, filename), fpath + filename)
+    zfile.close()
+    os.chdir(retval)  # 改变工作目录至上一层
+    dir = os.getcwd()
+    return send_from_directory(dir + "\\dist", folder_dir, as_attachment=True)

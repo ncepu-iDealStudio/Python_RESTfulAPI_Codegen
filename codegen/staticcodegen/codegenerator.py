@@ -14,7 +14,6 @@ import os
 import shutil
 from configparser import ConfigParser
 
-from codegen import dialect, driver, username, password, host, port, database
 from utils.loggings import loggings
 
 
@@ -24,12 +23,22 @@ class CodeGenerator(object):
     SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
 
     @classmethod
-    def generate_develop_configuration_file(cls, configuration_file_path):
+    def generate_develop_configuration_file(cls, configuration_file_path, settings, session_id):
         """
-        :param configuration_file_path: 配置文件存储路径
-        :return: None
+            :param configuration_file_path: 配置文件存储路径
+            :param settings: 用户配置
+            :param session_id: 用户ID
+            :return: None
         """
         try:
+            dialect = settings.DIALECT
+            driver = settings.DRIVER
+            username = settings.USERNAME
+            password = settings.PASSWORD
+            host = settings.HOST
+            port = settings.PORT
+            database = settings.DATABASE
+
             target_config = ConfigParser()
 
             # write configueration about databse
@@ -54,15 +63,20 @@ class CodeGenerator(object):
                 target_config.write(f)
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)
 
     @classmethod
-    def generate_blank_configuration_file(cls, configuration_file_path):
+    def generate_blank_configuration_file(cls, configuration_file_path, settings, session_id):
         """
-        :param configuration_file_path: 配置文件存储路径
-        :return: None
+            :param configuration_file_path: 配置文件存储路径
+            :param settings: 用户配置
+            :param session_id: 用户ID
+            :return: None
         """
         try:
+            dialect = settings.DIALECT
+            driver = settings.DRIVER
+
             target_config = ConfigParser()
 
             # write configueration about databse
@@ -93,10 +107,10 @@ class CodeGenerator(object):
                 target_config.write(f)
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)
 
     @classmethod
-    def static_generate(cls, target_dir, source_dir):
+    def static_generate(cls, target_dir, source_dir, session_id):
         """
         1 copy the static resource to target project directory;
         2 you can put these static resource  into "static" directory,such as "dockerfile" and some
@@ -104,6 +118,7 @@ class CodeGenerator(object):
         3 some resource we need has already copied into default static directory;
         :param target_dir: Target path of the file
         :param source_dir: Source path of the file
+        :param session_id: The ID of User
         :return: None
         """
 
@@ -124,7 +139,8 @@ class CodeGenerator(object):
                             os.makedirs(target_file)
                         # 拷贝
                         shutil.copy(src_file, target_file)
-                        loggings.info(1, "The file '{}' has been copied to '{}'".format(src_file, target_file))
+                        loggings.info(1, "The file '{}' has been copied to '{}'".format(src_file, target_file),
+                                      session_id)
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id)

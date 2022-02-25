@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <title>iDeal接口代码生成器-Python</title>
     <link rel="stylesheet" href="static/cdn/element-plus.css" />
     <script src="static/cdn/vue-3.2.26.js"></script>
     <script src="static/cdn/element-ui.js"></script>
@@ -57,12 +57,15 @@
                                 <el-form-item label="密码" prop="Password">
                                     <el-input v-model="form.Password" show-password></el-input>
                                 </el-form-item>
-                                <el-form-item label="数据库" prop="DatebaseName">
-                                    <el-select v-model="form.DatebaseName" placeholder="请选择目标数据库" @focus="getdbname">
+                                <el-form-item label="数据库" prop="DatabaseName">
+                                    <el-select v-model="form.DatabaseName" placeholder="请选择目标数据库" @focus="getdbname">
                                         <el-option v-if="getdbname_loading" v-loading="getdbname_loading" label="" value=""> </el-option>
                                         <el-option :label="item[0]" :value="item[0]" v-for="(item, index) in dbname_list" :key="index"></el-option>
                                     </el-select>
                                     <el-button type="primary" style="margin-left: 10px;" :loading="connectTest_loading" @click="connectTest">连接测试</el-button>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-checkbox v-model="form.remember" label="记住我" size="large"></el-checkbox>
                                 </el-form-item>
                             </el-form>
                         </el-card>
@@ -100,7 +103,8 @@
                     Port: "",
                     Username: "",
                     Password: "",
-                    DatebaseName: "",
+                    DatabaseName: "",
+                    remember: false,
                 },
                 rules: {
                     DatabaseDialects: [{
@@ -118,7 +122,7 @@
                         message: '请填写完整信息',
                         trigger: 'blur',
                     }],
-                    DatebaseName: [{
+                    DatabaseName: [{
                         required: true,
                         message: '请填写完整信息',
                         trigger: 'blur',
@@ -139,6 +143,7 @@
                 getdbname_loading: false,
                 dbname_list: [],
             });
+
             const formRef = ref(null);
             const nextStep = () => {
                 formRef.value.validate((valid) => {
@@ -146,12 +151,17 @@
                         state.nextStep_loading = true;
                         axios({
                             method: 'POST',
-                            url: 'http://127.0.0.1:5000/next',
+                            url: '/next',
                             data: state.form
                         }).then(result => {
                             const res = result.data
                             if (res.code === '2000') {
                                 ElMessage.success(res.message)
+                                if (state.form.remember) { //是否保存登录配置信息到本地
+                                    localStorage.setItem("userInfo", JSON.stringify(state.form));
+                                } else {
+                                    localStorage.removeItem("userInfo")
+                                }
                                 localStorage.setItem("tables", JSON.stringify(res.data.table));
                                 localStorage.setItem("views", JSON.stringify(res.data.view));
                                 localStorage.setItem("invalid", JSON.stringify(res.invalid));
@@ -165,13 +175,14 @@
                     }
                 })
             }
+
             const connectTest = () => {
                 formRef.value.validate((valid) => {
                     if (valid) {
                         state.connectTest_loading = true;
                         axios({
                             method: 'POST',
-                            url: 'http://127.0.0.1:5000/connecttest',
+                            url: '/connecttest',
                             data: state.form
                         }).then(result => {
                             const res = result.data
@@ -189,11 +200,11 @@
 
             const getdbname = () => {
                 state.getdbname_loading = true;
-                state.form.DatebaseName = "";
+                state.form.DatabaseName = "";
                 state.dbname_list = [];
                 axios({
                     method: 'POST',
-                    url: 'http://127.0.0.1:5000/getdbname',
+                    url: '/getdbname',
                     data: state.form
                 }).then(result => {
                     const res = result.data;
@@ -208,7 +219,13 @@
             }
 
             onMounted(() => {
-                localStorage.clear()
+                let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+                if (userInfo) {
+                    state.form = userInfo;
+                }
+                localStorage.removeItem("tables")
+                localStorage.removeItem("views")
+                localStorage.removeItem("invalid")
             })
 
             return {

@@ -11,6 +11,8 @@
 """
 import json
 
+from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
+
 
 class TableMetadata(object):
     with open('config/default_table_config.json', 'r', encoding='utf-8') as f:
@@ -40,6 +42,9 @@ class TableMetadata(object):
             table_name = str(table)
             table_dict[table_name] = {}
             table_dict[table_name]['table_name'] = table_name
+            table_dict[table_name]['table_name_all_small'] = str_to_all_small(table_name)
+            table_dict[table_name]['table_name_little_camel_case'] = str_to_little_camel_case(table_name)
+            table_dict[table_name]['table_name_big_camel_case'] = str_to_big_camel_case(table_name)
 
             # 如果该表是一个视图
             if table_name in reflection_views:
@@ -78,17 +83,17 @@ class TableMetadata(object):
                 continue
 
             table_dict[table_name]['is_view'] = False
-            table_dict[table_name]['logical_delete_mark'] = ""
-            table_dict[table_name]['business_key'] = {}
+            table_dict[table_name]['logical_delete_column'] = ""
+            table_dict[table_name]['business_key_column'] = {}
 
             # Check if the business key exists and check record deletion method
             for config in table_config['table']:
                 if config['table'] == table_name and config['logicaldeletemark'] != '':
-                    table_dict[table_name]['logical_delete_mark'] = config['logicaldeletemark']
+                    table_dict[table_name]['logical_delete_column'] = config['logicaldeletemark']
 
                 if config['table'] == table_name and config['businesskeyname'] != '':
-                    table_dict[table_name]['business_key']['column'] = config['businesskeyname']
-                    table_dict[table_name]['business_key']['rule'] = config['businesskeyrule']
+                    table_dict[table_name]['business_key_column']['column'] = config['businesskeyname']
+                    table_dict[table_name]['business_key_column']['rule'] = config['businesskeyrule']
 
             # 需要RSA加密的字段
             table_dict[table_name]['rsa_columns'] = []
@@ -101,7 +106,7 @@ class TableMetadata(object):
             from sqlalchemy.engine import reflection
             insp = reflection.Inspector.from_engine(metadata.bind)
             # 初始化为空列表
-            table_dict[table_name]['primaryKey'] = insp.get_pk_constraint(table_name)['constrained_columns']
+            table_dict[table_name]['primary_key_columns'] = insp.get_pk_constraint(table_name)['constrained_columns']
             table_dict[table_name]['columns'] = {}
 
             # Traverse each columns to get corresponding attributes
@@ -123,13 +128,13 @@ class TableMetadata(object):
                     'is_autoincrement'] = True if column.autoincrement is True else False
 
                 # 存在复合主键
-                if len(table_dict[table_name]['primaryKey']) > 1:
-                    table_dict[table_name]['business_key'] = {}
+                if len(table_dict[table_name]['primary_key_columns']) > 1:
+                    table_dict[table_name]['business_key_column'] = {}
                 else:
                     # 如果主键不是自增的，则将业务主键设置为主键
-                    if str(column.name) in table_dict[table_name]['primaryKey'] and not \
+                    if str(column.name) in table_dict[table_name]['primary_key_columns'] and not \
                             table_dict[table_name]['columns'][str(column.name)]['is_autoincrement']:
-                        table_dict[table_name]['business_key']['column'] = str(column.name)
+                        table_dict[table_name]['business_key_column']['column'] = str(column.name)
 
                 # 是否可以为空
                 table_dict[table_name]['columns'][str(column.name)]['nullable'] = column.nullable

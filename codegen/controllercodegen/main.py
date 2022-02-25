@@ -9,23 +9,26 @@
 """
     this is function description
 """
+
 import os
 
-from codegen import project_dir
 from .codegenerator import CodeGenerator
 
 
-def main(table_dict):
+def main(table_dict, settings, session_id):
     """
     Generate Controller code
     :return: None
     """
+
+    project_dir = settings.PROJECT_DIR
 
     # create the controller file
     os.makedirs(controller_dir := os.path.join(project_dir, 'controller'), exist_ok=True)
 
     generator = CodeGenerator(table_dict)
     generator.controller_codegen(
-        controller_dir=controller_dir
+        controller_dir=controller_dir,
+        session_id=session_id
     )
     return
