@@ -16,58 +16,56 @@ from urllib import parse
 
 os.chdir(os.path.dirname(os.path.dirname(__file__)))
 
-# 配置文件目录
-CONFIG_DIR = "config/config.conf"
-CONFIG = ConfigParser()
-
 
 class Settings(object):
-    # 读取配置文件
-    CONFIG.read(CONFIG_DIR, encoding='utf-8')
 
-    # 生成项目的名称
-    PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
-    # 项目生成的目标路径
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    # 目标目录
-    TARGET_DIR = os.path.join(BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR'])
-    # 项目目录
-    PROJECT_DIR = os.path.join(TARGET_DIR, PROJECT_NAME)
-    # 生成项目API的版本
-    API_VERSION = CONFIG['PARAMETER']['API_VERSION'].replace('.', '_')
-    # 定义静态资源文件路径
-    STATIC_RESOURCE_DIR = os.path.join(BASE_DIR, 'static')
-    # 是否生成flasgger文档的开关，默认为生成
-    try:
-        FLASGGER_MODE = CONFIG.getboolean('PARAMETER', 'flasgger_mode')
-    except ValueError:
-        FLASGGER_MODE = True
+    def __init__(self, session_id):
 
+        # 配置文件目录
+        CONFIG_DIR = "config/config_" + str(session_id) + ".conf"
+        CONFIG = ConfigParser()
 
-    # 数据库dialect到driver的映射
-    driver_dict = {
-        'mysql': 'pymysql',
-        'mssql': 'pymssql',
-        'oracle': 'cx_oracle',
-        'postgresql': 'psycopg2'
-    }
+        # 读取配置文件
+        CONFIG.read(CONFIG_DIR, encoding='utf-8')
 
-    # 读取数据库配置
-    DIALECT = CONFIG['DATABASE']['DIALECT']
-    DRIVER = driver_dict[DIALECT]
-    USERNAME = CONFIG['DATABASE']['USERNAME']
-    PASSWORD = CONFIG['DATABASE']['PASSWORD']
-    HOST = CONFIG['DATABASE']['HOST']
-    PORT = CONFIG['DATABASE']['PORT']
-    DATABASE = CONFIG['DATABASE']['DATABASE']
+        # 生成项目的名称
+        self.PROJECT_NAME = CONFIG['PARAMETER']['PROJECT_NAME']
+        # 项目生成的目标路径
+        self.BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        # 目标目录
+        self.TARGET_DIR = os.path.join(self.BASE_DIR, CONFIG['PARAMETER']['TARGET_DIR']) + "/" + CONFIG['PARAMETER'][
+            'TARGET_DIR'] + "_" + str(session_id)
+        # 项目目录
+        self.PROJECT_DIR = os.path.join(self.TARGET_DIR, self.PROJECT_NAME)
+        # 生成项目API的版本
+        self.API_VERSION = CONFIG['PARAMETER']['API_VERSION'].replace('.', '_')
+        # 定义静态资源文件路径
+        self.STATIC_RESOURCE_DIR = os.path.join(self.BASE_DIR, 'static')
 
-    # model层配置
-    MODEL_URL = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
-        DIALECT,
-        DRIVER,
-        USERNAME,
-        parse.quote_plus(PASSWORD),
-        HOST,
-        PORT,
-        DATABASE
-    )
+        # 数据库dialect到driver的映射
+        driver_dict = {
+            'mysql': 'pymysql',
+            'mssql': 'pymssql',
+            'oracle': 'cx_oracle',
+            'postgresql': 'psycopg2'
+        }
+
+        # 读取数据库配置
+        self.DIALECT = CONFIG['DATABASE']['DIALECT']
+        self.DRIVER = driver_dict[self.DIALECT]
+        self.USERNAME = CONFIG['DATABASE']['USERNAME']
+        self.PASSWORD = CONFIG['DATABASE']['PASSWORD']
+        self.HOST = CONFIG['DATABASE']['HOST']
+        self.PORT = CONFIG['DATABASE']['PORT']
+        self.DATABASE = CONFIG['DATABASE']['DATABASE']
+
+        # model层配置
+        self.MODEL_URL = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
+            self.DIALECT,
+            self.DRIVER,
+            self.USERNAME,
+            parse.quote_plus(self.PASSWORD),
+            self.HOST,
+            self.PORT,
+            self.DATABASE
+        )

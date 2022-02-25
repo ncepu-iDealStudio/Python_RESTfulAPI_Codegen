@@ -24,39 +24,42 @@ class Loggings(object):
 
         return cls.__instance
 
-    def info(self, location, msg):
-        Loggings.log_filter(location)
-
+    def info(self, location, msg, session_id=None):
+        Loggings.log_filter(location, session_id)
         return logger.info(msg)
 
-    def debug(self, location, msg):
-        Loggings.log_filter(location)
+    def debug(self, location, msg, session_id=None):
+        Loggings.log_filter(location, session_id)
         return logger.debug(msg)
 
-    def warning(self, location, msg):
-        Loggings.log_filter(location)
+    def warning(self, location, msg, session_id=None):
+        Loggings.log_filter(location, session_id)
         return logger.warning(msg)
 
-    def error(self, location, msg):
-        Loggings.log_filter(location)
+    def error(self, location, msg, session_id=None):
+        Loggings.log_filter(location, session_id)
         return logger.error(msg)
 
-    def exception(self, location, msg):
-        Loggings.log_filter(location)
+    def exception(self, location, msg, session_id=None):
+        Loggings.log_filter(location, session_id)
         return logger.exception(msg)
 
     @staticmethod
-    def log_filter(location):
+    def log_filter(location, session_id=None):
+        if session_id:
+            log_path = "logs/codegen_log_{0}.log".format(session_id)
+        else:
+            log_path = "logs/codegen_log.log"
         # 日志和控制台都出现
         if location == 1:
             logger.remove()
             logger.add(sys.stdout)
-            logger.add("logs/codegen_log.log", encoding="utf-8", enqueue=True, rotation="100 KB")
+            logger.add(log_path, encoding="utf-8", enqueue=True, rotation="100 KB")
 
         # 只在日志中出现
         elif location == 2:
             logger.remove()
-            logger.add("logs/codegen_log.log", encoding="utf-8", enqueue=True, rotation="100 KB")
+            logger.add(log_path, encoding="utf-8", enqueue=True, rotation="100 KB")
 
 
 loggings = Loggings()

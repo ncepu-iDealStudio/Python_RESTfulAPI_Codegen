@@ -12,24 +12,25 @@
 
 import os
 
-from codegen import project_dir
 from codegen.servicecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
 
-def main(table_dict):
+def main(table_dict, settings, session_id):
     """
     Generate service layer code
     :return: None
     """
     try:
+        project_dir = settings.PROJECT_DIR
 
         # Create folder named "service" in project directory
-        os.makedirs(service_path := os.path.join(project_dir, 'service'), exist_ok=True)
+        service_path = os.path.join(project_dir, 'service')
+        os.makedirs(service_path, exist_ok=True)
         with open(os.path.join(service_path, '__init__.py'), 'w', encoding='utf-8') as f:
             f.write("#!/usr/bin/env python\n# -*- coding:utf-8 -*-\n")
 
-        generator = CodeGenerator(table_dict)
+        generator = CodeGenerator(table_dict, session_id)
         generator.service_generator(service_path)
     except Exception as e:
-        loggings.exception(1, e)
+        loggings.exception(1, e, session_id)

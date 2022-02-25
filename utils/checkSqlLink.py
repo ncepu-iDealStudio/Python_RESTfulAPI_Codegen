@@ -10,8 +10,7 @@
     检验数据库连接是否成功并返回所有表、字段信息（前端用）
 """
 
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.engine import reflection
+from sqlalchemy import create_engine, MetaData, inspect
 
 from utils.checkTable import CheckTable
 from urllib import parse
@@ -44,13 +43,13 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
                                                            port, database)
         engine = create_engine(url)
         metadata = MetaData(engine)
-        insp = reflection.Inspector.from_engine(engine)
+        inspector = inspect(engine)
         metadata.reflect(engine, views=True)
 
     except Exception as e:
         return {'code': False, 'message': str(e), 'error': str(e)}
 
-    table_dict, invalid_tables = CheckTable.main(metadata, insp.get_view_names())
+    table_dict, invalid_tables = CheckTable.main(metadata, inspector.get_view_names())
 
     data = {
         'table': [],
@@ -73,10 +72,10 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
             filed = []
             business_key_type = ''
             for column in table['columns'].values():
-                if table.get('business_key') and column['name'] == table['primaryKey'][0]:
+                if table.get('business_key_column') and column['name'] == table['primary_key_columns'][0]:
                     # 唯一主键不是递增时，需要记录该主键的数据类型
                     business_key_type = column['type']
-                if column['name'] in table['primaryKey']:
+                if column['name'] in table['primary_key_columns']:
                     # 剔除出主键
                     continue
                 else:
@@ -87,11 +86,11 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
                     })
             data['table'].append({
                 'table': str(table['table_name']),
-                'businesskeyname': table['business_key'].get('column') if table['business_key'].get('column') else '',
+                'businesskeyname': table['business_key_column'].get('column') if table['business_key_column'].get('column') else '',
                 'businesskeyrule': '',
                 'logicaldeletemark': '',
                 'field': filed,
-                'businesskeyuneditable': True if table['business_key'].get('column') or len(table['primaryKey']) > 1 else False,
+                'businesskeyuneditable': True if table['business_key_column'].get('column') or len(table['primary_key_columns']) > 1 else False,
                 "businesskeytype": business_key_type,
                 'issave': False
             })

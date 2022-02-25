@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask_Sqlachemy_RESTfulAPI_Codegen</title>
+    <title>iDeal接口代码生成器-Python</title>
     <link rel="stylesheet" href="static/cdn/element-plus.css" />
     <script src="static/cdn/vue-3.2.26.js"></script>
     <script src="static/cdn/element-ui.js"></script>
@@ -48,9 +48,6 @@
                                 </el-form-item>
                                 <el-form-item label="接口版本" prop="projectVersion">
                                     <el-input v-model="Form.projectVersion" placeholder="1.0"></el-input>
-                                </el-form-item>
-                                <el-form-item label="flasgger文档生成">
-                                    <el-switch v-model="Form.flasggerMode" />
                                 </el-form-item>
                             </el-form>
                         </el-card>
@@ -96,7 +93,6 @@
                     Form: {
                         projectName: "",
                         projectVersion: "",
-                        flasggerMode: true,
                     },
                     rules: {
                         projectName: [{
@@ -148,7 +144,7 @@
                             state.nextStep_loading = true;
                             axios({
                                 method: 'POST',
-                                url: 'http://127.0.0.1:5000/setproject',
+                                url: '/setproject',
                                 data: state.Form
                             }).then(result => {
                                 const res = result.data
@@ -219,7 +215,7 @@
                     // 获取目标代码路径
                     axios({
                         method: 'POST',
-                        url: 'http://127.0.0.1:5000/getpath',
+                        url: '/getpath',
                     }).then(result => {
                         const res = result.data
                         if (res.code === '2000') {

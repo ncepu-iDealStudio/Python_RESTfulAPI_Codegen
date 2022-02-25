@@ -12,23 +12,24 @@
 
 import os
 
-from codegen import project_dir
-from config.setting import Settings
 from utils.common import str_to_little_camel_case
 from utils.loggings import loggings
 from . import cmd
 
 
-def main(table_dict):
+def main(table_dict, settings, session_id):
     """
     model层代码的生成
     :return: None
     """
 
     try:
+        project_dir = settings.PROJECT_DIR
+        model_url = settings.MODEL_URL
 
         # 在项目文件夹中创建models的目录
-        os.makedirs(models_path := os.path.join(project_dir, 'models'), exist_ok=True)
+        models_path = os.path.join(project_dir, 'models')
+        os.makedirs(models_path, exist_ok=True)
 
         # 创建空的 __init__.py 文件
         with open(os.path.join(models_path, '__init__.py'), 'w', encoding='utf-8') as f:
@@ -38,9 +39,9 @@ def main(table_dict):
 
         # 为每张表生成model层代码
         for table in tables:
-            loggings.info(1, "Model code for {0} table is being generated".format(table))
+            loggings.info(1, "Model code for {0} table is being generated".format(table), session_id)
             command = cmd.format(
-                url=Settings.MODEL_URL,
+                url=model_url,
                 schema="",
                 tables=" --tables {0}".format(table),
                 noviews="",
@@ -50,7 +51,7 @@ def main(table_dict):
                 noinflect="",
                 noclasses="",
                 notables="",
-                outfile=" --outfile {0}\{1}".format(models_path, str_to_little_camel_case(table) + "Model.py"),
+                outfile=" --outfile {0}/{1}".format(models_path, str_to_little_camel_case(table) + "Model.py"),
                 nobackrefs="",
                 nocomments="",
                 ignore_cols=""
@@ -58,4 +59,4 @@ def main(table_dict):
             os.system(command)
 
     except Exception as e:
-        loggings.exception(1, e)
+        loggings.exception(1, e, session_id)

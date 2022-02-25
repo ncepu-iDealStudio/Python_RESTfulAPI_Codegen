@@ -11,14 +11,18 @@ import os
 from codegen.testcodegen.codegenerator import CodeGenerator
 from .template.filetemplate import FileTemplate
 from utils.loggings import loggings
-from codegen import project_dir, target_dir
 
 
-def main(table_dict):
+# from codegen import project_dir, target_dir
+
+
+def main(table_dict, settings):
     """
     Generate resource layer code
     :return: None
     """
+    project_dir = settings.PROJECT_DIR
+    target_dir = settings.TARGET_DIR
 
     try:
         if not list(table_dict.keys()):
@@ -46,7 +50,7 @@ def main(table_dict):
         test_start_dir = os.path.join(test_dir, 'test_start.py')
         # file_write(test_start_dir, FileTemplate.test_start)
         with open(test_start_dir, 'w', encoding='utf8') as f:
-            f.write( FileTemplate.test_start)
+            f.write(FileTemplate.test_start)
         # report dir generation
         report_dir = os.path.join(test_dir, 'report')
         os.makedirs(report_dir, exist_ok=True)

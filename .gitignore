@@ -9,7 +9,9 @@
 .vscode
 .cache
 .pytest_cache
-dist
+dist*
 build
 logs
 logs/
+config_*
+.scannerwork/
