@@ -68,16 +68,4 @@ class Settings(object):
 
         return cls
 
-
-class DevelopSettings(Settings):
-    DEBUG = True
-
-
-class TestSettings(Settings):
-    pass
-
-
-class ProductSettings(Settings):
-    pass
-
 """

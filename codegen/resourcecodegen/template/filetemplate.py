@@ -259,30 +259,24 @@ class {className}OtherResource(Resource):
 from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from . import setting
+from .setting import Settings
 
 # 数据库
 db = SQLAlchemy()
 
 
 # 工厂模式创建app应用对象
-def create_app(config_name):
+def create_app(run_mode):
     \"\"\"
     创建flask的应用对象
-    :param config_name: string 配置模式的名字  （"develop", "product", "test"）
+    :param run_mode: string 配置模式的名字  （"develop", "product", "test"）
     :return:
     \"\"\"
-    
-    config_mode = {{
-        'develop': 'DevelopSettings',
-        'product': 'ProductSettings',
-        'test': 'TestSettings'
-    }}
     
     app = Flask(__name__)
 
     # 根据配置模式的名字获取配置参数的类
-    app.config.from_object(getattr(setting, config_mode[config_name]))
+    app.config.from_object(Settings.get_setting(run_mode))
 
     # 使用app初始化db
     db.init_app(app)
@@ -301,6 +295,7 @@ def create_app(config_name):
 # -*- coding:utf-8 -*-
 
 {imports}
+
 def init_router(app):
 {blueprint_register}
 """
