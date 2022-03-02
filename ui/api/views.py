@@ -93,7 +93,7 @@ def connecttest():
     dialect = kwargs['DatabaseDialects']
     host = kwargs['Host']
     port = kwargs['Port']
-    database = kwargs['DatebaseName']
+    database = kwargs['DatabaseName']
     username = kwargs['Username']
     password = parse.quote_plus(kwargs['Password'])
 
