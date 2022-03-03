@@ -1,4 +1,4 @@
-Flask==1.1.4
+Flask==2.0.3
 Flask-Script==2.0.6
 Flask-Session==0.4.0
 Flask-SQLAlchemy==2.5.1
@@ -10,3 +10,4 @@ pytest==6.2.5
 Flask-Bootstrap==3.3.7.1
 requests==2.18.1
 PyMySQL==1.0.2
+itsdangerous==2.0.1

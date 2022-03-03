@@ -93,7 +93,7 @@ def connecttest():
     dialect = kwargs['DatabaseDialects']
     host = kwargs['Host']
     port = kwargs['Port']
-    database = kwargs['DatebaseName']
+    database = kwargs['DatabaseName']
     username = kwargs['Username']
     password = parse.quote_plus(kwargs['Password'])
 
@@ -197,10 +197,10 @@ def download():
     zfile = zipfile.ZipFile(folder_dir, 'w', zipfile.ZIP_DEFLATED)
     for dirpath, dirnames, filenames in os.walk(folder):
         fpath = dirpath.replace(folder, '')  # 这一句很重要，不replace的话，就从根目录开始复制
-        fpath = fpath and fpath + os.sep or ''  # 这句话理解我也点郁闷，实现当前文件夹以及包含的所有文件的压缩
+        fpath = fpath and fpath + os.sep or ''  # 实现当前文件夹以及包含的所有文件的压缩
         for filename in filenames:
             zfile.write(os.path.join(dirpath, filename), fpath + filename)
     zfile.close()
     os.chdir(retval)  # 改变工作目录至上一层
     dir = os.getcwd()
-    return send_from_directory(dir + "\\dist", folder_dir, as_attachment=True)
+    return send_from_directory(os.path.join(dir, "dist"), folder_dir, as_attachment=True)
