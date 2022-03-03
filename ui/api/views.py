@@ -203,4 +203,4 @@ def download():
     zfile.close()
     os.chdir(retval)  # 改变工作目录至上一层
     dir = os.getcwd()
-    return send_from_directory(dir + "\\dist", folder_dir, as_attachment=True)
+    return send_from_directory(os.path.join(dir, "dist"), folder_dir, as_attachment=True)
