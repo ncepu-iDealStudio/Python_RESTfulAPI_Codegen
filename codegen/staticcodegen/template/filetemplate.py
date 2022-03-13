@@ -21,6 +21,7 @@ class FileTemplate(object):
 
 import os
 from configparser import ConfigParser
+from urllib import parse
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -53,7 +54,7 @@ class Settings(object):
         cls.DATABASE = cls.CONFIG['DATABASE']['database']
 
         cls.SQLALCHEMY_DATABASE_URI = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
-            cls.DIALECT, cls.DRIVER, cls.USERNAME, cls.PASSWORD, cls.HOST, cls.PORT, cls.DATABASE)
+            cls.DIALECT, cls.DRIVER, cls.USERNAME, parse.quote_plus(cls.PASSWORD), cls.HOST, cls.PORT, cls.DATABASE)
 
         cls.SQLALCHEMY_TRACK_MODIFICATIONS = cls.CONFIG.getboolean('DATABASE', 'sqlalchemy_track_modifications')
 
