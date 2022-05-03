@@ -52,5 +52,9 @@ def main(settings, session_id):
         # 调用静态资源生成函数
         CodeGenerator.static_generate(project_dir, source_dir, session_id)
 
+        # 第四步 生成gunicorn.py
+        project_name = settings.PROJECT_NAME
+        CodeGenerator.gunicorn_generate(project_dir, project_name, session_id)
+
     except Exception as e:
         loggings.exception(1, e, session_id)

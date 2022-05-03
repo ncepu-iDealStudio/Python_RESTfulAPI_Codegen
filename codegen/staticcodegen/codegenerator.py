@@ -13,7 +13,7 @@
 import os
 import shutil
 from configparser import ConfigParser
-
+from .template import filetemplate
 from utils.loggings import loggings
 
 
@@ -142,5 +142,19 @@ class CodeGenerator(object):
                         loggings.info(1, "The file '{}' has been copied to '{}'".format(src_file, target_file),
                                       session_id)
 
+        except Exception as e:
+            loggings.exception(1, e, session_id)
+
+    @classmethod
+    def gunicorn_generate(cls, target_dir, project_name, session_id):
+        """
+            :param target_dir: 项目文件存储路径
+            :param project_name: 项目名称
+            :param session_id: 用户ID
+            :return: None
+        """
+        try:
+            with open(os.path.join(target_dir, 'gunicorn.py'), 'w', encoding='utf8') as f:
+                f.write(filetemplate.gunicorn.format(project_name=project_name))
         except Exception as e:
             loggings.exception(1, e, session_id)
