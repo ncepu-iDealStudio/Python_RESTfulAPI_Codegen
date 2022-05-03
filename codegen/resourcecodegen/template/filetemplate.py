@@ -364,6 +364,13 @@ manager.add_command("runserver", Server(use_debugger=True))
 
 # 创建全站拦截器,每个请求之前做处理
 @app.before_request
+def user_validation():
+    print(request.endpoint)  # 方便跟踪调试
+    
+    if not request.endpoint: # 如果请求点为空
+        return jsonify(code=RET.URLNOTFOUND, message="url not found", error="url not found")
+        
+@app.before_request
 def user_require_token():
     # 不需要token验证的请求点列表
     permission = {permission}
