@@ -200,8 +200,7 @@ class CodeGenerator(object):
                         primary_key_str = CodeBlockTemplate.primary_key_single.format(
                             table_name_api_standard, table.get('primary_key_columns')[0])
 
-                resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_camel_case, primary_key_str,
-                                                                      table_name_little_camel_case)
+                resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_camel_case, primary_key_str)
 
                 return FileTemplate.urls.format(imports=import_str,
                                                 table_name_all_small=table_name_all_small,

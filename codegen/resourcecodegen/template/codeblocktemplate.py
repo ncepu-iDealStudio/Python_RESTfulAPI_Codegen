@@ -37,11 +37,11 @@ from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
     urls_imports_view = """from . import {0}_blueprint
 from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
-    urls_resource = 'api.add_resource({0}Resource, {1}, endpoint="{2}")'
+    urls_resource = 'api.add_resource({0}Resource, {1}, endpoint="{0}")'
 
     urls_other_resource = """
 # joint query
-@{0}_blueprint.route('/{1}/query', methods=['GET'], endpoint='{1}_query')
+@{0}_blueprint.route('/{1}/query', methods=['GET'], endpoint='{2}Query')
 def {2}_query():
     return {2}OtherResource.joint_query()
 """
