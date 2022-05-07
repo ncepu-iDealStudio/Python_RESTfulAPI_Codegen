@@ -169,6 +169,7 @@ class CodeGenerator(object):
             table_name_all_small = table.get('table_name_all_small')
             table_name_little_camel_case = table.get('table_name_little_camel_case')
             table_name_big_camel_case = table.get('table_name_big_camel_case')
+            table_name_api_standard = table.get('table_name_api_standard')
 
             if table.get('is_view'):
                 import_str = CodeBlockTemplate.urls_imports_view.format(table_name_all_small,
@@ -176,7 +177,7 @@ class CodeGenerator(object):
                                                                         table_name_little_camel_case,
                                                                         table_name_big_camel_case)
                 other_resource_str = CodeBlockTemplate.urls_other_resource.format(table_name_all_small,
-                                                                                  table_name_little_camel_case,
+                                                                                  table_name_api_standard,
                                                                                   table_name_big_camel_case)
                 return FileTemplate.urls_view.format(imports=import_str,
                                                      table_name_all_small=table_name_all_small,
@@ -197,7 +198,7 @@ class CodeGenerator(object):
                         primary_key_str = CodeBlockTemplate.primary_key_multi.format(table_name_little_camel_case)
                     else:
                         primary_key_str = CodeBlockTemplate.primary_key_single.format(
-                            table_name_little_camel_case, table.get('primary_key_columns')[0])
+                            table_name_api_standard, table.get('primary_key_columns')[0])
 
                 resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_camel_case, primary_key_str,
                                                                       table_name_little_camel_case)

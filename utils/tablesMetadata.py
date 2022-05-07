@@ -11,7 +11,7 @@
 """
 import json
 
-from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
+from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case, standard_str
 
 
 class TableMetadata(object):
@@ -45,6 +45,7 @@ class TableMetadata(object):
             table_dict[table_name]['table_name_all_small'] = str_to_all_small(table_name)
             table_dict[table_name]['table_name_little_camel_case'] = str_to_little_camel_case(table_name)
             table_dict[table_name]['table_name_big_camel_case'] = str_to_big_camel_case(table_name)
+            table_dict[table_name]['table_name_api_standard'] = standard_str(table_name)
 
             # 如果该表是一个视图
             if table_name in reflection_views:
