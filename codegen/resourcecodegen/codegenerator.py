@@ -88,6 +88,10 @@ class CodeGenerator(object):
                             else:
                                 if column.get('name') not in rsa_columns and column.get('nullable'):
                                     table_dict[table]['post_columns'][column.get('name')] = False
+                                # 不是null且有默认值，则非必填
+                                elif column.get('is_exist_default'):
+                                    table_dict[table]['post_columns'][column.get('name')] = False
+                                # 不是null且无默认值，则必填
                                 else:
                                     table_dict[table]['post_columns'][column.get('name')] = True
                                 if column.get('name') != real_primary_key:
