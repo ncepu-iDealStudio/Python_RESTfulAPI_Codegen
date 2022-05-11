@@ -52,6 +52,7 @@ class CodeGenerator(object):
                 )
                 if table['rsa_columns']:
                     imports += '\nfrom utils.rsa_encryption_decryption import RSAEncryptionDecryption'
+                table['aes_columns'] = []  # 测试
                 if table['aes_columns']:
                     imports += '\nfrom utils.aes_encrypt_decrypt import AESEncryptDecrypt'
 
