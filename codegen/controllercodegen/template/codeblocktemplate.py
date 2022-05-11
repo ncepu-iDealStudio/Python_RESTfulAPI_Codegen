@@ -32,6 +32,9 @@ from utils.loggings import loggings"""
     rsa_add = """{column}=RSAEncryptionDecryption.encrypt(kwargs.get('{column}')) if kwargs.get('{column}') else None,
                 """
 
+    aes_add = """{column}=AESEncryptDecrypt.encrypt(kwargs.get('{column}')) if kwargs.get('{column}') else None,
+                """
+
     business_key_add = """{column}={column},
                 """
 
@@ -69,6 +72,9 @@ from utils.loggings import loggings"""
             """
 
     add_list_rsa_add = """{column}=RSAEncryptionDecryption.encrypt(param_dict.get('{column}')),
+                """
+
+    add_list_aes_add = """{column}=AESEncryptDecrypt.encrypt(param_dict.get('{column}')),
                 """
 
     single_primary_key_get_filter = """if kwargs.get('{primary_key}'):

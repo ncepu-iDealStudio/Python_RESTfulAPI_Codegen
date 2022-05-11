@@ -94,7 +94,6 @@ class CodeGenerator(object):
 
             # write configueration about BASIC
             target_config.add_section("BASIC")
-            target_config.set("BASIC", "secret_key", "")
             target_config.set("BASIC", "token_expires", "3600")
 
             for section in cls.SECURITY_CONFIG.sections():
