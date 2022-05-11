@@ -14,7 +14,7 @@ class AESEncryptDecrypt:
             pass
         else:
             from flask_sqlalchemy import current_app
-            cls.key = current_app.config.get('SECRET_KEY').encode()
+            cls.key = current_app.config.get('AES_SECRET_KEY').encode()
 
         file_aes = AES.new(cls.key, cls.mode)  # 创建AES加密对象
         # while len(text) % 16 != 0:  # 对字节型数据进行长度判断
@@ -33,7 +33,7 @@ class AESEncryptDecrypt:
             pass
         else:
             from flask_sqlalchemy import current_app
-            cls.key = current_app.config.get('SECRET_KEY').encode()
+            cls.key = current_app.config.get('AES_SECRET_KEY').encode()
         try:
             file_aes = AES.new(cls.key, cls.mode)
             text = bytes(text, encoding='utf-8')  # 将密文转换为bytes，此时的密文还是由basen64编码过的

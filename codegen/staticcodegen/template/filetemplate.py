@@ -37,7 +37,8 @@ class Settings(object):
         cls.CONFIG.read(os.path.join(CONFIG_DIR, runMode + '_config.conf'), encoding='utf-8')
 
         # 秘钥
-        cls.SECRET_KEY = cls.CONFIG['AES']['secret_key']
+        cls.SECRET_KEY = cls.CONFIG['BASIC']['secret_key']
+        cls.AES_SECRET_KEY = cls.CONFIG['AES']['secret_key']
         cls.PUBLIC_KEY = cls.CONFIG['RSA']['public_key']
         cls.PRIVATE_KEY = cls.CONFIG['RSA']['private_key']
 
