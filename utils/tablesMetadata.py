@@ -96,13 +96,20 @@ class TableMetadata(object):
                     table_dict[table_name]['business_key_column']['column'] = config['businesskeyname']
                     table_dict[table_name]['business_key_column']['rule'] = config['businesskeyrule']
 
-            # 需要RSA加密的字段
+            # 需要加密的字段
             table_dict[table_name]['rsa_columns'] = []
-            for rsa_table in table_config['table']:
-                if rsa_table['table'] == table_name:
-                    for rsa_colume in rsa_table['field']:
-                        if rsa_colume['field_encrypt']:
-                            table_dict[table_name]['rsa_columns'].append(rsa_colume['field_name'])
+            table_dict[table_name]['aes_columns'] = []
+            for encrypt_table in table_config['table']:
+                if encrypt_table['table'] == table_name:
+                    for encrypt_colume in encrypt_table['field']:
+                        # 需要加密
+                        if encrypt_colume['field_encrypt']:
+                            # 加密方式为rsa
+                            if encrypt_colume['encrypt_type'] == 'rsa':
+                                table_dict[table_name]['rsa_columns'].append(encrypt_colume['field_name'])
+                            # 加密方式为aes
+                            elif encrypt_colume['encrypt_type'] == 'aes':
+                                table_dict[table_name]['aes_columns'].append(encrypt_colume['field_name'])
 
             from sqlalchemy.engine import reflection
             insp = reflection.Inspector.from_engine(metadata.bind)
