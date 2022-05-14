@@ -46,7 +46,7 @@
                                 <div style="padding-left: 20px;">
                                     <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
                                 </div>
-                                <el-menu-item :index="index" v-for="(item, index) in tables" :key="index">
+                                <el-menu-item :index="index+''" v-for="(item, index) in tables" :key="index">
                                     <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
                                 </el-menu-item>
                             </el-menu>
@@ -134,6 +134,8 @@
                                                 </el-option>
                                                 <el-option label="create_uid" value="create_uid" v-if="activeFiled.field_type==='str'">
                                                 </el-option>
+                                                <el-option label="create_custom_id" value="create_custom_id">
+                                                </el-option>
                                             </el-select>
                                         </div>
                                     </el-card>
@@ -143,10 +145,47 @@
                                             <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
                                             <span class="iconfont icon-yiwen"></span>
                                         </el-tooltip>
-                                    </div style="margin: 10px 0;">
+                                    </div>
                                     <el-card>
                                         <el-scrollbar height="200px">
-                                            <el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;" @change="checkCurrentTables"></el-checkbox>
+                                            <!--<el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;" @change="checkCurrentTables"></el-checkbox>-->
+                                            <div style="padding-left: 25px;margin-bottom: 15px">
+                                                <el-button size="small" type="primary" @click="handleAddField">添加字段</el-button>
+                                            </div>
+                                            <el-form
+                                                label-width="70px"
+                                                size="mini"
+                                                inline
+                                            >
+                                                <el-row v-for="(itemField, indexField) in fieldEncryptList[activeIndex]" :key="indexField">
+                                                    <el-col :span="18">
+                                                        <el-form-item label="字段">
+                                                            <el-select v-model="itemField.field_encrypt_index" filterable placeholder="请选择字段" @change="handleFieldChange(indexField)">
+                                                                <el-option
+                                                                  v-for="(item, index) in tables[activeIndex].field"
+                                                                  :disabled="item.field_type!='str' || repeatFieldEncryptList[activeIndex].indexOf(index) !== -1"
+                                                                  :key="index"
+                                                                  :label="item.field_name"
+                                                                  :value="index"
+                                                                ></el-option>
+                                                          </el-select>
+                                                    </el-form-item>
+                                                        <el-form-item label="加密方式">
+                                                            <el-select v-model="itemField.encrypt_type" filterable placeholder="请选择加密方式">
+                                                                <el-option
+                                                                  v-for="(item, index) in fieldEncryptType"
+                                                                  :key="index"
+                                                                  :label="item.label"
+                                                                  :value="item.value"
+                                                                ></el-option>
+                                                          </el-select>
+                                                    </el-form-item>
+                                                    </el-col>
+                                                    <el-col :span="3">
+                                                        <el-button type="danger" @click="handleDeleteField(indexField)">删除</el-button>
+                                                    </el-col>
+                                                </el-row>
+                                            </el-form>
                                         </el-scrollbar>
                                     </el-card>
                                     <el-button type="danger" @click="handleClear" style="float: right;">清空</el-button>
@@ -191,9 +230,21 @@
                 isIndeterminate: false,
                 invalid_primary_key: "",
                 invalid_keyword: "",
+                fieldEncryptList: [], // 保存需要加密的字段
+                repeatFieldEncryptList: [],// 保存需要加密字段的索引值
+                fieldEncryptType: [
+                    {
+                        label: "rsa",
+                        value: "rsa"
+                    },
+                    {
+                        label: "aes",
+                        value: "aes"
+                    }
+                ]
             });
             const handleSelect = (key, keyPath) => {
-                state.activeIndex = key;
+                state.activeIndex = Number(key);
             }
 
             // 全选
@@ -229,6 +280,12 @@
             //下一步
             const nextStep = () => {
                 state.nextStep_loading = true;
+                state.fieldEncryptList.forEach((item_field, index_field) => {
+                    item_field.forEach((item,index) => {
+                        state.tables[index_field].field[item.field_encrypt_index].field_encrypt = true
+                        state.tables[index_field].field[item.field_encrypt_index].encrypt_type = item.encrypt_type
+                    })
+                })
                 localStorage.setItem("tables", JSON.stringify(state.tables));
                 location.replace('views')
                 state.nextStep_loading = false;
@@ -406,7 +463,31 @@
                     }
                 }
             }
+            // 添加加密字段
+            const handleAddField = () => {
+                state.fieldEncryptList[state.activeIndex].push({
+                    field_encrypt_index: "",
+                    encrypt_type: ""
+                })
+            }
+            // 删除加密字段
+            const handleDeleteField = (index) => {
+                state.fieldEncryptList[state.activeIndex].splice(index,1)
+                const field_encrypt_index = state.fieldEncryptList[state.activeIndex][index].field_encrypt_index
+                const repeat_index = state.repeatFieldEncryptList.indexOf(field_encrypt_index)
+                if (repeat_index !== -1){
+                    state.repeatFieldEncryptList[state.activeIndex].splice(repeat_index,1)
+                }
+            }
 
+            // 选择字段改变时
+            const handleFieldChange = (index) => {
+                state.fieldEncryptList[state.activeIndex][index].encrypt_type = ""
+                state.repeatFieldEncryptList[state.activeIndex] = []
+                state.fieldEncryptList[state.activeIndex].forEach(item => {
+                    state.repeatFieldEncryptList[state.activeIndex].push(item.field_encrypt_index)
+                })
+            }
             onMounted(() => {
                 let data = JSON.parse(localStorage.getItem("tables"));
                 if (!data) {
@@ -416,7 +497,21 @@
                     }, 1000)
                 }
                 state.tables = data;
-
+                // 保存需要加密的字段
+                state.fieldEncryptList = Array.from(Array(data.length),() => new Array())
+                state.repeatFieldEncryptList = Array.from(Array(data.length),() => new Array())
+                // 回显数据
+                data.forEach((item, index) => {
+                    item.field.forEach((item_field,index_field) => {
+                        if (item_field.field_encrypt){
+                            state.fieldEncryptList[index].push({
+                                field_encrypt_index: index_field,
+                                encrypt_type: item_field.encrypt_type
+                            })
+                            state.repeatFieldEncryptList[index].push(index_field)
+                        }
+                    })
+                })
                 // 显示不符合规范的表
                 let invalid = JSON.parse(localStorage.getItem("invalid"));
                 if (!invalid) return
@@ -436,6 +531,9 @@
                 selectfile,
                 back,
                 checkCurrentTables,
+                handleAddField,
+                handleDeleteField,
+                handleFieldChange
             };
         },
     }
