@@ -50,9 +50,9 @@ class CodeGenerator(object):
                     model_name=model_name,
                     parent_model=parent_model
                 )
+
                 if table['rsa_columns']:
                     imports += '\nfrom utils.rsa_encryption_decryption import RSAEncryptionDecryption'
-                table['aes_columns'] = ['name']  # 测试
                 if table['aes_columns']:
                     imports += '\nfrom utils.aes_encrypt_decrypt import AESEncryptDecrypt'
 
@@ -61,9 +61,13 @@ class CodeGenerator(object):
                     class_name=class_name,
                     parent_model=parent_model
                 )
-
+                # 测试
+                table['not_repeatable_columns'] = ['phone']
                 # 添加模块
+                text = ''
                 column_init = ''
+                not_repeatable_add = ''
+                not_repeatable_update = ''
                 business_key_init = ''
                 add_result_primary_key = ''
                 for column in table['columns'].values():
@@ -71,6 +75,15 @@ class CodeGenerator(object):
                         continue
                     if column['name'] == table['logical_delete_column']:
                         continue
+                    # 字段不可重复
+                    if column['name'] in table['not_repeatable_columns']:
+                        no_repeat_add = CodeBlockTemplate.not_repeatable_add.format(column=column['name'])
+                        not_repeatable_add += no_repeat_add
+                        if business_key:
+                            no_repeat_update = CodeBlockTemplate.not_repeatable_business_update.format(column=column['name'], business_key=business_key)
+                        else:
+                            no_repeat_update = CodeBlockTemplate.not_repeatable_update.format(column=column['name'], primary_key=primary_key)
+                        not_repeatable_update += no_repeat_update
 
                     if column['name'] not in (table['rsa_columns'] + table['aes_columns']):
                         # 字段不需要加密
@@ -114,6 +127,7 @@ class CodeGenerator(object):
 
                 add = FileTemplate.add_template.format(
                     business_key_init=business_key_init,
+                    not_repeatable_add=not_repeatable_add,
                     parent_model=parent_model,
                     column_init=column_init,
                     add_result_primary_key=add_result_primary_key
@@ -131,7 +145,7 @@ class CodeGenerator(object):
                     elif column['name'] == table['logical_delete_column']:
                         # 当前字段是删除标识位，跳过
                         continue
-                    elif column['name'] in table['rsa_columns']:
+                    elif column['name'] in (table['rsa_columns'] + table['aes_columns']):
                         # 当前字段是加密字段，不作为查询字段
                         continue
                     else:
@@ -224,11 +238,17 @@ class CodeGenerator(object):
                 # 更新模块
                 # 拼接更新方法中的rsa_update
                 rsa_update = ''
+                aes_update = ''
                 if table['rsa_columns']:
                     # several columns should be encrypted
-                    for sra_column in table['rsa_columns']:
-                        text = CodeBlockTemplate.rsa_update.format(column=sra_column)
+                    for rsa_column in table['rsa_columns']:
+                        text = CodeBlockTemplate.rsa_update.format(column=rsa_column)
                         rsa_update += text
+                if table['aes_columns']:
+                    # several columns should be encrypted
+                    for aes_column in table['aes_columns']:
+                        text = CodeBlockTemplate.aes_update.format(column=aes_column)
+                        aes_update += text
 
                 # 拼接更新方法中的filter_list_init
                 filter_list_init = ''
@@ -254,20 +274,25 @@ class CodeGenerator(object):
 
                 if not table['logical_delete_column']:
                     update = FileTemplate.update_template_physical.format(
+                        not_repeatable_update=not_repeatable_update,
                         rsa_update=rsa_update,
+                        aes_update=aes_update,
                         filter_list_init=filter_list_init,
                         results_primary_keys=results_primary_keys
                     )
 
                 else:
                     update = FileTemplate.update_template_logic.format(
+                        not_repeatable_update=not_repeatable_update,
                         rsa_update=rsa_update,
+                        aes_update=aes_update,
                         logical_delete_mark=table['logical_delete_column'],
                         filter_list_init=filter_list_init,
                         results_primary_keys=results_primary_keys
                     )
 
                 # 列表添加模块
+                list_not_repeatable = ''
                 add_list_column_init = ''
                 add_list_business_key_init = ''
                 for column in table['columns'].values():
@@ -275,6 +300,10 @@ class CodeGenerator(object):
                         continue
                     if column['name'] == table['logical_delete_column']:
                         continue
+                    if column['name'] in table['not_repeatable_columns']:
+                        # 字段不可重复
+                        list_no_repeat = CodeBlockTemplate.list_not_repeatable.format(column=column['name'])
+                        list_not_repeatable += list_no_repeat
 
                     if column['name'] not in (table['rsa_columns'] + table['aes_columns']):
                         # 字段不需要加密
@@ -320,6 +349,7 @@ class CodeGenerator(object):
 
                 add_list = FileTemplate.add_list_template.format(
                     parent_model=parent_model,
+                    list_not_repeatable=list_not_repeatable,
                     add_list_business_key_init=add_list_business_key_init,
                     add_list_column_init=add_list_column_init,
                     added_record_primary_keys=added_record_primary_keys

@@ -33,6 +33,7 @@ class {class_name}({parent_model}):
     def add(cls, **kwargs):
         {business_key_init}
         try:
+            {not_repeatable_add}
             model = {parent_model}(
                 {column_init}
             )
@@ -209,7 +210,9 @@ class {class_name}({parent_model}):
     @classmethod
     def update(cls, **kwargs):
         try:
+            {not_repeatable_update}
             {rsa_update}
+            {aes_update}
             filter_list = []
             {filter_list_init}
             res = db.session.query(cls).filter(*filter_list).with_for_update()
@@ -237,7 +240,9 @@ class {class_name}({parent_model}):
     @classmethod
     def update(cls, **kwargs):
         try:
+            {not_repeatable_update}
             {rsa_update}
+            {aes_update}
             filter_list = [cls.{logical_delete_mark} == 0]
             {filter_list_init}
             res = db.session.query(cls).filter(*filter_list).with_for_update()
@@ -267,6 +272,7 @@ class {class_name}({parent_model}):
         param_list = json.loads(kwargs.get('{parent_model}List'))
         model_list = []
         for param_dict in param_list:
+            {list_not_repeatable}
             {add_list_business_key_init}
             model = {parent_model}(
                 {add_list_column_init}
@@ -284,7 +290,7 @@ class {class_name}({parent_model}):
                 added_record = {{}}
                 {added_record_primary_keys}
                 results['added_records'].append(added_record)
-            
+                
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
             
         except Exception as e:

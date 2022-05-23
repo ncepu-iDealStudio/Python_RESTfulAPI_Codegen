@@ -57,6 +57,7 @@ class CodeGenerator(object):
                         if column['is_exist_default']:
                             table_dict[table]['exist_default_columns'].append(column.get('name'))
                         rsa_columns = table_dict[table]['rsa_columns']
+                        aes_columns = table_dict[table]['aes_columns']
                         if len(table_dict[table].get('primary_key_columns')) > 1:
                             if column.get('name') in table_dict[table].get('primary_key_columns'):
                                 table_dict[table]['post_columns'][column.get('name')] = True
@@ -86,7 +87,7 @@ class CodeGenerator(object):
                             elif column.get('name') == delete_column:
                                 continue
                             else:
-                                if column.get('name') not in rsa_columns and column.get('nullable'):
+                                if column.get('name') not in (rsa_columns + aes_columns) and column.get('nullable'):
                                     table_dict[table]['post_columns'][column.get('name')] = False
                                 # 不是null且有默认值，则非必填
                                 elif column.get('is_exist_default'):
@@ -95,7 +96,7 @@ class CodeGenerator(object):
                                 else:
                                     table_dict[table]['post_columns'][column.get('name')] = True
                                 if column.get('name') != real_primary_key:
-                                    if column.get('name') not in rsa_columns:
+                                    if column.get('name') not in (rsa_columns + aes_columns):
                                         table_dict[table]['get_columns'][column.get('name')] = False
                                     table_dict[table]['put_columns'][column.get('name')] = False
                                     table_dict[table]['delete_columns'][column.get('name')] = False

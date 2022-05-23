@@ -99,17 +99,22 @@ class TableMetadata(object):
             # 需要加密的字段
             table_dict[table_name]['rsa_columns'] = []
             table_dict[table_name]['aes_columns'] = []
-            for encrypt_table in table_config['table']:
-                if encrypt_table['table'] == table_name:
-                    for encrypt_colume in encrypt_table['field']:
+            # 不可重复的字段
+            # table_dict[table_name]['not_repeatable_columns'] = []
+            for one_table in table_config['table']:
+                if one_table['table'] == table_name:
+                    for one_colume in one_table['field']:
+                        # 不可重复
+                        # if one_colume['field_not_repeatable']:
+                        #     table_dict[table_name]['not_repeatable_columns'].append(one_colume['field_name'])
                         # 需要加密
-                        if encrypt_colume['field_encrypt']:
+                        if one_colume['field_encrypt']:
                             # 加密方式为rsa
-                            if encrypt_colume['encrypt_type'] == 'rsa':
-                                table_dict[table_name]['rsa_columns'].append(encrypt_colume['field_name'])
+                            if one_colume['encrypt_type'] == 'rsa':
+                                table_dict[table_name]['rsa_columns'].append(one_colume['field_name'])
                             # 加密方式为aes
-                            elif encrypt_colume['encrypt_type'] == 'aes':
-                                table_dict[table_name]['aes_columns'].append(encrypt_colume['field_name'])
+                            elif one_colume['encrypt_type'] == 'aes':
+                                table_dict[table_name]['aes_columns'].append(one_colume['field_name'])
 
             from sqlalchemy.engine import reflection
             insp = reflection.Inspector.from_engine(metadata.bind)
