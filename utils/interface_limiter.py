@@ -11,14 +11,14 @@
 import json
 import os
 
-from flask import make_response, jsonify, render_template
+from flask import jsonify
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from utils.response_code import RET
 
 
 class InterfaceLimiter(object):
     # 读取限制器有关配置
-    app = None
     default_limits = None
     error_message = None
 
@@ -29,6 +29,7 @@ class InterfaceLimiter(object):
         with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
             settings = json.load(f)
         cls.default_limits = settings['default_limits']
+        cls.error_message = settings['error_message']
         cls.second_limit = settings['second_limit']
         cls.minute_limit = settings['minute_limit']
         cls.hour_limit = settings['hour_limit']
@@ -38,9 +39,8 @@ class InterfaceLimiter(object):
     @classmethod
     def get_limiter(cls, app):
         cls.get_settings()
-        cls.app = app
         limiter = Limiter(
-            cls.app,
+            app,
             key_func=get_remote_address,
             default_limits=cls.default_limits
         )
@@ -51,5 +51,11 @@ class InterfaceLimiter(object):
     # 限制超出时的错误页面，注册路由方法
     @classmethod
     def limiter_error_handler(cls, e):
-        return cls.app.send_static_file('429.html')
-
+        data = {
+            'code': RET.REQERR,
+            'message': cls.error_message,
+            'data': {'error': '访问频率超出限制：一分钟{}次'.format(cls.minute_limit)}
+        }
+        res = jsonify(data)
+        res.code = 429
+        return res

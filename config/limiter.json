@@ -1,5 +1,6 @@
 {
   "default_limits": ["3/minute"],
+  "error_message": "访问频率过快，请稍后访问",
   "second_limit": "1/second",
   "minute_limit": "3/minute",
   "hour_limit": "20/hour",
