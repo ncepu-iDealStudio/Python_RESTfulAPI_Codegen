@@ -22,13 +22,17 @@ from flask import Flask, request, session, send_from_directory
 from urllib import parse
 
 from utils.checkSqlLink import check_sql_link, connection_check
+from utils.interface_limiter import InterfaceLimiter
 
 app = Flask(__name__, static_folder="../static")
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # 配置7天有效
 
+limiter = InterfaceLimiter.get_limiter(app)
+
 
 @app.route('/', methods=['GET'])
+@limiter.exempt()
 def index():
     session['id'] = int(round(time.time() * 1000))
     return app.send_static_file('index.html')

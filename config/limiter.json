@@ -1,0 +1,7 @@
+{
+  "default_limits": ["3/minute"],
+  "second_limit": "1/second",
+  "minute_limit": "3/minute",
+  "hour_limit": "20/hour",
+  "day_limit": "100/day"
+}
