@@ -61,13 +61,9 @@ class CodeGenerator(object):
                     class_name=class_name,
                     parent_model=parent_model
                 )
-                # 测试
-                table['not_repeatable_columns'] = ['phone']
                 # 添加模块
                 text = ''
                 column_init = ''
-                not_repeatable_add = ''
-                not_repeatable_update = ''
                 business_key_init = ''
                 add_result_primary_key = ''
                 for column in table['columns'].values():
@@ -75,15 +71,6 @@ class CodeGenerator(object):
                         continue
                     if column['name'] == table['logical_delete_column']:
                         continue
-                    # 字段不可重复
-                    if column['name'] in table['not_repeatable_columns']:
-                        no_repeat_add = CodeBlockTemplate.not_repeatable_add.format(column=column['name'])
-                        not_repeatable_add += no_repeat_add
-                        if business_key:
-                            no_repeat_update = CodeBlockTemplate.not_repeatable_business_update.format(column=column['name'], business_key=business_key)
-                        else:
-                            no_repeat_update = CodeBlockTemplate.not_repeatable_update.format(column=column['name'], primary_key=primary_key)
-                        not_repeatable_update += no_repeat_update
 
                     if column['name'] not in (table['rsa_columns'] + table['aes_columns']):
                         # 字段不需要加密
@@ -127,7 +114,6 @@ class CodeGenerator(object):
 
                 add = FileTemplate.add_template.format(
                     business_key_init=business_key_init,
-                    not_repeatable_add=not_repeatable_add,
                     parent_model=parent_model,
                     column_init=column_init,
                     add_result_primary_key=add_result_primary_key
@@ -274,7 +260,6 @@ class CodeGenerator(object):
 
                 if not table['logical_delete_column']:
                     update = FileTemplate.update_template_physical.format(
-                        not_repeatable_update=not_repeatable_update,
                         rsa_update=rsa_update,
                         aes_update=aes_update,
                         filter_list_init=filter_list_init,
@@ -283,7 +268,6 @@ class CodeGenerator(object):
 
                 else:
                     update = FileTemplate.update_template_logic.format(
-                        not_repeatable_update=not_repeatable_update,
                         rsa_update=rsa_update,
                         aes_update=aes_update,
                         logical_delete_mark=table['logical_delete_column'],
@@ -292,7 +276,6 @@ class CodeGenerator(object):
                     )
 
                 # 列表添加模块
-                list_not_repeatable = ''
                 add_list_column_init = ''
                 add_list_business_key_init = ''
                 for column in table['columns'].values():
@@ -300,10 +283,6 @@ class CodeGenerator(object):
                         continue
                     if column['name'] == table['logical_delete_column']:
                         continue
-                    if column['name'] in table['not_repeatable_columns']:
-                        # 字段不可重复
-                        list_no_repeat = CodeBlockTemplate.list_not_repeatable.format(column=column['name'])
-                        list_not_repeatable += list_no_repeat
 
                     if column['name'] not in (table['rsa_columns'] + table['aes_columns']):
                         # 字段不需要加密
@@ -349,7 +328,6 @@ class CodeGenerator(object):
 
                 add_list = FileTemplate.add_list_template.format(
                     parent_model=parent_model,
-                    list_not_repeatable=list_not_repeatable,
                     add_list_business_key_init=add_list_business_key_init,
                     add_list_column_init=add_list_column_init,
                     added_record_primary_keys=added_record_primary_keys

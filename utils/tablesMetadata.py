@@ -99,14 +99,9 @@ class TableMetadata(object):
             # 需要加密的字段
             table_dict[table_name]['rsa_columns'] = []
             table_dict[table_name]['aes_columns'] = []
-            # 不可重复的字段
-            # table_dict[table_name]['not_repeatable_columns'] = []
             for one_table in table_config['table']:
                 if one_table['table'] == table_name:
                     for one_colume in one_table['field']:
-                        # 不可重复
-                        # if one_colume['field_not_repeatable']:
-                        #     table_dict[table_name]['not_repeatable_columns'].append(one_colume['field_name'])
                         # 需要加密
                         if one_colume['field_encrypt']:
                             # 加密方式为rsa

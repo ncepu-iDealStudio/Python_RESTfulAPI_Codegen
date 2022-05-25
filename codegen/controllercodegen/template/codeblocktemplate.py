@@ -35,24 +35,6 @@ from utils.loggings import loggings"""
     aes_add = """{column}=AESEncryptDecrypt.encrypt(kwargs.get('{column}')) if kwargs.get('{column}') else None,
                 """
 
-    not_repeatable_add = """if kwargs.get('{column}'):
-                exist = db.session.query(cls).filter(cls.{column} == kwargs['{column}']).first()
-                if exist:
-                    return {{'code': RET.DATAEXIST, 'message': error_map_EN[RET.DATAEXIST], 'data': {{'error': '{column}已存在!'}}}}
-            """
-
-    not_repeatable_business_update = """if kwargs.get('{column}'):
-                exist = db.session.query(cls).filter(cls.{column} == kwargs['{column}'], cls.{business_key} != kwargs['{business_key}']).first()
-                if exist:
-                    return {{'code': RET.DATAEXIST, 'message': error_map_EN[RET.DATAEXIST], 'data': {{'error': '{column}已存在!'}}}}
-            """
-
-    not_repeatable_update = """if kwargs.get('{column}'):
-                exist = db.session.query(cls).filter(cls.{column} == kwargs['{column}'], cls.{primary_key} != kwargs['{primary_key}']).first()
-                if exist:
-                    return {{'code': RET.DATAEXIST, 'message': error_map_EN[RET.DATAEXIST], 'data': {{'error': '{column}已存在!'}}}}
-            """
-
     business_key_add = """{column}={column},
                 """
 
@@ -98,12 +80,6 @@ from utils.loggings import loggings"""
 
     add_list_aes_add = """{column}=AESEncryptDecrypt.encrypt(param_dict.get('{column}')),
                 """
-
-    list_not_repeatable = """if param_dict.get('{column}'):
-                exist = db.session.query(cls).filter(cls.{column} == param_dict['{column}']).first()
-                if exist:
-                    continue
-            """
 
     single_primary_key_get_filter = """if kwargs.get('{primary_key}'):
                 filter_list.append(cls.{primary_key} == kwargs['{primary_key}'])
