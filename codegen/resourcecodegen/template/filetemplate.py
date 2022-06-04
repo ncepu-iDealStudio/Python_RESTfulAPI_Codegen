@@ -41,6 +41,7 @@ from flask_restful import Api
 api = Api({table_name_all_small}_blueprint)
 
 {resource}
+{other_resource}
 """
 
     urls_view = """#!/usr/bin/env python

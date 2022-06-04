@@ -96,12 +96,16 @@ class TableMetadata(object):
                     table_dict[table_name]['business_key_column']['column'] = config['businesskeyname']
                     table_dict[table_name]['business_key_column']['rule'] = config['businesskeyrule']
 
-            # 需要加密的字段
+            # 需要加密的字段和敏感修改的字段
             table_dict[table_name]['rsa_columns'] = []
             table_dict[table_name]['aes_columns'] = []
+            table_dict[table_name]['sensitive_columns'] = []  # 测试
             for one_table in table_config['table']:
                 if one_table['table'] == table_name:
                     for one_colume in one_table['field']:
+                        # 属于敏感字段
+                        # if one_colume['field_sensitive']:
+                        #     table_dict[table_name]['sensitive_columns'].append(one_colume['field_name'])
                         # 需要加密
                         if one_colume['field_encrypt']:
                             # 加密方式为rsa

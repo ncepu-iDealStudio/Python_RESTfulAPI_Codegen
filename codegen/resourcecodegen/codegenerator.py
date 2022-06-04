@@ -49,6 +49,7 @@ class CodeGenerator(object):
                     table_dict[table]['delete_columns'] = {}
                     table_dict[table]['put_columns'] = {}
                     table_dict[table]['get_columns'] = {}
+
                     for column in table_dict[table]['columns'].values():
                         if column['is_autoincrement']:
                             table_dict[table]['autoincrement_columns'].append(column.get('name'))
@@ -58,6 +59,7 @@ class CodeGenerator(object):
                             table_dict[table]['exist_default_columns'].append(column.get('name'))
                         rsa_columns = table_dict[table]['rsa_columns']
                         aes_columns = table_dict[table]['aes_columns']
+
                         if len(table_dict[table].get('primary_key_columns')) > 1:
                             if column.get('name') in table_dict[table].get('primary_key_columns'):
                                 table_dict[table]['post_columns'][column.get('name')] = True
@@ -189,15 +191,20 @@ class CodeGenerator(object):
                                                      otherResource=other_resource_str
                                                      ).replace('\"', '\'')
             else:
+                other_resource_str = ''
                 import_str = CodeBlockTemplate.urls_imports_table.format(table_name_all_small,
                                                                          api_version,
                                                                          table_name_little_camel_case,
                                                                          table_name_big_camel_case)
+                if len(table['sensitive_columns']):
+                    other_resource_str = CodeBlockTemplate.urls_other_route.format(table_name_all_small,
+                                                                                   table.get('business_key_column').get('column'),
+                                                                                   table_name_big_camel_case)
 
                 if table.get('business_key_column').get('column'):
                     primary_key_str = CodeBlockTemplate.primary_key_single.format(table_name_little_camel_case,
-                                                                                  table.get('business_key_column').get(
-                                                                                      'column'))
+                                                                                  table.get('business_key_column').get('column'))
+
                 else:
                     if len(table.get('primary_key_columns')) > 1:
                         primary_key_str = CodeBlockTemplate.primary_key_multi.format(table_name_little_camel_case)
@@ -209,7 +216,8 @@ class CodeGenerator(object):
 
                 return FileTemplate.urls.format(imports=import_str,
                                                 table_name_all_small=table_name_all_small,
-                                                resource=resource_str
+                                                resource=resource_str,
+                                                other_resource=other_resource_str
                                                 ).replace('\"', '\'')
 
         except Exception as e:
@@ -244,7 +252,7 @@ class CodeGenerator(object):
                             location='form',
                             required=table.get('delete_columns').get(column_name)
                         )
-                    if column_name in table.get('put_columns'):
+                    if column_name in table.get('put_columns') and column_name not in table['sensitive_columns']:
                         parameter_put += CodeBlockTemplate.parameter_2.format(
                             column=column_name,
                             location='form',
@@ -283,7 +291,7 @@ class CodeGenerator(object):
                             location='form',
                             required=table.get('delete_columns').get(column_name)
                         )
-                    if column_name in table.get('put_columns'):
+                    if column_name in table.get('put_columns') and column_name not in table['sensitive_columns']:
                         parameter_put += CodeBlockTemplate.parameter_2.format(
                             column=column_name,
                             location='form',
@@ -333,6 +341,18 @@ class CodeGenerator(object):
                         required='False'
                     )
                 method = CodeBlockTemplate.other_resource_query.format(parameter, table_name_big_camel_case)
+            elif len(table['sensitive_columns']):
+                imports_str = CodeBlockTemplate.other_resource_sensitive_imports.format(table_name_little_camel_case,
+                                                                                        table_name_big_camel_case)
+                for column_name in table.get('sensitive_columns'):
+                    parameter += CodeBlockTemplate.parameter_2.format(
+                        column=column_name,
+                        location='form',
+                        required='False'
+                    )
+                method = CodeBlockTemplate.other_resource_update.format(id=table.get('real_primary_key'),
+                                                                        parameter=parameter,
+                                                                        className=table_name_big_camel_case)
             else:
                 imports_str = ""
 
