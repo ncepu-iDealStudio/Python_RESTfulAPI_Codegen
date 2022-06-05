@@ -21,16 +21,18 @@ from utils.loggings import loggings
 project_dir = ''
 api_version = ''
 session_id = None
+ip = None
 
 
 class CodeGenerator(object):
 
-    def __init__(self, settings, sessionid):
+    def __init__(self, settings, sessionid, user_ip):
         super(CodeGenerator, self).__init__()
-        global project_dir, api_version, session_id
+        global project_dir, api_version, session_id, ip
         project_dir = settings.PROJECT_DIR
         api_version = settings.API_VERSION
         session_id = sessionid
+        ip = user_ip
         self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object', 'float': 'float'}
 
     # resource layer generation
@@ -151,7 +153,7 @@ class CodeGenerator(object):
                     f.write(self.other_resource_codegen(table))
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # init generation
@@ -165,7 +167,7 @@ class CodeGenerator(object):
                 table_name_little_camel_case=table_name_little_camel_case).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     #  urls generation
@@ -213,7 +215,7 @@ class CodeGenerator(object):
                                                 ).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # resource generation
@@ -311,7 +313,7 @@ class CodeGenerator(object):
                 ).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # otherResource generation
@@ -343,7 +345,7 @@ class CodeGenerator(object):
             ).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # api_init generation
@@ -369,7 +371,7 @@ class CodeGenerator(object):
                 blueprint_register=blueprint_register_str)
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # manage generation

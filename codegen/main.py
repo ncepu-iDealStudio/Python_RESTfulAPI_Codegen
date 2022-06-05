@@ -24,7 +24,7 @@ from utils.response_code import RET, error_map
 from utils.tablesMetadata import TableMetadata
 
 
-def start(table_config, session_id):
+def start(table_config, session_id, ip):
     """
         步骤：
             零、 获取新的table_dict的值
@@ -55,40 +55,41 @@ def start(table_config, session_id):
         )
 
         # 第一步
-        loggings.info(1, "Start to build the Model layer code, please wait...", session_id)
+        loggings.info(1, "Start to build the Model layer code, please wait...", session_id, ip)
 
-        codegen.modelcodegen.main.main(table_dict, settings, session_id)
-        loggings.info(1, "Model layer code build completed", session_id)
+        codegen.modelcodegen.main.main(table_dict, settings, session_id, ip)
+        loggings.info(1, "Model layer code build completed", session_id, ip)
 
         # 第二步
-        loggings.info(1, "Start to build the Controller layer code, please wait...", session_id)
-        codegen.controllercodegen.main.main(table_dict, settings, session_id)
-        loggings.info(1, "Controller layer code build completed", session_id)
+        loggings.info(1, "Start to build the Controller layer code, please wait...", session_id, ip)
+        codegen.controllercodegen.main.main(table_dict, settings, session_id, ip)
+        loggings.info(1, "Controller layer code build completed", session_id, ip)
 
         # 第三步
-        loggings.info(1, "Start to build the Service layer code, please wait...", session_id)
-        codegen.servicecodegen.main.main(table_dict, settings, session_id)
-        loggings.info(1, "Service layer code build completed", session_id)
+        loggings.info(1, "Start to build the Service layer code, please wait...", session_id, ip)
+        codegen.servicecodegen.main.main(table_dict, settings, session_id, ip)
+        loggings.info(1, "Service layer code build completed", session_id, ip)
 
         # 第四步
-        loggings.info(1, "Start to build the Resource layer code, please wait...", session_id)
-        codegen.resourcecodegen.main.main(table_dict, settings, session_id)
-        loggings.info(1, "Resource layer code build completed", session_id)
+        loggings.info(1, "Start to build the Resource layer code, please wait...", session_id, ip)
+        codegen.resourcecodegen.main.main(table_dict, settings, session_id, ip)
+        loggings.info(1, "Resource layer code build completed", session_id, ip)
 
         # 第五步
-        loggings.info(1, "Start packing static files, please wait...", session_id)
-        codegen.staticcodegen.main.main(settings, session_id)
-        loggings.info(1, "Static resource packaging is complete", session_id)
+        loggings.info(1, "Start packing static files, please wait...", session_id, ip)
+        codegen.staticcodegen.main.main(settings, session_id, ip)
+        loggings.info(1, "Static resource packaging is complete", session_id, ip)
 
         # 第六步
-        loggings.info(1, "Start to build the Test layer code, please wait...", session_id)
-        codegen.testcodegen.main.main(table_dict, settings)
-        loggings.info(1, "Test layer code build completed", session_id)
+        loggings.info(1, "Start to build the Test layer code, please wait...", session_id, ip)
+        codegen.testcodegen.main.main(table_dict, settings, session_id, ip)
+        loggings.info(1, "Test layer code build completed", session_id, ip)
 
-        loggings.info(1, "Api project code generation completed", session_id)
+        loggings.info(1, "Api project code generation completed", session_id, ip)
 
-        if session_id:
-            log_path = "logs/codegen_log_{0}.log".format(session_id)
+        if session_id and ip:
+            log_path = "logs/log_user_info/codegen_log_{user_ip}_{session_id}.log".format(
+                    user_ip=ip, session_id=session_id)
         else:
             log_path = "logs/codegen_log.log"
         with open(log_path, 'r', encoding='utf-8') as f:

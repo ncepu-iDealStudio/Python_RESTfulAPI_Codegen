@@ -16,7 +16,7 @@ from utils.checkTable import CheckTable
 from urllib import parse
 
 
-def check_sql_link(dialect, username, password, host, port, database) -> dict:
+def check_sql_link(dialect, username, password, host, port, database, session_id=None, ip=None) -> dict:
     """
     返回所有表、字段信息（前端用）
     :param dialect: 数据库种类
@@ -25,6 +25,8 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
     :param host: 数据库IP
     :param port: 数据库端口号
     :param database: 要连接的数据库
+    :param session_id: 用户session ID
+    :param ip: 用户IP地址
     :return code: 布尔型，True表示连接成功，False表示连接失败
     :return message: 返回信息
     :return error: 错误信息
@@ -49,7 +51,7 @@ def check_sql_link(dialect, username, password, host, port, database) -> dict:
     except Exception as e:
         return {'code': False, 'message': str(e), 'error': str(e)}
 
-    table_dict, invalid_tables = CheckTable.main(metadata, inspector.get_view_names())
+    table_dict, invalid_tables = CheckTable.main(metadata, inspector.get_view_names(), session_id, ip)
 
     data = {
         'table': [],

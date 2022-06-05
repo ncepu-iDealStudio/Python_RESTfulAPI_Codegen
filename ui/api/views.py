@@ -114,6 +114,7 @@ def connecttest():
 def next():
     # 获取会话id并创建对应配置文件
     id = session.get('id')
+    ip = request.remote_addr
     dir = os.getcwd()
     f = open(dir + "/config/config_" + str(id) + ".conf", "w")
     f.close()
@@ -127,7 +128,7 @@ def next():
     username = kwargs['Username']
     password = kwargs['Password']
     # 检查数据库链接
-    result_sql = check_sql_link(dialect, username, password, host, port, database)
+    result_sql = check_sql_link(dialect, username, password, host, port, database, id, ip)
     if result_sql['code']:
         # 填写配置文件
         configfile = "config/config_" + str(id) + ".conf"
@@ -179,9 +180,10 @@ def setproject():
 @app.route('/startbuild', methods=['POST'])
 def startbuild():
     id = session.get('id')
+    ip = request.remote_addr
     kwargs = json.loads(request.data)
     from codegen.main import start
-    res = start(kwargs, id)
+    res = start(kwargs, id, ip)
     if res['code'] == '2000':
         return {'code': '2000', 'data': res['data'], 'message': '目标代码生成成功'}
     else:
