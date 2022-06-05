@@ -39,6 +39,11 @@ from api_{1}.{2}Resource.{2}OtherResource import {3}OtherResource"""
 
     urls_resource = 'api.add_resource({0}Resource, {1}, endpoint="{0}")'
 
+    urls_other_route = """\n
+@{0}_blueprint.route('/{0}/update/<{1}>', methods=['PUT'], endpoint='{2}Update')
+def update({1}):
+    return {2}OtherResource.sensitive_update({1})"""
+
     urls_other_resource = """
 # joint query
 @{0}_blueprint.route('/{1}/query', methods=['GET'], endpoint='{2}Query')
@@ -50,6 +55,13 @@ def {2}_query():
 from flask import jsonify
 
 from service.{0}Service import {1}Service
+from utils import commons
+from utils.response_code import RET"""
+
+    other_resource_sensitive_imports = """, reqparse
+from flask import jsonify
+
+from controller.{0}Controller import {1}Controller
 from utils import commons
 from utils.response_code import RET"""
 
@@ -69,6 +81,22 @@ from utils.response_code import RET"""
             return jsonify(code=res['code'], message=res['message'], data=res['data'], totalCount=res['totalCount'], totalPage=res['totalPage'])
         else:
             return jsonify(code=res['code'], message=res['message'], data=res['data'])"""
+
+    other_resource_update = """
+    @classmethod
+    def sensitive_update(cls, {id}):
+        if not {id}:
+            return jsonify(code=RET.NODATA, message='primary key missed', error='primary key missed')
+
+        parser = reqparse.RequestParser()
+        {parameter}
+        kwargs = parser.parse_args()
+        kwargs = commons.put_remove_none(**kwargs)
+        kwargs['{id}'] = {id}
+
+        res = {className}Controller.update(**kwargs)
+
+        return jsonify(code=res['code'], message=res['message'], data=res['data'])"""
 
     api_init_blueprint = """
     # {0} blueprint register
