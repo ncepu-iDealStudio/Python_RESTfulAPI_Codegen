@@ -62,7 +62,8 @@ def verify_operator_object(role_list, controller):
             if g.user.get("user_type") not in role_list:
                 res = controller.get(**func_kwargs)
                 if res.get('code') == RET.OK and res.get('totalCount') > 0:
-                    if str(g.user.get("user_id")) not in list(res.get('data')[0].values()):
+                    if g.user.get("user_id") not in list(res.get('data')[0].values()):
+                        # 若数据库设计中user_id为string类型,则改为str(g.user.get("user_id"))
                         return jsonify(code=RET.ROLEERR, message=error_map_EN[RET.ROLEERR], data={"error": "您无权操作此对象"})
             return func(*func_args, **func_kwargs)
 
