@@ -397,7 +397,7 @@ class CodeGenerator(object):
     # manage generation
     def manage_codegen(self, tables):
         # permission generation
-        permission = ["apiversion.apiversion"]
+        permission = ["apiversion.Apiversion"]
         for table in tables.values():
             table_name_little_camel_case = table.get('table_name_little_camel_case')
             table_name_big_camel_case = table.get('table_name_big_camel_case')
