@@ -1,47 +1,39 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# file:not_repeatable.py
+# file:check_duplicate_field_value.py
 # author:Chen Qinyu
 # datetime:2022/5/25 16:34
 # software: PyCharm
 
 """
-    不可重复字段验证函数
+    不可重复字段验证函数，且该字段为非加密字段
 """
-from app import db
 from functools import wraps
 
-from . import commons
-from .response_code import RET, error_map_EN
-from .aes_encrypt_decrypt import AESEncryptDecrypt
-from .rsa_encryption_decryption import RSAEncryptionDecryption
 
-
-def verify_not_repeatable(not_repeatable_list, model, **kwargs):
+def check_duplicate_field_value(not_repeatable_list, model, **kwargs):
     """
     定义一个装饰器: 验证不可重复的字段
     :param not_repeatable_list: List[Str] 字段不可重复
     :param model: 表
     :kwargs: 获取装饰器的传参(以下为示例参数)
-    :aes_encrypt_list: List[Str] 不可重复且aes加密字段列表
-    :rsa_encrypt_list: List[Str] 不可重复且rsa加密字段列表
     :other_column_list: List[Str] 其他自定义处理的相关字段列表
 
     eg.
     class AController:
         @classmethod
-        @verify_not_repeatable(['column1'], model=A, rsa_encrypt_list=['column2'])
+        @check_duplicate_field_value(['column1'], model=A)
         def add(cls):
             pass
 
         @classmethod
-        @verify_not_repeatable(['column1'], model=A, key='primary_key', aes_encrypt_list=['column2'])
+        @check_duplicate_field_value(['column1'], model=A, key='primary_key')
         def update(cls, primary_key):
             pass
     """
 
-    def verify_no_repeat(func):
+    def check_duplicate(func):
         """
         获取函数
         """
@@ -81,4 +73,4 @@ def verify_not_repeatable(not_repeatable_list, model, **kwargs):
 
         return wrapper
 
-    return verify_no_repeat
+    return check_duplicate
