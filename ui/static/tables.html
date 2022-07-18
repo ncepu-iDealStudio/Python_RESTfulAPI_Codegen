@@ -89,7 +89,7 @@
                                         {{tables[activeIndex].table}}
                                     </template>
                                     <div style="margin: 10px 0;">
-                                        数据记录是否逻辑删除
+                                        数据记录删除方式(是否逻辑删除,如果是逻辑删除，请选择逻辑删除标识位)
                                         <el-tooltip placement="top">
                                             <template #content> 逻辑删除方式<br/>注：逻辑删除标识字段必须为int类型</template>
                                             <span class="iconfont icon-yiwen"></span>
@@ -140,9 +140,9 @@
                                         </div>
                                     </el-card>
                                     <div style="margin: 10px 0;">
-                                        请选择需要加密存储的字段
+                                        加密存储字段设置(为满足安全审计需要,一些敏感字段可能需要在数据库中加密存储，如用户身份证号，手机号等)
                                         <el-tooltip placement="top">
-                                            <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
+                                            <template #content>加密方式配置:<br/>1 如果选择RSA加密方式，公私钥请在config/security.conf中配置<br/>备注：仅允许勾选类型为字符串的字段进行加密</template>
                                             <span class="iconfont icon-yiwen"></span>
                                         </el-tooltip>
                                     </div>

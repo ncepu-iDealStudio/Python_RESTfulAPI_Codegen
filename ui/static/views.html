@@ -38,7 +38,7 @@
                         <el-scrollbar style="height:calc(100vh - 130px);">
                             <el-menu @select="handleSelect">
                                 <div style="padding-left: 20px;">
-                                    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
+                                    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选 请选择相应的视图</el-checkbox>
                                 </div>
                                 <el-menu-item :index="index" v-for="(item, index) in views" :key="index">
                                     <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.view}}
@@ -67,7 +67,7 @@
                                             <template #content>选择字段:<br/>接口中需要查询的字段</template>
                                             <span class="iconfont icon-yiwen"></span>
                                         </el-tooltip>
-                                    </div style="margin: 10px 0;">
+                                    </div>
                                     <el-card>
                                         <el-scrollbar height="200px">
                                             <el-checkbox v-model="item.ischecked" :label="item.field_name" v-for="(item, index) in views[activeIndex].filter_field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;" @change="checkCurrentViews"></el-checkbox>
