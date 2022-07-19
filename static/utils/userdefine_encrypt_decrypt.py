@@ -13,6 +13,7 @@
 import hashlib
 from configparser import ConfigParser
 
+# 设置配置文件的位置
 CONFIG_DIR = "config/develop_config.conf"
 CONFIG = ConfigParser()
 CONFIG.read(CONFIG_DIR, encoding='utf-8')
