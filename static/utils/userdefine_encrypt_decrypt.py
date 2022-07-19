@@ -28,7 +28,7 @@ class UserDefineEncryptionDecryption(object):
     @classmethod
     def encrypt(cls, string,salt_key):
 
-        str_temp = str(string).join(salt_key)
+        str_temp = str(string).join(salt_key)     # MD5加盐字符串处理
 
         md_sale = hashlib.md5(str_temp.encode())  # MD5加盐加密
 
