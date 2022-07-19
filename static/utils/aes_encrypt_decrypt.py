@@ -8,8 +8,9 @@ CONFIG_DIR = "config/develop_config.conf"
 CONFIG = ConfigParser()
 CONFIG.read(CONFIG_DIR, encoding='utf-8')
 
+
 class AESEncryptDecrypt:
-    key = CONFIG['AES']['secret_key']  # 将密钥转换为字符型数据
+    key = CONFIG['AES']['secret_key'].encode()  # 将密钥转换为字符型数据
     mode = AES.MODE_ECB  # 操作模式选择ECB
 
     @classmethod
