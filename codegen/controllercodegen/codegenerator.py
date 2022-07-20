@@ -131,28 +131,45 @@ class CodeGenerator(object):
                     elif column['name'] == table['logical_delete_column']:
                         # 当前字段是删除标识位，跳过
                         continue
-                    elif column['name'] in (table['rsa_columns'] + table['aes_columns']):
-                        # 当前字段是加密字段，不作为查询字段
-                        continue
                     else:
                         if len(table['primary_key_columns']) > 1:
                             # 属于复合主键
                             if column['type'] in ['int', 'float']:
                                 # column type is a number
-                                text = CodeBlockTemplate.multi_get_filter_num.format(column=column['name'])
+                                if column['name'] in table['aes_columns']:
+                                    # 属于加密字段
+                                    text = CodeBlockTemplate.multi_aes_get_filter_num.format(column=column['name'])
+                                else:
+                                    # 不属于加密字段
+                                    text = CodeBlockTemplate.multi_get_filter_num.format(column=column['name'])
                             else:
                                 # column type is a string
-                                text = CodeBlockTemplate.multi_get_filter_str.format(column=column['name'])
+                                if column['name'] in table['aes_columns']:
+                                    # 属于加密字段
+                                    text = CodeBlockTemplate.multi_aes_get_filter_str.format(column=column['name'])
+                                else:
+                                    # 不属于加密字段
+                                    text = CodeBlockTemplate.multi_get_filter_str.format(column=column['name'])
 
                             get_filter_list += text
                         else:
                             # 不属于复合主键
                             if column['type'] in ['int', 'float']:
                                 # column type is a number
-                                text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
+                                if column['name'] in table['aes_columns']:
+                                    # 属于加密字段
+                                    text = CodeBlockTemplate.aes_get_filter_num.format(column=column['name'])
+                                else:
+                                    # 不属于加密字段
+                                    text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
                             else:
                                 # column type is a string
-                                text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
+                                if column['name'] in table['aes_columns']:
+                                    # 属于加密字段
+                                    text = CodeBlockTemplate.aes_get_filter_str.format(column=column['name'])
+                                else:
+                                    # 不属于加密字段
+                                    text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
 
                             get_filter_list += text
 
