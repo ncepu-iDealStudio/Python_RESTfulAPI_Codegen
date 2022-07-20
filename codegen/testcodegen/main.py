@@ -16,7 +16,7 @@ from utils.loggings import loggings
 # from codegen import project_dir, target_dir
 
 
-def main(table_dict, settings):
+def main(table_dict, settings, session_id, ip):
     """
     Generate resource layer code
     :return: None
@@ -56,8 +56,7 @@ def main(table_dict, settings):
         os.makedirs(report_dir, exist_ok=True)
 
         generator = CodeGenerator()
-        generator.test_generator(test_dir, table_dict)
-
+        generator.test_generator(test_dir, table_dict, session_id, ip)
 
     except Exception as e:
-        loggings.error(1, str(e))
+        loggings.error(1, str(e), session_id, ip)

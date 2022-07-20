@@ -13,7 +13,7 @@
 import os
 import shutil
 from configparser import ConfigParser
-
+from .template import filetemplate
 from utils.loggings import loggings
 
 
@@ -23,11 +23,12 @@ class CodeGenerator(object):
     SECURITY_CONFIG.read(SECURITY_CONFIG_DIR, encoding='utf-8')
 
     @classmethod
-    def generate_develop_configuration_file(cls, configuration_file_path, settings, session_id):
+    def generate_develop_configuration_file(cls, configuration_file_path, settings, session_id, ip):
         """
             :param configuration_file_path: 配置文件存储路径
             :param settings: 用户配置
             :param session_id: 用户ID
+            :param ip: 用户IP地址
             :return: None
         """
         try:
@@ -63,14 +64,15 @@ class CodeGenerator(object):
                 target_config.write(f)
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
 
     @classmethod
-    def generate_blank_configuration_file(cls, configuration_file_path, settings, session_id):
+    def generate_blank_configuration_file(cls, configuration_file_path, settings, session_id, ip):
         """
             :param configuration_file_path: 配置文件存储路径
             :param settings: 用户配置
             :param session_id: 用户ID
+            :param ip: 用户IP地址
             :return: None
         """
         try:
@@ -94,7 +96,6 @@ class CodeGenerator(object):
 
             # write configueration about BASIC
             target_config.add_section("BASIC")
-            target_config.set("BASIC", "secret_key", "")
             target_config.set("BASIC", "token_expires", "3600")
 
             for section in cls.SECURITY_CONFIG.sections():
@@ -107,10 +108,10 @@ class CodeGenerator(object):
                 target_config.write(f)
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
 
     @classmethod
-    def static_generate(cls, target_dir, source_dir, session_id):
+    def static_generate(cls, target_dir, source_dir, session_id, ip):
         """
         1 copy the static resource to target project directory;
         2 you can put these static resource  into "static" directory,such as "dockerfile" and some
@@ -119,6 +120,7 @@ class CodeGenerator(object):
         :param target_dir: Target path of the file
         :param source_dir: Source path of the file
         :param session_id: The ID of User
+        :param ip: The IP Host of User
         :return: None
         """
 
@@ -140,7 +142,22 @@ class CodeGenerator(object):
                         # 拷贝
                         shutil.copy(src_file, target_file)
                         loggings.info(1, "The file '{}' has been copied to '{}'".format(src_file, target_file),
-                                      session_id)
+                                      session_id, ip)
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
+
+    @classmethod
+    def gunicorn_generate(cls, target_dir, project_name, session_id, ip):
+        """
+            :param target_dir: 项目文件存储路径
+            :param project_name: 项目名称
+            :param session_id: 用户ID
+            :param ip: 用户IP地址
+            :return: None
+        """
+        try:
+            with open(os.path.join(target_dir, 'gunicorn.py'), 'w', encoding='utf8') as f:
+                f.write(filetemplate.gunicorn.format(project_name=project_name))
+        except Exception as e:
+            loggings.exception(1, e, session_id, ip)

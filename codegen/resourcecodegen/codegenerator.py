@@ -21,16 +21,18 @@ from utils.loggings import loggings
 project_dir = ''
 api_version = ''
 session_id = None
+ip = None
 
 
 class CodeGenerator(object):
 
-    def __init__(self, settings, sessionid):
+    def __init__(self, settings, sessionid, user_ip):
         super(CodeGenerator, self).__init__()
-        global project_dir, api_version, session_id
+        global project_dir, api_version, session_id, ip
         project_dir = settings.PROJECT_DIR
         api_version = settings.API_VERSION
         session_id = sessionid
+        ip = user_ip
         self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object', 'float': 'float'}
 
     # resource layer generation
@@ -49,6 +51,7 @@ class CodeGenerator(object):
                     table_dict[table]['delete_columns'] = {}
                     table_dict[table]['put_columns'] = {}
                     table_dict[table]['get_columns'] = {}
+
                     for column in table_dict[table]['columns'].values():
                         if column['is_autoincrement']:
                             table_dict[table]['autoincrement_columns'].append(column.get('name'))
@@ -57,6 +60,8 @@ class CodeGenerator(object):
                         if column['is_exist_default']:
                             table_dict[table]['exist_default_columns'].append(column.get('name'))
                         rsa_columns = table_dict[table]['rsa_columns']
+                        aes_columns = table_dict[table]['aes_columns']
+
                         if len(table_dict[table].get('primary_key_columns')) > 1:
                             if column.get('name') in table_dict[table].get('primary_key_columns'):
                                 table_dict[table]['post_columns'][column.get('name')] = True
@@ -65,8 +70,8 @@ class CodeGenerator(object):
                             else:
                                 table_dict[table]['post_columns'][column.get('name')] = False
                                 table_dict[table]['put_columns'][column.get('name')] = False
-                            if column.get('name') not in rsa_columns:
-                                table_dict[table]['get_columns'][column.get('name')] = False
+
+                            table_dict[table]['get_columns'][column.get('name')] = False
                         else:
                             business_key = table_dict[table].get('business_key_column').get('column')
                             business_key_rule = table_dict[table].get('business_key_column').get('rule')
@@ -86,13 +91,16 @@ class CodeGenerator(object):
                             elif column.get('name') == delete_column:
                                 continue
                             else:
-                                if column.get('name') not in rsa_columns and column.get('nullable'):
+                                if column.get('name') not in (rsa_columns + aes_columns) and column.get('nullable'):
                                     table_dict[table]['post_columns'][column.get('name')] = False
+                                # 不是null且有默认值，则非必填
+                                elif column.get('is_exist_default'):
+                                    table_dict[table]['post_columns'][column.get('name')] = False
+                                # 不是null且无默认值，则必填
                                 else:
                                     table_dict[table]['post_columns'][column.get('name')] = True
                                 if column.get('name') != real_primary_key:
-                                    if column.get('name') not in rsa_columns:
-                                        table_dict[table]['get_columns'][column.get('name')] = False
+                                    table_dict[table]['get_columns'][column.get('name')] = False
                                     table_dict[table]['put_columns'][column.get('name')] = False
                                     table_dict[table]['delete_columns'][column.get('name')] = False
 
@@ -146,7 +154,7 @@ class CodeGenerator(object):
                     f.write(self.other_resource_codegen(table))
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # init generation
@@ -160,7 +168,7 @@ class CodeGenerator(object):
                 table_name_little_camel_case=table_name_little_camel_case).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     #  urls generation
@@ -169,6 +177,7 @@ class CodeGenerator(object):
             table_name_all_small = table.get('table_name_all_small')
             table_name_little_camel_case = table.get('table_name_little_camel_case')
             table_name_big_camel_case = table.get('table_name_big_camel_case')
+            table_name_api_standard = table.get('table_name_api_standard')
 
             if table.get('is_view'):
                 import_str = CodeBlockTemplate.urls_imports_view.format(table_name_all_small,
@@ -176,39 +185,44 @@ class CodeGenerator(object):
                                                                         table_name_little_camel_case,
                                                                         table_name_big_camel_case)
                 other_resource_str = CodeBlockTemplate.urls_other_resource.format(table_name_all_small,
-                                                                                  table_name_little_camel_case,
+                                                                                  table_name_api_standard,
                                                                                   table_name_big_camel_case)
                 return FileTemplate.urls_view.format(imports=import_str,
                                                      table_name_all_small=table_name_all_small,
                                                      otherResource=other_resource_str
                                                      ).replace('\"', '\'')
             else:
+                other_resource_str = ''
                 import_str = CodeBlockTemplate.urls_imports_table.format(table_name_all_small,
                                                                          api_version,
                                                                          table_name_little_camel_case,
                                                                          table_name_big_camel_case)
+                if len(table['sensitive_columns']):
+                    other_resource_str = CodeBlockTemplate.urls_other_route.format(table_name_all_small,
+                                                                                   table.get('business_key_column').get('column'),
+                                                                                   table_name_big_camel_case)
 
                 if table.get('business_key_column').get('column'):
                     primary_key_str = CodeBlockTemplate.primary_key_single.format(table_name_little_camel_case,
-                                                                                  table.get('business_key_column').get(
-                                                                                      'column'))
+                                                                                  table.get('business_key_column').get('column'))
+
                 else:
                     if len(table.get('primary_key_columns')) > 1:
                         primary_key_str = CodeBlockTemplate.primary_key_multi.format(table_name_little_camel_case)
                     else:
                         primary_key_str = CodeBlockTemplate.primary_key_single.format(
-                            table_name_little_camel_case, table.get('primary_key_columns')[0])
+                            table_name_api_standard, table.get('primary_key_columns')[0])
 
-                resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_camel_case, primary_key_str,
-                                                                      table_name_little_camel_case)
+                resource_str = CodeBlockTemplate.urls_resource.format(table_name_big_camel_case, primary_key_str)
 
                 return FileTemplate.urls.format(imports=import_str,
                                                 table_name_all_small=table_name_all_small,
-                                                resource=resource_str
+                                                resource=resource_str,
+                                                other_resource=other_resource_str
                                                 ).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # resource generation
@@ -239,7 +253,7 @@ class CodeGenerator(object):
                             location='form',
                             required=table.get('delete_columns').get(column_name)
                         )
-                    if column_name in table.get('put_columns'):
+                    if column_name in table.get('put_columns') and column_name not in table['sensitive_columns']:
                         parameter_put += CodeBlockTemplate.parameter_2.format(
                             column=column_name,
                             location='form',
@@ -278,7 +292,7 @@ class CodeGenerator(object):
                             location='form',
                             required=table.get('delete_columns').get(column_name)
                         )
-                    if column_name in table.get('put_columns'):
+                    if column_name in table.get('put_columns') and column_name not in table['sensitive_columns']:
                         parameter_put += CodeBlockTemplate.parameter_2.format(
                             column=column_name,
                             location='form',
@@ -306,7 +320,7 @@ class CodeGenerator(object):
                 ).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # otherResource generation
@@ -328,6 +342,18 @@ class CodeGenerator(object):
                         required='False'
                     )
                 method = CodeBlockTemplate.other_resource_query.format(parameter, table_name_big_camel_case)
+            elif len(table['sensitive_columns']):
+                imports_str = CodeBlockTemplate.other_resource_sensitive_imports.format(table_name_little_camel_case,
+                                                                                        table_name_big_camel_case)
+                for column_name in table.get('sensitive_columns'):
+                    parameter += CodeBlockTemplate.parameter_2.format(
+                        column=column_name,
+                        location='form',
+                        required='False'
+                    )
+                method = CodeBlockTemplate.other_resource_update.format(id=table.get('real_primary_key'),
+                                                                        parameter=parameter,
+                                                                        className=table_name_big_camel_case)
             else:
                 imports_str = ""
 
@@ -338,7 +364,7 @@ class CodeGenerator(object):
             ).replace('\"', '\'')
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # api_init generation
@@ -364,16 +390,17 @@ class CodeGenerator(object):
                 blueprint_register=blueprint_register_str)
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # manage generation
     def manage_codegen(self, tables):
         # permission generation
-        permission = ["apiversion.apiversion"]
+        permission = ["apiversion.Apiversion"]
         for table in tables.values():
             table_name_little_camel_case = table.get('table_name_little_camel_case')
-            table_name_endpoint = table_name_little_camel_case + '.' + table_name_little_camel_case
+            table_name_big_camel_case = table.get('table_name_big_camel_case')
+            table_name_endpoint = table_name_little_camel_case + '.' + table_name_big_camel_case
 
             if table.get('is_view'):
                 permission.append(table_name_endpoint + '_query')

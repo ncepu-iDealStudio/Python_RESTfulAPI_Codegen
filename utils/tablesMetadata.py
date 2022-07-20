@@ -11,7 +11,7 @@
 """
 import json
 
-from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case
+from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case, standard_str
 
 
 class TableMetadata(object):
@@ -45,6 +45,7 @@ class TableMetadata(object):
             table_dict[table_name]['table_name_all_small'] = str_to_all_small(table_name)
             table_dict[table_name]['table_name_little_camel_case'] = str_to_little_camel_case(table_name)
             table_dict[table_name]['table_name_big_camel_case'] = str_to_big_camel_case(table_name)
+            table_dict[table_name]['table_name_api_standard'] = standard_str(table_name)
 
             # 如果该表是一个视图
             if table_name in reflection_views:
@@ -95,16 +96,34 @@ class TableMetadata(object):
                     table_dict[table_name]['business_key_column']['column'] = config['businesskeyname']
                     table_dict[table_name]['business_key_column']['rule'] = config['businesskeyrule']
 
-            # 需要RSA加密的字段
+            # 需要加密的字段和敏感修改的字段
             table_dict[table_name]['rsa_columns'] = []
-            for rsa_table in table_config['table']:
-                if rsa_table['table'] == table_name:
-                    for rsa_colume in rsa_table['field']:
-                        if rsa_colume['field_encrypt']:
-                            table_dict[table_name]['rsa_columns'].append(rsa_colume['field_name'])
+            table_dict[table_name]['aes_columns'] = []
+
+            # 测试
+            table_dict[table_name]['sensitive_columns'] = []
+            for one_table in table_config['table']:
+                if one_table['table'] == table_name:
+                    for one_colume in one_table['field']:
+
+                        # 属于敏感字段
+                        # if one_colume['field_sensitive']:
+                        #     table_dict[table_name]['sensitive_columns'].append(one_colume['field_name'])
+
+                        # 需要加密
+                        if one_colume['field_encrypt']:
+
+                            # 加密方式为rsa
+                            if one_colume['encrypt_type'] == 'rsa':
+                                table_dict[table_name]['rsa_columns'].append(one_colume['field_name'])
+
+                            # 加密方式为aes
+                            elif one_colume['encrypt_type'] == 'aes':
+                                table_dict[table_name]['aes_columns'].append(one_colume['field_name'])
 
             from sqlalchemy.engine import reflection
             insp = reflection.Inspector.from_engine(metadata.bind)
+
             # 初始化为空列表
             table_dict[table_name]['primary_key_columns'] = insp.get_pk_constraint(table_name)['constrained_columns']
             table_dict[table_name]['columns'] = {}

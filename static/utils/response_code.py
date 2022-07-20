@@ -20,6 +20,7 @@ class RET:
     PWDERR = "4005"
     REQERR = "4006"
     IPERR = "4007"
+    URLNOTFOUND = "4040"
     INTERNALERR = "5000"
     DBERR = "5001"
     THIRDERR = "5002"

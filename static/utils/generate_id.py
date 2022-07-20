@@ -35,3 +35,8 @@ class GenerateID(object):
         import random
         random_number = random.sample('0123456789', N)
         return datetime.datetime.now().strftime('%Y%m%d%H%M') + ''.join(random_number)
+
+    # 用户自定义主键生成规则
+    @staticmethod
+    def create_custom_id():
+        pass

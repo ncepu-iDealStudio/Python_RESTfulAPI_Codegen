@@ -41,6 +41,7 @@ from flask_restful import Api
 api = Api({table_name_all_small}_blueprint)
 
 {resource}
+{other_resource}
 """
 
     urls_view = """#!/usr/bin/env python
@@ -318,7 +319,7 @@ from api_{apiversion}.apiVersionResource.apiVersionResource import ApiVersionRes
 
 api = Api(apiversion_blueprint)
 
-api.add_resource(ApiVersionResource, '/apiversion', endpoint='apiversion')  # 测试接口，获取当前接口的版本
+api.add_resource(ApiVersionResource, '/apiversion', endpoint='Apiversion')  # 测试接口，获取当前接口的版本
 """
 
     api_version_resource = """#!/usr/bin/env python
@@ -363,6 +364,13 @@ manager.add_command("runserver", Server(use_debugger=True))
 
 
 # 创建全站拦截器,每个请求之前做处理
+@app.before_request
+def user_validation():
+    print(request.endpoint)  # 方便跟踪调试
+    
+    if not request.endpoint: # 如果请求点为空
+        return jsonify(code=RET.URLNOTFOUND, message="url not found", error="url not found")
+        
 @app.before_request
 def user_require_token():
     # 不需要token验证的请求点列表
