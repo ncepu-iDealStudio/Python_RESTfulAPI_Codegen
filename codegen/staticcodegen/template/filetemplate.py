@@ -21,6 +21,7 @@ class FileTemplate(object):
 
 import os
 from configparser import ConfigParser
+from urllib import parse
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,6 +38,7 @@ class Settings(object):
 
         # 秘钥
         cls.SECRET_KEY = cls.CONFIG['BASIC']['secret_key']
+        cls.AES_SECRET_KEY = cls.CONFIG['AES']['secret_key']
         cls.PUBLIC_KEY = cls.CONFIG['RSA']['public_key']
         cls.PRIVATE_KEY = cls.CONFIG['RSA']['private_key']
 
@@ -53,7 +55,7 @@ class Settings(object):
         cls.DATABASE = cls.CONFIG['DATABASE']['database']
 
         cls.SQLALCHEMY_DATABASE_URI = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
-            cls.DIALECT, cls.DRIVER, cls.USERNAME, cls.PASSWORD, cls.HOST, cls.PORT, cls.DATABASE)
+            cls.DIALECT, cls.DRIVER, cls.USERNAME, parse.quote_plus(cls.PASSWORD), cls.HOST, cls.PORT, cls.DATABASE)
 
         cls.SQLALCHEMY_TRACK_MODIFICATIONS = cls.CONFIG.getboolean('DATABASE', 'sqlalchemy_track_modifications')
 
@@ -68,4 +70,43 @@ class Settings(object):
 
         return cls
 
+"""
+
+
+gunicorn = """#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+\"\"\"
+    gunicorn启动文件
+\"\"\"
+
+import os
+import sys
+
+
+def start():
+    cmd = 'source /deploy/app/venv/bin/activate;' \\
+          'cd /deploy/your project;' \\
+          'gunicorn -c deploy/gunicorn.conf manage:app -D'
+    os.system(cmd)
+
+
+def stop():
+    cmd = "ps -ef | grep '{project_name}/bin/gunicorn' | grep -v grep | awk '{{print $2}}' | xargs kill -9"
+    os.system(cmd)
+
+
+def restart():
+    stop()
+    start()
+
+
+if sys.argv[1] == 'start':
+    start()
+elif sys.argv[1] == 'restart':
+    restart()
+elif sys.argv[1] == 'stop':
+    stop()
+else:
+    print('params error!')
 """

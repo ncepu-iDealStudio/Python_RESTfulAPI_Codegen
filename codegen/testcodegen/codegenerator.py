@@ -21,7 +21,7 @@ class CodeGenerator(object):
         super(CodeGenerator, self).__init__()
 
     # testcode generator
-    def test_generator(self, test_dir, table_dict):
+    def test_generator(self, test_dir, table_dict, session_id, ip):
         # reload settings
         # Settings.reload()
         init_filename = '__init__.py'
@@ -29,10 +29,10 @@ class CodeGenerator(object):
         try:
 
             # test generation
-            loggings.info(1, 'Start generating Test layer, please wait...')
+            loggings.info(1, 'Start generating Test layer, please wait...', session_id, ip)
 
             # Test_Controller generation
-            loggings.info(1, 'Start generating TestController layer, please wait...')
+            loggings.info(1, 'Start generating TestController layer, please wait...', session_id, ip)
 
             # Test_Controller dir generation
             os.makedirs(TestController_dir := (os.path.join(test_dir, 'Test_Controller')), exist_ok=True)
@@ -62,12 +62,12 @@ class CodeGenerator(object):
                                                         tableName[0].upper() + tableName[1:]))
 
                 # file write
-                loggings.info(1, 'Generating {0}'.format('Test_{0}Controller'.format(tableName)))
+                loggings.info(1, 'Generating {0}'.format('Test_{0}Controller'.format(tableName)), session_id, ip)
 
-            loggings.info(1, 'Generating TestController layer complete')
+            loggings.info(1, 'Generating TestController layer complete', session_id, ip)
 
             # Test_Controller generation
-            loggings.info(1, 'Start generating TestResource layer, please wait...')
+            loggings.info(1, 'Start generating TestResource layer, please wait...', session_id, ip)
 
             # Test_Resource dir generation
             os.makedirs(TestResource_dir := ((os.path.join(test_dir, 'Test_Resource'))), exist_ok=True)
@@ -103,14 +103,14 @@ class CodeGenerator(object):
                     f.write(self.resourcetest_codegen(tableName))
 
                 # file write
-                loggings.info(1, 'Generating {0}'.format('Test_{0}Resource'.format(tableName)))
+                loggings.info(1, 'Generating {0}'.format('Test_{0}Resource'.format(tableName)), session_id, ip)
 
-            loggings.info(1, 'Generating TestResource layer complete')
+            loggings.info(1, 'Generating TestResource layer complete', session_id, ip)
 
-            loggings.info(1, 'Generating Test layer complete')
+            loggings.info(1, 'Generating Test layer complete', session_id, ip)
 
         except Exception as e:
-            loggings.exception(1, e)
+            loggings.exception(1, e, session_id, ip)
             return
 
     # init generation

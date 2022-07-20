@@ -43,6 +43,8 @@ def put_remove_none(**args):
 
 # flask-sqlachemy查询结果（对象）转换为字典,下面的所有方法为一个模块，使用时直接调用该方法即可
 def query_to_dict(models):
+    if models is None:
+        return []
     if isinstance(models, list):
         if not models:
             return []

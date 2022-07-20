@@ -27,7 +27,7 @@ class CodeGenerator(object):
         super().__init__()
         self.table_dict = table_dict
 
-    def controller_codegen(self, controller_dir, session_id):
+    def controller_codegen(self, controller_dir, session_id, ip):
 
         try:
             codes = {}
@@ -50,15 +50,19 @@ class CodeGenerator(object):
                     model_name=model_name,
                     parent_model=parent_model
                 )
+
                 if table['rsa_columns']:
                     imports += '\nfrom utils.rsa_encryption_decryption import RSAEncryptionDecryption'
+                if table['aes_columns']:
+                    imports += '\nfrom utils.aes_encrypt_decrypt import AESEncryptDecrypt'
+
                 basic = FileTemplate.basic_template.format(
                     imports=imports,
                     class_name=class_name,
                     parent_model=parent_model
                 )
-
                 # 添加模块
+                text = ''
                 column_init = ''
                 business_key_init = ''
                 add_result_primary_key = ''
@@ -68,7 +72,7 @@ class CodeGenerator(object):
                     if column['name'] == table['logical_delete_column']:
                         continue
 
-                    if column['name'] not in table['rsa_columns']:
+                    if column['name'] not in (table['rsa_columns'] + table['aes_columns']):
                         # 字段不需要加密
                         if business_key != column['name']:
                             # 当前字段不是业务主键
@@ -87,7 +91,11 @@ class CodeGenerator(object):
                                 text = CodeBlockTemplate.add_column_init.format(column=column['name'])
                     else:
                         # 字段需要加密
-                        text = CodeBlockTemplate.rsa_add.format(column=column['name'])
+                        # 可选择加密方式
+                        if column['name'] in table['rsa_columns']:
+                            text = CodeBlockTemplate.rsa_add.format(column=column['name'])
+                        elif column['name'] in table['aes_columns']:
+                            text = CodeBlockTemplate.aes_add.format(column=column['name'])
 
                     column_init += text
 
@@ -123,28 +131,45 @@ class CodeGenerator(object):
                     elif column['name'] == table['logical_delete_column']:
                         # 当前字段是删除标识位，跳过
                         continue
-                    elif column['name'] in table['rsa_columns']:
-                        # 当前字段是加密字段，不作为查询字段
-                        continue
                     else:
                         if len(table['primary_key_columns']) > 1:
                             # 属于复合主键
                             if column['type'] in ['int', 'float']:
                                 # column type is a number
-                                text = CodeBlockTemplate.multi_get_filter_num.format(column=column['name'])
+                                if column['name'] in table['aes_columns']:
+                                    # 属于加密字段
+                                    text = CodeBlockTemplate.multi_aes_get_filter_num.format(column=column['name'])
+                                else:
+                                    # 不属于加密字段
+                                    text = CodeBlockTemplate.multi_get_filter_num.format(column=column['name'])
                             else:
                                 # column type is a string
-                                text = CodeBlockTemplate.multi_get_filter_str.format(column=column['name'])
+                                if column['name'] in table['aes_columns']:
+                                    # 属于加密字段
+                                    text = CodeBlockTemplate.multi_aes_get_filter_str.format(column=column['name'])
+                                else:
+                                    # 不属于加密字段
+                                    text = CodeBlockTemplate.multi_get_filter_str.format(column=column['name'])
 
                             get_filter_list += text
                         else:
                             # 不属于复合主键
                             if column['type'] in ['int', 'float']:
                                 # column type is a number
-                                text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
+                                if column['name'] in table['aes_columns']:
+                                    # 属于加密字段
+                                    text = CodeBlockTemplate.aes_get_filter_num.format(column=column['name'])
+                                else:
+                                    # 不属于加密字段
+                                    text = CodeBlockTemplate.get_filter_num.format(column=column['name'])
                             else:
                                 # column type is a string
-                                text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
+                                if column['name'] in table['aes_columns']:
+                                    # 属于加密字段
+                                    text = CodeBlockTemplate.aes_get_filter_str.format(column=column['name'])
+                                else:
+                                    # 不属于加密字段
+                                    text = CodeBlockTemplate.get_filter_str.format(column=column['name'])
 
                             get_filter_list += text
 
@@ -216,11 +241,17 @@ class CodeGenerator(object):
                 # 更新模块
                 # 拼接更新方法中的rsa_update
                 rsa_update = ''
+                aes_update = ''
                 if table['rsa_columns']:
                     # several columns should be encrypted
-                    for sra_column in table['rsa_columns']:
-                        text = CodeBlockTemplate.rsa_update.format(column=sra_column)
+                    for rsa_column in table['rsa_columns']:
+                        text = CodeBlockTemplate.rsa_update.format(column=rsa_column)
                         rsa_update += text
+                if table['aes_columns']:
+                    # several columns should be encrypted
+                    for aes_column in table['aes_columns']:
+                        text = CodeBlockTemplate.aes_update.format(column=aes_column)
+                        aes_update += text
 
                 # 拼接更新方法中的filter_list_init
                 filter_list_init = ''
@@ -247,6 +278,7 @@ class CodeGenerator(object):
                 if not table['logical_delete_column']:
                     update = FileTemplate.update_template_physical.format(
                         rsa_update=rsa_update,
+                        aes_update=aes_update,
                         filter_list_init=filter_list_init,
                         results_primary_keys=results_primary_keys
                     )
@@ -254,6 +286,7 @@ class CodeGenerator(object):
                 else:
                     update = FileTemplate.update_template_logic.format(
                         rsa_update=rsa_update,
+                        aes_update=aes_update,
                         logical_delete_mark=table['logical_delete_column'],
                         filter_list_init=filter_list_init,
                         results_primary_keys=results_primary_keys
@@ -268,7 +301,7 @@ class CodeGenerator(object):
                     if column['name'] == table['logical_delete_column']:
                         continue
 
-                    if column['name'] not in table['rsa_columns']:
+                    if column['name'] not in (table['rsa_columns'] + table['aes_columns']):
                         # 字段不需要加密
                         if business_key != column['name']:
                             # 当前字段不是业务主键
@@ -288,7 +321,11 @@ class CodeGenerator(object):
 
                     else:
                         # 字段需要加密
-                        text = CodeBlockTemplate.add_list_rsa_add.format(column=column['name'])
+                        # 可选择加密方式
+                        if column['name'] in table['rsa_columns']:
+                            text = CodeBlockTemplate.add_list_rsa_add.format(column=column['name'])
+                        elif column['name'] in table['aes_columns']:
+                            text = CodeBlockTemplate.add_list_aes_add.format(column=column['name'])
 
                     add_list_column_init += text
 
@@ -318,18 +355,18 @@ class CodeGenerator(object):
                 codes[file_name] = basic + add + get + delete + update + add_list
 
             # generate files
-            loggings.info(1, 'Generating __init__...', session_id)
+            loggings.info(1, 'Generating __init__...', session_id, ip)
             inti_file = os.path.join(controller_dir, '__init__.py')
             with open(inti_file, 'w', encoding='utf-8') as fw:
                 fw.write(FileTemplate.init_template)
 
-            loggings.info(1, '__init__ generated successfully', session_id)
+            loggings.info(1, '__init__ generated successfully', session_id, ip)
             for file_name, code in codes.items():
-                loggings.info(1, 'Generating {}...'.format(file_name), session_id)
+                loggings.info(1, 'Generating {}...'.format(file_name), session_id, ip)
                 m_file = os.path.join(controller_dir, file_name + '.py')
                 with open(m_file, 'w', encoding='utf-8') as fw:
                     fw.write(code)
-                loggings.info(1, '{} generated successfully'.format(file_name), session_id)
+                loggings.info(1, '{} generated successfully'.format(file_name), session_id, ip)
 
         except Exception as e:
-            loggings.exception(1, e, session_id)
+            loggings.exception(1, e, session_id, ip)

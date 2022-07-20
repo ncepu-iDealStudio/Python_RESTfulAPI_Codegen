@@ -32,6 +32,9 @@ from utils.loggings import loggings"""
     rsa_add = """{column}=RSAEncryptionDecryption.encrypt(kwargs.get('{column}')) if kwargs.get('{column}') else None,
                 """
 
+    aes_add = """{column}=AESEncryptDecrypt.encrypt(kwargs.get('{column}')) if kwargs.get('{column}') else None,
+                """
+
     business_key_add = """{column}={column},
                 """
 
@@ -45,16 +48,20 @@ from utils.loggings import loggings"""
 
     get_filer_list_logic = 'cls.{logical_delete_mark} == 0'
 
-    rsa_get_filter_num = """if kwargs.get('{column}') is not None:
-                    filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+    aes_get_filter_num = """if kwargs.get('{column}') is not None:
+                    filter_list.append(cls.{column} == AESEncryptDecrypt.encrypt(kwargs.get('{column}')))
                 """
 
-    rsa_get_filter_str = """if kwargs.get('{column}'):
-                    filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+    aes_get_filter_str = """if kwargs.get('{column}'):
+                    filter_list.append(cls.{column} == AESEncryptDecrypt.encrypt(kwargs.get('{column}')))
                 """
 
     rsa_update = """if kwargs.get('{column}'):
                 kwargs['{column}'] = RSAEncryptionDecryption.encrypt(kwargs['{column}'])
+            """
+
+    aes_update = """if kwargs.get('{column}'):
+                kwargs['{column}'] = AESEncryptDecrypt.encrypt(kwargs['{column}'])
             """
 
     business_key_init = """from utils.generate_id import GenerateID
@@ -69,6 +76,9 @@ from utils.loggings import loggings"""
             """
 
     add_list_rsa_add = """{column}=RSAEncryptionDecryption.encrypt(param_dict.get('{column}')),
+                """
+
+    add_list_aes_add = """{column}=AESEncryptDecrypt.encrypt(param_dict.get('{column}')),
                 """
 
     single_primary_key_get_filter = """if kwargs.get('{primary_key}'):
@@ -116,10 +126,10 @@ from utils.loggings import loggings"""
                 filter_list.append(cls.{column} == kwargs.get('{column}'))
             """
 
-    multi_rsa_get_filter_num = """if kwargs.get('{column}') is not None:
-                filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+    multi_aes_get_filter_num = """if kwargs.get('{column}') is not None:
+                filter_list.append(cls.{column} == AESEncryptDecrypt.encrypt(kwargs.get('{column}')))
             """
 
-    multi_rsa_get_filter_str = """if kwargs.get('{column}'):
-                filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+    multi_aes_get_filter_str = """if kwargs.get('{column}'):
+                filter_list.append(cls.{column} == AESEncryptDecrypt.encrypt(kwargs.get('{column}')))
             """

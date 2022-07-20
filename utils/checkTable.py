@@ -21,7 +21,7 @@ class CheckTable(object):
     # check the Primary key
     # 检查table主键
     @classmethod
-    def check_primary_key(cls, table_dict):
+    def check_primary_key(cls, table_dict, session_id, ip):
         """
         根据代码生成模式，自动读取所有表或所需表，检验主键后返回合规的表列表
         :return: 符合规范的表名列表，即有且仅有一个主键，没有符合规范的情况下返回None
@@ -37,7 +37,7 @@ class CheckTable(object):
             elif len(table['primary_key_columns']) == 0:
                 # 表中没有主键
                 invalid_tables.append(table['table_name'])
-                loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']))
+                loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']), session_id, ip)
             # elif len(table['primary_key_columns']) > 1:
             #     # 表中有复数个主键
             #     invalid_tables.append(table['table_name'])
@@ -50,7 +50,7 @@ class CheckTable(object):
     # check keywords of python in tables
     # 检查表名和字段名，是否和Python的关键字冲突
     @classmethod
-    def check_keyword_conflict(cls, table_dict):
+    def check_keyword_conflict(cls, table_dict, session_id, ip):
         """
         check whether the table name or column name is a keyword of python
         :return: True while no table name is a keyword, else return False
@@ -69,14 +69,14 @@ class CheckTable(object):
 
             # 检查表名是否为python关键字
             if keyword.iskeyword(table['table_name']):
-                loggings.warning(1, 'table "{0}" is a keyword of python'.format(table['table_name']))
+                loggings.warning(1, 'table "{0}" is a keyword of python'.format(table['table_name']), session_id, ip)
                 flag = False
 
             for column in table['columns'].values():
                 # 检查表字段是否为python关键字
                 if keyword.iskeyword(column['name']):
                     loggings.warning(1, 'column "{0}.{1}" is a keyword of python'.format(table['table_name'],
-                                                                                         column['name']))
+                                                                                         column['name']), session_id, ip)
                     flag = False
 
             if flag:
@@ -88,7 +88,7 @@ class CheckTable(object):
 
     # 入口函数定义
     @classmethod
-    def main(cls, metadata, reflection_views):
+    def main(cls, metadata, reflection_views, session_id, ip):
         """
             建立数据库连接时对表进行检查，筛去没有唯一自增主键、表名/字段名与Python关键字有冲突的表
             :param metadata: 数据库元数据
@@ -99,13 +99,13 @@ class CheckTable(object):
         invalid_tables = {}
 
         # check table primary key
-        available_table, invalid_table = cls.check_primary_key(table_dict)
+        available_table, invalid_table = cls.check_primary_key(table_dict, session_id, ip)
         invalid_tables['primary_key'] = invalid_table
         for invalid in invalid_table:
             table_dict.pop(invalid)
 
         # check the keyword
-        available_table, invalid_table = cls.check_keyword_conflict(table_dict)
+        available_table, invalid_table = cls.check_keyword_conflict(table_dict, session_id, ip)
         available_tables = available_table
         invalid_tables['keyword'] = invalid_table
         for invalid in invalid_table:
@@ -120,11 +120,13 @@ class CheckTable(object):
                         len(available_tables),
                         len(invalid_tables['primary_key'] + invalid_tables['keyword']),
                         ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])
-                    )
+                    ),
+                session_id,
+                ip
             )
 
             return table_dict, invalid_tables
 
-        loggings.info(1, "All table checks passed, a total of {0} tables.".format(len(available_tables)))
+        loggings.info(1, "All table checks passed, a total of {0} tables.".format(len(available_tables)), session_id, ip)
 
         return table_dict, invalid_tables

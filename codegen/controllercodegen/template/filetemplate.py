@@ -210,6 +210,7 @@ class {class_name}({parent_model}):
     def update(cls, **kwargs):
         try:
             {rsa_update}
+            {aes_update}
             filter_list = []
             {filter_list_init}
             res = db.session.query(cls).filter(*filter_list).with_for_update()
@@ -238,6 +239,7 @@ class {class_name}({parent_model}):
     def update(cls, **kwargs):
         try:
             {rsa_update}
+            {aes_update}
             filter_list = [cls.{logical_delete_mark} == 0]
             {filter_list_init}
             res = db.session.query(cls).filter(*filter_list).with_for_update()
@@ -284,7 +286,7 @@ class {class_name}({parent_model}):
                 added_record = {{}}
                 {added_record_primary_keys}
                 results['added_records'].append(added_record)
-            
+                
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
             
         except Exception as e:
