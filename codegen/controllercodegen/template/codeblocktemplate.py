@@ -48,12 +48,12 @@ from utils.loggings import loggings"""
 
     get_filer_list_logic = 'cls.{logical_delete_mark} == 0'
 
-    rsa_get_filter_num = """if kwargs.get('{column}') is not None:
-                    filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+    aes_get_filter_num = """if kwargs.get('{column}') is not None:
+                    filter_list.append(cls.{column} == AESEncryptDecrypt.encrypt(kwargs.get('{column}')))
                 """
 
-    rsa_get_filter_str = """if kwargs.get('{column}'):
-                    filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+    aes_get_filter_str = """if kwargs.get('{column}'):
+                    filter_list.append(cls.{column} == AESEncryptDecrypt.encrypt(kwargs.get('{column}')))
                 """
 
     rsa_update = """if kwargs.get('{column}'):
@@ -126,10 +126,10 @@ from utils.loggings import loggings"""
                 filter_list.append(cls.{column} == kwargs.get('{column}'))
             """
 
-    multi_rsa_get_filter_num = """if kwargs.get('{column}') is not None:
-                filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+    multi_aes_get_filter_num = """if kwargs.get('{column}') is not None:
+                filter_list.append(cls.{column} == AESEncryptDecrypt.encrypt(kwargs.get('{column}')))
             """
 
-    multi_rsa_get_filter_str = """if kwargs.get('{column}'):
-                filter_list.append(cls.{column} == RSAEncryptionDecryption.encrypt(kwargs.get('{column}')))
+    multi_aes_get_filter_str = """if kwargs.get('{column}'):
+                filter_list.append(cls.{column} == AESEncryptDecrypt.encrypt(kwargs.get('{column}')))
             """

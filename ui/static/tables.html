@@ -44,7 +44,7 @@
                         <el-scrollbar style="height:calc(100vh - 130px);">
                             <el-menu @select="handleSelect">
                                 <div style="padding-left: 20px;">
-                                    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
+                                    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选 选择需要生成代码的表</el-checkbox>
                                 </div>
                                 <el-menu-item :index="index+''" v-for="(item, index) in tables" :key="index">
                                     <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
@@ -89,7 +89,7 @@
                                         {{tables[activeIndex].table}}
                                     </template>
                                     <div style="margin: 10px 0;">
-                                        数据记录是否逻辑删除
+                                        数据记录删除方式(是否逻辑删除,如果是逻辑删除，请选择逻辑删除标识位)
                                         <el-tooltip placement="top">
                                             <template #content> 逻辑删除方式<br/>注：逻辑删除标识字段必须为int类型</template>
                                             <span class="iconfont icon-yiwen"></span>
@@ -128,28 +128,32 @@
                                             <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule @blur="checkCurrentTables">
                                                 <el-option label="" value="">
                                                 </el-option>
-                                                <el-option label="create_random_id" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
+                                                <el-option label="时间戳+4位随机数" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
                                                 </el-option>
-                                                <el-option label="create_hashlib_id" value="create_hashlib_id" v-if="activeFiled.field_type==='str'">
+                                                <el-option label="hashlib+时间戳" value="create_hashlib_id" v-if="activeFiled.field_type==='str'">
                                                 </el-option>
-                                                <el-option label="create_uid" value="create_uid" v-if="activeFiled.field_type==='str'">
+                                                <el-option label="uuid包生成随机数" value="create_uid" v-if="activeFiled.field_type==='str'">
                                                 </el-option>
-                                                <el-option label="create_custom_id" value="create_custom_id">
+                                                <el-option label="用户手工指定输入" value="create_custom_id">
                                                 </el-option>
                                             </el-select>
                                         </div>
                                     </el-card>
                                     <div style="margin: 10px 0;">
-                                        请选择需要加密存储的字段
+                                        加密存储字段设置(为满足安全审计需要,一些敏感字段可能需要在数据库中加密存储，如用户身份证号，手机号等)
                                         <el-tooltip placement="top">
-                                            <template #content>加密配置:<br/>RSA公私钥请在config/security.conf中配置<br/>注：仅允许勾选类型为字符串的字段进行加密</template>
+                                            <template #content>字段加密方式配置注意事项:<br/>
+                                                1 如果选择RSA加密方式，公私钥请在config/security.conf中配置<br/>
+                                                2 请注意需要加密字段的长度<br/>
+                                                备注：仅允许勾选字符类型的字段进行加密
+                                            </template>
                                             <span class="iconfont icon-yiwen"></span>
                                         </el-tooltip>
                                     </div>
                                     <el-card>
                                         <el-scrollbar height="200px">
                                             <!--<el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;" @change="checkCurrentTables"></el-checkbox>-->
-                                            <div style="padding-left: 25px;margin-bottom: 15px">
+                                            <div style="margin-bottom: 15px" align="right">
                                                 <el-button size="small" type="primary" @click="handleAddField">添加字段</el-button>
                                             </div>
                                             <el-form
@@ -159,7 +163,7 @@
                                             >
                                                 <el-row v-for="(itemField, indexField) in fieldEncryptList[activeIndex]" :key="indexField">
                                                     <el-col :span="18">
-                                                        <el-form-item label="字段">
+                                                        <el-form-item label="字段选择">
                                                             <el-select v-model="itemField.field_encrypt_index" filterable placeholder="请选择字段" @change="handleFieldChange(indexField)">
                                                                 <el-option
                                                                   v-for="(item, index) in tables[activeIndex].field"

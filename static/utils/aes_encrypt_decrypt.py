@@ -1,20 +1,21 @@
 import base64
 from Crypto.Cipher import AES
+from configparser import ConfigParser
 from utils.loggings import loggings
+
+# 设置配置文件的位置
+CONFIG_DIR = "config/develop_config.conf"
+CONFIG = ConfigParser()
+CONFIG.read(CONFIG_DIR, encoding='utf-8')
 
 
 class AESEncryptDecrypt:
-    key = None  # 将密钥转换为字符型数据
+    key = CONFIG['AES']['secret_key'].encode()  # 将密钥转换为字符型数据
     mode = AES.MODE_ECB  # 操作模式选择ECB
 
     @classmethod
     def encrypt(cls, text=None):
         """加密函数"""
-        if cls.key:
-            pass
-        else:
-            from flask_sqlalchemy import current_app
-            cls.key = current_app.config.get('AES_SECRET_KEY').encode()
 
         file_aes = AES.new(cls.key, cls.mode)  # 创建AES加密对象
         # while len(text) % 16 != 0:  # 对字节型数据进行长度判断
@@ -29,11 +30,6 @@ class AESEncryptDecrypt:
     @classmethod
     def decrypt(cls, text):
         """解密函数"""
-        if cls.key:
-            pass
-        else:
-            from flask_sqlalchemy import current_app
-            cls.key = current_app.config.get('AES_SECRET_KEY').encode()
         try:
             file_aes = AES.new(cls.key, cls.mode)
             text = bytes(text, encoding='utf-8')  # 将密文转换为bytes，此时的密文还是由basen64编码过的

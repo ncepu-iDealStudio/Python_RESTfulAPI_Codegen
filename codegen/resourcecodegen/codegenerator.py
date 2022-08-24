@@ -70,8 +70,8 @@ class CodeGenerator(object):
                             else:
                                 table_dict[table]['post_columns'][column.get('name')] = False
                                 table_dict[table]['put_columns'][column.get('name')] = False
-                            if column.get('name') not in rsa_columns:
-                                table_dict[table]['get_columns'][column.get('name')] = False
+
+                            table_dict[table]['get_columns'][column.get('name')] = False
                         else:
                             business_key = table_dict[table].get('business_key_column').get('column')
                             business_key_rule = table_dict[table].get('business_key_column').get('rule')
@@ -100,8 +100,7 @@ class CodeGenerator(object):
                                 else:
                                     table_dict[table]['post_columns'][column.get('name')] = True
                                 if column.get('name') != real_primary_key:
-                                    if column.get('name') not in (rsa_columns + aes_columns):
-                                        table_dict[table]['get_columns'][column.get('name')] = False
+                                    table_dict[table]['get_columns'][column.get('name')] = False
                                     table_dict[table]['put_columns'][column.get('name')] = False
                                     table_dict[table]['delete_columns'][column.get('name')] = False
 
