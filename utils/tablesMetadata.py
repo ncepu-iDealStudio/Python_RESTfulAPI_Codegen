@@ -10,6 +10,10 @@
     Get metadata of all tables
 """
 import json
+from multiprocessing import cpu_count
+from multiprocessing.pool import ThreadPool
+
+from sqlalchemy.engine import reflection
 
 from utils.common import str_to_all_small, str_to_little_camel_case, str_to_big_camel_case, standard_str
 
@@ -37,52 +41,67 @@ class TableMetadata(object):
         table_dict = {}
 
         # Traverse each table object to get corresponding attributes to form an attribute dictionary
+        # Using multithreading to speed up the convert process
+        pool = ThreadPool(cpu_count() + 1)
         for table in table_objs:
+            pool.apply_async(cls.metadata_operation, (table_config, metadata, reflection_views, table, table_dict))
+        pool.close()
+        pool.join()
 
-            table_name = str(table)
-            table_dict[table_name] = {}
-            table_dict[table_name]['table_name'] = table_name
-            table_dict[table_name]['table_name_all_small'] = str_to_all_small(table_name)
-            table_dict[table_name]['table_name_little_camel_case'] = str_to_little_camel_case(table_name)
-            table_dict[table_name]['table_name_big_camel_case'] = str_to_big_camel_case(table_name)
-            table_dict[table_name]['table_name_api_standard'] = standard_str(table_name)
+        return table_dict
 
-            # 如果该表是一个视图
-            if table_name in reflection_views:
-                table_dict[table_name]['is_view'] = True
-                table_dict[table_name]['filter_field'] = []
+    @classmethod
+    def metadata_operation(cls, table_config, metadata, reflection_views, table, table_dict):
+        """
+            数据库元数据转换
+            :param table_config 表配置
+            :param metadata sqlalchemy元数据
+            :param reflection_views 需要反射的视图名称列表
+            :param table 待转换的表数据
+            :param table_dict 数据库数据汇总字典
+        """
+        table_name = str(table)
+        table_dict[table_name] = {}
+        table_dict[table_name]['table_name'] = table_name
+        table_dict[table_name]['table_name_all_small'] = str_to_all_small(table_name)
+        table_dict[table_name]['table_name_little_camel_case'] = str_to_little_camel_case(table_name)
+        table_dict[table_name]['table_name_big_camel_case'] = str_to_big_camel_case(table_name)
+        table_dict[table_name]['table_name_api_standard'] = standard_str(table_name)
 
-                # 遍历所有的视图配置
-                for view in table_config['view']:
-                    if table_name == view['view']:
-                        # 遍历配置中的字段
-                        for field in view['filter_field']:
-                            # 如果字段被勾选，则将字段名称和类型添加进字典中
-                            if field['ischecked']:
-                                table_dict[table_name]['filter_field'].append({
-                                    "field_name": field['field_name'],
-                                    "field_type": field['field_type']
-                                })
+        # 如果该表是一个视图
+        if table_name in reflection_views:
+            table_dict[table_name]['is_view'] = True
+            table_dict[table_name]['filter_field'] = []
 
-                table_dict[table_name]['columns'] = []
-                for column in table.columns.values():
-                    temp_column_dict = {
-                        "field_name": str(column.name),
-                    }
+            # 遍历所有的视图配置
+            for view in table_config['view']:
+                if table_name == view['view']:
+                    # 遍历配置中的字段
+                    for field in view['filter_field']:
+                        # 如果字段被勾选，则将字段名称和类型添加进字典中
+                        if field['ischecked']:
+                            table_dict[table_name]['filter_field'].append({
+                                "field_name": field['field_name'],
+                                "field_type": field['field_type']
+                            })
 
-                    for type_ in cls.TYPE_MAPPING:
-                        if str(metadata.bind.url).split('+')[0] != type_['database']:
-                            continue
-                        for python_type, sql_type_list in type_['data_map'].items():
-                            if str(column.type).lower() in sql_type_list:
-                                temp_column_dict['field_type'] = python_type
-                                break
+            table_dict[table_name]['columns'] = []
+            for column in table.columns.values():
+                temp_column_dict = {
+                    "field_name": str(column.name),
+                }
 
-                    temp_column_dict.setdefault('field_type', 'str')
-                    table_dict[table_name]['columns'].append(temp_column_dict)
+                for type_ in cls.TYPE_MAPPING:
+                    if str(metadata.bind.url).split('+')[0] != type_['database']:
+                        continue
+                    for python_type, sql_type_list in type_['data_map'].items():
+                        if str(column.type).lower() in sql_type_list:
+                            temp_column_dict['field_type'] = python_type
+                            break
 
-                continue
-
+                temp_column_dict.setdefault('field_type', 'str')
+                table_dict[table_name]['columns'].append(temp_column_dict)
+        else:
             table_dict[table_name]['is_view'] = False
             table_dict[table_name]['logical_delete_column'] = ""
             table_dict[table_name]['business_key_column'] = {}
@@ -115,7 +134,6 @@ class TableMetadata(object):
                             elif one_colume['encrypt_type'] == 'aes':
                                 table_dict[table_name]['aes_columns'].append(one_colume['field_name'])
 
-            from sqlalchemy.engine import reflection
             insp = reflection.Inspector.from_engine(metadata.bind)
             # 初始化为空列表
             table_dict[table_name]['primary_key_columns'] = insp.get_pk_constraint(table_name)['constrained_columns']
@@ -154,5 +172,3 @@ class TableMetadata(object):
                 # 是否存在默认值
                 table_dict[table_name]['columns'][str(column.name)][
                     'is_exist_default'] = True if column.server_default is not None else False
-
-        return table_dict
