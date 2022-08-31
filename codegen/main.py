@@ -50,7 +50,6 @@ def start(table_config, session_id, ip):
 
         table_dict = TableMetadata.get_tables_metadata(
             metadata=metadata,
-            reflection_views=reflection_views,
             table_config=table_config
         )
 

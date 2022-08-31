@@ -109,7 +109,7 @@ def connecttest():
         return {'code': '4000', 'data': [], 'message': '数据库连接失败'}
 
 
-# 连接数据库接口
+# 获取表名
 @app.route('/next', methods=['POST'])
 def next():
     # 获取会话id并创建对应配置文件
@@ -151,7 +151,7 @@ def next():
         return {'code': '4000', 'data': [], 'message': result_sql['message']}
 
 
-# 连接数据库接口
+# 获取表中字段等信息
 @app.route('/next-tables', methods=['GET'])
 def next_get_tables():
     # 获取会话id并创建对应配置文件
@@ -166,7 +166,7 @@ def next_get_tables():
         return {'code': '4000', 'data': [], 'message': result_sql['message']}
 
 
-# 连接数据库接口
+# 获取视图中字段信息
 @app.route('/next-views', methods=['GET'])
 def next_get_views():
     # 获取会话id并创建对应配置文件
