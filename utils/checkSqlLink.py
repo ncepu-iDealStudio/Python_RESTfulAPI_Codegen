@@ -24,7 +24,7 @@ class SQLHandler:
     metadata = None
     inspector = None
     table_names = None
-    views_name = None
+    views_names = None
 
     @classmethod
     def connect_sql_link(cls, dialect, username, password, host, port, database, session_id=None, ip=None):
@@ -55,11 +55,11 @@ class SQLHandler:
             cls.inspector = inspect(cls.engine)
 
             cls.table_names = cls.inspector.get_table_names()
-            cls.views_name = cls.inspector.get_view_names()
+            cls.views_names = cls.inspector.get_view_names()
 
             data = {
                 'table_names': cls.table_names,
-                'view_names': cls.views_name
+                'view_names': cls.views_names
             }
 
         except Exception as e:
@@ -218,7 +218,6 @@ class SQLHandler:
             :return invalid: 检查不通过的表，以列表返还表名
         """
         try:
-            start_time = time.time()
             cls.metadata = MetaData(cls.engine)
 
             def metadata_reflection(target_engine, target_metadata, target_name):
@@ -234,12 +233,11 @@ class SQLHandler:
 
             pool.close()
             pool.join()
-            print("reflect： ", time.time() - start_time)
 
         except Exception as e:
             return {'code': False, 'message': str(e), 'error': str(e)}
 
-        table_dict, invalid_tables = CheckTable.main(cls.metadata, session_id, ip, False)
+        table_dict, invalid_tables = CheckTable.main(cls.metadata, session_id, ip, cls.views_names)
 
         data = {
             'table': [],
@@ -298,7 +296,7 @@ class SQLHandler:
 
             pool = ThreadPool(2 * cpu_count() + 1)
             # 生成表元数据
-            for view_name in cls.views_name:
+            for view_name in cls.views_names:
                 pool.apply_async(metadata_reflection, (cls.engine, cls.metadata, view_name))
 
             pool.close()
@@ -307,7 +305,7 @@ class SQLHandler:
         except Exception as e:
             return {'code': False, 'message': str(e), 'error': str(e)}
 
-        table_dict, invalid_tables = CheckTable.main(cls.metadata, session_id, ip, True)
+        table_dict, invalid_tables = CheckTable.main(cls.metadata,  session_id, ip, cls.views_names, view=True)
 
         data = {
             'view': []

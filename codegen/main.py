@@ -50,8 +50,17 @@ def start(table_config, session_id, ip):
 
         table_dict = TableMetadata.get_tables_metadata(
             metadata=metadata,
+            reflection_views=reflection_views,
             table_config=table_config
         )
+
+        view_dict = TableMetadata.get_views_metadata(
+            metadata=metadata,
+            reflection_views=reflection_views,
+            table_config=table_config
+        )
+
+        table_dict = dict(table_dict, **view_dict)
 
         # 第一步
         loggings.info(1, "Start to build the Model layer code, please wait...", session_id, ip)

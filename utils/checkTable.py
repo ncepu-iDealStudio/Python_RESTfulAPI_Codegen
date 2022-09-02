@@ -31,10 +31,8 @@ class CheckTable(object):
         invalid_tables = []
 
         for table in table_dict.values():
-            if table['is_view']:
-                # 是一个视图，不进行检查
-                continue
-            elif len(table['primary_key_columns']) == 0:
+
+            if len(table['primary_key_columns']) == 0:
                 # 表中没有主键
                 invalid_tables.append(table['table_name'])
                 loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']), session_id, ip)
@@ -61,10 +59,6 @@ class CheckTable(object):
 
         for table in table_dict.values():
 
-            if table['is_view']:
-                # 是一个视图，不进行检查
-                continue
-
             flag = True
 
             # 检查表名是否为python关键字
@@ -89,17 +83,18 @@ class CheckTable(object):
 
     # 入口函数定义
     @classmethod
-    def main(cls, metadata, session_id, ip, view=False):
+    def main(cls, metadata, session_id, ip, reflection_views, view=False):
         """
             建立数据库连接时对表进行检查，筛去没有唯一自增主键、表名/字段名与Python关键字有冲突的表
             :param metadata: 数据库元数据
-            :param view: 需要反射的是视图还是表 False: 反射表 True: 反射视图
+            :param view: 是否为视图
         """
-        if not view:
-            transformed_dict = TableMetadata.get_tables_metadata(metadata)
-        else:
-            transformed_dict = TableMetadata.get_views_metadata(metadata)
         invalid_tables = {}
+        if view:
+            transformed_dict = TableMetadata.get_views_metadata(metadata, reflection_views)
+            return transformed_dict, invalid_tables
+        else:
+            transformed_dict = TableMetadata.get_tables_metadata(metadata, reflection_views)
 
         # check table primary key
 

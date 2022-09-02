@@ -26,7 +26,7 @@ class TableMetadata(object):
         TYPE_MAPPING = json.load(f)
 
     @classmethod
-    def get_tables_metadata(cls, metadata, table_config=DEFAULT_CONFIG) -> dict:
+    def get_tables_metadata(cls, metadata, reflection_views, table_config=DEFAULT_CONFIG) -> dict:
         """
             获取数据库表数据
             :param metadata: sqlalchemy元数据
@@ -43,14 +43,15 @@ class TableMetadata(object):
         # Using multithreading to speed up the convert process
         pool = ThreadPool(2 * cpu_count() + 1)
         for table in table_objs:
-            pool.apply_async(cls.metadata_tables_transition, (table_config, metadata, table, table_dict))
+            if str(table) not in reflection_views:
+                pool.apply_async(cls.metadata_tables_transition, (table_config, metadata, table, table_dict))
         pool.close()
         pool.join()
 
         return table_dict
 
     @classmethod
-    def get_views_metadata(cls, metadata, table_config=DEFAULT_CONFIG) -> dict:
+    def get_views_metadata(cls, metadata, reflection_views, table_config=DEFAULT_CONFIG) -> dict:
         """
             获取数据库视图数据
             :param metadata: sqlalchemy元数据
@@ -67,7 +68,8 @@ class TableMetadata(object):
         # Using multithreading to speed up the convert process
         pool = ThreadPool(2 * cpu_count() + 1)
         for view in view_objs:
-            pool.apply_async(cls.metadata_views_transition, (table_config, metadata, view, view_dict))
+            if str(view) in reflection_views:
+                pool.apply_async(cls.metadata_views_transition, (table_config, metadata, view, view_dict))
         pool.close()
         pool.join()
 

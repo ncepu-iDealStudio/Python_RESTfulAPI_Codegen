@@ -403,7 +403,7 @@ class CodeGenerator(object):
             table_name_endpoint = table_name_little_camel_case + '.' + table_name_big_camel_case
 
             if table.get('is_view'):
-                permission.append(table_name_endpoint + '_query')
+                permission.append(table_name_endpoint + 'Query')
             else:
                 permission.append(table_name_endpoint)
 
