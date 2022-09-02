@@ -162,9 +162,9 @@
                                 } else {
                                     localStorage.removeItem("userInfo")
                                 }
-                                localStorage.setItem("tables", JSON.stringify(res.data.table));
-                                localStorage.setItem("views", JSON.stringify(res.data.view));
-                                localStorage.setItem("invalid", JSON.stringify(res.invalid));
+                                localStorage.setItem("table_names", JSON.stringify(res.data.table_names));
+                                localStorage.setItem("view_names", JSON.stringify(res.data.view_names));
+                                // localStorage.setItem("invalid", JSON.stringify(res.invalid));
                                 location.replace('tables')
                                 state.nextStep_loading = false;
                             } else {
