@@ -89,13 +89,13 @@ class CheckTable(object):
             :param metadata: 数据库元数据
             :param view: 是否为视图
         """
-        invalid_tables = {}
         if view:
             transformed_dict = TableMetadata.get_views_metadata(metadata, reflection_views)
-            return transformed_dict, invalid_tables
+            return transformed_dict
         else:
             transformed_dict = TableMetadata.get_tables_metadata(metadata, reflection_views)
 
+        invalid_tables = {}
         # check table primary key
 
         available_table, invalid_table = cls.check_primary_key(transformed_dict, session_id, ip)

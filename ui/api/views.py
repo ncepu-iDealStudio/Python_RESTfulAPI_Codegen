@@ -146,7 +146,8 @@ def next():
         conf.set("DATABASE", "password", password)
         with open(configfile, "w") as f:
             conf.write(f)
-        return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
+
+        return {'code': '2000', 'data': [], 'message': '数据库连接成功'}
     else:
         return {'code': '4000', 'data': [], 'message': result_sql['message']}
 
@@ -158,7 +159,6 @@ def next_get_tables():
     id = session.get('id')
     ip = request.remote_addr
 
-    # 检查数据库链接
     result_sql = SQLHandler.generate_tables_information(id, ip)
     if result_sql['code']:
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功', 'invalid': result_sql['invalid']}
@@ -173,10 +173,9 @@ def next_get_views():
     id = session.get('id')
     ip = request.remote_addr
 
-    # 检查数据库链接
     result_sql = SQLHandler.generate_views_information(id, ip)
     if result_sql['code']:
-        return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功', 'invalid': result_sql['invalid']}
+        return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
     else:
         return {'code': '4000', 'data': [], 'message': result_sql['message']}
 
