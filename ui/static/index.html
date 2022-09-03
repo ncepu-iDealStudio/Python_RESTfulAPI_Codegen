@@ -62,8 +62,7 @@
                                         <el-option v-if="getdbname_loading" v-loading="getdbname_loading" label="" value=""> </el-option>
                                         <el-option :label="item[0]" :value="item[0]" v-for="(item, index) in dbname_list" :key="index"></el-option>
                                     </el-select>
-                                    <el-button type="primary" style="margin-left: 10px;" :loading="connectTest_loading" @click="connectTest">连接测试</el-button>
-                                </el-form-item>
+                               </el-form-item>
                                 <el-form-item>
                                     <el-checkbox v-model="form.remember" label="记住我" size="large"></el-checkbox>
                                 </el-form-item>
