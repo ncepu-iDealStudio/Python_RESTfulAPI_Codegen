@@ -19,6 +19,7 @@ from utils.response_code import RET
 
 class InterfaceLimiter(object):
     # 读取限制器有关配置
+    minute_limit = None
     default_limits = None
     error_message = None
 
