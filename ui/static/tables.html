@@ -50,6 +50,7 @@
                                     <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
                                 </el-menu-item>
                             </el-menu>
+                            <div v-if="tableLoading" style="text-align: center">正在读取数据库元数据...表加载中</div>
                         </el-scrollbar>
                     </el-col>
                     <el-col :span="12">

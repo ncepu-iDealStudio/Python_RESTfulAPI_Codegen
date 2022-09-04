@@ -147,9 +147,9 @@ def next():
         with open(configfile, "w") as f:
             conf.write(f)
 
-        return {'code': '2000', 'data': [], 'message': '数据库连接成功'}
+        return {'code': '2000', 'message': '数据库连接成功'}
     else:
-        return {'code': '4000', 'data': [], 'message': result_sql['message']}
+        return {'code': '4000', 'message': result_sql['message']}
 
 
 # 获取表中字段等信息
