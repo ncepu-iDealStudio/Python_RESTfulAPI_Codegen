@@ -21,7 +21,7 @@ import pymysql
 from flask import Flask, request, session, send_from_directory
 from urllib import parse
 
-from utils.checkSqlLink import check_sql_link, connection_check
+from utils.checkSqlLink import SQLHandler
 from utils.interface_limiter import InterfaceLimiter
 
 app = Flask(__name__, static_folder="../static")
@@ -102,14 +102,14 @@ def connecttest():
     password = parse.quote_plus(kwargs['Password'])
 
     # 检查数据库链接
-    result_sql = connection_check(dialect, username, password, host, port, database)
+    result_sql = SQLHandler.connection_check(dialect, username, password, host, port, database)
     if result_sql['code']:
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
     else:
         return {'code': '4000', 'data': [], 'message': '数据库连接失败'}
 
 
-# 连接数据库接口
+# 获取表名
 @app.route('/next', methods=['POST'])
 def next():
     # 获取会话id并创建对应配置文件
@@ -128,7 +128,7 @@ def next():
     username = kwargs['Username']
     password = kwargs['Password']
     # 检查数据库链接
-    result_sql = check_sql_link(dialect, username, password, host, port, database, id, ip)
+    result_sql = SQLHandler.connect_sql_link(dialect, username, password, host, port, database, id, ip)
     if result_sql['code']:
         # 填写配置文件
         configfile = "config/config_" + str(id) + ".conf"
@@ -146,7 +146,36 @@ def next():
         conf.set("DATABASE", "password", password)
         with open(configfile, "w") as f:
             conf.write(f)
+
+        return {'code': '2000', 'message': '数据库连接成功'}
+    else:
+        return {'code': '4000', 'message': result_sql['message']}
+
+
+# 获取表中字段等信息
+@app.route('/next-tables', methods=['GET'])
+def next_get_tables():
+    # 获取会话id并创建对应配置文件
+    id = session.get('id')
+    ip = request.remote_addr
+
+    result_sql = SQLHandler.generate_tables_information(id, ip)
+    if result_sql['code']:
         return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功', 'invalid': result_sql['invalid']}
+    else:
+        return {'code': '4000', 'data': [], 'message': result_sql['message']}
+
+
+# 获取视图中字段信息
+@app.route('/next-views', methods=['GET'])
+def next_get_views():
+    # 获取会话id并创建对应配置文件
+    id = session.get('id')
+    ip = request.remote_addr
+
+    result_sql = SQLHandler.generate_views_information(id, ip)
+    if result_sql['code']:
+        return {'code': '2000', 'data': result_sql['data'], 'message': '数据库连接成功'}
     else:
         return {'code': '4000', 'data': [], 'message': result_sql['message']}
 
