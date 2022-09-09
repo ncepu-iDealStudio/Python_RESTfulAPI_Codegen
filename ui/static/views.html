@@ -36,7 +36,7 @@
                 <el-row>
                     <el-col :offset="4" :span="4">
                         <el-scrollbar style="height:calc(100vh - 130px);">
-                            <el-menu @select="handleSelect">
+                            <el-menu @select="handleSelect" v-loading="viewLoading">
                                 <div style="padding-left: 20px;">
                                     <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选(请选择需要生成代码的视图)</el-checkbox>
                                 </div>
@@ -44,6 +44,7 @@
                                     <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.view}}
                                 </el-menu-item>
                             </el-menu>
+                            <div v-if="viewLoading" style="text-align: center">正在读取数据库元数据...视图加载中</div>
                         </el-scrollbar>
                     </el-col>
                     <el-col :span="12">
@@ -114,6 +115,7 @@
                 nextStep_loading: false,
                 checkAll: false,
                 isIndeterminate: false,
+                viewLoading: false
             });
 
             const handleSelect = (key, keyPath) => {
@@ -166,16 +168,38 @@
                 state.views[state.activeIndex].ischecked = true;
 
             }
-
-            onMounted(() => {
-                let data = JSON.parse(localStorage.getItem("views"));
-                if (!data) {
-                    ElMessage.warning('请重新连接数据库')
-                    setTimeout(() => {
-                        location.replace('/')
-                    }, 1000)
+            // 获取数据库的视图结构
+            const getViewsData = () => {
+                let data = JSON.parse(localStorage.getItem("views"))
+                if(!data){
+                    state.viewLoading = true
+                    axios({
+                        method: 'GET',
+                        url: '/next-views'
+                    }).then(result => {
+                        const res = result.data
+                        if(res.code === "2000"){
+                            localStorage.setItem("views", JSON.stringify(res.data.view));
+                            let data = res.data.view
+                            if (!data) {
+                                ElMessage.warning('请重新连接数据库')
+                                setTimeout(() => {
+                                    location.replace('/')
+                                }, 1000)
+                            }
+                            state.views = data;
+                            state.viewLoading = false
+                        }else{
+                            ElMessage.error(res.message())
+                            state.viewLoading = false
+                        }
+                    })
+                }else{
+                    state.views = data;
                 }
-                state.views = data;
+            }
+            onMounted(() => {
+                getViewsData()
             });
 
             return {

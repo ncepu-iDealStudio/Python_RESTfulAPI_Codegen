@@ -31,10 +31,8 @@ class CheckTable(object):
         invalid_tables = []
 
         for table in table_dict.values():
-            if table['is_view']:
-                # 是一个视图，不进行检查
-                continue
-            elif len(table['primary_key_columns']) == 0:
+
+            if len(table['primary_key_columns']) == 0:
                 # 表中没有主键
                 invalid_tables.append(table['table_name'])
                 loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']), session_id, ip)
@@ -61,10 +59,6 @@ class CheckTable(object):
 
         for table in table_dict.values():
 
-            if table['is_view']:
-                # 是一个视图，不进行检查
-                continue
-
             flag = True
 
             # 检查表名是否为python关键字
@@ -76,7 +70,8 @@ class CheckTable(object):
                 # 检查表字段是否为python关键字
                 if keyword.iskeyword(column['name']):
                     loggings.warning(1, 'column "{0}.{1}" is a keyword of python'.format(table['table_name'],
-                                                                                         column['name']), session_id, ip)
+                                                                                         column['name']), session_id,
+                                     ip)
                     flag = False
 
             if flag:
@@ -88,28 +83,33 @@ class CheckTable(object):
 
     # 入口函数定义
     @classmethod
-    def main(cls, metadata, reflection_views, session_id, ip):
+    def main(cls, metadata, session_id, ip, reflection_views, view=False):
         """
             建立数据库连接时对表进行检查，筛去没有唯一自增主键、表名/字段名与Python关键字有冲突的表
             :param metadata: 数据库元数据
-            :param reflection_views: 需要反射的视图名称列表
+            :param view: 是否为视图
         """
+        if view:
+            transformed_dict = TableMetadata.get_views_metadata(metadata, reflection_views)
+            return transformed_dict
+        else:
+            transformed_dict = TableMetadata.get_tables_metadata(metadata, reflection_views)
 
-        table_dict = TableMetadata.get_tables_metadata(metadata, reflection_views)
         invalid_tables = {}
-
         # check table primary key
-        available_table, invalid_table = cls.check_primary_key(table_dict, session_id, ip)
+
+        available_table, invalid_table = cls.check_primary_key(transformed_dict, session_id, ip)
         invalid_tables['primary_key'] = invalid_table
         for invalid in invalid_table:
-            table_dict.pop(invalid)
+            transformed_dict.pop(invalid)
 
         # check the keyword
-        available_table, invalid_table = cls.check_keyword_conflict(table_dict, session_id, ip)
+
+        available_table, invalid_table = cls.check_keyword_conflict(transformed_dict, session_id, ip)
         available_tables = available_table
         invalid_tables['keyword'] = invalid_table
         for invalid in invalid_table:
-            table_dict.pop(invalid)
+            transformed_dict.pop(invalid)
 
         if len(invalid_tables) > 0:
             loggings.warning(
@@ -117,16 +117,17 @@ class CheckTable(object):
                 "A total of {0} tables check passed."
                 "The following {1} tables do not meet the specifications and cannot be generated: {2}."
                     .format(
-                        len(available_tables),
-                        len(invalid_tables['primary_key'] + invalid_tables['keyword']),
-                        ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])
-                    ),
+                    len(available_tables),
+                    len(invalid_tables['primary_key'] + invalid_tables['keyword']),
+                    ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])
+                ),
                 session_id,
                 ip
             )
 
-            return table_dict, invalid_tables
+            return transformed_dict, invalid_tables
 
-        loggings.info(1, "All table checks passed, a total of {0} tables.".format(len(available_tables)), session_id, ip)
+        loggings.info(1, "All table checks passed, a total of {0} tables.".format(len(available_tables)), session_id,
+                      ip)
 
-        return table_dict, invalid_tables
+        return transformed_dict, invalid_tables

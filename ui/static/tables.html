@@ -42,7 +42,7 @@
                 <el-row>
                     <el-col :offset="4" :span="4">
                         <el-scrollbar style="height:calc(100vh - 130px);">
-                            <el-menu @select="handleSelect">
+                            <el-menu @select="handleSelect" v-loading="tableLoading">
                                 <div style="padding-left: 20px;">
                                     <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选 选择需要生成代码的表</el-checkbox>
                                 </div>
@@ -50,6 +50,7 @@
                                     <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
                                 </el-menu-item>
                             </el-menu>
+                            <div v-if="tableLoading" style="text-align: center">正在读取数据库元数据...表加载中</div>
                         </el-scrollbar>
                     </el-col>
                     <el-col :span="12">
@@ -245,7 +246,8 @@
                         label: "aes",
                         value: "aes"
                     }
-                ]
+                ],
+                tableLoading: false
             });
             const handleSelect = (key, keyPath) => {
                 state.activeIndex = Number(key);
@@ -492,35 +494,81 @@
                     state.repeatFieldEncryptList[state.activeIndex].push(item.field_encrypt_index)
                 })
             }
-            onMounted(() => {
-                let data = JSON.parse(localStorage.getItem("tables"));
+            // 获取表结构
+            const getTableData = () => {
+                let data = JSON.parse(localStorage.getItem('tables'))
                 if (!data) {
-                    ElMessage.warning('请重新连接数据库')
-                    setTimeout(() => {
-                        location.replace('/')
-                    }, 1000)
-                }
-                state.tables = data;
-                // 保存需要加密的字段
-                state.fieldEncryptList = Array.from(Array(data.length),() => new Array())
-                state.repeatFieldEncryptList = Array.from(Array(data.length),() => new Array())
-                // 回显数据
-                data.forEach((item, index) => {
-                    item.field.forEach((item_field,index_field) => {
-                        if (item_field.field_encrypt){
-                            state.fieldEncryptList[index].push({
-                                field_encrypt_index: index_field,
-                                encrypt_type: item_field.encrypt_type
-                            })
-                            state.repeatFieldEncryptList[index].push(index_field)
-                        }
+                    state.tableLoading = true
+                    axios({
+                        method: 'GET',
+                        url: '/next-tables'
+                        }).then(result => {
+                            const res = result.data
+                            if(res.code === "2000"){
+                                // 将返回的表结构保存起来
+                                localStorage.setItem("tables", JSON.stringify(res.data.table));
+                                // 保存返回的主键信息
+                                localStorage.setItem("invalid", JSON.stringify(res.invalid));
+                                let data = res.data.table
+                                if (!data) {
+                                    ElMessage.warning('请重新连接数据库')
+                                    setTimeout(() => {
+                                        location.replace('/')
+                                    }, 1000)
+                                }
+                                state.tables = data;
+                                // 保存需要加密的字段
+                                state.fieldEncryptList = Array.from(Array(data.length),() => new Array())
+                                state.repeatFieldEncryptList = Array.from(Array(data.length),() => new Array())
+                                // 回显数据
+                                data.forEach((item, index) => {
+                                    item.field.forEach((item_field,index_field) => {
+                                        if (item_field.field_encrypt){
+                                            state.fieldEncryptList[index].push({
+                                                field_encrypt_index: index_field,
+                                                encrypt_type: item_field.encrypt_type
+                                            })
+                                            state.repeatFieldEncryptList[index].push(index_field)
+                                        }
+                                    })
+                                })
+                                // 显示不符合规范的表
+                                let invalid = JSON.parse(localStorage.getItem("invalid"));
+                                if (!invalid) return
+                                state.invalid_primary_key = invalid.primary_key.toString();
+                                state.invalid_keyword = invalid.keyword.toString();
+                                state.tableLoading = false
+                            }else{
+                                ElMessage.error(res.message)
+                                state.tableLoading = false
+                            }
                     })
-                })
-                // 显示不符合规范的表
-                let invalid = JSON.parse(localStorage.getItem("invalid"));
-                if (!invalid) return
-                state.invalid_primary_key = invalid.primary_key.toString();
-                state.invalid_keyword = invalid.keyword.toString();
+                }else{
+                    state.tables = data;
+                    // 保存需要加密的字段
+                    state.fieldEncryptList = Array.from(Array(data.length),() => new Array())
+                    state.repeatFieldEncryptList = Array.from(Array(data.length),() => new Array())
+                    // 回显数据
+                    data.forEach((item, index) => {
+                        item.field.forEach((item_field,index_field) => {
+                            if (item_field.field_encrypt){
+                                state.fieldEncryptList[index].push({
+                                    field_encrypt_index: index_field,
+                                    encrypt_type: item_field.encrypt_type
+                                })
+                                state.repeatFieldEncryptList[index].push(index_field)
+                            }
+                        })
+                    })
+                    // 显示不符合规范的表
+                    let invalid = JSON.parse(localStorage.getItem("invalid"));
+                    if (!invalid) return
+                    state.invalid_primary_key = invalid.primary_key.toString();
+                    state.invalid_keyword = invalid.keyword.toString();
+                }
+            }
+            onMounted(() => {
+                getTableData()
             });
             return {
                 ...toRefs(state),
