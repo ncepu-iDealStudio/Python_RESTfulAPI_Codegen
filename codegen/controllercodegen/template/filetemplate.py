@@ -214,14 +214,18 @@ class {class_name}({parent_model}):
             filter_list = []
             {filter_list_init}
             res = db.session.query(cls).filter(*filter_list).with_for_update()
-
-            results = {{
-                'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                {results_primary_keys}
-            }}
-            
-            res.update(kwargs)
-            db.session.commit()
+            if res.first():
+                results = {{
+                    'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    {results_primary_keys}
+                }}
+                
+                res.update(kwargs)
+                db.session.commit()
+            else:
+                results = {
+                    'error': 'data dose not exist'
+                }
             
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
 
@@ -243,14 +247,18 @@ class {class_name}({parent_model}):
             filter_list = [cls.{logical_delete_mark} == 0]
             {filter_list_init}
             res = db.session.query(cls).filter(*filter_list).with_for_update()
-
-            results = {{
-                'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                {results_primary_keys}
-            }}
-            
-            res.update(kwargs)
-            db.session.commit()
+            if res.first():
+                results = {{
+                    'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    {results_primary_keys}
+                }}
+                
+                res.update(kwargs)
+                db.session.commit()
+            else:
+                results = {{
+                    'error': 'data dose not exist'
+                }}
 
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
 
