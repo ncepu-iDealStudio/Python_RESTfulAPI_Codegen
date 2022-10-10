@@ -223,9 +223,9 @@ class {class_name}({parent_model}):
                 res.update(kwargs)
                 db.session.commit()
             else:
-                results = {
+                results = {{
                     'error': 'data dose not exist'
-                }
+                }}
             
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'data': results}}
 
