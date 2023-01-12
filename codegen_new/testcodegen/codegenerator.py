@@ -10,7 +10,7 @@
 
 import os
 
-from codegen.testcodegen.template.filetemplate import FileTemplate
+from codegen_new.testcodegen.template.filetemplate import FileTemplate
 from utils.common import str_format_convert
 from utils.loggings import loggings
 
