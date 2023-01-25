@@ -14,8 +14,8 @@
 
 import os
 
-from codegen.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
-from codegen.resourcecodegen.template.filetemplate import FileTemplate
+from code_generate.resourcecodegen.template.codeblocktemplate import CodeBlockTemplate
+from code_generate.resourcecodegen.template.filetemplate import FileTemplate
 from utils.loggings import loggings
 
 project_dir = ''

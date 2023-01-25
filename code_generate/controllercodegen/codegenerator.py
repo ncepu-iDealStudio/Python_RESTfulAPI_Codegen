@@ -16,8 +16,8 @@
 
 import os.path
 
-from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
-from codegen.controllercodegen.template.filetemplate import FileTemplate
+from code_generate.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
+from code_generate.controllercodegen.template.filetemplate import FileTemplate
 from utils.loggings import loggings
 
 

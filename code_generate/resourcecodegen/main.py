@@ -13,7 +13,7 @@
 # file write
 import os
 
-from codegen.resourcecodegen.codegenerator import CodeGenerator
+from code_generate.resourcecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
 
