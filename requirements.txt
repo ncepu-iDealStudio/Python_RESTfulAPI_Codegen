@@ -4,7 +4,6 @@ commonmark==0.9.1
 Deprecated==1.2.13
 Flask==2.2.2
 Flask-Limiter==3.1.0
-Flask-SQLAlchemy==3.0.2
 greenlet==2.0.1
 inflect==6.0.2
 itsdangerous==2.1.2
@@ -17,9 +16,7 @@ packaging==23.0
 pydantic==1.10.4
 Pygments==2.14.0
 PyMySQL==1.0.2
-PySide2==5.15.2.1
 rich==12.6.0
-shiboken2==5.15.2.1
 sqlacodegen==2.3.0
 SQLAlchemy==1.4.46
 sqlalchemy-codegen==1.0.8

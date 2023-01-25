@@ -8,7 +8,7 @@
 
 import os
 
-from code_generate.testcodegen.codegenerator import CodeGenerator
+from codegenerate.testcodegen.codegenerator import CodeGenerator
 from .template.filetemplate import FileTemplate
 from utils.loggings import loggings
 

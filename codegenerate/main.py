@@ -12,12 +12,12 @@
 
 from sqlalchemy import create_engine, MetaData
 
-import code_generate.controllercodegen.main
-import code_generate.modelcodegen.main
-import code_generate.resourcecodegen.main
-import code_generate.servicecodegen.main
-import code_generate.staticcodegen.main
-import code_generate.testcodegen.main
+import codegenerate.controllercodegen.main
+import codegenerate.modelcodegen.main
+import codegenerate.resourcecodegen.main
+import codegenerate.servicecodegen.main
+import codegenerate.staticcodegen.main
+import codegenerate.testcodegen.main
 
 from utils.loggings import loggings
 from utils.response_code import RET, error_map
@@ -65,32 +65,32 @@ def start(table_config, session_id, ip):
         # 第一步
         loggings.info(1, "Start to build the Model layer code, please wait...", session_id, ip)
 
-        code_generate.modelcodegen.main.generate_model_layer(table_dict, settings, session_id, ip)
+        codegenerate.modelcodegen.main.generate_model_layer(table_dict, settings, session_id, ip)
         loggings.info(1, "Model layer code build completed", session_id, ip)
 
         # 第二步
         loggings.info(1, "Start to build the Controller layer code, please wait...", session_id, ip)
-        code_generate.controllercodegen.main.generate_controller_layer(table_dict, settings, session_id, ip)
+        codegenerate.controllercodegen.main.generate_controller_layer(table_dict, settings, session_id, ip)
         loggings.info(1, "Controller layer code build completed", session_id, ip)
 
         # 第三步
         loggings.info(1, "Start to build the Service layer code, please wait...", session_id, ip)
-        code_generate.servicecodegen.main.generate_service_layer(table_dict, settings, session_id, ip)
+        codegenerate.servicecodegen.main.generate_service_layer(table_dict, settings, session_id, ip)
         loggings.info(1, "Service layer code build completed", session_id, ip)
 
         # 第四步
         loggings.info(1, "Start to build the Resource layer code, please wait...", session_id, ip)
-        code_generate.resourcecodegen.main.generate_resource_layer(table_dict, settings, session_id, ip)
+        codegenerate.resourcecodegen.main.generate_resource_layer(table_dict, settings, session_id, ip)
         loggings.info(1, "Resource layer code build completed", session_id, ip)
 
         # 第五步
         loggings.info(1, "Start packing static files, please wait...", session_id, ip)
-        code_generate.staticcodegen.main.generate_static_layer(settings, session_id, ip)
+        codegenerate.staticcodegen.main.generate_static_layer(settings, session_id, ip)
         loggings.info(1, "Static resource packaging is complete", session_id, ip)
 
         # 第六步
         loggings.info(1, "Start to build the Test layer code, please wait...", session_id, ip)
-        code_generate.testcodegen.main.generate_test_layer(table_dict, settings, session_id, ip)
+        codegenerate.testcodegen.main.generate_test_layer(table_dict, settings, session_id, ip)
         loggings.info(1, "Test layer code build completed", session_id, ip)
 
         loggings.info(1, "Api project code generation completed", session_id, ip)

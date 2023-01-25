@@ -12,8 +12,8 @@
 
 import os
 
-from code_generate.staticcodegen.codegenerator import CodeGenerator
-from code_generate.staticcodegen.template.filetemplate import FileTemplate
+from codegenerate.staticcodegen.codegenerator import CodeGenerator
+from codegenerate.staticcodegen.template.filetemplate import FileTemplate
 from utils.loggings import loggings
 
 

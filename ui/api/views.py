@@ -211,7 +211,7 @@ def startbuild():
     id = session.get('id')
     ip = request.remote_addr
     kwargs = json.loads(request.data)
-    from code_generate.main import start
+    from codegenerate.main import start
     res = start(kwargs, id, ip)
     if res['code'] == '2000':
         return {'code': '2000', 'data': res['data'], 'message': '目标代码生成成功'}

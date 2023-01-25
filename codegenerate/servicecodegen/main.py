@@ -12,7 +12,7 @@
 
 import os
 
-from code_generate.servicecodegen.codegenerator import CodeGenerator
+from codegenerate.servicecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
 
