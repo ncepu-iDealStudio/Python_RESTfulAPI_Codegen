@@ -12,11 +12,11 @@
 
 import os
 
-from codegen_new.servicecodegen.codegenerator import CodeGenerator
+from codegen.servicecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
 
-def main(table_dict, settings, session_id, ip):
+def generate_service_layer(table_dict, settings, session_id, ip):
     """
     Generate service layer code
     :return: None

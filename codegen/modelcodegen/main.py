@@ -16,7 +16,7 @@ from utils.loggings import loggings
 from . import cmd
 
 
-def main(table_dict, settings, session_id, ip):
+def generate_model_layer(table_dict, settings, session_id, ip):
     """
     model层代码的生成
     :return: None

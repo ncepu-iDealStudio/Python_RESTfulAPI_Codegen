@@ -12,8 +12,8 @@
 
 import os
 
-from codegen_new.servicecodegen.template.codeblocktemplate import CodeBlockTemplate
-from codegen_new.servicecodegen.template.fileTemplate import FileTemplate
+from codegen.servicecodegen.template.codeblocktemplate import CodeBlockTemplate
+from codegen.servicecodegen.template.fileTemplate import FileTemplate
 from utils.common import str_to_little_camel_case, str_to_all_small
 from utils.loggings import loggings
 

@@ -13,11 +13,11 @@
 # file write
 import os
 
-from codegen_new.resourcecodegen.codegenerator import CodeGenerator
+from codegen.resourcecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
 
-def main(table_dict, settings, session_id, ip):
+def generate_resource_layer(table_dict, settings, session_id, ip):
     """
     Generate resource layer code
     :return: None

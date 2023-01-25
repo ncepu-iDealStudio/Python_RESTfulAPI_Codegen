@@ -15,7 +15,7 @@ from sqlalchemy.schema import (
 from sqlalchemy.sql.expression import text
 from sqlalchemy.types import INTEGER, SMALLINT, VARCHAR, NUMERIC
 
-from codegen_new.modelcodegen_bak.codegen import CodeGenerator
+from codegen.modelcodegen_bak.codegen import CodeGenerator
 
 # SQLAlchemy 1.3.11+
 try:

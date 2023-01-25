@@ -12,12 +12,12 @@
 
 import os
 
-from codegen_new.staticcodegen.codegenerator import CodeGenerator
-from codegen_new.staticcodegen.template.filetemplate import FileTemplate
+from codegen.staticcodegen.codegenerator import CodeGenerator
+from codegen.staticcodegen.template.filetemplate import FileTemplate
 from utils.loggings import loggings
 
 
-def main(settings, session_id, ip):
+def generate_static_layer(settings, session_id, ip):
     """
     步骤：
         一、 按照当前项目的config/security.conf 文件 生成 static/config/security.conf
@@ -29,7 +29,7 @@ def main(settings, session_id, ip):
     try:
         project_dir = settings.PROJECT_DIR
 
-        # 第一步
+        # 第一步 目标项目初始化工作-创建相应配置文件
         os.makedirs(os.path.join(project_dir, "config"), exist_ok=True)
         CodeGenerator.generate_develop_configuration_file(os.path.join(project_dir, "config", "develop_config.conf"),
                                                           settings, session_id, ip)
@@ -38,7 +38,7 @@ def main(settings, session_id, ip):
         CodeGenerator.generate_blank_configuration_file(os.path.join(project_dir, "config", "product_config.conf"),
                                                         settings, session_id, ip)
 
-        # 第二步 app_setting
+        # 第二步 配置目标项目的app_setting
         app_setting_dir = os.path.join(project_dir, 'app')
         os.makedirs(app_setting_dir, exist_ok=True)
         with open(app_setting_dir + '/setting.py', 'w', encoding='utf8') as f:
