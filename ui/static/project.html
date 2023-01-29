@@ -41,13 +41,13 @@
                             </el-card>
                             <el-form ref="ruleForm" :model="Form" :rules="rules" label-width="130px">
                                 <el-form-item label="目标代码路径" prop="projectPath">
-                                    <el-input v-model="path" disabled></el-input>
+                                    <el-input v-model="Form.projectPath" disabled></el-input>
                                 </el-form-item>
                                 <el-form-item label="项目名称" prop="projectName">
-                                    <el-input v-model="Form.projectName" placeholder="api.project.com"></el-input>
+                                    <el-input v-model="Form.projectName" placeholder="请输入项目名称"></el-input>
                                 </el-form-item>
                                 <el-form-item label="接口版本" prop="projectVersion">
-                                    <el-input v-model="Form.projectVersion" placeholder="1.0"></el-input>
+                                    <el-input v-model="Form.projectVersion" placeholder="请输入接口版本"></el-input>
                                 </el-form-item>
                             </el-form>
                         </el-card>
@@ -88,23 +88,48 @@
         ElMessage
     } = ElementPlus
     const composition = {
+
             setup() {
+                var validateProjectPath = (rule, value, callback) => {
+                  if (value === '') {
+                    callback(new Error('请输入目标代码路径'))
+                  } else {
+                    if(value.indexOf(" ") !== -1){
+                        callback(new Error('目标代码路径中不能含有空格'))
+                    }
+                    callback()
+                  }
+                }
+                var validateProjectName = (rule, value, callback) => {
+                    if (value === '') {
+                    callback(new Error('请输入项目名称'))
+                  } else {
+                    if(value.indexOf(" ") !== -1){
+                        callback(new Error('项目名称中不能含有空格'))
+                    }
+                    callback()
+                  }
+                }
                 const state = reactive({
                     Form: {
                         projectName: "",
-                        projectVersion: "",
+                        projectVersion: "1.0",
+                        projectPath: ""
                     },
                     rules: {
                         projectName: [{
-                            required: true,
-                            message: '请填写完整信息',
-                            trigger: 'blur',
+                            validator: validateProjectName,
+                            trigger: 'blur'
                         }],
                         projectVersion: [{
                             required: true,
-                            message: '请填写完整信息',
+                            message: '请填写接口版本',
                             trigger: 'blur',
                         }],
+                        projectPath:[{
+                            validator: validateProjectPath,
+                            trigger: 'blur'
+                        }]
                     },
                     nextStep_loading: false,
                     dialogVisible: false,
@@ -123,7 +148,7 @@
                     ruleForm.value.validate((valid) => {
                         if (valid) {
                             // 判断是否有勾选表
-                            let tables_data = [];
+                           let tables_data = [];
                             for (let i = 0; i < state.tables.length; i++) {
                                 if (state.tables[i].ischecked) {
                                     tables_data.push(state.tables[i])
@@ -219,7 +244,7 @@
                     }).then(result => {
                         const res = result.data
                         if (res.code === '2000') {
-                            state.path = res.data;
+                            state.Form.projectPath= res.data;
                         }
                     })
 
