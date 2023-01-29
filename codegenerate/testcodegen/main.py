@@ -8,15 +8,12 @@
 
 import os
 
-from codegen.testcodegen.codegenerator import CodeGenerator
+from codegenerate.testcodegen.codegenerator import CodeGenerator
 from .template.filetemplate import FileTemplate
 from utils.loggings import loggings
 
 
-# from codegen import project_dir, target_dir
-
-
-def main(table_dict, settings, session_id, ip):
+def generate_test_layer(table_dict, settings, session_id, ip):
     """
     Generate resource layer code
     :return: None

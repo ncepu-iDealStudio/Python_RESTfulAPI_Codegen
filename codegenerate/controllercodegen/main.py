@@ -15,9 +15,9 @@ import os
 from .codegenerator import CodeGenerator
 
 
-def main(table_dict, settings, session_id, ip):
+def generate_controller_layer(table_dict, settings, session_id, ip):
     """
-    Generate Controller code
+    Generate Controller layer code
     :return: None
     """
 

@@ -41,8 +41,8 @@ class InterfaceLimiter(object):
     def get_limiter(cls, app):
         cls.get_settings()
         limiter = Limiter(
-            app,
-            key_func=get_remote_address,
+            get_remote_address,
+            app=app,
             default_limits=cls.default_limits
         )
         app.register_error_handler(429, cls.limiter_error_handler)

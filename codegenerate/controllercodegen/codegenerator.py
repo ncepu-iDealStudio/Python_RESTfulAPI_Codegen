@@ -16,8 +16,8 @@
 
 import os.path
 
-from codegen.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
-from codegen.controllercodegen.template.filetemplate import FileTemplate
+from codegenerate.controllercodegen.template.codeblocktemplate import CodeBlockTemplate
+from codegenerate.controllercodegen.template.filetemplate import FileTemplate
 from utils.loggings import loggings
 
 
@@ -38,7 +38,8 @@ class CodeGenerator(object):
             for table in [table_view for table_view in table_dict.values() if not table_view.get('is_view')]:
                 little_camel_case_str = table['table_name_little_camel_case']
                 big_camel_case_str = table['table_name_big_camel_case']
-                model_name = little_camel_case_str + 'Model'
+                # model_name = little_camel_case_str + 'Model'
+                model_name = table['table_name']
                 class_name = big_camel_case_str + 'Controller'
                 parent_model = big_camel_case_str
                 primary_key = table['primary_key_columns'][0] if len(table['primary_key_columns']) == 1 \
