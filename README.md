@@ -104,8 +104,18 @@
    运行test_start.py文件并生成测试报告；
 
 四 生成器项目详细使用指南  
+ 1. 克隆仓库代码到本地
+    git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen.git
+ 
+ 2. 使用Python开发工具(Pycharm或者VSCode)打开项目
 
-- <a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
+ 3. 新建项目虚拟环境（最低Python3.8.0及以上环境）;进入虚拟环境，安装需要的包；
+    pip install -r requirements.txt
+
+ 4. 运行启动
+   运行根目录下的start.py，自动跳转进入WebUI页面进行相关参数配置
+
+- 详见：<a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
 
 
 产品特性
