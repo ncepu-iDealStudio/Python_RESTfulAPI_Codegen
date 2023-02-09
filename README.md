@@ -71,7 +71,7 @@
 5. 建议设计一个timestamp类型的"CreateTime"字段，默认为当前时间戳(用来记录数据创建的时间)；
 6. 建议设计一个tinyint类型的"IsDelete"字段(用来实现记录的逻辑删除，0--有效，1--已删除)，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段必须存在）
 
-二 生成器项目使用
+二 代码生成器使用
 
 1. 先从仓库clone代码到本地;  
    git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen
@@ -82,7 +82,7 @@
 6. 程序运行完毕后，会生成dist文件夹，文件夹下即为我们需要的目标项目；
    也可以在配置文件中设置目标项目的位置；
 
-三 目标项目测试  
+三 生成的目标项目代码测试  
 
 1. 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
 
@@ -103,17 +103,6 @@
 
    运行test_start.py文件并生成测试报告；
 
-四 生成器项目详细使用指南  
- 1. 克隆仓库代码到本地
-    git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen.git
- 
- 2. 使用Python开发工具(Pycharm或者VSCode)打开项目
-
- 3. 新建项目虚拟环境（最低Python3.8.0及以上环境）;进入虚拟环境，安装需要的包；
-    pip install -r requirements.txt
-
- 4. 运行启动
-   运行根目录下的start.py，自动跳转进入WebUI页面进行相关参数配置
 
 - 详见：<a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
 
