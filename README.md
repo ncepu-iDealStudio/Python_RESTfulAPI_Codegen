@@ -123,4 +123,8 @@
 * Excellent test coverage
 
 常见错误
-* 
+* 1 ModuleNotFoundError: No module named 'flask._compat'
+解决方法：
+修改flask_script/init.py
+把from ._compat import text_type 改成 from flask_script._compat import text_type
+  
