@@ -121,3 +121,6 @@
 * Automatically detects joined table inheritance
 * 自动检测连接表继承
 * Excellent test coverage
+
+常见错误
+* 
