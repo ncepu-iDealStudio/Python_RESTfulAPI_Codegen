@@ -73,6 +73,12 @@ def query_to_dict(models):
 def result_to_dict(results):
     res = [dict(zip(r.keys(), r)) for r in results]
     # 这里r为一个字典，对象传递直接改变字典属性
+    # Flask-Sqlalchemy3.0.x, sqlalchemy.engine.row.Row 封装结构改变
+    # if isinstance(results[0][0], Model):
+    #     res = [dict(zip(r._fields[1:], r[1:])) for r in results]
+    # else:
+    #     res = [dict(zip(r._fields, r)) for r in results]
+
     for r in res:
         find_datetime(r)
     return res
