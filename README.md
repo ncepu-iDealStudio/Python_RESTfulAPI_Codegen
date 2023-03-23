@@ -123,7 +123,8 @@
 
 常见错误
 * 1 ModuleNotFoundError: No module named 'flask._compat'
+问题原因：Flask包升级到2.x以上后的版本bug；
 解决方法：
-修改flask_script/init.py
+修改虚拟环境中，site-packages/flask_script/init.py文件
 把from ._compat import text_type 改成 from flask_script._compat import text_type
   
