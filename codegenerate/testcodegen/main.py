@@ -32,22 +32,34 @@ def generate_test_layer(table_dict, settings, session_id, ip):
 
         test_dir = os.path.join(project_dir, 'test')
         os.makedirs(test_dir, exist_ok=True)
+        with open(os.path.join(test_dir, "__init__.py"), "w") as f:
+            f.write("")
 
-        report_dir = os.path.join(test_dir, 'report')
+        unitest_dir = os.path.join(project_dir, 'test\\unitest')
+        os.makedirs(unitest_dir, exist_ok=True)
+
+        report_dir = os.path.join(unitest_dir, 'report')
         os.makedirs(report_dir, exist_ok=True)
 
-        temp_dir = os.path.join(test_dir, 'temps')
+        temp_dir = os.path.join(unitest_dir, 'temps')
         os.makedirs(temp_dir, exist_ok=True)
 
-        # copy template dir to test dir
-        copy_dir(os.path.join(os.getcwd(), "codegenerate\\testcodegen\\template"), test_dir)
+        # copy template dir to unitest_dir dir
+        copy_dir(os.path.join(os.getcwd(), "codegenerate\\testcodegen\\template\\unitest"), unitest_dir)
 
-        test_env = os.path.join(test_dir, '.env')
+        test_env = os.path.join(unitest_dir, '.env')
         with open(test_env, 'w', encoding='utf8') as f:
             f.write(FileTemplate.env.format(project_name=project_dir.replace('\\', '/').split('/')[-1]))
 
         generator = CodeGenerator()
-        generator.test_generator(test_dir, table_dict, session_id, ip)
+        generator.test_generator(unitest_dir, table_dict, session_id, ip)
+
+        # copy performance test dir to performance_test_dir dir
+        performance_test_dir = os.path.join(project_dir, 'test\\performance_test')
+        os.makedirs(performance_test_dir, exist_ok=True)
+
+        copy_dir(os.path.join(os.getcwd(), "codegenerate\\testcodegen\\template\\performance"), performance_test_dir)
+
 
     except Exception as e:
         loggings.error(1, str(e), session_id, ip)

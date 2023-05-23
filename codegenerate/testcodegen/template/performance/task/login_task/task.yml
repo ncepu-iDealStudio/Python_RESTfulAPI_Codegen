@@ -1,0 +1,16 @@
+name: 登录接口
+request:
+  method: post
+  url: /manage-api/v1/adminUser/login
+  headers:
+    content-type: application/json
+  data:
+    userName: admin
+    passwordMd5: e10adc3949ba59abbe56e057f20f883e
+validate:
+  - eq:
+      - status_code
+      - 200
+  - eq:
+      - resultCode
+      - 200

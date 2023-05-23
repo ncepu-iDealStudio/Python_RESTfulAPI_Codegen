@@ -9,7 +9,7 @@ import os
 
 import pytest
 
-from test.utils.read_env import read_env
+from test.unitest.utils.read_env import read_env
 
 
 @pytest.fixture(scope="function")
