@@ -10,7 +10,8 @@
 
 import os
 
-from codegenerate.testcodegen.template.filetemplate import FileTemplate
+from codegenerate.testcodegen.core.data_template import DataTemplate
+from codegenerate.testcodegen.core.filetemplate import FileTemplate
 from utils.common import str_format_convert
 from utils.loggings import loggings
 
@@ -32,80 +33,77 @@ class CodeGenerator(object):
             loggings.info(1, 'Start generating Test layer, please wait...', session_id, ip)
 
             # Test_Controller generation
-            loggings.info(1, 'Start generating TestController layer, please wait...', session_id, ip)
+            loggings.info(1, 'Start generating test_api_1_0 layer, please wait...', session_id, ip)
 
-            # Test_Controller dir generation
-            os.makedirs(TestController_dir := (os.path.join(test_dir, 'Test_Controller')), exist_ok=True)
-            with open(os.path.join(TestController_dir, init_filename), 'w', encoding='utf8') as f:
+            # test_api_1_0 dir generation
+            os.makedirs(TestResource_dir := (os.path.join(test_dir, 'test_api_1_0')), exist_ok=True)
+            with open(os.path.join(TestResource_dir, init_filename), 'w', encoding='utf8') as f:
                 f.write(self.init_codegen())
 
             # Test_xController generation
             for table in table_dict.keys():
                 if table_dict[table]['is_view']:
                     continue
-                tableName = str_format_convert(table_dict[table].get('table_name'))
-                os.makedirs(test_xController_dir := (os.path.join(test_dir, TestController_dir,
-                                                                 'Test_{0}Controller'.format(tableName))), exist_ok=True)
+                table_name = str_format_convert(table_dict[table].get('table_name'))
+                columns = table_dict[table].get("columns")
+                data = "\n"
+                for column in columns.values():
+                    data = data + "{}{}: {}\n".format(' ' * 6, column['name'], '')
 
-                # init generation
-                with open(os.path.join(test_xController_dir, init_filename), 'w', encoding='utf8') as f:
-                    f.write(self.init_codegen())
-
-                # datas.py generation
-                with open(os.path.join(test_xController_dir, 'datas.py'), 'w', encoding='utf8') as f:
-                    f.write(self.controller_datas_codegen())
-
-                # test_xController generation
-                with open(os.path.join(test_xController_dir, 'test_{0}Controller.py'.format(tableName)), 'w',
+                resource_dir = os.path.join(test_dir, TestResource_dir, '{0}Resource'.format(table_name))
+                os.makedirs(resource_dir, exist_ok=True)
+                with open(os.path.join(resource_dir, "test_{}Resource.py".format(table_name)), 'w',
                           encoding='utf8') as f:
-                    f.write(self.controllertest_codegen(tableName,
-                                                        tableName[0].upper() + tableName[1:]))
+                    f.write(FileTemplate.test_resource.format(table_name=table_name[0].upper() + table_name[1:]))
+
+                data_dir = os.path.join(resource_dir, "data")
+                os.makedirs(data_dir, exist_ok=True)
+                with open(os.path.join(data_dir, init_filename), 'w', encoding='utf8') as f:
+                    f.write(self.init_codegen())
+                with open(os.path.join(data_dir, "delete.yaml"), 'w', encoding='utf8') as f:
+                    f.write(DataTemplate.delete_yaml.format(table_name=table_name, data=data))
+                with open(os.path.join(data_dir, "get.yaml"), 'w', encoding='utf8') as f:
+                    f.write(DataTemplate.get_yaml.format(table_name=table_name))
+                with open(os.path.join(data_dir, "post.yaml"), 'w', encoding='utf8') as f:
+                    f.write(DataTemplate.post_yaml.format(table_name=table_name, data=data))
+                with open(os.path.join(data_dir, "put.yaml"), 'w', encoding='utf8') as f:
+                    f.write(DataTemplate.put_yaml.format(table_name=table_name, data=data))
 
                 # file write
-                loggings.info(1, 'Generating {0}'.format('Test_{0}Controller'.format(tableName)), session_id, ip)
+                loggings.info(1, 'Generating {0}'.format('{0}Resource'.format(table_name)), session_id, ip)
 
-            loggings.info(1, 'Generating TestController layer complete', session_id, ip)
+            loggings.info(1, 'Generating test_api_1_0 layer complete', session_id, ip)
 
-            # Test_Controller generation
-            loggings.info(1, 'Start generating TestResource layer, please wait...', session_id, ip)
+            # Test_xService generation
+            loggings.info(1, 'Start generating TestService layer, please wait...', session_id, ip)
 
-            # Test_Resource dir generation
-            os.makedirs(TestResource_dir := ((os.path.join(test_dir, 'Test_Resource'))), exist_ok=True)
-
-            # Test_Resource init generation
+            # test_service dir generation
+            os.makedirs(test_service_dir := (os.path.join(test_dir, 'test_service')), exist_ok=True)
             with open(os.path.join(TestResource_dir, init_filename), 'w', encoding='utf8') as f:
                 f.write(self.init_codegen())
 
-            # Test_Resource  utils  generation
-            with open(os.path.join(TestResource_dir, 'utils.py'), 'w', encoding='utf8') as f:
-                f.write(self.resource_utils_codegen())
-
-            # Test_xResource generation
+            # xService generation
             for table in table_dict.keys():
-                if table_dict[table]['is_view']:
-                    continue
-                tableName = str_format_convert(table_dict[table].get('table_name'))
+                table_name = str_format_convert(table_dict[table].get('table_name'))
+                columns = table_dict[table].get("columns")
+                data = "\n"
+                for column in columns.values():
+                    data = data + "{}{}: {}\n".format(' ' * 6, column['name'], '')
 
-                os.makedirs(test_xResource_dir := (os.path.join(test_dir, TestResource_dir,
-                                                               'Test_{0}Resource'.format(tableName))), exist_ok=True)
-
-                # init generation
-                with open(os.path.join(test_xResource_dir, init_filename), 'w', encoding='utf8') as f:
-                    f.write(self.init_codegen())
-
-                # datas.py generation
-                with open(os.path.join(test_xResource_dir, 'datas.py'), 'w', encoding='utf8') as f:
-                    f.write(self.resource_datas_codegen())
-
-                # test_xResource generation
-                with open(os.path.join(test_xResource_dir, 'test_{0}Resource.py'.format(tableName)), 'w',
+                resource_dir = os.path.join(test_dir, test_service_dir, '{0}Service'.format(table_name))
+                os.makedirs(resource_dir, exist_ok=True)
+                with open(os.path.join(resource_dir, "test_{}Service.py".format(table_name)), 'w',
                           encoding='utf8') as f:
-                    f.write(self.resourcetest_codegen(tableName))
+                    f.write(FileTemplate.test_service.format(table_name=table_name[0].upper() + table_name[1:]))
 
-                # file write
-                loggings.info(1, 'Generating {0}'.format('Test_{0}Resource'.format(tableName)), session_id, ip)
+                with open(os.path.join(resource_dir, init_filename), 'w', encoding='utf8') as f:
+                    f.write(self.init_codegen())
+                with open(os.path.join(resource_dir, "data.yaml"), 'w', encoding='utf8') as f:
+                    f.write(DataTemplate.service_yaml.format(table_name=table_name, data=data))
 
-            loggings.info(1, 'Generating TestResource layer complete', session_id, ip)
+                loggings.info(1, 'Generating {0}'.format('test_{0}Service'.format(table_name)), session_id, ip)
+
+            loggings.info(1, 'Generating TestService layer complete', session_id, ip)
 
             loggings.info(1, 'Generating Test layer complete', session_id, ip)
 
@@ -117,58 +115,5 @@ class CodeGenerator(object):
     def init_codegen(self):
         return FileTemplate.init
 
-    # test init generation
-    def test_init_codegen(self):
-        return FileTemplate.test_init
-
-    # pytest_ini generation
-    def pytest_ini_codegen(self):
-        return FileTemplate.pytest_ini
-
-    # test_start generation
-    def teststart_codegen(self):
-        return FileTemplate.test_start
-
-    # conrtoller
-
-    # controller testcode generation
-    def controller_init_codegen(self):
-        return FileTemplate.init
-
-    # controllertest_init generation
-    def controllertest_init_codegen(self):
-        return FileTemplate.init
-
-    # controllertest generation
-    def controllertest_codegen(self, controllerName_str, controllerClassName_str):
-        return FileTemplate.test_controller.format(
-            controllerName=controllerName_str,
-            controllerClassName=controllerClassName_str
-        )
-
-    #  controller_datas generation
-    def controller_datas_codegen(self):
-        return FileTemplate.controller_datas
-
-    # resource
-
-    #  generation
-    def resourcetest_codegen(self, resourceName_str):
-        return FileTemplate.test_resource.format(
-            resourceName=resourceName_str
-        )
-
-    # resource_init generation
-    def resource_init_codegen(self):
-        return FileTemplate.init
-
-    #  generation
-    def resourcetest_init_codegen(self):
-        return FileTemplate.init
-
-    #  generation
-    def resource_datas_codegen(self):
-        return FileTemplate.resource_datas
-
-    def resource_utils_codegen(self):
-        return FileTemplate.test_resource_utils
+    def env_codegen(self):
+        return FileTemplate.env
