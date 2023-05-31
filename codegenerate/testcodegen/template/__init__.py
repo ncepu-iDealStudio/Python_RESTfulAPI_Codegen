@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-# @time:2021/10/4 18:52
-# Author:yuanronghao
-# @File:__init__.py
-# @Software:PyCharm
-
 
 """
-    this is function description
+    日志初始化
 """
+
+import loguru
+
+loguru.logger.add(
+    'logs/test_log.log',
+    rotation="2 MB",
+    encoding="utf-8",
+)
