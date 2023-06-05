@@ -28,7 +28,7 @@ from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from .setting import Settings
-from ..models import db
+from models import db
 
 # 工厂模式创建app应用对象
 def create_app(run_mode):
