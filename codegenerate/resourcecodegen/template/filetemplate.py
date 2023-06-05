@@ -99,20 +99,11 @@ class {className}Resource(Resource):
 
     # delete
     @classmethod
-    def delete(cls, {id}=None):
-        if {id}:
-            kwargs = {{
-                '{id}': {id}
-            }}
-
-        else:
-            parser = reqparse.RequestParser()
-            {deleteParameter}
-            # Pass in the ID list for multiple deletions
-            parser.add_argument('{id}', type=str, location='form', required=False, help='{id}参数类型不正确或缺失')
-
-            kwargs = parser.parse_args()
-            kwargs = commons.put_remove_none(**kwargs)
+    def delete(cls, {id}):
+    
+        kwargs = {{
+            '{id}': {id}
+        }}
 
         res = {className}Controller.delete(**kwargs)
 
@@ -261,9 +252,7 @@ from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from .setting import Settings
-
-# 数据库
-db = SQLAlchemy()
+from ..models import db
 
 
 # 工厂模式创建app应用对象
