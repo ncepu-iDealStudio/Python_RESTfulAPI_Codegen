@@ -6,213 +6,267 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iDeal接口代码生成器-Python</title>
-    <link rel="stylesheet" href="static/cdn/element-plus.css" />
+    <link rel="stylesheet" href="static/cdn/element-plus.css"/>
     <script src="static/cdn/vue-3.2.26.js"></script>
     <script src="static/cdn/element-ui.js"></script>
     <script src="static/cdn/axios-0.24.0.js"></script>
-    <link rel="stylesheet" href="static/global.css" />
-    <link rel="stylesheet" href="static/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="static/global.css"/>
+    <link rel="stylesheet" href="static/iconfont/iconfont.css"/>
 </head>
 
 <body>
-    <div id="app">
-        <div class="container_warp">
-            <div class="container_header">
-                <el-row>
-                    <el-col :offset="5" :span="14">
-                        Flask_Sqlachemy_RESTfulAPI_Codegen
-                    </el-col>
-                    <el-col :span="5">
-                        <el-tooltip placement="top">
-                            <template #content>如果喜欢就点个星星支持一下</template>
-                            <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank" style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
-                                <div class="iconfont icon-shoucang1"></div>
-                            </a>
-                        </el-tooltip>
-                        <el-tooltip placement="bottom">
-                            <template #content>导入配置文件</template>
-                            <div style="float: right;margin-right: 20px;">
-                                <div @click="importfile" class="iconfont icon-xiazaidaoru"></div>
+<div id="app">
+    <div class="container_warp">
+        <div class="container_header">
+            <el-row>
+                <el-col :offset="5" :span="14">
+                    Flask_Sqlachemy_RESTfulAPI_Codegen
+                </el-col>
+                <el-col :span="5">
+                    <el-tooltip placement="top">
+                        <template #content>如果喜欢就点个星星支持一下</template>
+                        <a href="https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen" target="_blank"
+                           style="float: right;margin-right: 20px;color: #fff;text-decoration: auto;">
+                            <div class="iconfont icon-shoucang1"></div>
+                        </a>
+                    </el-tooltip>
+                    <el-tooltip placement="bottom">
+                        <template #content>导入配置文件</template>
+                        <div style="float: right;margin-right: 20px;">
+                            <div @click="importfile" class="iconfont icon-xiazaidaoru"></div>
+                        </div>
+                    </el-tooltip>
+                </el-col>
+            </el-row>
+        </div>
+        <div class="container_body">
+            <el-row>
+                <el-col :offset="4" :span="4">
+                    <el-scrollbar style="height:calc(100vh - 130px);">
+                        <el-menu @select="handleSelect" v-loading="tableLoading">
+                            <div style="padding-left: 20px;">
+                                <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate"
+                                             @change="handleCheckAllChange">全选 选择需要生成代码的表
+                                </el-checkbox>
                             </div>
-                        </el-tooltip>
-                    </el-col>
-                </el-row>
-            </div>
-            <div class="container_body">
-                <el-row>
-                    <el-col :offset="4" :span="4">
-                        <el-scrollbar style="height:calc(100vh - 130px);">
-                            <el-menu @select="handleSelect" v-loading="tableLoading">
-                                <div style="padding-left: 20px;">
-                                    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选 选择需要生成代码的表</el-checkbox>
-                                </div>
-                                <el-menu-item :index="index+''" v-for="(item, index) in tables" :key="index">
-                                    <el-checkbox v-model="item.ischecked" @change="handleCheckChange" style="margin-right: 10px;"></el-checkbox>{{item.table}}
-                                </el-menu-item>
-                            </el-menu>
-                            <div v-if="tableLoading" style="text-align: center">正在读取数据库元数据...表加载中</div>
-                        </el-scrollbar>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-scrollbar style="height:calc(100vh - 130px);">
-                            <div v-if="activeIndex===-1">
+                            <el-menu-item :index="index+''" v-for="(item, index) in tables" :key="index">
+                                <el-checkbox v-model="item.ischecked" @change="handleCheckChange"
+                                             style="margin-right: 10px;"></el-checkbox>
+                                {{ item.table }}
+                            </el-menu-item>
+                        </el-menu>
+                        <div v-if="tableLoading" style="text-align: center">正在读取数据库元数据...表加载中</div>
+                    </el-scrollbar>
+                </el-col>
+                <el-col :span="12">
+                    <el-scrollbar style="height:calc(100vh - 130px);">
+                        <div v-if="activeIndex===-1">
+                            <el-card shadow="never">
                                 <el-card shadow="never">
-                                    <el-card shadow="never">
-                                        <template #header>数据表准备</template>
-                                        <p>请选择用于生成代码的数据表，并为每张表进行相应的配置</p>
-                                    </el-card>
-                                    <div v-if="invalid_primary_key!='' || invalid_keyword!=''">
-                                        <el-divider style="margin-top: 0;"></el-divider>
-                                        <el-card shadow="never" style="color: #e6a23c;background-color: #fdf6ec;border: 1px solid #faecd8;">
-                                            <el-row>
-                                                <el-col :span="1">
-                                                    <span class="iconfont icon-jinggao"></span>
-                                                </el-col>
-                                                <el-col :span="23">
-                                                    <div>以下表不符合规范，已被过滤</div>
-                                                    <div v-if="invalid_primary_key!=''">
-                                                        <div> 缺少主键或存在复合主键：</div>
-                                                        <div> {{invalid_primary_key}}</div>
-                                                    </div>
-                                                    <div v-if="invalid_keyword!=''">
-                                                        <div>存在表名或字段名与python关键字冲突：</div>
-                                                        <div>{{invalid_keyword}}</div>
-                                                    </div>
-                                                </el-col>
-                                            </el-row>
-                                        </el-card>
-                                    </div>
+                                    <template #header>数据表准备</template>
+                                    <p>请选择用于生成代码的数据表，并为每张表进行相应的配置</p>
                                 </el-card>
-                            </div>
-                            <el-card shadow="never" v-else>
-                                <el-card shadow="never">
-                                    <template #header>
-                                        {{tables[activeIndex].table}}
-                                    </template>
-                                    <div style="margin: 10px 0;">
-                                        数据记录删除方式(是否逻辑删除,如果是逻辑删除，请选择逻辑删除标识位)
-                                        <el-tooltip placement="top">
-                                            <template #content> 逻辑删除方式<br/>注：逻辑删除标识字段必须为int类型</template>
-                                            <span class="iconfont icon-yiwen"></span>
-                                        </el-tooltip>
-                                        <el-card style="margin: 10px 0;">
-                                            <el-select v-model="tables[activeIndex].logicaldeletemark" clearable placeholder="请选择逻辑删除标识字段" size="small" @blur="checkCurrentTables">
-                                                <div v-for="(item, index) in tables[activeIndex].field" :key="index">
-                                                    <el-option v-if="item.field_type==='int'" :label="item.field_name" :value="item.field_name">
-                                                    </el-option>
+                                <div v-if="invalid_primary_key!='' || invalid_keyword!=''">
+                                    <el-divider style="margin-top: 0;"></el-divider>
+                                    <el-card shadow="never"
+                                             style="color: #e6a23c;background-color: #fdf6ec;border: 1px solid #faecd8;">
+                                        <el-row>
+                                            <el-col :span="1">
+                                                <span class="iconfont icon-jinggao"></span>
+                                            </el-col>
+                                            <el-col :span="23">
+                                                <div>以下表不符合规范，已被过滤</div>
+                                                <div v-if="invalid_primary_key!=''">
+                                                    <div> 缺少主键或存在复合主键：</div>
+                                                    <div> {{ invalid_primary_key }}</div>
                                                 </div>
-                                            </el-select>
-                                        </el-card>
-                                    </div>
-                                    <div style="margin: 10px 0;">
-                                        业务主键设置
-                                        <el-tooltip placement="top">
-                                            <template #content> 业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式</template>
-                                            <span class="iconfont icon-yiwen"></span>
-                                        </el-tooltip>
-                                    </div>
-                                    <el-card style="margin: 10px 0;">
-                                        <div>业务主键字段选择</div>
-                                        <div style="margin: 10px 0;">
-                                            <el-select v-model="tables[activeIndex].businesskeyname" clearable :disabled="tables[activeIndex].businesskeyuneditable" placeholder=" " size="small" @blur="blurbusinesskey">
-                                                <el-option v-for="(item, index) in tables[activeIndex].field" :key="index" :label="item.field_name" :value="item.field_name">
-                                                </el-option>
-                                            </el-select>
-                                        </div>
-                                        <div style="margin: 10px 0;">业务主键生成规则
-                                            <el-tooltip placement="top">
-                                                <template #content>业务主键生成规则使用已定义的规则：<br/>‘create_random_id’,‘create_hashlib_id’,‘create_uid’<br/>以及无生成规则，默认为无生成规则</template>
-                                                <span class="iconfont icon-yiwen"></span>
-                                            </el-tooltip>
-                                        </div>
-                                        <div style="margin: 10px 0;">
-                                            <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" " size="small" @focus=selectbusinesskeyrule @blur="checkCurrentTables">
-                                                <el-option label="" value="">
-                                                </el-option>
-                                                <el-option label="时间戳+4位随机数" value="create_random_id" v-if="['int','str'].includes(activeFiled.field_type,0)">
-                                                </el-option>
-                                                <el-option label="hashlib+时间戳" value="create_hashlib_id" v-if="activeFiled.field_type==='str'">
-                                                </el-option>
-                                                <el-option label="uuid包生成随机数" value="create_uid" v-if="activeFiled.field_type==='str'">
-                                                </el-option>
-                                                <el-option label="用户手工指定输入" value="create_custom_id">
-                                                </el-option>
-                                            </el-select>
-                                        </div>
+                                                <div v-if="invalid_keyword!=''">
+                                                    <div>存在表名或字段名与python关键字冲突：</div>
+                                                    <div>{{ invalid_keyword }}</div>
+                                                </div>
+                                            </el-col>
+                                        </el-row>
                                     </el-card>
+                                </div>
+                            </el-card>
+                        </div>
+                        <el-card shadow="never" v-else>
+                            <el-card shadow="never">
+                                <template #header>
+                                    {{ tables[activeIndex].table }}
+                                </template>
+                                <div style="margin: 10px 0;">
+                                    数据记录删除方式(是否逻辑删除,如果是逻辑删除，请选择逻辑删除标识位)
+                                    <el-tooltip placement="top">
+                                        <template #content> 逻辑删除方式<br/>注：逻辑删除标识字段必须为int类型</template>
+                                        <span class="iconfont icon-yiwen"></span>
+                                    </el-tooltip>
+                                    <el-card style="margin: 10px 0;">
+                                        <el-select v-model="tables[activeIndex].logicaldeletemark" clearable
+                                                   placeholder="请选择逻辑删除标识字段" size="small"
+                                                   @blur="checkCurrentTables">
+                                            <div v-for="(item, index) in tables[activeIndex].field" :key="index">
+                                                <el-option v-if="item.field_type==='int'" :label="item.field_name"
+                                                           :value="item.field_name">
+                                                </el-option>
+                                            </div>
+                                        </el-select>
+                                    </el-card>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    业务主键设置
+                                    <el-tooltip placement="top">
+                                        <template #content>
+                                            业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式
+                                        </template>
+                                        <span class="iconfont icon-yiwen"></span>
+                                    </el-tooltip>
+                                </div>
+                                <el-card style="margin: 10px 0;">
+                                    <div>业务主键字段选择</div>
                                     <div style="margin: 10px 0;">
-                                        加密存储字段设置(为满足安全审计需要,一些敏感字段可能需要在数据库中加密存储，如用户身份证号，手机号等)
+                                        <el-select v-model="tables[activeIndex].businesskeyname" clearable
+                                                   :disabled="tables[activeIndex].businesskeyuneditable" placeholder=" "
+                                                   size="small" @blur="blurbusinesskey">
+                                            <el-option v-for="(item, index) in tables[activeIndex].field" :key="index"
+                                                       :label="item.field_name" :value="item.field_name">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                    <div style="margin: 10px 0;">业务主键生成规则
                                         <el-tooltip placement="top">
-                                            <template #content>字段加密方式配置注意事项:<br/>
-                                                1 如果选择RSA加密方式，公私钥请在config/security.conf中配置<br/>
-                                                2 请注意需要加密字段的长度<br/>
-                                                备注：仅允许勾选字符类型的字段进行加密
+                                            <template #content>业务主键生成规则使用已定义的规则：<br/>‘create_random_id’,‘create_hashlib_id’,‘create_uid’<br/>以及无生成规则，默认为无生成规则
                                             </template>
                                             <span class="iconfont icon-yiwen"></span>
                                         </el-tooltip>
                                     </div>
-                                    <el-card>
-                                        <el-scrollbar height="200px">
-                                            <!--<el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;" @change="checkCurrentTables"></el-checkbox>-->
-                                            <div style="margin-bottom: 15px" align="right">
-                                                <el-button size="small" type="primary" @click="handleAddField">添加字段</el-button>
-                                            </div>
-                                            <el-form
+                                    <div style="margin: 10px 0;">
+                                        <el-select v-model="tables[activeIndex].businesskeyrule" placeholder=" "
+                                                   size="small" @focus=selectbusinesskeyrule @blur="checkCurrentTables">
+                                            <el-option label="" value="">
+                                            </el-option>
+                                            <el-option label="时间戳+4位随机数" value="create_random_id"
+                                                       v-if="['int','str'].includes(activeFiled.field_type,0)">
+                                            </el-option>
+                                            <el-option label="hashlib+时间戳" value="create_hashlib_id"
+                                                       v-if="activeFiled.field_type==='str'">
+                                            </el-option>
+                                            <el-option label="uuid包生成随机数" value="create_uid"
+                                                       v-if="activeFiled.field_type==='str'">
+                                            </el-option>
+                                            <el-option label="用户手工指定输入" value="create_custom_id">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                </el-card>
+                                <div style="margin: 10px 0;">
+                                    敏感字段选择
+                                    <el-tooltip placement="top">
+                                        <template #content> 敏感字段设置：<br/>比如表中的status，is_delete一般被称为敏感字段<br/>敏感字段一般需要自己写业务逻辑进行修改
+                                        </template>
+                                        <span class="iconfont icon-yiwen"></span>
+                                    </el-tooltip>
+                                </div>
+                                <el-card style="margin: 10px 0;">
+                                    <div>
+                                        <el-select
+                                                v-model="fildSensitiveList[activeIndex]"
+                                                multiple
+                                                placeholder="Select"
+                                                style="width: 350px"
+                                        >
+                                            <el-option
+                                                    v-for="(item, index) in tables[activeIndex].field" :key="index"
+                                                    :label="item.field_name" :value="item.field_name"
+                                            />
+                                        </el-select>
+                                        <el-button @click="testFun">console</el-button>
+                                    </div>
+                                </el-card>
+                                <div style="margin: 10px 0;">
+                                    加密存储字段设置(为满足安全审计需要,一些敏感字段可能需要在数据库中加密存储，如用户身份证号，手机号等)
+                                    <el-tooltip placement="top">
+                                        <template #content>字段加密方式配置注意事项:<br/>
+                                            1 如果选择RSA加密方式，公私钥请在config/security.conf中配置<br/>
+                                            2 请注意需要加密字段的长度<br/>
+                                            备注：仅允许勾选字符类型的字段进行加密
+                                        </template>
+                                        <span class="iconfont icon-yiwen"></span>
+                                    </el-tooltip>
+                                </div>
+                                <el-card>
+                                    <el-scrollbar height="200px">
+                                        <!--<el-checkbox v-model="item.field_encrypt" :disabled="item.field_type!='str'" :label="item.field_name" v-for="(item, index) in tables[activeIndex].field" :key="index" style="width: 150px;margin-right: 10px;overflow: hidden;" @change="checkCurrentTables"></el-checkbox>-->
+                                        <div style="margin-bottom: 15px" align="right">
+                                            <el-button size="small" type="primary" @click="handleAddField">添加字段
+                                            </el-button>
+                                        </div>
+                                        <el-form
                                                 label-width="70px"
                                                 size="mini"
                                                 inline
-                                            >
-                                                <el-row v-for="(itemField, indexField) in fieldEncryptList[activeIndex]" :key="indexField">
-                                                    <el-col :span="18">
-                                                        <el-form-item label="字段选择">
-                                                            <el-select v-model="itemField.field_encrypt_index" filterable placeholder="请选择字段" @change="handleFieldChange(indexField)">
-                                                                <el-option
-                                                                  v-for="(item, index) in tables[activeIndex].field"
-                                                                  :disabled="item.field_type!='str' || repeatFieldEncryptList[activeIndex].indexOf(index) !== -1"
-                                                                  :key="index"
-                                                                  :label="item.field_name"
-                                                                  :value="index"
-                                                                ></el-option>
-                                                          </el-select>
+                                        >
+                                            <el-row v-for="(itemField, indexField) in fieldEncryptList[activeIndex]"
+                                                    :key="indexField">
+                                                <el-col :span="18">
+                                                    <el-form-item label="字段选择">
+                                                        <el-select v-model="itemField.field_encrypt_index" filterable
+                                                                   placeholder="请选择字段"
+                                                                   @change="handleFieldChange(indexField)">
+                                                            <el-option
+                                                                    v-for="(item, index) in tables[activeIndex].field"
+                                                                    :disabled="item.field_type!='str' || repeatFieldEncryptList[activeIndex].indexOf(index) !== -1"
+                                                                    :key="index"
+                                                                    :label="item.field_name"
+                                                                    :value="index"
+                                                            ></el-option>
+                                                        </el-select>
                                                     </el-form-item>
-                                                        <el-form-item label="加密方式">
-                                                            <el-select v-model="itemField.encrypt_type" filterable placeholder="请选择加密方式">
-                                                                <el-option
-                                                                  v-for="(item, index) in fieldEncryptType"
-                                                                  :key="index"
-                                                                  :label="item.label"
-                                                                  :value="item.value"
-                                                                ></el-option>
-                                                          </el-select>
+                                                    <el-form-item label="加密方式">
+                                                        <el-select v-model="itemField.encrypt_type" filterable
+                                                                   placeholder="请选择加密方式">
+                                                            <el-option
+                                                                    v-for="(item, index) in fieldEncryptType"
+                                                                    :key="index"
+                                                                    :label="item.label"
+                                                                    :value="item.value"
+                                                            ></el-option>
+                                                        </el-select>
                                                     </el-form-item>
-                                                    </el-col>
-                                                    <el-col :span="3">
-                                                        <el-button type="danger" @click="handleDeleteField(indexField)">删除</el-button>
-                                                    </el-col>
-                                                </el-row>
-                                            </el-form>
-                                        </el-scrollbar>
-                                    </el-card>
-                                    <el-button type="danger" @click="handleClear" style="float: right;">清空</el-button>
+                                                </el-col>
+                                                <el-col :span="3">
+                                                    <el-button type="danger" @click="handleDeleteField(indexField)">
+                                                        删除
+                                                    </el-button>
+                                                </el-col>
+                                            </el-row>
+                                        </el-form>
+                                    </el-scrollbar>
                                 </el-card>
+                                <el-button type="danger" @click="handleClear" style="float: right;">清空</el-button>
                             </el-card>
-                        </el-scrollbar>
-                    </el-col>
-                </el-row>
-            </div>
-        </div>
-        <div class="container_footer">
-            <el-row>
-                <el-col :offset="4" :span="16">
-                    <div style="margin:0 20px;">
-                        <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading" @click="back">上一步</el-button>
-                        <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading" @click="nextStep">下一步</el-button>
-                    </div>
+                        </el-card>
+                    </el-scrollbar>
                 </el-col>
             </el-row>
         </div>
-        <input type="file" id="inputfile" @change="selectfile" style="display: none;" />
     </div>
+    <div class="container_footer">
+        <el-row>
+            <el-col :offset="4" :span="16">
+                <div style="margin:0 20px;">
+                    <el-button type="primary" style="float: left;width: 150px;" :loading="nextStep_loading"
+                               @click="back">上一步
+                    </el-button>
+                    <el-button type="primary" style="float:right;width: 150px;" :loading="nextStep_loading"
+                               @click="nextStep">下一步
+                    </el-button>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+    <input type="file" id="inputfile" @change="selectfile" style="display: none;"/>
+</div>
 </body>
 
 <script>
@@ -235,6 +289,7 @@
                 isIndeterminate: false,
                 invalid_primary_key: "",
                 invalid_keyword: "",
+                fildSensitiveList: [],
                 fieldEncryptList: [], // 保存需要加密的字段
                 repeatFieldEncryptList: [],// 保存需要加密字段的索引值
                 fieldEncryptType: [
@@ -287,14 +342,28 @@
             const nextStep = () => {
                 state.nextStep_loading = true;
                 state.fieldEncryptList.forEach((item_field, index_field) => {
-                    item_field.forEach((item,index) => {
+                    item_field.forEach((item, index) => {
                         state.tables[index_field].field[item.field_encrypt_index].field_encrypt = true
                         state.tables[index_field].field[item.field_encrypt_index].encrypt_type = item.encrypt_type
                     })
                 })
+                testFun()
                 localStorage.setItem("tables", JSON.stringify(state.tables));
                 location.replace('views')
                 state.nextStep_loading = false;
+            }
+            const testFun = () => {
+                state.fildSensitiveList.forEach((item_field, index_field) => {
+                    item_field.forEach((item, index) => {
+                        const name = item
+                        state.tables[index_field].field.forEach((item, index) => {
+                            if (item.field_name === name) {
+                                state.tables[index_field].field[index].field_sensitive = true
+                            }
+                        })
+                    })
+                })
+                console.log(state.tables)
             }
 
             //清空
@@ -353,7 +422,7 @@
                 let input = document.getElementById('inputfile');
                 let reader = new FileReader(); //新建一个FileReader
                 reader.readAsText(input.files[0], "UTF-8"); //读取文件 
-                reader.onload = function(evt) { //读取完文件之后会回来这里
+                reader.onload = function (evt) { //读取完文件之后会回来这里
                     let fileString = evt.target.result; // 读取文件内容
 
                     try {
@@ -478,11 +547,11 @@
             }
             // 删除加密字段
             const handleDeleteField = (index) => {
-                state.fieldEncryptList[state.activeIndex].splice(index,1)
+                state.fieldEncryptList[state.activeIndex].splice(index, 1)
                 const field_encrypt_index = state.fieldEncryptList[state.activeIndex][index].field_encrypt_index
                 const repeat_index = state.repeatFieldEncryptList.indexOf(field_encrypt_index)
-                if (repeat_index !== -1){
-                    state.repeatFieldEncryptList[state.activeIndex].splice(repeat_index,1)
+                if (repeat_index !== -1) {
+                    state.repeatFieldEncryptList[state.activeIndex].splice(repeat_index, 1)
                 }
             }
 
@@ -502,56 +571,56 @@
                     axios({
                         method: 'GET',
                         url: '/next-tables'
-                        }).then(result => {
-                            const res = result.data
-                            if(res.code === "2000"){
-                                // 将返回的表结构保存起来
-                                localStorage.setItem("tables", JSON.stringify(res.data.table));
-                                // 保存返回的主键信息
-                                localStorage.setItem("invalid", JSON.stringify(res.invalid));
-                                let data = res.data.table
-                                if (!data) {
-                                    ElMessage.warning('请重新连接数据库')
-                                    setTimeout(() => {
-                                        location.replace('/')
-                                    }, 1000)
-                                }
-                                state.tables = data;
-                                // 保存需要加密的字段
-                                state.fieldEncryptList = Array.from(Array(data.length),() => new Array())
-                                state.repeatFieldEncryptList = Array.from(Array(data.length),() => new Array())
-                                // 回显数据
-                                data.forEach((item, index) => {
-                                    item.field.forEach((item_field,index_field) => {
-                                        if (item_field.field_encrypt){
-                                            state.fieldEncryptList[index].push({
-                                                field_encrypt_index: index_field,
-                                                encrypt_type: item_field.encrypt_type
-                                            })
-                                            state.repeatFieldEncryptList[index].push(index_field)
-                                        }
-                                    })
-                                })
-                                // 显示不符合规范的表
-                                let invalid = JSON.parse(localStorage.getItem("invalid"));
-                                if (!invalid) return
-                                state.invalid_primary_key = invalid.primary_key.toString();
-                                state.invalid_keyword = invalid.keyword.toString();
-                                state.tableLoading = false
-                            }else{
-                                ElMessage.error(res.message)
-                                state.tableLoading = false
+                    }).then(result => {
+                        const res = result.data
+                        if (res.code === "2000") {
+                            // 将返回的表结构保存起来
+                            localStorage.setItem("tables", JSON.stringify(res.data.table));
+                            // 保存返回的主键信息
+                            localStorage.setItem("invalid", JSON.stringify(res.invalid));
+                            let data = res.data.table
+                            if (!data) {
+                                ElMessage.warning('请重新连接数据库')
+                                setTimeout(() => {
+                                    location.replace('/')
+                                }, 1000)
                             }
+                            state.tables = data;
+                            // 保存需要加密的字段
+                            state.fieldEncryptList = Array.from(Array(data.length), () => new Array())
+                            state.repeatFieldEncryptList = Array.from(Array(data.length), () => new Array())
+                            // 回显数据
+                            data.forEach((item, index) => {
+                                item.field.forEach((item_field, index_field) => {
+                                    if (item_field.field_encrypt) {
+                                        state.fieldEncryptList[index].push({
+                                            field_encrypt_index: index_field,
+                                            encrypt_type: item_field.encrypt_type
+                                        })
+                                        state.repeatFieldEncryptList[index].push(index_field)
+                                    }
+                                })
+                            })
+                            // 显示不符合规范的表
+                            let invalid = JSON.parse(localStorage.getItem("invalid"));
+                            if (!invalid) return
+                            state.invalid_primary_key = invalid.primary_key.toString();
+                            state.invalid_keyword = invalid.keyword.toString();
+                            state.tableLoading = false
+                        } else {
+                            ElMessage.error(res.message)
+                            state.tableLoading = false
+                        }
                     })
-                }else{
+                } else {
                     state.tables = data;
                     // 保存需要加密的字段
-                    state.fieldEncryptList = Array.from(Array(data.length),() => new Array())
-                    state.repeatFieldEncryptList = Array.from(Array(data.length),() => new Array())
+                    state.fieldEncryptList = Array.from(Array(data.length), () => new Array())
+                    state.repeatFieldEncryptList = Array.from(Array(data.length), () => new Array())
                     // 回显数据
                     data.forEach((item, index) => {
-                        item.field.forEach((item_field,index_field) => {
-                            if (item_field.field_encrypt){
+                        item.field.forEach((item_field, index_field) => {
+                            if (item_field.field_encrypt) {
                                 state.fieldEncryptList[index].push({
                                     field_encrypt_index: index_field,
                                     encrypt_type: item_field.encrypt_type
@@ -585,7 +654,8 @@
                 checkCurrentTables,
                 handleAddField,
                 handleDeleteField,
-                handleFieldChange
+                handleFieldChange,
+                testFun
             };
         },
     }
@@ -595,7 +665,7 @@
         composition
     )
     app.use(ElementPlus)
-        // 挂载Vue的app实例
+    // 挂载Vue的app实例
     app.mount('#app')
 </script>
 
