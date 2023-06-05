@@ -13,10 +13,6 @@
 
 class FileTemplate():
     """
-    init_: template for api_x/init__.py
-    url_: template for api_x/urls.py
-    resource_: template for api_x/resource.py
-    other_resource_: template for api_x/otherResource.py
     app_init_: template for app/__init__.py
     app_setting_: template for app/__setting__.py
     """
@@ -25,7 +21,7 @@ class FileTemplate():
 # -*- coding:utf-8 -*-
 
 \"\"\"
-   定义应用初始化
+   应用初始化文件模板
 \"\"\"
 
 from flask import Flask
