@@ -18,6 +18,7 @@ import codegenerate.resourcecodegen.main
 import codegenerate.servicecodegen.main
 import codegenerate.staticcodegen.main
 import codegenerate.testcodegen.main
+import codegenerate.otherfilecodegen.main
 
 from utils.loggings import loggings
 from utils.response_code import RET, error_map
@@ -32,8 +33,9 @@ def start(table_config, session_id, ip):
             二、 生成Controller层代码
             三、 生成Service层代码
             四、 生成Resource层代码
-            五、 打包静态文件
-            六、 生成test层代码
+            五、 生成其他文件代码
+            六、 打包静态文件
+            七、 生成test层代码
     """
     try:
         # 初始化配置文件
@@ -84,11 +86,15 @@ def start(table_config, session_id, ip):
         loggings.info(1, "Resource layer code build completed", session_id, ip)
 
         # 第五步
+        loggings.info(1, "Start to build the other files layer code, please wait...", session_id, ip)
+        codegenerate.otherfilecodegen.main.generate_other_file_layer(table_dict, settings, session_id, ip)
+
+        # 第六步
         loggings.info(1, "Start packing static files, please wait...", session_id, ip)
         codegenerate.staticcodegen.main.generate_static_layer(settings, session_id, ip)
         loggings.info(1, "Static resource packaging is complete", session_id, ip)
 
-        # 第六步
+        # 第七步
         loggings.info(1, "Start to build the Test layer code, please wait...", session_id, ip)
         codegenerate.testcodegen.main.generate_test_layer(table_dict, settings, session_id, ip)
         loggings.info(1, "Test layer code build completed", session_id, ip)
