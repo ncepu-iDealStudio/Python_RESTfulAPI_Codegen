@@ -64,7 +64,7 @@ from flask import jsonify
 
 from controller.{table_name_little_camel_case}Controller import {table_name_big_camel_case}Controller
 from utils import commons
-from utils.response_code import RET
+from utils.response_code import RET, error_map_EN
 
 
 class {className}Resource(Resource):
@@ -106,13 +106,7 @@ class {className}Resource(Resource):
             }}
 
         else:
-            parser = reqparse.RequestParser()
-            {deleteParameter}
-            # Pass in the ID list for multiple deletions
-            parser.add_argument('{id}', type=str, location='form', required=False, help='{id}参数类型不正确或缺失')
-
-            kwargs = parser.parse_args()
-            kwargs = commons.put_remove_none(**kwargs)
+            return jsonify(code=RET.PARAMERR, message=error_map_EN[RET.PARAMERR], data="id不能为空")
 
         res = {className}Controller.delete(**kwargs)
 
@@ -261,9 +255,7 @@ from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from .setting import Settings
-
-# 数据库
-db = SQLAlchemy()
+from models import db
 
 
 # 工厂模式创建app应用对象
