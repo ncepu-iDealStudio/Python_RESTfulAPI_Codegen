@@ -26,7 +26,6 @@ class FileTemplate():
 
 from flask import Flask
 from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
 from .setting import Settings
 from models import db
 
