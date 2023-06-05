@@ -177,7 +177,7 @@
                                         >
                                             <el-option
                                                     v-for="(item, index) in tables[activeIndex].field" :key="index"
-                                                    :label="item.field_name" :value="item.field_name"
+                                                    :label="item.field_name" :value="index"
                                             />
                                         </el-select>
                                     </div>
@@ -348,12 +348,7 @@
                 })
                 state.fildSensitiveList.forEach((item_field, index_field) => {
                     item_field.forEach((item, index) => {
-                        const name = item
-                        state.tables[index_field].field.forEach((item, index) => {
-                            if (item.field_name === name) {
-                                state.tables[index_field].field[index].field_sensitive = true
-                            }
-                        })
+                        state.tables[index_field].field[item].field_sensitive = true
                     })
                 })
                 localStorage.setItem("tables", JSON.stringify(state.tables));
