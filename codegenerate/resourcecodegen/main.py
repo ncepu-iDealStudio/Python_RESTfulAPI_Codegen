@@ -28,10 +28,9 @@ def generate_resource_layer(table_dict, settings, session_id, ip):
         api_version = settings.API_VERSION
 
         os.makedirs(api_dir := os.path.join(project_dir, 'api_' + api_version), exist_ok=True)
-        os.makedirs(app_dir := os.path.join(project_dir, 'app'), exist_ok=True)
 
         generator = CodeGenerator(settings, session_id, ip)
-        generator.resource_generator(api_dir, app_dir, table_dict)
+        generator.resource_generator(api_dir, table_dict)
         print(1)
 
     except Exception as e:
