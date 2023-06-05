@@ -10,7 +10,7 @@
     this is function description
 """
 
-# file write
+
 import os
 
 from codegenerate.otherfilecodegen.codegenerator import CodeGenerator

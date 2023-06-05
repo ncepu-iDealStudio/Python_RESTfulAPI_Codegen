@@ -33,7 +33,7 @@ def start(table_config, session_id, ip):
             二、 生成Controller层代码
             三、 生成Service层代码
             四、 生成Resource层代码
-            五、 生成其他文件代码
+            五、 生成其他辅助文件代码
             六、 打包静态文件
             七、 生成test层代码
     """
