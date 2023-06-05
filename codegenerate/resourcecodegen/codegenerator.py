@@ -271,7 +271,8 @@ class CodeGenerator(object):
                     putParameter=parameter_put,
                     getParameter=parameter_get,
                     postParameter=parameter_post,
-                    deleteParameter=parameter_delete
+                    deleteParameter=parameter_delete,
+                    sensitive_columns=str(table.get('sensitive_columns', [])),
                 ).replace('\"', '\'')
             # single primary key
             else:
@@ -313,7 +314,8 @@ class CodeGenerator(object):
                     putParameter=parameter_put,
                     getParameter=parameter_get,
                     postParameter=parameter_post,
-                    deleteParameter=parameter_delete
+                    deleteParameter=parameter_delete,
+                    sensitive_columns=str(table.get('sensitive_columns', [])),
                 ).replace('\"', '\'')
 
         except Exception as e:
