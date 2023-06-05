@@ -64,7 +64,7 @@ from flask import jsonify
 
 from controller.{table_name_little_camel_case}Controller import {table_name_big_camel_case}Controller
 from utils import commons
-from utils.response_code import RET
+from utils.response_code import RET, error_map_EN
 
 
 class {className}Resource(Resource):
@@ -99,11 +99,14 @@ class {className}Resource(Resource):
 
     # delete
     @classmethod
-    def delete(cls, {id}):
-    
-        kwargs = {{
-            '{id}': {id}
-        }}
+    def delete(cls, {id}=None):
+        if {id}:
+            kwargs = {{
+                '{id}': {id}
+            }}
+
+        else:
+            return jsonify(code=RET.PARAMERR, message=error_map_EN[RET.PARAMERR], data="id不能为空")
 
         res = {className}Controller.delete(**kwargs)
 
