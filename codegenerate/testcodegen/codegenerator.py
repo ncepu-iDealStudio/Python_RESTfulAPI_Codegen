@@ -87,8 +87,13 @@ class CodeGenerator(object):
                 table_name = str_format_convert(table_dict[table].get('table_name'))
                 columns = table_dict[table].get("columns")
                 data = "\n"
-                for column in columns.values():
-                    data = data + "{}{}: {}\n".format(' ' * 6, column['name'], '')
+                # print(type(columns))
+                if isinstance(columns,dict):
+                    for column in columns.values():
+                        data = data + "{}{}: {}\n".format(' ' * 6, column['name'], '')
+                elif  isinstance(columns,list):
+                    for column in columns:
+                        data = data + "{}{}: {}\n".format(' ' * 6, column['field_name'], '')
 
                 resource_dir = os.path.join(test_dir, test_service_dir, '{0}Service'.format(table_name))
                 os.makedirs(resource_dir, exist_ok=True)

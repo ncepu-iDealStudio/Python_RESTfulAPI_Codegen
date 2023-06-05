@@ -274,7 +274,7 @@ class {class_name}({parent_model}):
     # batch add
     @classmethod
     def add_list(cls, **kwargs):
-        param_list = json.loads(kwargs.get('{parent_model}List'))
+        param_list = kwargs.get('{parent_model}List')
         model_list = []
         for param_dict in param_list:
             {add_list_business_key_init}
