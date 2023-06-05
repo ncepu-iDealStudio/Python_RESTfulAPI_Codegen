@@ -180,7 +180,6 @@
                                                     :label="item.field_name" :value="item.field_name"
                                             />
                                         </el-select>
-                                        <el-button @click="testFun">console</el-button>
                                     </div>
                                 </el-card>
                                 <div style="margin: 10px 0;">
@@ -347,12 +346,6 @@
                         state.tables[index_field].field[item.field_encrypt_index].encrypt_type = item.encrypt_type
                     })
                 })
-                testFun()
-                localStorage.setItem("tables", JSON.stringify(state.tables));
-                location.replace('views')
-                state.nextStep_loading = false;
-            }
-            const testFun = () => {
                 state.fildSensitiveList.forEach((item_field, index_field) => {
                     item_field.forEach((item, index) => {
                         const name = item
@@ -363,7 +356,9 @@
                         })
                     })
                 })
-                console.log(state.tables)
+                localStorage.setItem("tables", JSON.stringify(state.tables));
+                location.replace('views')
+                state.nextStep_loading = false;
             }
 
             //清空
@@ -655,7 +650,6 @@
                 handleAddField,
                 handleDeleteField,
                 handleFieldChange,
-                testFun
             };
         },
     }
