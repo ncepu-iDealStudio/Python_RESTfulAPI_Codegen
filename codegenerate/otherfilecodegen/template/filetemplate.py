@@ -60,54 +60,6 @@ def create_app(run_mode):
     return app
 """
 
-    api_init = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-{imports}
-
-def init_router(app):
-{blueprint_register}
-"""
-    api_version_init = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-from flask import Blueprint
-
-apiversion_blueprint = Blueprint("apiversion", __name__)
-
-from . import urls
-"""
-
-    api_version_urls = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-from flask_restful import Api
-from . import apiversion_blueprint
-from api_{apiversion}.apiVersionResource.apiVersionResource import ApiVersionResource
-
-api = Api(apiversion_blueprint)
-
-api.add_resource(ApiVersionResource, '/apiversion', endpoint='Apiversion')  # 测试接口，获取当前接口的版本
-"""
-
-    api_version_resource = """#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-from flask_restful import Resource
-from flask import jsonify
-from utils.response_code import RET
-
-
-class ApiVersionResource(Resource):
-
-    # get the interface of apiversion -- test
-    def get(self):
-        back_data = {{
-            'version': '{apiversion}'
-        }}
-        return jsonify(code=RET.OK, message='OK', data=back_data)    
-"""
-
     manage = """#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
