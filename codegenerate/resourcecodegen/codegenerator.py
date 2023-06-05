@@ -36,7 +36,7 @@ class CodeGenerator(object):
         self.maps = {'str': 'string', 'int': 'integer', 'obj': 'object', 'float': 'float'}
 
     # resource layer generation
-    def resource_generator(self, api_dir, app_dir, table_dict):
+    def resource_generator(self, api_dir, table_dict):
 
         try:
             # table_dict processing
@@ -61,6 +61,13 @@ class CodeGenerator(object):
                             table_dict[table]['exist_default_columns'].append(column.get('name'))
                         rsa_columns = table_dict[table]['rsa_columns']
                         aes_columns = table_dict[table]['aes_columns']
+                        sensitive_columns = table_dict[table]['sensitive_columns']
+
+                        table_dict[table]['get_columns'][column.get('name')] = False
+
+                        # 过滤敏感字段
+                        if column.get('name') in sensitive_columns:
+                            continue
 
                         if len(table_dict[table].get('primary_key_columns')) > 1:
                             if column.get('name') in table_dict[table].get('primary_key_columns'):
@@ -71,7 +78,6 @@ class CodeGenerator(object):
                                 table_dict[table]['post_columns'][column.get('name')] = False
                                 table_dict[table]['put_columns'][column.get('name')] = False
 
-                            table_dict[table]['get_columns'][column.get('name')] = False
                         else:
                             business_key = table_dict[table].get('business_key_column').get('column')
                             business_key_rule = table_dict[table].get('business_key_column').get('rule')
@@ -100,21 +106,12 @@ class CodeGenerator(object):
                                 else:
                                     table_dict[table]['post_columns'][column.get('name')] = True
                                 if column.get('name') != real_primary_key:
-                                    table_dict[table]['get_columns'][column.get('name')] = False
                                     table_dict[table]['put_columns'][column.get('name')] = False
                                     table_dict[table]['delete_columns'][column.get('name')] = False
-
-            # manage.py generation
-            self.manage_codegen(table_dict)
 
             # api/__init__.py generation
             with open(os.path.join(api_dir, '__init__.py'), 'w', encoding='utf8') as f:
                 f.write(self.api_codegen(table_dict))
-
-            # app/__init__.py generation
-            app_init_file = os.path.join(app_dir, '__init__.py')
-            with open(app_init_file, 'w', encoding='utf8') as f:
-                f.write(FileTemplate.app_init.format(api_version=api_version))
 
             # api/apiVersionResource/* generation
             os.makedirs(apiVersion_dir := os.path.join(api_dir, 'apiVersionResource'), exist_ok=True)
@@ -274,7 +271,8 @@ class CodeGenerator(object):
                     putParameter=parameter_put,
                     getParameter=parameter_get,
                     postParameter=parameter_post,
-                    deleteParameter=parameter_delete
+                    deleteParameter=parameter_delete,
+                    sensitive_columns=str(table.get('sensitive_columns', [])),
                 ).replace('\"', '\'')
             # single primary key
             else:
@@ -316,7 +314,8 @@ class CodeGenerator(object):
                     putParameter=parameter_put,
                     getParameter=parameter_get,
                     postParameter=parameter_post,
-                    deleteParameter=parameter_delete
+                    deleteParameter=parameter_delete,
+                    sensitive_columns=str(table.get('sensitive_columns', [])),
                 ).replace('\"', '\'')
 
         except Exception as e:
@@ -392,21 +391,3 @@ class CodeGenerator(object):
         except Exception as e:
             loggings.exception(1, e, session_id, ip)
             return
-
-    # manage generation
-    def manage_codegen(self, tables):
-        # permission generation
-        permission = ["apiversion.Apiversion"]
-        for table in tables.values():
-            table_name_little_camel_case = table.get('table_name_little_camel_case')
-            table_name_big_camel_case = table.get('table_name_big_camel_case')
-            table_name_endpoint = table_name_little_camel_case + '.' + table_name_big_camel_case
-
-            if table.get('is_view'):
-                permission.append(table_name_endpoint + 'Query')
-            else:
-                permission.append(table_name_endpoint)
-
-        os.makedirs(project_dir, exist_ok=True)
-        with open(os.path.join(project_dir, 'manage.py'), 'w', encoding='utf8') as f:
-            f.write(FileTemplate.manage.format(permission=permission))

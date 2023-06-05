@@ -10,14 +10,14 @@
     this is function description
 """
 
-# file write
+
 import os
 
-from codegenerate.resourcecodegen.codegenerator import CodeGenerator
+from codegenerate.otherfilecodegen.codegenerator import CodeGenerator
 from utils.loggings import loggings
 
 
-def generate_resource_layer(table_dict, settings, session_id, ip):
+def generate_other_file_layer(table_dict, settings, session_id, ip):
     """
     Generate resource layer code
     :return: None
@@ -25,12 +25,11 @@ def generate_resource_layer(table_dict, settings, session_id, ip):
 
     try:
         project_dir = settings.PROJECT_DIR
-        api_version = settings.API_VERSION
 
-        os.makedirs(api_dir := os.path.join(project_dir, 'api_' + api_version), exist_ok=True)
+        os.makedirs(app_dir := os.path.join(project_dir, 'app'), exist_ok=True)
 
         generator = CodeGenerator(settings, session_id, ip)
-        generator.resource_generator(api_dir, table_dict)
+        generator.other_file_generator(app_dir, table_dict)
         print(1)
 
     except Exception as e:
