@@ -79,8 +79,8 @@ def verify_operator_object(role_list, controller):
 def verify_operator_permission(role_list, param_name, controller):
     """
     :param role_list: List[int] or Set[int] or Tuple[int] 需要越权验证的角色
-    :param param_name: str 需要校验的参数名称
-    获取装饰器的传参
+    :param param_name: str 需要校验的参数名称,比如： teacherID
+    :param controller：要验证的参数所在的控制器,比如： teacherController
     """
 
     def _verify_userRole(func):
