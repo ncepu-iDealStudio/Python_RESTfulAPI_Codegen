@@ -1,8 +1,11 @@
 import base64
+import os
+
 from Crypto.Cipher import AES
 from configparser import ConfigParser
 from utils.loggings import loggings
 
+os.chdir(os.path.dirname(os.path.dirname(__file__)))
 # 设置配置文件的位置
 CONFIG_DIR = "config/develop_config.conf"
 CONFIG = ConfigParser()
