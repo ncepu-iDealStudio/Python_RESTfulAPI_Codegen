@@ -196,7 +196,7 @@ class CodeGenerator(object):
                                                                          table_name_big_camel_case)
                 if len(table['sensitive_columns']):
                     other_resource_str = CodeBlockTemplate.urls_other_route.format(table_name_all_small,
-                                                                                   table.get('business_key_column').get('column'),
+                                                                                   table.get('business_key_column').get('column') if table.get('business_key_column').get('column') else table.get('primary_key_columns', ['autoID'])[0],
                                                                                    table_name_big_camel_case)
 
                 if table.get('business_key_column').get('column'):
