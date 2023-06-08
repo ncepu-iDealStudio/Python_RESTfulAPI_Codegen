@@ -65,7 +65,7 @@ def create_app(run_mode):
 from app import create_app
 from flask_script import Manager, Server
 from flask import request, jsonify
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from authlib.jose import jwt, JoseError
 from utils.response_code import RET
 
 # 创建flask的app对象
@@ -99,13 +99,14 @@ def user_require_token():
             return jsonify(code=RET.PARAMERR, message="缺少参数Token或请求非法")
 
         # 校验token格式正确与过期时间
-        s = Serializer(app.config["SECRET_KEY"])
-        try:
-            data = s.loads(token)
-        except Exception as e:
-            app.logger.error(e)
+        secret_key = app.config['SECRET_KEY']
+        from utils.jwt_util import JwtToken
+        
+        verify_status, payload_data = JwtToken.parse_token(token, secret_key=secret_key)
+        if not verify_status:
             # 单平台用户登录失效
-            return jsonify(code=RET.SESSIONERR, message='用户未登录或登录已过期')
+            app.logger.error(payload_data.get("err"))
+            return jsonify(code=RET.SESSIONERR, message='用户未登录或登录已过期', error=payload_data.get("err"))
 
 
 # 创建全站拦截器，每个请求之后根据请求方法统一设置返回头
