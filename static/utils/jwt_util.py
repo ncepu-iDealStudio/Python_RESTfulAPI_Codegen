@@ -34,6 +34,7 @@ class JwtToken(object):
         return token
 
     # token解析
+    # token解析通过则返回(True, data),否则返回(False, err)
     @classmethod
     def parse_token(cls, token: str, secret_key: str) -> tuple:
         verify_status = False
