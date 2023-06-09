@@ -65,7 +65,6 @@ def create_app(run_mode):
 from app import create_app
 from flask_script import Manager, Server
 from flask import request, jsonify
-from authlib.jose import jwt, JoseError
 from utils.response_code import RET
 
 # 创建flask的app对象
