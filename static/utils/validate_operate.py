@@ -12,10 +12,8 @@
 
 from functools import wraps
 
-from flask import g, jsonify, current_app, request
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import g, jsonify, request
 
-from . import commons
 from .response_code import RET, error_map_EN
 
 
