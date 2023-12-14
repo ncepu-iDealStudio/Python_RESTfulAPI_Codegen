@@ -114,7 +114,7 @@ class CodeGenerator(object):
     def static_generate(cls, target_dir, source_dir, session_id, ip):
         """
         1 copy the static resource to target project directory;
-        2 you can put these static resource  into "static" directory,such as "dockerfile" and some
+        2 you can put these static resource  into "static" directory,such as "dockerfile.bak" and some
          common tools(or function) that you will use in your target project;
         3 some resource we need has already copied into default static directory;
         :param target_dir: Target path of the file
