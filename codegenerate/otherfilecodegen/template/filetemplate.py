@@ -64,7 +64,7 @@ def create_app(run_mode):
 
 from app import create_app
 from flask_script import Manager, Server
-from flask import request, jsonify
+from flask import request, jsonify, g
 from utils.response_code import RET
 
 # 创建flask的app对象
@@ -106,6 +106,9 @@ def user_require_token():
             # 单平台用户登录失效
             app.logger.error(payload_data.get("err"))
             return jsonify(code=RET.SESSIONERR, message='用户未登录或登录已过期', error=payload_data.get("err"))
+            
+        # 将token中封装的信息存入当前请求的全局变量g
+        g.user = payload_data
 
 
 # 创建全站拦截器，每个请求之后根据请求方法统一设置返回头
