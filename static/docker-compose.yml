@@ -4,8 +4,8 @@ services:
      stdin_open: true
      tty: true
      build: .
-     image: api
-     container_name: api
+     image: api.yourdomain
+     container_name: api.yourdomain
      restart: always
      volumes:
        - /docker/deploy/your project:/deploy/app/your project
@@ -17,6 +17,6 @@ services:
        - /bin/bash
        - -c
        - |
-          cd your project
-          python3 gunicorn.py start
-          /bin/bash
+         cd /deploy/app
+         gunicorn -c deploy/gunicorn.conf manage:app -D
+         /bin/bash
