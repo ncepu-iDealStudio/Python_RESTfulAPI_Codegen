@@ -4,7 +4,7 @@
 """
 token生成与解密工具
 """
-
+import time
 from datetime import datetime, timedelta
 from authlib.jose import jwt, JoseError
 
@@ -37,17 +37,24 @@ class JwtToken(object):
     # token解析通过则返回(True, data),否则返回(False, err)
     @classmethod
     def parse_token(cls, token: str, secret_key: str) -> tuple:
+        payload_data = {}
         verify_status = False
         try:
             payload_data = jwt.decode(token, secret_key)
-            verify_status = True
+            # print(payload_data)
 
-        except JoseError as _err:
-            payload_data = cls._expire_message
-            payload_data["err"] = str(_err)
+            expiration_time = payload_data.get('exp', None)
+            # 验证token是否过期
+            if expiration_time:
+                # 获取当前时间戳
+                current_time = int(time.time())
+                # 检查 token 是否过期
+                if current_time <= expiration_time:
+                    verify_status = True
+                else:
+                    payload_data['err'] = "token 已经失效"
 
         except Exception as _err:
-            payload_data = cls._unknown_error_message
-            payload_data["err"] = str(_err)
+            payload_data["err"] = "token 解析失败"
 
         return verify_status, payload_data
