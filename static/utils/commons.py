@@ -9,7 +9,7 @@ from werkzeug.routing import BaseConverter
 from datetime import datetime as cdatetime
 from datetime import date, time
 from flask_sqlalchemy import Model
-from sqlalchemy import DateTime, Numeric, Date, Time
+from sqlalchemy import DateTime, Numeric, Date, Time,Row
 import json
 
 
@@ -39,7 +39,6 @@ def put_remove_none(**args):
 
     args = dict(args)
     return args
-
 
 # flask-sqlachemy查询结果（对象）转换为字典,下面的所有方法为一个模块，使用时直接调用该方法即可
 # 修订bug优化后
@@ -79,7 +78,6 @@ def query_to_dict(models):
             res = dict(zip(models.keys(), models))
             find_datetime(res)
             return res
-
 
 # 当结果为result对象列表时，result有key()方法
 def result_to_dict(results):
