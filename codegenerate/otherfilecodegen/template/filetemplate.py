@@ -63,19 +63,11 @@ def create_app(run_mode):
 \"\"\"
 
 from app import create_app
-from flask_script import Manager, Server
 from flask import request, jsonify, g
 from utils.response_code import RET
 
 # 创建flask的app对象
 app = create_app("develop")
-
-# 通过Flask-Script的Manager,Server接管Flask运行
-manager = Manager(app)
-
-# 开启Debug模式
-manager.add_command("runserver", Server(use_debugger=True))
-
 
 # 创建全站拦截器,每个请求之前做处理
 @app.before_request
@@ -128,6 +120,6 @@ def process_response(response):
 
 
 if __name__ == "__main__":
-    manager.run()
+    app.run()
 
 """

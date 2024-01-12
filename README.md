@@ -62,6 +62,8 @@
 
 ##### 生成器项目的使用说明： 
 
+更详细的帮助说明，请看帮助文档：https://idealstudio-ncepu.yuque.com/kgagg7/wdbe0k?# 《Python接口项目代码生成器使用指南》
+
 一 数据库满足以下的设计规范（建议）  
 
 1. 数据库表名称推荐全小写，如student；如果涉及多个描述词，可使用"_"连接。如：user_info;  
