@@ -13,7 +13,7 @@ from multiprocessing import cpu_count
 from multiprocessing.pool import ThreadPool
 from urllib import parse
 
-from sqlalchemy import create_engine, MetaData, inspect
+from sqlalchemy import create_engine, inspect, MetaData
 from utils.checkTable import CheckTable
 
 
@@ -23,6 +23,7 @@ class SQLHandler:
     inspector = None
     table_names = None
     views_names = None
+
 
     @classmethod
     def connect_sql_link(cls, dialect, username, password, host, port, database, session_id=None, ip=None):
@@ -48,6 +49,7 @@ class SQLHandler:
             password = parse.quote_plus(password)
             url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
                                                                port, database)
+            cls.metadata_schema=url
             cls.engine = create_engine(url)
 
         except Exception as e:
@@ -97,6 +99,7 @@ class SQLHandler:
             :return invalid: 检查不通过的表，以列表返还表名
         """
         try:
+
             cls.metadata = MetaData(cls.engine)
             cls.inspector = inspect(cls.engine)
             cls.table_names = cls.inspector.get_table_names()
