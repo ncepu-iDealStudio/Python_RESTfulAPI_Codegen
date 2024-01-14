@@ -26,12 +26,29 @@ if __name__ == '__main__':
     metadata = MetaData()
 
     SQLHandler.engine = engine
+
+    metadata.reflect(schema='study_flask_api', bind=engine)
     SQLHandler.metadata = metadata
 
-    # 测试第一个方法
-    res = SQLHandler.connect_sql_link('mysql','dev', '123456', '39.99.146.111','13306', 'study_flask_api')
+    # 测试第一个方法---pass
+    # res1 = SQLHandler.connect_sql_link('mysql','dev', '123456', '39.99.146.111','13306', 'study_flask_api')
+    #
+    # print(res1)
 
-    print(res)
+    # 测试第二个方法---pass
+    # res2 = SQLHandler.connection_check('mysql', 'dev', '123456', '39.99.146.111', '13306', 'study_flask_api')
+    #
+    # print(res2)
+
+    # 测试第三个方法
+    res3 = SQLHandler.generate_tables_information()
+
+    print(res3)
+
+    # 测试第四个方法
+    # res4 = SQLHandler.generate_views_information(metadata=metadata)
+    #
+    # print(res4)
 
 
 

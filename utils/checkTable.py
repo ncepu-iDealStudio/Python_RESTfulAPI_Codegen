@@ -96,16 +96,15 @@ class CheckTable(object):
             transformed_dict = TableMetadata.get_tables_metadata(metadata, reflection_views)
 
         invalid_tables = {}
-        # check table primary key
 
+        # check table primary key
         available_table, invalid_table = cls.check_primary_key(transformed_dict, session_id, ip)
         invalid_tables['primary_key'] = invalid_table
         for invalid in invalid_table:
             transformed_dict.pop(invalid)
 
         # check the keyword
-
-        # available_table, invalid_table = cls.check_keyword_conflict(transformed_dict, session_id, ip)
+        available_table, invalid_table = cls.check_keyword_conflict(transformed_dict, session_id, ip)
         available_tables = available_table
         invalid_tables['keyword'] = invalid_table
         for invalid in invalid_table:

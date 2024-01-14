@@ -80,8 +80,9 @@ class SQLHandler:
             url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
                                                                port, database)
             engine = create_engine(url)
-            metadata = MetaData(engine)
-            metadata.reflect(engine)
+            # 创建Metadata对象
+            metadata = MetaData()
+            metadata.reflect(schema=database, bind=engine)
             return {'code': True, 'message': '数据库连接成功', 'data': ''}
         except Exception as e:
             return {'code': False, 'message': '数据库连接失败', 'error': str(e)}
