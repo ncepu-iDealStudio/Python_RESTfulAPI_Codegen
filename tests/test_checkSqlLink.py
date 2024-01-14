@@ -28,6 +28,7 @@ if __name__ == '__main__':
     SQLHandler.engine = engine
 
     metadata.reflect(schema='study_flask_api', bind=engine)
+
     SQLHandler.metadata = metadata
 
     # 测试第一个方法---pass

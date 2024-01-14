@@ -45,6 +45,10 @@ class CheckTable(object):
 
         return available_tables, invalid_tables
 
+    @classmethod
+    def check_primary_key_update(cls, metadata, session_id, ip):
+        pass
+
     # check keywords of python in tables
     # 检查表名和字段名，是否和Python的关键字冲突
     @classmethod
@@ -115,7 +119,7 @@ class CheckTable(object):
                 1,
                 "A total of {0} tables check passed."
                 "The following {1} tables do not meet the specifications and cannot be generated: {2}."
-                    .format(
+                .format(
                     len(available_tables),
                     len(invalid_tables['primary_key'] + invalid_tables['keyword']),
                     ",".join(invalid_tables['primary_key'] + invalid_tables['keyword'])
