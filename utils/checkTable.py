@@ -36,10 +36,10 @@ class CheckTable(object):
                 # 表中没有主键
                 invalid_tables.append(table['table_name'])
                 loggings.warning(1, 'table {0} do not have a primary key'.format(table['table_name']), session_id, ip)
-            # elif len(table['primary_key_columns']) > 1:
-            #     # 表中有复数个主键
-            #     invalid_tables.append(table['table_name'])
-            #     loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
+            elif len(table['primary_key_columns']) > 1:
+                # 表中有复数个主键
+                invalid_tables.append(table['table_name'])
+                loggings.warning(1, 'table {0} has multiple primary keys'.format(table['table_name']))
             else:
                 available_tables.append(table['table_name'])
 
@@ -105,7 +105,7 @@ class CheckTable(object):
 
         # check the keyword
 
-        available_table, invalid_table = cls.check_keyword_conflict(transformed_dict, session_id, ip)
+        # available_table, invalid_table = cls.check_keyword_conflict(transformed_dict, session_id, ip)
         available_tables = available_table
         invalid_tables['keyword'] = invalid_table
         for invalid in invalid_table:

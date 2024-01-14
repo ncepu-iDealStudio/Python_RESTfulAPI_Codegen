@@ -9,6 +9,7 @@
 """
     检验数据库连接是否成功并返回所有表、字段信息（前端用）
 """
+
 from multiprocessing import cpu_count
 from multiprocessing.pool import ThreadPool
 from urllib import parse
@@ -23,7 +24,6 @@ class SQLHandler:
     inspector = None
     table_names = None
     views_names = None
-
 
     @classmethod
     def connect_sql_link(cls, dialect, username, password, host, port, database, session_id=None, ip=None):
@@ -49,8 +49,8 @@ class SQLHandler:
             password = parse.quote_plus(password)
             url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
                                                                port, database)
-            cls.metadata_schema=url
             cls.engine = create_engine(url)
+            cls.metadata_schema = url
 
         except Exception as e:
             return {'code': False, 'message': str(e), 'error': str(e)}
@@ -100,7 +100,7 @@ class SQLHandler:
         """
         try:
 
-            cls.metadata = MetaData(cls.engine)
+            cls.metadata = MetaData()
             cls.inspector = inspect(cls.engine)
             cls.table_names = cls.inspector.get_table_names()
             cls.views_names = cls.inspector.get_view_names()
@@ -187,7 +187,7 @@ class SQLHandler:
         except Exception as e:
             return {'code': False, 'message': str(e), 'error': str(e)}
 
-        table_dict = CheckTable.main(cls.metadata,  session_id, ip, cls.views_names, view=True)
+        table_dict = CheckTable.main(cls.metadata, session_id, ip, cls.views_names, view=True)
 
         data = {
             'view': []
@@ -203,3 +203,6 @@ class SQLHandler:
                 'ischecked': False
             })
         return {'code': True, 'message': '成功', 'data': data}
+
+
+
