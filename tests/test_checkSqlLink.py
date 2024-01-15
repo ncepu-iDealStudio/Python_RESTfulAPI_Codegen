@@ -33,6 +33,7 @@ if __name__ == '__main__':
     SQLHandler.inspector = inspect(SQLHandler.engine)
     SQLHandler.table_names = SQLHandler.inspector.get_table_names()
     SQLHandler.views_names = SQLHandler.inspector.get_view_names()
+    url=SQLHandler.engine.url
 
 
     # 测试第一个方法---pass
@@ -46,14 +47,14 @@ if __name__ == '__main__':
     # print(res2)
 
     # 测试第三个方法
-    res3 = SQLHandler.generate_tables_information()
-
-    print(res3)
-
-    # 测试第四个方法
-    res4 = SQLHandler.generate_views_information()
-
-    print(res4)
+    # res3 = SQLHandler.generate_tables_information()
+    #
+    # print(res3)
+    #
+    # # 测试第四个方法
+    # res4 = SQLHandler.generate_views_information()
+    #
+    # print(res4)
 
 
 

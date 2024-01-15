@@ -123,7 +123,7 @@ class SQLHandler:
         except Exception as e:
             return {'code': False, 'message': str(e), 'error': str(e)}
 
-        table_dict, invalid_tables = CheckTable.main(cls.metadata, session_id, ip, cls.views_names)
+        table_dict, invalid_tables = CheckTable.main(cls.metadata, session_id, ip, cls.views_names,engine=cls.engine)
 
         data = {
             'table': [],

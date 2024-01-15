@@ -52,7 +52,7 @@ class TableMetadata(object):
         return table_dict
 
     @classmethod
-    def get_tables_metadata_update(cls, metadata, reflection_views, table_config=DEFAULT_CONFIG) -> dict:
+    def get_tables_metadata_update(cls, metadata, reflection_views,engine, table_config=DEFAULT_CONFIG) -> dict:
         """
             获取数据库表数据
             :param metadata: sqlalchemy元数据
@@ -72,7 +72,7 @@ class TableMetadata(object):
         for table_name,table in table_objs.items():
             if str(table) not in reflection_views:
                 # pool.apply_async(cls.metadata_tables_transition, (table_config, metadata, table, table_dict))
-                pool.apply_async(cls.metadata_tables_transition_update,(table_config,table_name, metadata, table, table_dict))
+                pool.apply_async(cls.metadata_tables_transition_update,(table_config,table_name, metadata,engine, table, table_dict))
         pool.close()
         pool.join()
 
@@ -222,7 +222,7 @@ class TableMetadata(object):
                 'is_exist_default'] = True if column.server_default is not None else False
 
     @classmethod
-    def metadata_tables_transition_update(cls, table_config,table_name, metadata, table, table_dict):
+    def metadata_tables_transition_update(cls, table_config,table_name, metadata,engine, table, table_dict):
         """
             数据库表元数据转换
             :param table_config 表配置
@@ -283,18 +283,25 @@ class TableMetadata(object):
         # all_tables = metadata.tables
 
         # # 遍历所有表
-        # for table_name, table in all_tables.items():
-        #     # 获取所有列的信息
         for column in table.c:
             # 示例：输出列名和类型
             table_dict[table_name]['columns'][str(column.name)] = {}
             table_dict[table_name]['columns'][str(column.name)] = {
                 'name': str(column.name),
-                'type': str(column.type),
+                'type': str(column.type).lower(),
                 'is_autoincrement': column.autoincrement if column.autoincrement is not None else False,
                 'nullable': column.nullable,
                 'is_exist_default': column.server_default is not None
             }
+
+            for type_ in cls.TYPE_MAPPING:
+                if str(engine.url).split('+')[0] != type_['database']:
+                    continue
+                for python_type, sql_type_list in type_['data_map'].items():
+                    if str(column.type).lower() in sql_type_list:
+                        table_dict[table_name]['columns'][str(column.name)]['type'] = python_type
+                        break
+
             # 存在复合主键
             if table.primary_key:
                 # 获取主键包含的列

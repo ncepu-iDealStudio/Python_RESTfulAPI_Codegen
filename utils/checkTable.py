@@ -151,7 +151,7 @@ class CheckTable(object):
 
     # 入口函数定义
     @classmethod
-    def main(cls, metadata, session_id, ip, reflection_views,view=False,inspector=None):
+    def main(cls, metadata, session_id, ip, reflection_views,view=False, inspector=None,engine=None):
         """
             建立数据库连接时对表进行检查，筛去没有唯一自增主键、表名/字段名与Python关键字有冲突的表
             :param metadata: 数据库元数据
@@ -161,7 +161,7 @@ class CheckTable(object):
             transformed_dict = TableMetadata.get_views_metadata_update(metadata, reflection_views,inspector)
             return transformed_dict
         else:
-            transformed_dict = TableMetadata.get_tables_metadata_update(metadata, reflection_views)
+            transformed_dict = TableMetadata.get_tables_metadata_update(metadata, reflection_views,engine)
 
         invalid_tables = {}
 
