@@ -22,6 +22,10 @@ class TableMetadata(object):
     with open('config/default_table_config.json', 'r', encoding='utf-8') as f:
         DEFAULT_CONFIG = f.read()
 
+    with open('config/db_py_type_mapping.json', 'r') as json_file:
+        DB_PY_TYPE_MAP = json.load(json_file)
+
+
     with open('config/datatype_map.json', 'r', encoding='utf-8') as f:
         TYPE_MAPPING = json.load(f)
 
@@ -280,27 +284,40 @@ class TableMetadata(object):
         table_dict[table_name]['columns'] = {}
         table_dict[table_name]['primary_key_columns'] = []
 
-        # all_tables = metadata.tables
+        # type_mapping = {
+        #     "int": ["int", "bigint", "smallint", "mediumint","integer", "tinyint"],
+        #     "float": ["float", "double", "decimal"],
+        #     "decimal": ["decimal"],
+        #     "str": ["char", "varchar", "tinytext", "text", "mediumtext", "longtext"]
+        # }
 
         # # 遍历所有表
         for column in table.c:
+            # 映射 SQL 类型到 Python 类型
+            python_type = str(column.type).lower()
+
+            for py_type, sql_types in cls.DB_PY_TYPE_MAP.items():
+                if any(sql_type in python_type for sql_type in sql_types):
+                    python_type = py_type
+                    break
+
             # 示例：输出列名和类型
             table_dict[table_name]['columns'][str(column.name)] = {}
             table_dict[table_name]['columns'][str(column.name)] = {
                 'name': str(column.name),
-                'type': str(column.type).lower(),
+                'type': python_type,
                 'is_autoincrement': column.autoincrement if column.autoincrement is not None else False,
                 'nullable': column.nullable,
                 'is_exist_default': column.server_default is not None
             }
 
-            for type_ in cls.TYPE_MAPPING:
-                if str(engine.url).split('+')[0] != type_['database']:
-                    continue
-                for python_type, sql_type_list in type_['data_map'].items():
-                    if str(column.type).lower() in sql_type_list:
-                        table_dict[table_name]['columns'][str(column.name)]['type'] = python_type
-                        break
+            # for type_ in cls.TYPE_MAPPING:
+            #     if str(engine.url).split('+')[0] != type_['database']:
+            #         continue
+            #     for python_type, sql_type_list in type_['data_map'].items():
+            #         if str(column.type).lower() in sql_type_list:
+            #             table_dict[table_name]['columns'][str(column.name)]['type'] = python_type
+            #             break
 
             # 存在复合主键
             if table.primary_key:
