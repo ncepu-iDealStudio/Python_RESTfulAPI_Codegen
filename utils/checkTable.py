@@ -151,28 +151,30 @@ class CheckTable(object):
 
     # 入口函数定义
     @classmethod
-    def main(cls, metadata, session_id, ip, reflection_views, view=False):
+    def main(cls, metadata, session_id, ip, reflection_views,view=False,inspector=None):
         """
             建立数据库连接时对表进行检查，筛去没有唯一自增主键、表名/字段名与Python关键字有冲突的表
             :param metadata: 数据库元数据
             :param view: 是否为视图
         """
         if view:
-            transformed_dict = TableMetadata.get_views_metadata(metadata, reflection_views)
+            transformed_dict = TableMetadata.get_views_metadata_update(metadata, reflection_views,inspector)
             return transformed_dict
         else:
-            transformed_dict = TableMetadata.get_tables_metadata(metadata, reflection_views)
+            transformed_dict = TableMetadata.get_tables_metadata_update(metadata, reflection_views)
 
         invalid_tables = {}
 
         # check table primary key
-        available_table, invalid_table = cls.check_primary_key_update(metadata, session_id, ip)
+        # available_table, invalid_table = cls.check_primary_key_update(metadata, session_id, ip)
+        available_table, invalid_table = cls.check_primary_key(transformed_dict, session_id, ip)
         invalid_tables['primary_key'] = invalid_table
         for invalid in invalid_table:
             transformed_dict.pop(invalid)
 
         # check the keyword
-        available_table, invalid_table = cls.check_keyword_conflict_update(metadata, session_id, ip)
+        # available_table, invalid_table = cls.check_keyword_conflict_update(metadata, session_id, ip)
+        available_table, invalid_table = cls.check_keyword_conflict(transformed_dict, session_id, ip)
         available_tables = available_table
         invalid_tables['keyword'] = invalid_table
         for invalid in invalid_table:
@@ -194,56 +196,6 @@ class CheckTable(object):
 
             # # 反射数据库中的所有表
             # metadata.reflect()
-
-            # 获取所有表的信息
-            all_tables = metadata.tables
-            tableMetadata=TableMetadata()
-
-            # 遍历所有表
-            for table_name, table in all_tables.items():
-                transformed_dict[table_name]['columns']={}
-                # 获取所有列的信息
-                for column in table.c:
-                    # 在这里继续你的逻辑处理
-
-                    # 示例：输出列名和类型
-                    transformed_dict[table_name]['columns'][str(column.name)] = {}
-                    transformed_dict[table_name]['columns'][str(column.name)]['name'] = str(column.name)
-
-                    for type_ in tableMetadata.TYPE_MAPPING:
-                        if str(metadata.bind.url).split('+')[0] != type_['database']:
-                            continue
-                        for python_type, sql_type_list in type_['data_map'].items():
-                            if str(column.type).lower() in sql_type_list:
-                                transformed_dict[table_name]['columns'][str(column.name)]['type'] = python_type
-                                break
-                    # print(f"Table: {table_name}, Column: {column.name}, Type: {column.type}")
-
-                    # 存在复合主键
-                    if len(transformed_dict[table_name]['primary_key_columns']) > 1:
-                        transformed_dict[table_name]['business_key_column'] = {}
-                    else:
-                        # 如果主键不是自增的，则将业务主键设置为主键
-                        if str(column.name) in transformed_dict[table_name]['primary_key_columns'] and not \
-                                transformed_dict[table_name]['columns'][str(column.name)]['is_autoincrement']:
-                            transformed_dict[table_name]['business_key_column']['column'] = str(column.name)
-
-                    # 示例：判断是否是自动递增列
-                    transformed_dict[table_name]['columns'][str(column.name)][
-                        'is_autoincrement'] = True if column.autoincrement is True else False
-                    # is_autoincrement = column.autoincrement if column.autoincrement is not None else False
-                    # print(f"Is Autoincrement: {is_autoincrement}")
-
-                    # 示例：判断是否可以为空
-                    transformed_dict[table_name]['columns'][str(column.name)]['nullable'] = column.nullable
-                    # nullable = column.nullable if column.nullable is not None else True
-                    # print(f"Nullable: {nullable}")
-
-                    # 示例：判断是否存在默认值
-                    transformed_dict[table_name]['columns'][str(column.name)][
-                        'is_exist_default'] = True if column.server_default is not None else False
-                    # is_exist_default = column.server_default is not None
-                    # print(f"Is Exist Default: {is_exist_default}")
 
             return transformed_dict, invalid_tables
 

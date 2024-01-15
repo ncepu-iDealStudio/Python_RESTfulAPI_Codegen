@@ -30,6 +30,10 @@ if __name__ == '__main__':
     metadata.reflect(schema='study_flask_api', bind=engine)
 
     SQLHandler.metadata = metadata
+    SQLHandler.inspector = inspect(SQLHandler.engine)
+    SQLHandler.table_names = SQLHandler.inspector.get_table_names()
+    SQLHandler.views_names = SQLHandler.inspector.get_view_names()
+
 
     # 测试第一个方法---pass
     # res1 = SQLHandler.connect_sql_link('mysql','dev', '123456', '39.99.146.111','13306', 'study_flask_api')
@@ -47,9 +51,9 @@ if __name__ == '__main__':
     print(res3)
 
     # 测试第四个方法
-    # res4 = SQLHandler.generate_views_information(metadata=metadata)
-    #
-    # print(res4)
+    res4 = SQLHandler.generate_views_information()
+
+    print(res4)
 
 
 

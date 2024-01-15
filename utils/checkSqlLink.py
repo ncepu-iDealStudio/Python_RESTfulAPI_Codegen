@@ -188,7 +188,7 @@ class SQLHandler:
         except Exception as e:
             return {'code': False, 'message': str(e), 'error': str(e)}
 
-        table_dict = CheckTable.main(cls.metadata, session_id, ip, cls.views_names, view=True)
+        table_dict = CheckTable.main(cls.metadata, session_id, ip, cls.views_names, view=True,inspector=cls.inspector)
 
         data = {
             'view': []
