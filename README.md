@@ -6,7 +6,7 @@
 
 ##### 生成的目标接口项目特点：
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0905/200245_9c40fbe9_9201274.png "屏幕截图.png")
+![5DqRi9.png](https://z3.ax1x.com/2021/10/20/5DqRi9.png?raw=true)
 
 1. 项目架构满足分层设计规范，分为实体层，控制器层和资源层(接口层)，
    用户可以添加服务层，作为商业逻辑层；
@@ -73,7 +73,7 @@
 5. 建议设计一个timestamp类型的"CreateTime"字段，默认为当前时间戳(用来记录数据创建的时间)；
 6. 建议设计一个tinyint类型的"IsDelete"字段(用来实现记录的逻辑删除，0--有效，1--已删除)，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段必须存在）
 
-二 生成器项目使用
+二 代码生成器使用
 
 1. 先从仓库clone代码到本地;  
    git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen
@@ -84,7 +84,7 @@
 6. 程序运行完毕后，会生成dist文件夹，文件夹下即为我们需要的目标项目；
    也可以在配置文件中设置目标项目的位置；
 
-三 目标项目测试  
+三 生成的目标项目代码测试  
 
 1. 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
 
@@ -105,9 +105,8 @@
 
    运行test_start.py文件并生成测试报告；
 
-四 生成器项目详细使用指南  
 
-- <a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
+- 详见：<a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
 
 
 产品特性
@@ -126,7 +125,8 @@
 
 常见错误
 * 1 ModuleNotFoundError: No module named 'flask._compat'
+问题原因：Flask包升级到2.x以上后的版本bug；
 解决方法：
-修改flask_script/init.py
+修改虚拟环境中，site-packages/flask_script/init.py文件
 把from ._compat import text_type 改成 from flask_script._compat import text_type
   
