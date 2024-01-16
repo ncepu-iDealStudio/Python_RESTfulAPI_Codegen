@@ -44,7 +44,8 @@ def start(table_config, session_id, ip):
 
         # 参数初始化
         engine = create_engine(settings.MODEL_URL)
-        metadata = MetaData(engine)
+        metadata = MetaData()
+        metadata.bind = engine
 
         reflection_tables = [table['table'] for table in table_config['table']]
         reflection_views = [view['view'] for view in table_config['view']]
@@ -103,7 +104,7 @@ def start(table_config, session_id, ip):
 
         if session_id and ip:
             log_path = "logs/log_user_info/codegen_log_{user_ip}_{session_id}.log".format(
-                    user_ip=ip, session_id=session_id)
+                user_ip=ip, session_id=session_id)
         else:
             log_path = "logs/codegen_log.log"
         with open(log_path, 'r', encoding='utf-8') as f:

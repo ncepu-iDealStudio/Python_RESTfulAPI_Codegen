@@ -9,11 +9,12 @@
 """
     检验数据库连接是否成功并返回所有表、字段信息（前端用）
 """
+
 from multiprocessing import cpu_count
 from multiprocessing.pool import ThreadPool
 from urllib import parse
 
-from sqlalchemy import create_engine, MetaData, inspect
+from sqlalchemy import create_engine, inspect, MetaData
 from utils.checkTable import CheckTable
 
 
@@ -49,6 +50,7 @@ class SQLHandler:
             url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
                                                                port, database)
             cls.engine = create_engine(url)
+            cls.metadata_schema = url
 
         except Exception as e:
             return {'code': False, 'message': str(e), 'error': str(e)}
@@ -78,8 +80,9 @@ class SQLHandler:
             url = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(dialect, driver_dict[dialect], username, password, host,
                                                                port, database)
             engine = create_engine(url)
-            metadata = MetaData(engine)
-            metadata.reflect(engine)
+            # 创建Metadata对象
+            metadata = MetaData()
+            metadata.reflect(schema=database, bind=engine)
             return {'code': True, 'message': '数据库连接成功', 'data': ''}
         except Exception as e:
             return {'code': False, 'message': '数据库连接失败', 'error': str(e)}
@@ -97,7 +100,8 @@ class SQLHandler:
             :return invalid: 检查不通过的表，以列表返还表名
         """
         try:
-            cls.metadata = MetaData(cls.engine)
+
+            cls.metadata = MetaData()
             cls.inspector = inspect(cls.engine)
             cls.table_names = cls.inspector.get_table_names()
             cls.views_names = cls.inspector.get_view_names()
@@ -119,7 +123,7 @@ class SQLHandler:
         except Exception as e:
             return {'code': False, 'message': str(e), 'error': str(e)}
 
-        table_dict, invalid_tables = CheckTable.main(cls.metadata, session_id, ip, cls.views_names)
+        table_dict, invalid_tables = CheckTable.main(cls.metadata, session_id, ip, cls.views_names,engine=cls.engine)
 
         data = {
             'table': [],
@@ -184,7 +188,7 @@ class SQLHandler:
         except Exception as e:
             return {'code': False, 'message': str(e), 'error': str(e)}
 
-        table_dict = CheckTable.main(cls.metadata,  session_id, ip, cls.views_names, view=True)
+        table_dict = CheckTable.main(cls.metadata, session_id, ip, cls.views_names, view=True,inspector=cls.inspector)
 
         data = {
             'view': []
@@ -200,3 +204,6 @@ class SQLHandler:
                 'ischecked': False
             })
         return {'code': True, 'message': '成功', 'data': data}
+
+
+
