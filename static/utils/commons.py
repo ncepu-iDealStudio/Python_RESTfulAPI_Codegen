@@ -5,12 +5,13 @@
  some common tools or fuctions your api project maybe need!
 """
 
-from werkzeug.routing import BaseConverter
-from datetime import datetime as cdatetime
-from datetime import date, time
-from flask_sqlalchemy import Model
-from sqlalchemy import DateTime, Numeric, Date, Time,Row
 import json
+from datetime import date, time
+from datetime import datetime as cdatetime
+
+from flask_sqlalchemy.model import Model
+from sqlalchemy import DateTime, Numeric, Date, Time
+from werkzeug.routing import BaseConverter
 
 
 # 定义正则转换器
@@ -39,6 +40,7 @@ def put_remove_none(**args):
 
     args = dict(args)
     return args
+
 
 # flask-sqlachemy查询结果（对象）转换为字典,下面的所有方法为一个模块，使用时直接调用该方法即可
 # 修订bug优化后
@@ -78,6 +80,17 @@ def query_to_dict(models):
             res = dict(zip(models.keys(), models))
             find_datetime(res)
             return res
+
+
+def query1_to_dict(query_result):
+    result = []
+    for row in query_result:
+        row_dict = {}
+        for column in row.__table__.columns:
+            row_dict[column.name] = getattr(row, column.name)
+        result.append(row_dict)
+    return result
+
 
 # 当结果为result对象列表时，result有key()方法
 def result_to_dict(results):

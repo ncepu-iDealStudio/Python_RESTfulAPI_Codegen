@@ -98,6 +98,7 @@ class {className}Resource(Resource):
         else:
             return jsonify(code=res['code'], message=res['message'], data=res['data']) 
 
+    
     # delete
     @classmethod
     def delete(cls, {id}=None):
@@ -113,6 +114,7 @@ class {className}Resource(Resource):
 
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
+    
     # put
     @classmethod
     def put(cls, {id}):
@@ -129,6 +131,7 @@ class {className}Resource(Resource):
 
         return jsonify(code=res['code'], message=res['message'], data=res['data'])
 
+    
     # add
     @classmethod
     def post(cls):
@@ -190,6 +193,7 @@ class {className}Resource(Resource):
         else:
             return jsonify(code=res['code'], message=res['message'], data=res['data']) 
 
+    
     # delete
     @classmethod
     def delete(cls):
