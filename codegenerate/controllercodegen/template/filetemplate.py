@@ -24,7 +24,7 @@ class FileTemplate(object):
 {imports}
 
 
-class {class_name}({parent_model}):
+class {class_name}({parent_model},BaseModel):
 """
 
     add_template = """
@@ -68,7 +68,8 @@ class {class_name}({parent_model}):
             pages = math.ceil(count / size)
             {model_lower}_info = {model_lower}_info.limit(size).offset((page - 1) * size).all()
    
-            results = commons.query_to_dict({model_lower}_info)
+            #results = commons.query_to_dict({model_lower}_info)
+            results = cls.to_dict({model_lower}_info)
             return {{'code': RET.OK, 'message': error_map_EN[RET.OK], 'totalCount': count, 'totalPage': pages, 'data': results}}
             
         except Exception as e:
