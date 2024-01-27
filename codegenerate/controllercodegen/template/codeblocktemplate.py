@@ -24,7 +24,8 @@ from app import db
 from models.{model_name} import {parent_model}
 from utils import commons
 from utils.response_code import RET, error_map_EN
-from utils.loggings import loggings"""
+from utils.loggings import loggings
+from models import BaseModel"""
 
     add_column_init = """{column}=kwargs.get('{column}'),
                 """
