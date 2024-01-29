@@ -117,13 +117,20 @@
                                     业务主键设置
                                     <el-tooltip placement="top">
                                         <template #content>
-                                            业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式
+                                            业务主键说明：<br/>比如order表中的OrderID一般被称为业务主键<br/>业务主键尽量不采用自增的方式，方便迁移数据或者定义规则；
                                         </template>
                                         <span class="iconfont icon-yiwen"></span>
                                     </el-tooltip>
                                 </div>
                                 <el-card style="margin: 10px 0;">
-                                    <div>业务主键字段选择</div>
+                                    <div>业务主键字段选择
+                                    <el-tooltip placement="top">
+                                        <template #content>
+                                            重要提示：<br/>比如使用用户身份证，手机号，学号这种需要用户手工录入的值作为业务主键时，<br/>请不用设置此项，以及下面的业务主键生成规则选项；
+                                        </template>
+                                        <span class="iconfont icon-yiwen"></span>
+                                    </el-tooltip>
+                                    </div>
                                     <div style="margin: 10px 0;">
                                         <el-select v-model="tables[activeIndex].businesskeyname" clearable
                                                    :disabled="tables[activeIndex].businesskeyuneditable" placeholder=" "
