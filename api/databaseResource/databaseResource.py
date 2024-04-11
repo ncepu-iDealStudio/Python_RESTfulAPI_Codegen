@@ -13,11 +13,12 @@
 import json
 import keyword
 
-from flask import request
-from flask_restful import Resource
-from sqlalchemy import create_engine, MetaData, inspect
+from flask import request, jsonify
+from flask_restful import Resource, reqparse
+from sqlalchemy import create_engine, MetaData, inspect, text
 from sqlalchemy.ext.automap import automap_base
 
+from static.utils import commons
 from utils.response_code import RET
 from utils.loggings import loggings
 
@@ -69,7 +70,19 @@ class DatabaseResource(Resource):
     @classmethod
     def get_database_names(cls):
         # 接收参数
-        kwargs = json.loads(request.data)
+        parser = reqparse.RequestParser()
+        parser.add_argument('DatabaseDialects', location='form', required=True)
+        parser.add_argument('Host', location='form', required=True, help='Host参数类型不正确或缺失')
+        parser.add_argument('Port', location='form', required=True,help='Port参数类型不正确或缺失')
+        parser.add_argument('Username', location='form', required=True, help='Username参数类型不正确或缺失')
+        parser.add_argument('Password', location='form', required=True, help='Password参数类型不正确或缺失')
+        # kwargs = json.loads(request.data)
+        try:
+            kwargs = parser.parse_args()
+            kwargs = commons.put_remove_none(**kwargs)
+        except Exception as e:
+            loggings.exception(1, e)
+            return jsonify(code=RET.PARAMERR, message="参数类型不正确或缺失", error="参数类型不正确或缺失")
         dialect = kwargs['DatabaseDialects']
         host = kwargs['Host']
         port = kwargs['Port']
@@ -83,14 +96,16 @@ class DatabaseResource(Resource):
                 'postgresql': 'psycopg2'
             }
             url = '{}+{}://{}:{}@{}:{}/'.format(dialect, driver_dict[dialect], username, password, host, port)
+            print(url)
             engine = create_engine(url)
             conn = engine.connect()
-            result = conn.execute('SELECT name FROM sys.databases;')
+            query = "SHOW DATABASES;"
+            result = conn.execute(text(query))
             data = result.fetchall()
             data_list = []
             for i in data:
                 data_list.append(i[0])
-            return {'code': RET.ok, 'message': '数据库连接成功', 'data': data_list}
+            return {'code': RET.OK, 'message': '数据库连接成功', 'data': data_list}
         except Exception as e:
             return {'code': RET.DBERR, 'message': '数据库连接失败', 'error': str(e)}
 

@@ -17,6 +17,7 @@ from multiprocessing import cpu_count
 from flask import request
 from flask_restful import Resource
 from sqlalchemy import create_engine, MetaData, inspect
+from sqlalchemy.engine import reflection
 from sqlalchemy.ext.automap import automap_base
 
 from utils.response_code import RET

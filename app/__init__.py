@@ -18,11 +18,11 @@ from flask_sqlalchemy import SQLAlchemy
 from .setting import Settings
 
 # 数据库
-db = SQLAlchemy()
+# db = SQLAlchemy()
 
 
 # 工厂模式创建app应用对象
-def create_app(run_mode):
+def create_app():
     """
     创建flask的应用对象
     :param run_mode: string 配置模式的名字  （"develop", "product", "test"）
@@ -31,11 +31,11 @@ def create_app(run_mode):
 
     app = Flask(__name__)
 
-    # 根据配置模式的名字获取配置参数的类
-    app.config.from_object(Settings.get_setting(run_mode))
-
-    # 使用app初始化db
-    db.init_app(app)
+    # # 根据配置模式的名字获取配置参数的类
+    # app.config.from_object(Settings.get_setting(run_mode))
+    #
+    # # 使用app初始化db
+    # db.init_app(app)
 
     # 利用Flask_session将数据保存的session中
     Session(app)

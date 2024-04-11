@@ -10,9 +10,9 @@
     project start
 """
 
-import webbrowser
-from ui.api.views import app
+# from ui.api.views import app
+from app import create_app
 
 if __name__ == '__main__':
-    webbrowser.open('http://127.0.0.1:5000')
+    app = create_app()
     app.run()

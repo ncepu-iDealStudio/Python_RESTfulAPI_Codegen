@@ -12,5 +12,9 @@ api = Api(database_blueprint)
 def conn_test():
     return DatabaseResource.db_conn_test()
 
+@database_blueprint.route('/database/get_database_names',methods=['GET'],endpoint='get_database_names')
+def conn_test():
+    return DatabaseResource.get_database_names()
+
 
 

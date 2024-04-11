@@ -19,6 +19,11 @@ from datetime import timedelta
 
 import pymysql
 from flask import Flask, request, session, send_from_directory
+from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
+
+# 数据库
+db = SQLAlchemy()
 from urllib import parse
 
 from utils.checkSqlLink import SQLHandler
@@ -27,6 +32,8 @@ from utils.interface_limiter import InterfaceLimiter
 app = Flask(__name__, static_folder="../static")
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # 配置7天有效
+
+
 
 limiter = InterfaceLimiter.get_limiter(app)
 
