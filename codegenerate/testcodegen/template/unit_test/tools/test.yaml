@@ -1,0 +1,24 @@
+api_name: 系统用户删除接口
+request:
+  method: delete
+  url: /api_1_0/sysUser/
+  headers:
+    token: eyJhbGciOiJIUzUxMiIsImlhdCI6MTcwNDg5ODU3NywiZXhwIjoxNzA0OTAyMTc3fQ
+    content-type: multipart/form-data;
+
+test_cases:
+  - case_name: 删除user_id为2024040720004078的用户
+    data:
+      id: 2024040720004078
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
+
+  - case_name: 删除user_id为111的用户
+    data:
+      id: 111
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"

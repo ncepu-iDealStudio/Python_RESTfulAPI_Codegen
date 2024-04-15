@@ -1,21 +1,25 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-
-"""
-    this is function description
-"""
+import json
 import os.path
 import re
 
 import yaml
 
-from .read_env import read_env
+from test.unit_test.utils.read_env import read_env
+
+
+# from .read_env import read_env
 
 
 def read_yaml(yaml_path):
     with open(yaml_path, 'r', encoding='utf-8') as f:
         value = yaml.load(stream=f, Loader=yaml.FullLoader)
-        return value
+        datas = []
+        cases = value.pop('test_cases')
+        print(len(cases))
+        for case in cases:
+            datas.append({**value, **case})
+
+        return datas
 
 
 def clear_yaml(yaml_path):
@@ -67,13 +71,30 @@ def parse_yaml(yaml_path):
 def func_reflect(function_name):
     import inspect
     a = inspect.getmembers(__name__)
+    print(a)
     pass
 
 
 if __name__ == '__main__':
     # parse_yaml(
-    #     yaml_path=r"F:\python_file\software-test\test\test_api_1_0\studentInfoResource\login_and_get_cargoDamage.yml"
+    #     yaml_path=r"F:\python_file\software-test\test\test_api_1_0\studentResource\login_and_get_cargoDamage.yml"
     # )
     # env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
     # print(read_env(env_path))
-    func_reflect(1)
+    # func_reflect(1)
+    datas = read_yaml('test.yaml')
+
+    # for data in datas:
+    #     json_data = json.dumps(data, ensure_ascii=False)
+    #     print(json_data)
+    # print(data, len(data))
+
+    validate = datas[0]['validate']
+    print(validate)
+
+    # for eq_k, eq_v in validate['eq'].items():
+    #     print(eq_k, eq_v)
+    #     print(type(eq_k), type(eq_v))
+    #
+    #     if eq_k == 'status_code':
+    #

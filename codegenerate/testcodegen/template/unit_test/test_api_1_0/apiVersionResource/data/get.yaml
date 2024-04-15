@@ -1,0 +1,14 @@
+api_name: 获取当前接口的版本
+request:
+  method: get
+  url: /api_1_0/apiversion
+  headers:
+    token:
+
+test_cases:
+  - case_name: 测试接口版本，无需传具体用例
+    params:
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
