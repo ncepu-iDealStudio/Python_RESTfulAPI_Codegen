@@ -37,6 +37,8 @@ def create_app():
     # # 使用app初始化db
     # db.init_app(app)
 
+    app.config['SESSION_TYPE'] = 'filesystem'
+
     # 利用Flask_session将数据保存的session中
     Session(app)
 
