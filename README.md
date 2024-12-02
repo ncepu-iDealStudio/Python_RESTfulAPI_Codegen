@@ -2,7 +2,18 @@
 
 能根据已有数据库表结构，自动生成Python完整的基础接口项目(包含接口的文档)；生成的目标项目基于Flask+sqlalchemy框架；所生成的接口符合restful风格规范；  
 
-本项目实体层基于flask-sqlacodegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；基本接口已经生成，用户只需要在此基础上进行扩展增加和具体商业逻辑相关的接口即可；
+本项目实体层基于sqlalchemy-codegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；基本接口已经生成，用户只需要在此基础上进行扩展增加和具体商业逻辑相关的接口即可；
+
+关于sqlalchemy-codegen工具：
+代码仓库和相关地址：
+github:https://github.com/ncepu-iDealStudio/sqlalchemy-codegen
+
+gitee:https://gitee.com/ncepu-bj/sqlalchemy-codegen
+
+document:https://idealstudio-ncepu.yuque.com/docs/share/b5dcc5ff-fcba-4efd-8955-faeba859bfcf
+
+pypi:https://pypi.org/project/sqlalchemy-codegen/
+
 
 ##### 生成的目标接口项目特点：
 
@@ -73,12 +84,14 @@
 5. 建议设计一个timestamp类型的"CreateTime"字段，默认为当前时间戳(用来记录数据创建的时间)；
 6. 建议设计一个tinyint类型的"IsDelete"字段(用来实现记录的逻辑删除，0--有效，1--已删除)，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段必须存在）
 
+项目中附带了测试用数据库脚本，见tests/study_api.sql;恢复到MySQL数据库中后，即可进行接口代码生成的测试；
+
 二 生成器项目使用
 
 1. 先从仓库clone代码到本地;  
    git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen
 2. 用Python开发工具(Pycharm或者vscode)打开项目；
-3. 为代码生成器项目配置好虚拟环境；Python的版本>=`3.8.0`
+3. 为代码生成器项目配置好虚拟环境；Python的版本>=`3.8.0`，推荐使用3.12
 4. 安装软件运行必须的包：`pip install -r requirements.txt`
 5. 在虚拟环境下，运行根目录下的start.py，在UI界面中进行相关参数的配置;
 6. 程序运行完毕后，会生成dist文件夹，文件夹下即为我们需要的目标项目；
@@ -86,7 +99,7 @@
 
 三 目标项目测试  
 
-1. 用开发工具（Pycharm或者vscode)打开dist中的目标项目文件夹；  
+1. 用开发工具（Pycharm或者vscode）打开dist中的目标项目文件夹；  
 
 2. 为目标项目配置好虚拟环境；Python的版本>=`3.8.0`；  
 
