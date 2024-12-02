@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f5f7fa;
+}
+
+.container_warp {
+    min-height: calc(100vh - 80px);
+}
+
+.container_header {
+    height: 60px;
+    line-height: 60px;
+    color: #fff;
+    font-size: 20px;
+    background-color: #409eff;
+}
+
+.container_body {
+    padding: 20px 0;
+}
+
+.container_footer {
+    height: 80px;
+    padding: 20px 0;
+    box-sizing: border-box;
+    background-color: #fff;
+    position: sticky;
+    bottom: 0;
+}
+
+.el-card {
+    margin: 20px 0;
+}
+
+.el-card.is-always-shadow {
+    box-shadow: none;
+    border: none;
+}
+
+.el-card__header {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.el-form-item {
+    margin-bottom: 20px;
+}
+
+.el-button {
+    min-width: 120px;
+}
+
+.el-select {
+    width: 100%;
+}
+
+.icon-shoucang1 {
+    font-size: 24px;
+}
+
+.icon-shoucang1:hover {
+    color: #f5c518;
+}

@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# file:views.py
-# author:jianghao
-# datetime:2021/9/28 15:21
+# file:start1.py
+# author:jackiex
+# datetime:2020/12/2 15:52
+# update_time:2024/12/2 15:52
 # software: PyCharm
-
-"""
-    this is function description
-"""
 
 import configparser
 import json
@@ -24,43 +21,44 @@ from urllib import parse
 from utils.checkSqlLink import SQLHandler
 from utils.interface_limiter import InterfaceLimiter
 
-app = Flask(__name__, static_folder="../static")
+app = Flask(__name__)
+
+# 配置静态资源文件目录
+app.static_folder = 'static'
+app.static_url_path = '/static'
+
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # 配置7天有效
 
 limiter = InterfaceLimiter.get_limiter(app)
 
-
-@app.route('/', methods=['GET'])
-@limiter.exempt()
+@app.route('/')
 def index():
     session['id'] = int(round(time.time() * 1000))
-    return app.send_static_file('index.html')
+    return send_from_directory('views', 'index.html')
 
-
-@app.route('/tables', methods=['GET'])
+@app.route('/tables')
 def tables():
-    return app.send_static_file('tables.html')
+    return send_from_directory('views', 'tables.html')
 
-
-@app.route('/views', methods=['GET'])
+@app.route('/views')
 def views():
-    return app.send_static_file('views.html')
+    return send_from_directory('views', 'views.html')
 
-
-@app.route('/tables_info', methods=['GET'])
+@app.route('/tables_info')
 def tables_info():
-    return app.send_static_file('tables_info.html')
+    return send_from_directory('views', 'tables_info.html')
 
 
 @app.route('/project', methods=['GET'])
 def project():
-    return app.send_static_file('project.html')
+    return send_from_directory('views','project.html')
 
 
 @app.route('/build', methods=['GET'])
 def build():
-    return app.send_static_file('build.html')
+    return send_from_directory('views','build.html')
+
 
 
 # 获取项目路径
