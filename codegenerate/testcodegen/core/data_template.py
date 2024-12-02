@@ -7,30 +7,55 @@
 
 """
 class DataTemplate:
-    delete_yaml = """- name: {table_name}删除接口
+    delete_yaml = """api_name: {table_name}删除接口
   request:
     method: delete
     url: /api_1_0/{table_name}
     headers:
+      token: token
       content-type: application/json
-    data:{data}
-  validate:
-    - eq:
-        - status_code
-        - 200
+  test_cases:
+  - case_name:"your case name1"
+    data:
+      id: 2024040720004078
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
+
+  - case_name: "your case name2"
+    data:
+      id: 111
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
 
     """
 
-    get_yaml = """- name: {table_name}查询接口
+    get_yaml = """api_name: {table_name}查询接口
   request:
     method: get
     url: /api_1_0/{table_name}
     headers:
       token: token
-  validate:
-    - eq:
-        - status_code
-        - 200
+  test_cases:
+  - case_name:"your case name1"
+    data:
+      id: 2024040720004078
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
+
+  - case_name: "your case name2"
+    data:
+      id: 111
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
+
     """
 
     post_yaml = """- name: {table_name}添加接口
@@ -39,14 +64,23 @@ class DataTemplate:
     url: /api_1_0/{table_name}
     headers:
       token: token
-    data:{data}
-  validate:
-    - eq:
-        - status_code
-        - 200
-    - eq:
-        - code
-        - "2000"
+  test_cases:
+  - case_name:"your case name1"
+    data:
+      id: 2024040720004078
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
+
+  - case_name: "your case name2"
+    data:
+      id: 111
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
+
     """
 
     put_yaml = """- name: {table_name}修改接口
@@ -55,11 +89,22 @@ class DataTemplate:
     url: /api_1_0/{table_name}
     headers:
       content-type: application/json
-    data:{data}
-  validate:
-    - eq:
-        - status_code
-        - 200
+  test_cases:
+  - case_name:"your case name1"
+    data:
+      id: 2024040720004078
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
+
+  - case_name: "your case name2"
+    data:
+      id: 111
+    validate:
+      eq:
+        status_code: 200
+        code: "2000"
 
     """
 
