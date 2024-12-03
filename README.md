@@ -4,6 +4,9 @@
 
 本项目实体层基于sqlalchemy-codegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；基本接口已经生成，用户只需要在此基础上进行扩展增加和具体商业逻辑相关的接口即可；
 
+项目文档：
+https://idealstudio-ncepu.yuque.com/kgagg7/wdbe0k
+
 关于sqlalchemy-codegen工具：
 代码仓库和相关地址：
 github:https://github.com/ncepu-iDealStudio/sqlalchemy-codegen
