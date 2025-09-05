@@ -1,148 +1,193 @@
-##### 项目说明： Python_RESTfulAPI_Codegen
+# Python_RESTfulAPI_Codegen
 
-能根据已有数据库表结构，自动生成Python完整的基础接口项目(包含接口的文档)；生成的目标项目基于Flask+sqlalchemy框架；所生成的接口符合restful风格规范；  
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![Flask Version](https://img.shields.io/badge/flask-3.0.0-brightgreen)](https://palletsprojects.com/p/flask/)
+[![SQLAlchemy Version](https://img.shields.io/badge/sqlalchemy-2.0.25-orange)](https://www.sqlalchemy.org/)
 
-本项目实体层基于sqlalchemy-codegen工具生成，控制层和资源层以及服务层代码，基于自定义代码模板生成；基本接口已经生成，用户只需要在此基础上进行扩展增加和具体商业逻辑相关的接口即可；
+## 项目简介
 
-项目文档：
-https://idealstudio-ncepu.yuque.com/kgagg7/wdbe0k
+Python_RESTfulAPI_Codegen 是一个基于数据库表结构自动生成 RESTful API 项目的代码生成器。它能够根据已有的数据库表结构，自动生成符合 RESTful 风格规范的 Python 接口项目，目标项目基于 Flask + SQLAlchemy 框架构建。
 
-关于sqlalchemy-codegen工具：
-代码仓库和相关地址：
-github:https://github.com/ncepu-iDealStudio/sqlalchemy-codegen
+本项目旨在解决以下问题：
+- 手动编写基础 CRUD 接口效率低
+- 接口风格不统一
+- 缺乏标准化的项目结构和文档
+- 单元测试代码编写繁琐
 
-gitee:https://gitee.com/ncepu-bj/sqlalchemy-codegen
+## 核心功能
 
-document:https://idealstudio-ncepu.yuque.com/docs/share/b5dcc5ff-fcba-4efd-8955-faeba859bfcf
+- ✅ 根据数据库表结构自动生成完整接口项目
+- ✅ 生成符合 RESTful 风格的 API 接口
+- ✅ 自动生成接口文档
+- ✅ 自动生成单元测试代码
+- ✅ 支持 Docker 容器化部署
+- ✅ 支持多种数据库（MySQL、PostgreSQL、SQLite 等）
 
-pypi:https://pypi.org/project/sqlalchemy-codegen/
+## 技术架构
 
+### 生成器项目架构
 
-##### 生成的目标接口项目特点：
+```
+Python_RESTfulAPI_Codegen/
+├── app/                    # 前端界面
+├── codegenerate/           # 代码生成引擎
+│   ├── controllercodegen/  # 控制器层代码生成
+│   ├── modelcodegen/       # 模型层代码生成
+│   ├── resourcecodegen/    # 资源层代码生成
+│   ├── servicecodegen/     # 服务层代码生成
+│   ├── staticcodegen/      # 静态文件生成
+│   ├── otherfilecodegen/   # 其他文件生成
+│   └── testcodegen/        # 测试代码生成
+├── config/                 # 配置文件
+├── static/                 # 静态资源和部署文件
+├── utils/                  # 工具类
+├── tests/                  # 测试文件
+├── start.py                # 项目启动入口
+└── requirements.txt        # 项目依赖
+```
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0905/200245_9c40fbe9_9201274.png "屏幕截图.png")
+### 生成的目标项目架构
 
-1. 项目架构满足分层设计规范，分为实体层，控制器层和资源层(接口层)，
-   用户可以添加服务层，作为商业逻辑层；
-2. 资源层(接口层)，生成了满足restful风格规范的接口，发布后，可以直接让前端调用；
-   生产环境中，用户可以自行扩展接口层，对接新增加的服务层(具体商业逻辑)代码；
-3. 项目定位于先有数据库表设计(数据库及表设计规范，见下面的使用说明)，后基于这些关系生成对象和实体及各层的代码；
-4. 目标项目包含基于Docker容器的部署脚本；
-5. 自动化生成单元测试代码；
+```
+generated_project/
+├── app/                    # 项目初始化文件
+├── config/                 # 配置文件
+├── models/                 # 实体层（数据模型）
+├── controller/             # 控制器层（基础操作）
+├── service/                # 服务层（业务逻辑）
+├── api_1_0/                # 资源层（API接口）
+├── test/                   # 单元测试
+├── deploy/                 # 部署配置文件
+├── utils/                  # 工具类
+├── manage.py               # 项目管理脚本
+├── requirements.txt        # 项目依赖
+├── dockerfile              # Docker 配置
+└── docker-compose.yml      # Docker Compose 配置
+```
 
+## 技术栈
 
-##### 目标项目详细目录：   
+- **后端框架**: Flask 3.0.0 + SQLAlchemy 2.0.25
+- **数据库**: 支持 MySQL、PostgreSQL、SQLite 等 SQLAlchemy 支持的数据库
+- **代码生成工具**: sqlalchemy-codegen 1.1.2
+- **测试框架**: pytest
+- **部署**: Docker + Gunicorn + Nginx + Supervisor
+- **前端**: Flask 内置模板引擎
 
-└── api.sqlcodegen.com  
-    ├── app  # 项目初始化文件夹  
-    │   ├── __init__.py  
-    │   └── setting.py  
-    ├── config  # 项目配置  
-    │   └── config.conf  
-    ├── models # 实体层 -- 数据表对应的实体  
-    │   └── userInfoModel.py  
-    ├── controller  # 控制器层 -- 负责表记录的增删改查  
-    │   └── userInfoController.py  
-    ├── service  # 业务层 -- 负责项目主要业务逻辑的编写  
-    │   └── userInfoService.py  
-    ├── test # 单元测试层 -- 负责项目接口测试  
-    ├── api_1_0  # 资源层 -- 负责对外暴露接口  
-    │   ├── apiVersionResource  
-    │   │   ├── apiVersionResource.py  
-    │   │   ├── __init__.py  
-    │   │   └── urls.py  
-    │   └── userInfoResource  
-    │       ├── __init__.py  
-    │       ├── urls.py  
-    │       ├── userInfoOtherResource.py  
-    │       └── userInfoResource.py   
-    ├── deploy  # 项目部署的配置文件  
-    │   ├── gunicorn.conf  
-    │   ├── nginx_flask.conf  
-    │   └── supervisord.conf  
-    ├── common  
-    ├── docker-compose.yml  
-    ├── dockerfile  
-    ├── gunicorn.py  
-    ├── manage.py  
-    ├── requirements.txt  
-    └── utils  # 常用方法工具包  
-    &nbsp;&nbsp;├── commons.py  
-    &nbsp;&nbsp;├── loggings.py  
-    &nbsp;&nbsp;├── response_code.py  
-    &nbsp;&nbsp;└── rsa_encryption_decryption.py  
+## 安装与使用
 
+### 环境要求
 
+- Python 3.8+
+- pip
+- virtualenv
+- Git
 
-##### 生成器项目的使用说明： 
+### 安装步骤
 
-更详细的帮助说明，请看帮助文档：https://idealstudio-ncepu.yuque.com/kgagg7/wdbe0k?# 《Python接口项目代码生成器使用指南》
+1. 克隆项目到本地：
+```bash
+git clone https://github.com/ncepu-iDealStudio/Python_RESTfulAPI_Codegen.git
+```
 
-一 数据库满足以下的设计规范（建议）  
+2. 进入项目目录并创建虚拟环境：
+```bash
+cd Python_RESTfulAPI_Codegen
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# 或
+venv\Scripts\activate     # Windows
+```
 
-1. 数据库表名称推荐全小写，如student；如果涉及多个描述词，可使用"_"连接。如：user_info;  
-2. 数据库表的字段中，必须包含一个主键；且不能为复合主键；
-3. 表的名称和表字段名称，不能是python的关键字。如：def，False, class都是不正确的  
-4. 建议表的字段名称使用"大驼峰"命名法。如：UserName；  
-5. 建议设计一个timestamp类型的"CreateTime"字段，默认为当前时间戳(用来记录数据创建的时间)；
-6. 建议设计一个tinyint类型的"IsDelete"字段(用来实现记录的逻辑删除，0--有效，1--已删除)，默认为0（注：如果生成器项目选择使用逻辑删除，则该字段必须存在）
+3. 安装项目依赖：
+```bash
+pip install -r requirements.txt
+```
 
-项目中附带了测试用数据库脚本，见tests/study_api.sql;恢复到MySQL数据库中后，即可进行接口代码生成的测试；
+4. 启动项目：
+```bash
+python start.py
+```
 
-二 生成器项目使用
+5. 在浏览器中打开 `http://127.0.0.1:5000` 进行配置和代码生成
 
-1. 先从仓库clone代码到本地;  
-   git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen
-2. 用Python开发工具(Pycharm或者vscode)打开项目；
-3. 为代码生成器项目配置好虚拟环境；Python的版本>=`3.8.0`，推荐使用3.12
-4. 安装软件运行必须的包：`pip install -r requirements.txt`
-5. 在虚拟环境下，运行根目录下的start.py，在UI界面中进行相关参数的配置;
-6. 程序运行完毕后，会生成dist文件夹，文件夹下即为我们需要的目标项目；
-   也可以在配置文件中设置目标项目的位置；
+### 使用流程
 
-三 目标项目测试  
+1. 准备数据库表结构（需符合设计规范）
+2. 启动生成器项目并配置数据库连接参数
+3. 生成目标项目代码
+4. 在生成的项目中添加业务逻辑
+5. 部署项目
 
-1. 用开发工具（Pycharm或者vscode）打开dist中的目标项目文件夹；  
+## 数据库设计规范
 
-2. 为目标项目配置好虚拟环境；Python的版本>=`3.8.0`；  
+为了确保代码生成器能够正确工作，请遵循以下数据库设计规范：
 
-3. 安装软件运行必须的包：`pip install -r requirements.txt`；  
+1. 每个表必须有主键字段，推荐命名为 "Id"
+2. 表名和字段名不能使用 Python 关键字（如 def, False, class 等）
+3. 表名推荐使用帕斯卡命名法（PascalCase），如 UserInfo
+4. 字段名推荐使用帕斯卡命名法，如 UserName
+5. 建议包含时间戳字段 "CreateTime"，默认值为当前时间
+6. 建议包含 tinyint 类型的 "IsDelete" 字段用于逻辑删除（0-有效，1-已删除）
 
-4. 运行目标项目：`python manage.py runserver`；  
+## 项目特点
 
-5. 打开postman进行接口测试：http://127.0.0.1:5000/api_1_0/apiversion  
-   api_1_0为项目生成器中设置的版本号，如果`接口版本`参数为1.0，则此时链接中的版本号字符串为：api_1_0；  
+### 生成的目标项目具有以下特性：
 
-6. 测试基本业务相关接口；  
+1. 分层架构设计：实体层、控制器层、资源层和服务层
+2. 完整的基础 CRUD 操作：查询、新增、修改、删除
+3. 支持逻辑删除
+4. 支持模糊查询
+5. 支持分页查询
+6. 支持排序查询
+7. 支持字段过滤
+8. 支持字段选择
+9. 支持批量操作
+10. 支持多表关联查询
+11. 支持自定义 SQL 查询
+12. 支持 JWT 认证
+13. 支持接口限流
+14. 支持数据加密（AES/RSA）
+15. 支持 Docker 容器化部署
 
-7. 目标项目自动化测试（基于pytest）：
+## 目标项目测试
 
-   打开目标项目下的test文件夹，在Test_xxxController/datas.py 及 Test_xxxResource/datas.py 中添加测试数据；
+生成的目标项目内置了单元测试框架，可以方便地进行接口测试：
 
-   运行test_start.py文件并生成测试报告；
+1. 在 `test` 目录下添加测试数据
+2. 运行 `python -m pytest` 执行测试
+3. 查看测试报告
 
-四 生成器项目详细使用指南  
+## 部署
 
-- <a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
+支持多种部署方式：
 
+### Docker 部署
 
-产品特性
+```bash
+docker-compose up -d
+```
 
-* Supports SQLAlchemy 0.8.x - 1.3.x
-* 支持SQLAlchemy 0.8x - 1.3x
-* Produces declarative code that almost looks like it was hand written
-* 生成的声明性代码几乎看起来像是手写的
-* Produces `PEP 8`_ compliant code
-* 生成的代码符合 `PEP 8`_规范
-* Accurately determines relationships, including many-to-many, one-to-one
-* 准确判断包括多对多与一对一的关系
-* Automatically detects joined table inheritance
-* 自动检测连接表继承
-* Excellent test coverage
+### 传统部署
 
-常见错误
-* 1 ModuleNotFoundError: No module named 'flask._compat'
-解决方法：
-修改flask_script/init.py
-把from ._compat import text_type 改成 from flask_script._compat import text_type
+使用 Gunicorn + Nginx 部署，配置文件位于 `deploy/` 目录下。
+
+## 相关项目
+
+- [sqlalchemy-codegen](https://github.com/ncepu-iDealStudio/sqlalchemy-codegen) - 本项目使用的实体层代码生成工具
+
+## 常见问题
+
+### ModuleNotFoundError: No module named 'flask._compat'
+
+**解决方案**：
+修改 `flask_script/__init__.py` 文件，将 `from ._compat import text_type` 改为 `from flask_script._compat import text_type`
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request 来帮助我们改进项目。
+
+## 许可证
+
+[MIT License](LICENSE)
   

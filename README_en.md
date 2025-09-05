@@ -1,25 +1,141 @@
-##### Project Description: Python_RESTfulAPI_Codegen
+# Python_RESTfulAPI_Codegen
 
-This project automatically generates a complete basic API project in Python (including API documentation) based on existing database table structures. The generated project is based on the Flask+SQLAlchemy framework, and the generated APIs conform to RESTful style specifications.
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![Flask Version](https://img.shields.io/badge/flask-3.0.0-brightgreen)](https://palletsprojects.com/p/flask/)
+[![SQLAlchemy Version](https://img.shields.io/badge/sqlalchemy-2.0.25-orange)](https://www.sqlalchemy.org/)
 
-The entity layer of this project is generated using the sqlalchemy-codegen tool, while the controller layer, resource layer, and service layer code are generated based on custom code templates. Basic APIs are generated automatically, and users only need to extend and add APIs related to specific business logic on this foundation.
+## Project Overview
 
-About sqlalchemy-codegen tool:
-Code repository and related links:
-GitHub: https://github.com/ncepu-iDealStudio/sqlalchemy-codegen
+Python_RESTfulAPI_Codegen is a code generator that automatically generates RESTful API projects based on database table structures. It can generate Python API projects that conform to RESTful style specifications based on existing database table structures. The target project is built on the Flask + SQLAlchemy framework.
 
-Gitee: https://gitee.com/ncepu-bj/sqlalchemy-codegen
+This project aims to solve the following problems:
+- Low efficiency in manually writing basic CRUD interfaces
+- Inconsistent interface styles
+- Lack of standardized project structure and documentation
+- Tedious unit test code writing
 
-Documentation: https://idealstudio-ncepu.yuque.com/docs/share/b5dcc5ff-fcba-4efd-8955-faeba859bfcf
+## Core Features
 
-PyPI: https://pypi.org/project/sqlalchemy-codegen/
+- ✅ Automatically generate complete API projects based on database table structures
+- ✅ Generate RESTful-style API interfaces
+- ✅ Automatically generate API documentation
+- ✅ Automatically generate unit test code
+- ✅ Support Docker containerized deployment
+- ✅ Support multiple databases (MySQL, PostgreSQL, SQLite, etc.)
 
-##### Features of the Generated API Project:
+## Technical Architecture
 
-![Screenshot](https://images.gitee.com/uploads/images/2021/0905/200245_9c40fbe9_9201274.png "Screenshot.png")
+### Generator Project Architecture
 
-1. Layered architecture design: entity layer, service layer, controller layer, and resource layer
-2. Complete basic CRUD operations: query, add, modify, delete
+```
+Python_RESTfulAPI_Codegen/
+├── app/                    # Frontend interface
+├── codegenerate/           # Code generation engine
+│   ├── controllercodegen/  # Controller layer code generation
+│   ├── modelcodegen/       # Model layer code generation
+│   ├── resourcecodegen/    # Resource layer code generation
+│   ├── servicecodegen/     # Service layer code generation
+│   ├── staticcodegen/      # Static file generation
+│   ├── otherfilecodegen/   # Other file generation
+│   └── testcodegen/        # Test code generation
+├── config/                 # Configuration files
+├── static/                 # Static resources and deployment files
+├── utils/                  # Utility classes
+├── tests/                  # Test files
+├── start.py                # Project entry point
+└── requirements.txt        # Project dependencies
+```
+
+### Generated Target Project Architecture
+
+```
+generated_project/
+├── app/                    # Project initialization files
+├── config/                 # Configuration files
+├── models/                 # Entity layer (data models)
+├── controller/             # Controller layer (basic operations)
+├── service/                # Service layer (business logic)
+├── api_1_0/                # Resource layer (API interfaces)
+├── test/                   # Unit tests
+├── deploy/                 # Deployment configuration files
+├── utils/                  # Utility classes
+├── manage.py               # Project management script
+├── requirements.txt        # Project dependencies
+├── dockerfile              # Docker configuration
+└── docker-compose.yml      # Docker Compose configuration
+```
+
+## Tech Stack
+
+- **Backend Framework**: Flask 3.0.0 + SQLAlchemy 2.0.25
+- **Database**: Supports MySQL, PostgreSQL, SQLite and other databases supported by SQLAlchemy
+- **Code Generation Tool**: sqlalchemy-codegen 1.1.2
+- **Testing Framework**: pytest
+- **Deployment**: Docker + Gunicorn + Nginx + Supervisor
+- **Frontend**: Flask built-in template engine
+
+## Installation and Usage
+
+### Requirements
+
+- Python 3.8+
+- pip
+- virtualenv
+- Git
+
+### Installation Steps
+
+1. Clone the project to local:
+```bash
+git clone https://github.com/ncepu-iDealStudio/Python_RESTfulAPI_Codegen.git
+```
+
+2. Enter the project directory and create a virtual environment:
+```bash
+cd Python_RESTfulAPI_Codegen
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or
+venv\Scripts\activate     # Windows
+```
+
+3. Install project dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Start the project:
+```bash
+python start.py
+```
+
+5. Open `http://127.0.0.1:5000` in your browser to configure and generate code
+
+### Usage Workflow
+
+1. Prepare database table structure (must follow design specifications)
+2. Start the generator project and configure database connection parameters
+3. Generate target project code
+4. Add business logic in the generated project
+5. Deploy the project
+
+## Database Design Specifications
+
+To ensure the code generator works correctly, please follow these database design specifications:
+
+1. Each table must have a primary key field, recommended to be named "Id"
+2. Table names and field names cannot use Python keywords (such as def, False, class, etc.)
+3. Table names are recommended to use PascalCase naming, such as UserInfo
+4. Field names are recommended to use PascalCase, such as UserName
+5. It is recommended to include a timestamp field "CreateTime" with the default value as the current time
+6. It is recommended to include a tinyint type "IsDelete" field for logical deletion (0-valid, 1-deleted)
+
+## Project Features
+
+### The generated target project has the following features:
+
+1. Layered architecture design: entity layer, controller layer, resource layer, and service layer
+2. Complete basic CRUD operations: query, create, update, delete
 3. Support for logical deletion
 4. Support for fuzzy queries
 5. Support for pagination queries
@@ -27,54 +143,50 @@ PyPI: https://pypi.org/project/sqlalchemy-codegen/
 7. Support for field filtering
 8. Support for field selection
 9. Support for batch operations
-10. Support for multi-table association queries
+10. Support for multi-table join queries
 11. Support for custom SQL queries
-12. Support for custom service methods
-13. Support for custom controller methods
-14. Support for custom resource methods
-15. Support for custom route rules
-16. Support for custom response formats
-17. Support for custom error codes
-18. Support for custom error messages
-19. Support for custom exception handling
-20. Support for custom middleware
-21. Support for custom configuration
-22. Support for custom logging
-23. Support for custom authentication
-24. Support for custom authorization
-25. Support for custom validation
-26. Support for custom serialization
-27. Support for custom deserialization
-28. Support for custom data transformation
-29. Support for custom data validation
-30. Support for custom data processing
+12. Support for JWT authentication
+13. Support for API rate limiting
+14. Support for data encryption (AES/RSA)
+15. Support for Docker containerized deployment
 
-##### Usage Instructions
+## Target Project Testing
 
-I. Database Design Requirements
+The generated target project has a built-in unit testing framework for convenient interface testing:
 
-1. Each table must have a primary key field, preferably named "Id"
-2. Table names should use "Pascal Case" naming convention, e.g., UserInfo
-3. Table and field names cannot be Python keywords (e.g., def, False, class are incorrect)
-4. Field names should use "Pascal Case" naming convention, e.g., UserName
-5. It's recommended to include a timestamp field "CreateTime" defaulting to current timestamp
-6. It's recommended to include a tinyint field "IsDelete" for logical deletion (0--valid, 1--deleted), defaulting to 0 (Note: this field is required if logical deletion is enabled in the generator project)
+1. Add test data in the `test` directory
+2. Run `python -m pytest` to execute tests
+3. View test reports
 
-A test database script is included in the project at tests/study_api.sql; restore it to MySQL database for testing API code generation.
+## Deployment
 
-II. Generator Project Usage
+Supports multiple deployment methods:
 
-1. Clone the repository locally:
-   git clone https://gitee.com/ncepu-bj/Python_RESTfulAPI_Codegen
-2. Open the project with a Python IDE (PyCharm or VSCode)
-3. Configure virtual environment for the code generator project; Python version >= `3.8.0`, recommended 3.12
-4. Install required packages: `pip install -r requirements.txt`
-5. Run start.py in the root directory under the virtual environment, configure parameters in the UI interface
-6. After execution, a dist folder will be generated containing the target project
-   You can also set the target project location in the configuration file
+### Docker Deployment
 
-III. Target Project Usage
+```bash
+docker-compose up -d
+```
 
-1. Open the target project folder in dist using an IDE (PyCharm or VSCode)
-2. Configure virtual environment for the target project; Python version >= `3.8.0`
-3. Install required packages: `pip install -r requirements.txt`
+### Traditional Deployment
+
+Deploy using Gunicorn + Nginx, configuration files are located in the `deploy/` directory.
+
+## Related Projects
+
+- [sqlalchemy-codegen](https://github.com/ncepu-iDealStudio/sqlalchemy-codegen) - The entity layer code generation tool used in this project
+
+## FAQ
+
+### ModuleNotFoundError: No module named 'flask._compat'
+
+**Solution**:
+Modify the `flask_script/__init__.py` file, change `from ._compat import text_type` to `from flask_script._compat import text_type`
+
+## Contributing
+
+Issues and Pull Requests are welcome to help us improve the project.
+
+## License
+
+[MIT License](LICENSE)
