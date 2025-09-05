@@ -1,6 +1,7 @@
+-i https://pypi.tuna.tsinghua.edu.cn/simple
 administrator==0.0.0
 aniso8601==9.0.1
-annotated-types==0.6.0
+annotated-types>=0.4.0
 blinker==1.7.0
 cachelib==0.13.0
 cffi==1.17.1
@@ -28,8 +29,8 @@ ordered-set==4.1.0
 packaging==23.2
 pip==24.0
 pycparser==2.22
-pydantic==2.5.3
-pydantic_core==2.14.6
+pydantic==2.8.2
+pydantic_core==2.20.1
 Pygments==2.17.2
 PyMySQL==1.1.0
 pytz==2023.3.post1
@@ -39,7 +40,7 @@ six==1.16.0
 sqlacodegen==2.3.0
 SQLAlchemy==2.0.25
 sqlalchemy-codegen==1.1.2
-typing_extensions==4.9.0
+typing_extensions>=4.12.2
 Werkzeug==3.0.1
 wheel==0.42.0
 win32-setctime==1.1.0
