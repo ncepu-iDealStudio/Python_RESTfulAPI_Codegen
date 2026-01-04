@@ -14,6 +14,8 @@ Python_RESTfulAPI_Codegen 是一个基于数据库表结构自动生成 RESTful 
 - 缺乏标准化的项目结构和文档
 - 单元测试代码编写繁琐
 
+产品介绍文档：https://idealstudio-ncepu.yuque.com/kgagg7/wdbe0k?# 《Python接口项目代码生成器使用指南》
+
 ## 核心功能
 
 - ✅ 根据数据库表结构自动生成完整接口项目
