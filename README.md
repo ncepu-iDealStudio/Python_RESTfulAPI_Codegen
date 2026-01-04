@@ -27,9 +27,6 @@ Python_RESTfulAPI_Codegen 是一个基于数据库表结构自动生成 RESTful 
 
 ### 生成器项目架构
 
-<<<<<<< HEAD
-![5DqRi9.png](https://z3.ax1x.com/2021/10/20/5DqRi9.png?raw=true)
-=======
 ```
 Python_RESTfulAPI_Codegen/
 ├── app/                    # 前端界面
@@ -48,7 +45,6 @@ Python_RESTfulAPI_Codegen/
 ├── start.py                # 项目启动入口
 └── requirements.txt        # 项目依赖
 ```
->>>>>>> dev
 
 ### 生成的目标项目架构
 
@@ -103,15 +99,6 @@ source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 ```
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-二 代码生成器使用
-=======
-项目中附带了测试用数据库脚本，见tests/study_api.sql;恢复到MySQL数据库中后，即可进行接口代码生成的测试；
-
-二 生成器项目使用
->>>>>>> dev
-=======
 3. 安装项目依赖：
 ```bash
 pip install -r requirements.txt
@@ -121,15 +108,10 @@ pip install -r requirements.txt
 ```bash
 python start.py
 ```
->>>>>>> dev
 
 5. 在浏览器中打开 `http://127.0.0.1:5000` 进行配置和代码生成
 
-<<<<<<< HEAD
-三 生成的目标项目代码测试  
-=======
 ### 使用流程
->>>>>>> dev
 
 1. 准备数据库表结构（需符合设计规范）
 2. 启动生成器项目并配置数据库连接参数
@@ -172,16 +154,11 @@ python start.py
 
 生成的目标项目内置了单元测试框架，可以方便地进行接口测试：
 
-<<<<<<< HEAD
-
-- 详见：<a href="https://idealstudio-ncepu.yuque.com/books/share/24f6d050-acd5-4838-a87c-6dcb3afe5e05?# 《Python代码生成器快速使用指南》" target="_blank">使用指南</a>
-=======
 1. 在 `test` 目录下添加测试数据
 2. 运行 `python -m pytest` 执行测试
 3. 查看测试报告
 
 ## 部署
->>>>>>> dev
 
 支持多种部署方式：
 
@@ -191,14 +168,6 @@ python start.py
 docker-compose up -d
 ```
 
-<<<<<<< HEAD
-常见错误
-* 1 ModuleNotFoundError: No module named 'flask._compat'
-问题原因：Flask包升级到2.x以上后的版本bug；
-解决方法：
-修改虚拟环境中，site-packages/flask_script/init.py文件
-把from ._compat import text_type 改成 from flask_script._compat import text_type
-=======
 ### 传统部署
 
 使用 Gunicorn + Nginx 部署，配置文件位于 `deploy/` 目录下。
@@ -221,5 +190,3 @@ docker-compose up -d
 ## 许可证
 
 [MIT License](LICENSE)
->>>>>>> dev
-  
